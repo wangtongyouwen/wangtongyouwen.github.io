@@ -171,7 +171,39 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h1 id="2、搭建个人博客"><a href="#2、搭建个人博客" class="headerlink" title="2、搭建个人博客"></a>2、搭建个人博客</h1><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤:"></a>步骤:</h2><h4 id="1、进入网站下载适合版本（LTS）：-https-nodejs-org-en"><a href="#1、进入网站下载适合版本（LTS）：-https-nodejs-org-en" class="headerlink" title="1、进入网站下载适合版本（LTS）： https://nodejs.org/en/"></a>1、进入网站下载适合版本（LTS）： <a target="_blank" rel="noopener" href="https://nodejs.org/en/">https://nodejs.org/en/</a></h4><p>####2、安装完成查看是否有node和npm  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+<h4 id="3、安装cnpm："><a href="#3、安装cnpm：" class="headerlink" title="3、安装cnpm："></a>3、安装cnpm：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry&#x3D;https:&#x2F;&#x2F;registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+<h4 id="4、安装hexo模块"><a href="#4、安装hexo模块" class="headerlink" title="4、安装hexo模块"></a>4、安装hexo模块</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<h4 id="5、新建文件夹后，cd-到该目录"><a href="#5、新建文件夹后，cd-到该目录" class="headerlink" title="5、新建文件夹后，cd 到该目录"></a>5、新建文件夹后，cd 到该目录</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+<p>hexo init安装慢 详见：<a target="_blank" rel="noopener" href="https://blog.csdn.net/f6619082/article/details/109193251">https://blog.csdn.net/f6619082/article/details/109193251</a> 或者科学上网<br>报错可能需要安装git</p>
+<h4 id="6、部署到github，远程访问"><a href="#6、部署到github，远程访问" class="headerlink" title="6、部署到github，远程访问"></a>6、部署到github，远程访问</h4><p>新建repository，命名为 wangtongyouwen.github.io<br>在blog文件下输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
+<h4 id="7、编辑-config-yml"><a href="#7、编辑-config-yml" class="headerlink" title="7、编辑_config.yml"></a>7、编辑_config.yml</h4><p>在末尾加入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type: git</span><br><span class="line">repo: your HTML</span><br><span class="line">branch: master</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/04/09/%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%B7%B1%E7%9A%84blog---%E5%9F%BA%E4%BA%8Enode-js/6.jpg" alt="6"></p>
+<h4 id="8、部署文件"><a href="#8、部署文件" class="headerlink" title="8、部署文件"></a>8、部署文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo -d</span><br></pre></td></tr></table></figure>
+<p>输入账号密码即可上传文件，然后输入YOUR_NAME.github.io即可访问</p>
+<h4 id="9、更换主题"><a href="#9、更换主题" class="headerlink" title="9、更换主题"></a>9、更换主题</h4><p>使用github中star最多的nodejs模板</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone github.com:litten&#x2F;hexo-theme-yilia.git</span><br></pre></td></tr></table></figure>
+<p>复制到blog文件夹themes内</p>
+<h4 id="10、对主题的配置"><a href="#10、对主题的配置" class="headerlink" title="10、对主题的配置"></a>10、对主题的配置</h4><p>大致可以参考yilia提供的默认配置文件，结构还是特别清晰的<br>特别注意，如果要设置目录，一定要加上红框内的内容</p>
+<center>
+  <img src="/2021/04/09/%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%B7%B1%E7%9A%84blog---%E5%9F%BA%E4%BA%8Enode-js/7.jpg">
+</center>
+
+<p>tags多标签直接回车缩进，然后”- YOUR TAGS”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tags:</span><br><span class="line">- DOTA2</span><br><span class="line">- tools</span><br></pre></td></tr></table></figure>
+<p>头像等类似图片默认root目录为网页地址，直接在github的repository中找到对应照片即可</p>
+<h2 id="遇到的可能问题："><a href="#遇到的可能问题：" class="headerlink" title="遇到的可能问题："></a>遇到的可能问题：</h2><h4 id="1、cnpm相关问题"><a href="#1、cnpm相关问题" class="headerlink" title="1、cnpm相关问题"></a>1、cnpm相关问题</h4><p><img src="/2021/04/09/%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%B7%B1%E7%9A%84blog---%E5%9F%BA%E4%BA%8Enode-js/5.jpg" alt="5"><br>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\WINDOWS\system32&gt; set-ExecutionPolicy RemoteSigned</span><br></pre></td></tr></table></figure>
+<h4 id="2、hexo部署问题"><a href="#2、hexo部署问题" class="headerlink" title="2、hexo部署问题"></a>2、hexo部署问题</h4><p>git在commit时报错fatal: unable to auto-detect email address的解决办法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.email &quot;&quot;</span><br><span class="line">git config --global user.name &quot;&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="3、如何在md中显示图片"><a href="#3、如何在md中显示图片" class="headerlink" title="3、如何在md中显示图片"></a>3、如何在md中显示图片</h4><p>使用hexo-asset-image，可以自动生成相同文件名的文件夹（用于放置图片），之后部署到github的repository中<br>参考内容：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/xjm850552586/article/details/84101345">https://blog.csdn.net/xjm850552586/article/details/84101345</a><br>补充问题：</p>
+<h5 id="1、解决config-yml没有post-asset-folder-true"><a href="#1、解决config-yml没有post-asset-folder-true" class="headerlink" title="1、解决config.yml没有post_asset_folder: true"></a>1、解决config.yml没有post_asset_folder: true</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-asset-image</span><br></pre></td></tr></table></figure>
+<p>之后重新重复之前的操作</p>
+<h5 id="2、解决仓库中有文件但仍然无法显示图片"><a href="#2、解决仓库中有文件但仍然无法显示图片" class="headerlink" title="2、解决仓库中有文件但仍然无法显示图片"></a>2、解决仓库中有文件但仍然无法显示图片</h5><p>修改显示图片的地址，显然地址直接是当前目录<br>为了方便本地编辑，可以先在_posts目录下放置图片，部署的时候删除</p>
+
       
 
       
@@ -184,7 +216,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">-tools</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
         		</li>
       		
 		</ul>
@@ -493,10 +525,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">测试</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">-tools</a>
               </li>
             
             <div class="clearfix"></div>
