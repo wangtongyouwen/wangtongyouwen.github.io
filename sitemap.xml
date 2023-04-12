@@ -20,15 +20,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/post/6ae9c33a.html</loc>
-    
-    <lastmod>2023-04-12</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/post/42120d73.html</loc>
     
     <lastmod>2023-04-12</lastmod>
@@ -38,16 +29,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/post/b187ba6d.html</loc>
-    
-    <lastmod>2023-04-12</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/post/2d27b0da.html</loc>
+    <loc>http://example.com/post/6ae9c33a.html</loc>
     
     <lastmod>2023-04-12</lastmod>
     
@@ -65,7 +47,16 @@
   </url>
   
   <url>
-    <loc>http://example.com/post/f0ef2eb8.html</loc>
+    <loc>http://example.com/post/2d27b0da.html</loc>
+    
+    <lastmod>2023-04-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/post/b187ba6d.html</loc>
     
     <lastmod>2023-04-12</lastmod>
     
@@ -84,6 +75,15 @@
   
   <url>
     <loc>http://example.com/post/20651907.html</loc>
+    
+    <lastmod>2023-04-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/post/f0ef2eb8.html</loc>
     
     <lastmod>2023-04-12</lastmod>
     
@@ -119,15 +119,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/post/2d21482d.html</loc>
-    
-    <lastmod>2023-04-12</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/post/55849e59.html</loc>
     
     <lastmod>2023-04-12</lastmod>
@@ -137,7 +128,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/post/40d10b1c.html</loc>
+    <loc>http://example.com/post/2d21482d.html</loc>
     
     <lastmod>2023-04-12</lastmod>
     
@@ -147,6 +138,15 @@
   
   <url>
     <loc>http://example.com/post/565d0c01.html</loc>
+    
+    <lastmod>2023-04-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/post/40d10b1c.html</loc>
     
     <lastmod>2023-04-12</lastmod>
     
@@ -182,7 +182,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/categories/index.html</loc>
+    <loc>http://example.com/archives/index.html</loc>
     
     <lastmod>2023-04-12</lastmod>
     
@@ -191,7 +191,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/archives/index.html</loc>
+    <loc>http://example.com/categories/index.html</loc>
     
     <lastmod>2023-04-12</lastmod>
     

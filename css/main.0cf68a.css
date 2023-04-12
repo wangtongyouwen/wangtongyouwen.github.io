@@ -2416,8 +2416,8 @@ to {
 }
 }.tooltip-left .tooltip-content {
 	position:absolute;
-	/*background:rgba(73,177,245,1.0);*/
-	background:linear-gradient(55deg, #e0e5df, #96a48b);
+	background:rgba(73,177,245,1.0);
+	/* background:linear-gradient(55deg, #e0e5df, #96a48b); */
 	z-index:9999;
 	width:200px;
 	bottom:50%;
