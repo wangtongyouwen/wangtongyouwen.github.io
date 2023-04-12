@@ -276,13 +276,13 @@ progress {
 a {
 	background:transparent;
 	text-decoration:none;
-	color:#0088cc;
+	color:#7b8b6f;
 }
 /* 文章中的超链接,鼠标悬浮特效*/
 .article-entry a{
     display: inline-block;
     position: relative;
-    color: #0088cc;
+    color: #7b8b6f;
     font-family: lucida console;/* 这种字体的英文比较好看（像代码样式） */
 }
 /* 鼠标悬浮时，变色 */
@@ -307,7 +307,7 @@ a {
   height: 1px;
   bottom: 0;
   left: 0;
-  background-color: #0087ca;
+  background-color: #7b8b6f;
   /* 详见：https://www.w3school.com.cn/cssref/pr_transform-origin.asp,
   旋转，与transform连用；这里作用：鼠标移开后，底部的下划线从中间开始消失 */
   transform-origin: bottom center;
@@ -978,7 +978,7 @@ body {
 	margin-left:20px
 }
 .article-entry .gist .gist-file .gist-meta a {
-	color:#258fb8;
+	color:#7b8b6f;
 	font-weight:400
 }
 .article-entry .gist .gist-file .gist-meta a:hover {
@@ -1327,7 +1327,7 @@ pre .css~* .id,pre .id {
 	border:1px solid #55cff8
 }
 #header .header-nav .social a.twitter:hover {
-	border:1px solid rgba(73,177,245,1.0)
+	border:1px solid rgb(18, 68, 102)
 }
 #header .header-nav .social a.linkedin {
 	background:#005a87;
@@ -1720,19 +1720,19 @@ pre .css~* .id,pre .id {
 	white-space:nowrap;
 	text-overflow:ellipsis;
 	display:block;
-	color:#fffff8;
+	color:#8696a7;
 	text-shadow:1px 1px rgba(77,77,77,.25)
 }
 .tools-col .tools-section .search-ul .search-title .icon {
 	margin-right:10px;
-	color:#fffdd8
+	color:#8696a7
 }
 .tools-col .tools-section .search-ul .search-title:hover {
 	color:#fff
 }
 .tools-col .tools-section .search-ul .search-tag,.tools-col .tools-section .search-ul .search-time {
 	font-size:12px;
-	color:#fffdd8;
+	color:#8696a7;
 	margin-right:10px
 }
 .tools-col .tools-section .search-ul .search-tag .icon,.tools-col .tools-section .search-ul .search-time .icon {
@@ -1821,7 +1821,7 @@ to {
 	transition:color .3s
 }
 .article-header {
-	border-left:5px solid #0088CC;
+	border-left:5px solid #7b8b6f;
 	padding:25px 7.2923% 5px;
 }
 .article-meta {
@@ -1847,7 +1847,7 @@ to {
 	float:right
 }
 .article-more-link a {
-	background:linear-gradient(45deg, #e0e5df, #96a48b, #c5b8a5);
+	background:linear-gradient(45deg, #e0e5df, #96a48b);
 	color:#fff;
 	font-size:12px;
 	padding:5px 8px;
@@ -1857,7 +1857,7 @@ to {
 }
 .article-more-link a:hover {
 	/*background:#3c3c3c;*/
-	background:#0088cc;
+	background:#7b8b6f;
 }
 .article-more-link a.hidden {
 	visibility:hidden
@@ -2222,7 +2222,7 @@ to {
 	font-size:20px;
 	color:#fff;
 	/* background:#f44336;*/
-	background:linear-gradient(45deg, #e0e5df, #96a48b, #c5b8a5);
+	background: linear-gradient(45deg, #e0e5df, #96a48b);
 	border-radius:50%;
 	box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
 	transition:.4s ease-in-out
@@ -2417,7 +2417,7 @@ to {
 }.tooltip-left .tooltip-content {
 	position:absolute;
 	/*background:rgba(73,177,245,1.0);*/
-	background:linear-gradient(45deg, #e0e5df, #96a48b, #c5b8a5);
+	background:linear-gradient(55deg, #e0e5df, #96a48b);
 	z-index:9999;
 	width:200px;
 	bottom:50%;
@@ -2545,7 +2545,7 @@ to {
 }
 .tooltip-top .tooltip-inner {
 	/*background:rgba(73,177,245,1.0);*/
-	background:linear-gradient(45deg, #e0e5df, #96a48b, #c5b8a5);
+	background:linear-gradient(45deg,  #e0e5df, #96a48b);
 	padding:40px;
 	-webkit-transform:translate3d(0,100%,0);
 	transform:translate3d(0,100%,0);
@@ -3611,15 +3611,15 @@ to {
 #waline {
 	margin: 0 0 20px;
     padding: 0 22px 20px;
-	--waline-theme-color: #49b1f5;
-	--waline-active-color: #0088CC;
+	--waline-theme-color: #c1cbd7;
+	--waline-active-color: #8696a7;
 }
 
 @media screen and (max-width:800px) {
 	#waline {
     padding: 0 5px 20px;
-	--waline-theme-color: #0088cc;
-	--waline-active-color: #0088CC;
+	--waline-theme-color: #c1cbd7;
+	--waline-active-color: #8696a7;
 	}
 }
 
@@ -3686,10 +3686,10 @@ to {
 /*手机端样式调整*/
 @media screen and (max-width:800px) {
 	body {
-		background:linear-gradient(45deg, #e0e5df, #96a48b, #c5b8a5);
+	background: linear-gradient(55deg, #e0e5df, #96a48b);
 	}
 	.mid-col {
-		background:linear-gradient(45deg, #e0e5df, #96a48b, #c5b8a5);
+    background: linear-gradient(55deg, #e0e5df, #96a48b);
 	}
 	.toc-container.tooltip-left .tooltip-east .tooltip-content {
     max-width: 300px;
@@ -3709,7 +3709,7 @@ to {
 
 /* APlayer 样式 */
 .aplayer .aplayer-lrc p {
-    color: #0e90d2 !important;
+    color: #965454 !important;
 }
 
 /* footer-support */
@@ -3733,7 +3733,7 @@ to {
   line-height: 56px;
   font-size: 20px;
   color: #fff;
-  background:linear-gradient(45deg, #e0e5df, #96a48b, #c5b8a5);
+  background: linear-gradient(45deg, #e0e5df, #96a48b);
   border-radius: 50%;
   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
   transition: .4s ease-in-out;
