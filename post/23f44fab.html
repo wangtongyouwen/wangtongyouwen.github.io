@@ -7,20 +7,24 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="http://example.com">
-  <title>相册 | Hexo</title>
+  <title>pytorch基础入门13-LSTM | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="Photos 	Videos   	图片正在加载中…     (function() {     var loadScript &#x3D; function(path) {       var $script &#x3D; document.createElement(&#39;script&#39;)       document.getElementsByTagName(&#39;body&#39;)[0].appendChild($">
-<meta property="og:type" content="website">
-<meta property="og:title" content="相册">
-<meta property="og:url" content="http://example.com/photos/index.html">
+  <meta name="description" content="https:&#x2F;&#x2F;colah.github.io&#x2F;posts&#x2F;2015-08-Understanding-LSTMs&#x2F;  1 整体介绍$$\begin{array}{l}i_{t}&#x3D;\sigma\left(W_{i i} x_{t}+b_{i i}+W_{h i} h_{t-1}+b_{h i}\right) \f_{t}&#x3D;\sigma\left(W_{i f} x_{t}+b_{i f}+W_{h">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch基础入门13-LSTM">
+<meta property="og:url" content="http://example.com/post/23f44fab.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Photos 	Videos   	图片正在加载中…     (function() {     var loadScript &#x3D; function(path) {       var $script &#x3D; document.createElement(&#39;script&#39;)       document.getElementsByTagName(&#39;body&#39;)[0].appendChild($">
+<meta property="og:description" content="https:&#x2F;&#x2F;colah.github.io&#x2F;posts&#x2F;2015-08-Understanding-LSTMs&#x2F;  1 整体介绍$$\begin{array}{l}i_{t}&#x3D;\sigma\left(W_{i i} x_{t}+b_{i i}+W_{h i} h_{t-1}+b_{h i}\right) \f_{t}&#x3D;\sigma\left(W_{i f} x_{t}+b_{i f}+W_{h">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-04-12T12:19:10.425Z">
-<meta property="article:modified_time" content="2023-04-12T12:19:10.425Z">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131816130.png">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131856525.png">
+<meta property="article:published_time" content="2023-04-13T10:13:13.000Z">
+<meta property="article:modified_time" content="2023-04-13T12:26:12.039Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131816130.png">
   
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -281,20 +285,90 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="page-" class="article article-type-page " itemscope itemprop="blogPost">
+            <article id="post-pytorch基础入门13-LSTM" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title_code_ant" itemprop="name">
-	  <a href="/photos/index.html">相册</a>
+	  <a href="/post/23f44fab.html">pytorch基础入门13-LSTM</a>
 	</h1>
   
 
         
 		
+		  <a href="/post/23f44fab.html" class="archive-article-date">
+  	<time datetime="2023-04-13T10:13:13.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-13</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	<span>
+		&nbsp; &nbsp; &nbsp;
+		<span class="post-meta-item-text">阅读量:</span>
+		<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+		<span class="post-meta-item-text">次</span>
+	</span>
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+	<span>
+		&nbsp; &nbsp; &nbsp;
+		<i class="fa fa-eye" aria-hidden="true"></i>
+		&nbsp;
+		<span class="waline-pageview-count" data-path="/post/23f44fab.html"><i class="fa fa-spinner fa-spin"></i></span>
+	</span>
+	
+
+</a>
+
+
+        
 		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">1.5k字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">8min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
 		
       </header>
     
@@ -303,34 +377,177 @@ var _hmt = _hmt || [];
 	  <!-- 添加分类与标签 -->
 	  
 		  
-		  
-<link rel="stylesheet" href="./static/ins.css">
-<div class="photos-btn-wrap">
-	<a class="photos-btn active" href="/photos/index.html">Photos</a>
-	<a class="photos-btn" href="/photos/video.html">Videos</a>
-</div>
-<div class="instagram itemscope">
-	<a href="https://your_cname/photos/index.html" target="_blank" class="open-ins">图片正在加载中…</a>
-</div>
-<script>
-  (function() {
-    var loadScript = function(path) {
-      var $script = document.createElement('script')
-      document.getElementsByTagName('body')[0].appendChild($script)
-      $script.setAttribute('src', path)
-    }
-    setTimeout(function() {
-      loadScript('./static/ins.js')
-    }, 0)
-  })()
-</script>
+		  <p><a target="_blank" rel="noopener" href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">https://colah.github.io/posts/2015-08-Understanding-LSTMs/</a></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131816130.png" alt="image-20230413181558550"></p>
+<h2 id="1-整体介绍"><a href="#1-整体介绍" class="headerlink" title="1 整体介绍"></a>1 整体介绍</h2><p>$$<br>\begin{array}{l}<br>i_{t}=\sigma\left(W_{i i} x_{t}+b_{i i}+W_{h i} h_{t-1}+b_{h i}\right) \<br>f_{t}=\sigma\left(W_{i f} x_{t}+b_{i f}+W_{h f} h_{t-1}+b_{h f}\right) \<br>g_{t}=\tanh \left(W_{i g} x_{t}+b_{i g}+W_{h g} h_{t-1}+b_{h g}\right) \<br>o_{t}=\sigma\left(W_{i o} x_{t}+b_{i o}+W_{h o} h_{t-1}+b_{h o}\right) \<br>c_{t}=f_{t} \odot c_{t-1}+i_{t} \odot g_{t} \<br>h_{t}=o_{t} \odot \tanh \left(c_{t}\right)<br>\end{array}<br>$$</p>
+<ul>
+<li><p>$h_t$: hidden state at time $t$</p>
+</li>
+<li><p>$c_t$: cell state at time $t$</p>
+</li>
+<li><p>$x_t$: input at time $t$</p>
+</li>
+<li><p>$h_{t-1}$: hidden state of the layer at time $t-1$ or the initial hidden state at time o</p>
+</li>
+<li><p>$i_t$: input</p>
+</li>
+<li><p>$f_t$: forget</p>
+</li>
+<li><p>$g_t$: cell</p>
+</li>
+<li><p>$o_t$: output gates</p>
+</li>
+<li><p>$\sigma$: sigmoid function</p>
+</li>
+<li><p>$\odot$: Hadamard product</p>
+</li>
+<li><p>$N$ = batch size</p>
+</li>
+<li><p>$L$ = sequence length</p>
+</li>
+<li><p>$D$ = 2 if bidirectional = True otherwise 1</p>
+</li>
+<li><p>$H_{in}$ = input_size</p>
+</li>
+<li><p>$H_{cell}$ = hidden_size</p>
+</li>
+<li><p>$H_{out}$ = pro_size if pro_size &gt; 0 otherwise hidden_size</p>
+</li>
+</ul>
+<h3 id="1-1-Parameters"><a href="#1-1-Parameters" class="headerlink" title="1.1 Parameters"></a>1.1 Parameters</h3><ul>
+<li><strong>input_size</strong> – The number of expected features in the input x</li>
+<li><strong>hidden_size</strong> – The number of features in the hidden state h</li>
+<li><strong>num_layers</strong> – Number of recurrent layers. E.g., setting <code>num_layers=2</code> would mean stacking two LSTMs together to form a stacked LSTM, with the second LSTM taking in outputs of the first LSTM and computing the final results. Default: 1</li>
+<li><strong>bias</strong> – If <code>False</code>, then the layer does not use bias weights b_ih and b_hh. Default: <code>True</code></li>
+<li><strong>batch_first</strong> – If <code>True</code>, then the input and output tensors are provided as (batch, seq, feature) instead of (seq, batch, feature). Note that this does not apply to hidden or cell states. See the Inputs/Outputs sections below for details. Default: <code>False</code></li>
+<li><strong>dropout</strong> – If non-zero, introduces a Dropout layer on the outputs of each LSTM layer except the last layer, with dropout probability equal to <code>dropout</code>. Default: 0</li>
+<li><strong>bidirectional</strong> – If <code>True</code>, becomes a bidirectional LSTM. Default: <code>False</code></li>
+<li><strong>proj_size</strong> – If <code>&gt; 0</code>, will use LSTM with projections of corresponding size. Default: 0 减少LTSM的参数和计算量</li>
+</ul>
+<h3 id="1-2-Inputs-input-h-0-c-0"><a href="#1-2-Inputs-input-h-0-c-0" class="headerlink" title="1.2 Inputs: input, (h_0, c_0)"></a>1.2 Inputs: input, (h_0, c_0)</h3><ul>
+<li><p>input：</p>
+<ul>
+<li>$(L,H_{in})$-&gt; unbatched input</li>
+<li>$(L,N,H_{in})$-&gt;<code>batch_first=False</code></li>
+<li>$(N,L,H_{in})$-&gt;<code>batch_first=True</code></li>
+</ul>
+</li>
+<li><p>h_0: Defaults to zeros if (h_0, c_0) is not provided</p>
+<ul>
+<li>$(D*num_layers,H_{out})$ for unbatched input</li>
+<li>$(D*num_layers,N,H_{out})$ containing the initial hidden state for each element in the input sequence.</li>
+</ul>
+</li>
+<li><p>c_0: Defaults to zeros if (h_0, c_0) is not provided</p>
+<ul>
+<li>$(D*num_layers,H_{cell})$ for unbatched input</li>
+<li>$(D*num_layers,N,H_{cell})$ containing the initial cell state for each element in the input sequence.</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3-Outputs-output-h-n-c-n"><a href="#1-3-Outputs-output-h-n-c-n" class="headerlink" title="1.3 Outputs: output, (h_n, c_n)"></a>1.3 Outputs: output, (h_n, c_n)</h3><ul>
+<li><p>output:</p>
+<ul>
+<li>$(L,D*H_{out})$-&gt;unbatched input</li>
+<li>$(L,N,D*H_{out})$-&gt;<code>batch_first=False</code> containing the output features (h_t) from the last layer of the LSTM,for each t</li>
+<li>$(N,L,D*H_{out})$-&gt;<code>batch_first=True</code>  containing the output features (h_t) from the last layer of the LSTM,for each t</li>
+<li>If a <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.utils.rnn.PackedSequence.html#torch.nn.utils.rnn.PackedSequence"><code>torch.nn.utils.rnn.PackedSequence</code></a> has been given as the input, the output will also be a packed sequence</li>
+<li>When <code>bidirectional=True</code>, output will contain a concatenation of the forward and reverse hidden states at each time step in the sequence</li>
+</ul>
+</li>
+<li><p>h_n:</p>
+<ul>
+<li>$(D*num_layers,H_{out})$-&gt; unbatched input</li>
+<li>$(D*num_layers,N,H_{out})$-&gt;containing the final hidden state for each element in the sequence. </li>
+<li>When <code>bidirectional=True</code>, h_n will contain a concatenation of the final forward and reverse hidden states, respectively.</li>
+</ul>
+</li>
+<li><p>c_n:</p>
+<ul>
+<li>$(D*num_layers,H_{cell})$-&gt; unbatched input</li>
+<li>$(D*num_layers,N,H_{cell})$-&gt;containing the final hidden state for each element in the sequence. </li>
+<li>When <code>bidirectional=True</code>, h_n will contain a concatenation of the final forward and reverse hidden states, respectively.</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-4-Variables"><a href="#1-4-Variables" class="headerlink" title="1.4 Variables"></a>1.4 Variables</h3><p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131856525.png" alt="image-20230413185629132"></p>
+<h2 id="2-调用API"><a href="#2-调用API" class="headerlink" title="2 调用API"></a>2 调用API</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="comment"># 定义常量</span></span><br><span class="line">bs,T,i_size,h_size = <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br><span class="line"><span class="comment"># proj_size = </span></span><br><span class="line"><span class="built_in">input</span> = torch.randn(bs,T,i_size) <span class="comment"># 输入序列</span></span><br><span class="line">c0 = torch.randn(bs,h_size) <span class="comment"># 初始值，不需要训练</span></span><br><span class="line">h0 = torch.randn(bs,h_size) <span class="comment"># 初始值，不需要训练</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用官方LSTM API</span></span><br><span class="line">lstm_layer = nn.LSTM(i_size,h_size,batch_first=<span class="literal">True</span>)</span><br><span class="line">output,(h_final,c_final) = lstm_layer(<span class="built_in">input</span>,(h0.unsqueeze(<span class="number">0</span>),c0.unsqueeze(<span class="number">0</span>)))</span><br><span class="line"><span class="built_in">print</span>(output)</span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> lstm_layer.named_parameters():</span><br><span class="line">    <span class="built_in">print</span>(k,v.shape)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-LSTM-without-proj-size"><a href="#3-LSTM-without-proj-size" class="headerlink" title="3 LSTM without proj_size"></a>3 LSTM without proj_size</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自己写一个LSTM模型</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">lstm_forward</span>(<span class="params"><span class="built_in">input</span>,inittal_states,w_ih,w_hh,b_ih,b_hh</span>):</span><br><span class="line">    h0,c0 = inittal_states <span class="comment"># 初始状态</span></span><br><span class="line">    bs,T,i_size = <span class="built_in">input</span>.shape</span><br><span class="line">    h_size = w_ih.shape[<span class="number">0</span>] // <span class="number">4</span></span><br><span class="line">    </span><br><span class="line">    prev_h = h0</span><br><span class="line">    prev_c = c0</span><br><span class="line">    batch_w_ih = w_ih.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>) <span class="comment"># (bs,4*h_size,i_size)</span></span><br><span class="line">    batch_w_hh = w_hh.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>) <span class="comment"># (bs,4*h_size,h_size)</span></span><br><span class="line">    </span><br><span class="line">    output_size = h_size</span><br><span class="line">    output = torch.zeros(bs,T,output_size) <span class="comment"># 输出序列</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">        x = <span class="built_in">input</span>[:,t,:] <span class="comment"># 当前时刻的输入向量 (bs,i_size)</span></span><br><span class="line">        w_times_x = torch.bmm(batch_w_ih,x.unsqueeze(-<span class="number">1</span>)) <span class="comment"># [bs,4*h_size,1]</span></span><br><span class="line">        w_times_x = w_times_x.squeeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        w_times_h_prev = torch.bmm(batch_w_hh,prev_h.unsqueeze(-<span class="number">1</span>)) <span class="comment"># [bs,4*h_size,1]</span></span><br><span class="line">        w_times_h_prev = w_times_h_prev.squeeze(-<span class="number">1</span>)   </span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分別计算输入门(i)，遗忘门(f)，cell门(g)，输出门(o)</span></span><br><span class="line">        i_t = torch.sigmoid(w_times_x[:,:h_size] + w_times_h_prev[:,:h_size] + b_ih[:h_size] + b_hh[:h_size])</span><br><span class="line">        f_t = torch.sigmoid(w_times_x[:,h_size:<span class="number">2</span>*h_size] + w_times_h_prev[:,h_size:<span class="number">2</span>*h_size] + b_ih[h_size:<span class="number">2</span>*h_size] + b_hh[h_size:<span class="number">2</span>*h_size])</span><br><span class="line">        g_t = torch.tanh(w_times_x[:,<span class="number">2</span>*h_size:<span class="number">3</span>*h_size] + w_times_h_prev[:,<span class="number">2</span>*h_size:<span class="number">3</span>*h_size] + b_ih[<span class="number">2</span>*h_size:<span class="number">3</span>*h_size] + b_hh[<span class="number">2</span>*h_size:<span class="number">3</span>*h_size])</span><br><span class="line">        o_t = torch.sigmoid(w_times_x[:,<span class="number">3</span>*h_size:<span class="number">4</span>*h_size] + w_times_h_prev[:,<span class="number">3</span>*h_size:<span class="number">4</span>*h_size] + b_ih[<span class="number">3</span>*h_size:<span class="number">4</span>*h_size] + b_hh[<span class="number">3</span>*h_size:<span class="number">4</span>*h_size])</span><br><span class="line"></span><br><span class="line">        prev_c = f_t * prev_c + i_t * g_t</span><br><span class="line">        prev_h = o_t * torch.tanh(prev_c)</span><br><span class="line">        </span><br><span class="line">        output[:,t,:] = prev_h</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> output,(prev_h,prev_c)</span><br><span class="line">    </span><br><span class="line">custom_output,(custom_h_final,custom_c_final) = lstm_forward(<span class="built_in">input</span>,(h0,c0),lstm_layer.weight_ih_l0,lstm_layer.weight_hh_l0,lstm_layer.bias_ih_l0,lstm_layer.bias_hh_l0)    </span><br><span class="line"><span class="built_in">print</span>(torch.allclose(custom_output,output))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(h_final,custom_h_final))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(c_final,custom_c_final))</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-LSTM-with-proj-size"><a href="#4-LSTM-with-proj-size" class="headerlink" title="4 LSTM with proj_size"></a>4 LSTM with proj_size</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义常量</span></span><br><span class="line">bs,T,i_size,h_size = <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br><span class="line">proj_size = <span class="number">3</span></span><br><span class="line"><span class="built_in">input</span> = torch.randn(bs,T,i_size) <span class="comment"># 输入序列</span></span><br><span class="line">c0 = torch.randn(bs,h_size) <span class="comment"># 初始值，不需要训练</span></span><br><span class="line">h0 = torch.randn(bs,proj_size) <span class="comment"># 初始值，不需要训练</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用官方LSTM API</span></span><br><span class="line">lstm_layer = nn.LSTM(i_size,h_size,batch_first=<span class="literal">True</span>,proj_size=proj_size)</span><br><span class="line">output,(h_final,c_final) = lstm_layer(<span class="built_in">input</span>,(h0.unsqueeze(<span class="number">0</span>),c0.unsqueeze(<span class="number">0</span>)))</span><br><span class="line"><span class="built_in">print</span>(output)</span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> lstm_layer.named_parameters():</span><br><span class="line">    <span class="built_in">print</span>(k,v)</span><br></pre></td></tr></table></figure>
+
+<p>eight_ih_l0 torch.Size([20, 4])    h_size<em>4,i_size<br>weight_hh_l0 torch.Size([20, 3])    h_size</em>4,proj_size<br>bias_ih_l0 torch.Size([20])         h_size<em>4<br>bias_hh_l0 torch.Size([20])         h_size</em>4<br>weight_hr_l0 torch.Size([3, 5])     proj_size,h_size<br>只会对 h_state 进行改变，不会对 c_state 进行改变 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">lstm_forward</span>(<span class="params"><span class="built_in">input</span>,inittal_states,w_ih,w_hh,b_ih,b_hh,w_hr=<span class="literal">None</span></span>):</span><br><span class="line">    h0,c0 = inittal_states <span class="comment"># 初始状态</span></span><br><span class="line">    bs,T,i_size = <span class="built_in">input</span>.shape</span><br><span class="line">    h_size = w_ih.shape[<span class="number">0</span>] // <span class="number">4</span></span><br><span class="line">    </span><br><span class="line">    prev_h = h0</span><br><span class="line">    prev_c = c0</span><br><span class="line">    batch_w_ih = w_ih.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>) <span class="comment"># (bs,4*h_size,i_size)</span></span><br><span class="line">    batch_w_hh = w_hh.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>) <span class="comment"># (bs,4*h_size,h_size)</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> w_hr <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        p_size = w_hr.shape[<span class="number">0</span>]</span><br><span class="line">        output_size = p_size</span><br><span class="line">        batch_w_hr = w_hr.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>) <span class="comment"># (bs,proj_size,h_size)</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        output_size = h_size</span><br><span class="line">    output = torch.zeros(bs,T,output_size) <span class="comment"># 输出序列</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">        x = <span class="built_in">input</span>[:,t,:] <span class="comment"># 当前时刻的输入向量 (bs,i_size)</span></span><br><span class="line">        w_times_x = torch.bmm(batch_w_ih,x.unsqueeze(-<span class="number">1</span>)) <span class="comment"># [bs,4*h_size,1]</span></span><br><span class="line">        w_times_x = w_times_x.squeeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        w_times_h_prev = torch.bmm(batch_w_hh,prev_h.unsqueeze(-<span class="number">1</span>)) <span class="comment"># [bs,4*h_size,1]</span></span><br><span class="line">        w_times_h_prev = w_times_h_prev.squeeze(-<span class="number">1</span>)   </span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分別计算输入门(i)，遗忘门(f)，cell门(g)，输出门(o)</span></span><br><span class="line">        i_t = torch.sigmoid(w_times_x[:,:h_size] + w_times_h_prev[:,:h_size] + b_ih[:h_size] + b_hh[:h_size])</span><br><span class="line">        f_t = torch.sigmoid(w_times_x[:,h_size:<span class="number">2</span>*h_size] + w_times_h_prev[:,h_size:<span class="number">2</span>*h_size] + b_ih[h_size:<span class="number">2</span>*h_size] + b_hh[h_size:<span class="number">2</span>*h_size])</span><br><span class="line">        g_t = torch.tanh(w_times_x[:,<span class="number">2</span>*h_size:<span class="number">3</span>*h_size] + w_times_h_prev[:,<span class="number">2</span>*h_size:<span class="number">3</span>*h_size] + b_ih[<span class="number">2</span>*h_size:<span class="number">3</span>*h_size] + b_hh[<span class="number">2</span>*h_size:<span class="number">3</span>*h_size])</span><br><span class="line">        o_t = torch.sigmoid(w_times_x[:,<span class="number">3</span>*h_size:<span class="number">4</span>*h_size] + w_times_h_prev[:,<span class="number">3</span>*h_size:<span class="number">4</span>*h_size] + b_ih[<span class="number">3</span>*h_size:<span class="number">4</span>*h_size] + b_hh[<span class="number">3</span>*h_size:<span class="number">4</span>*h_size])</span><br><span class="line"></span><br><span class="line">        prev_c = f_t * prev_c + i_t * g_t</span><br><span class="line">        prev_h = o_t * torch.tanh(prev_c)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> w_hr <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>: <span class="comment"># 做projection</span></span><br><span class="line">            prev_h = torch.bmm(batch_w_hr,prev_h.unsqueeze(-<span class="number">1</span>)) <span class="comment"># bs,proj_size,1</span></span><br><span class="line">            prev_h = prev_h.squeeze(-<span class="number">1</span>) <span class="comment"># bs,proj_size</span></span><br><span class="line">            </span><br><span class="line">        output[:,t,:] = prev_h</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> output,(prev_h,prev_c)</span><br><span class="line">    </span><br><span class="line">custom_output,(custom_h_final,custom_c_final) = lstm_forward(<span class="built_in">input</span>,(h0,c0),lstm_layer.weight_ih_l0,lstm_layer.weight_hh_l0,</span><br><span class="line">                                                             lstm_layer.bias_ih_l0,lstm_layer.bias_hh_l0,lstm_layer.weight_hr_l0)    </span><br><span class="line"><span class="built_in">print</span>(torch.allclose(custom_output,output))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(h_final,custom_h_final))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(c_final,custom_c_final))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
 				  
 	  
       
 	  <!-- 添加打赏 -->
 	  
+		<!-- reward type 1 -->
+		
+		
+		<!-- reward type 2 -->
+		
+		  <div id="reward-container">
+		    <span class="icon-cursor" title="打赏" id="reward-button"
+			  onclick='var qr = document.getElementById("qr"); qr.style.display = (qr.style.display === "none") ? "block" : "none";'
+			  ><a style="color:#fff;">赏</a></span>
+		    <div id="reward-comment"><i class="icon icon-quo-left"></i>&nbsp;感觉不错 支持一下&nbsp;<i class="icon icon-quo-right"></i></div>
+		  
+		    <div id="qr" style="display: none;">
+			  <div style="display:inline-block">
+			    <img loading="lazy" src="/img/alipay-min.png" alt="支付宝" title="支付宝"/>
+			    <div><span class="reward-type">支付宝</span></div>
+			  </div>
+			
+			  <div style="display:inline-block">
+			    <img loading="lazy" src="/img/wechatpay-min.png" alt="微信支付" title="微信支付"/>
+			    <div><span class="reward-type">微信</span></div>
+			  </div>
+		    </div>
+	      </div>
+	    
+      
 	
 	  <!-- 添加版权声明 -->
+      
+        <!-- 添加版权声明 -->
+<!--https://blog.csdn.net/weixin_41287260/article/details/103050336-->
+
+<div class="declare">
+	<strong class="author">本文作者：</strong>
+	
+	  John Doe
+	
+	
+	<!-- <br>
+	<strong class="create-time">发布时间：</strong>
+	2023-04-13 -->
+	
+	<br>
+	<strong class="update-time">最后更新：</strong>
+	2023年04月13日 20:26:12
+	
+	<!-- <br>
+	<strong class="article-titles">本文标题：</strong>
+	<a href="http://example.com/post/23f44fab.html" title="pytorch基础入门13-LSTM" target="_blank">pytorch基础入门13-LSTM</a> -->
+	
+	<br>
+	<strong class="article-url">本文链接：</strong>
+	<a href="http://example.com/post/23f44fab.html" title="pytorch基础入门13-LSTM" target="_blank">http://example.com/post/23f44fab.html</a>
+	
+	<br>
+	<strong class="copyright">版权声明：</strong>
+	本作品采用
+	<a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+	许可协议进行许可，转载请注明出处！
+	
+	
+</div>
+<!-- 添加版权声明 -->
       
 	  
 	</div>
@@ -341,6 +558,17 @@ var _hmt = _hmt || [];
 	  
 	  <!-- 分类页 -->
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
 	  
@@ -394,7 +622,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/photos/" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/23f44fab.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -409,6 +637,16 @@ var _hmt = _hmt || [];
 
 
   
+<nav id="article-nav">
+  
+  
+    <a href="/post/b945630.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">pytorch基础入门12-RNN</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 
 <!-- 添加回到顶部和文章目录 -->
@@ -422,6 +660,19 @@ var _hmt = _hmt || [];
       </div>
     
     
+      <div class="toc-container tooltip-left">
+        <i class="icon-font icon-category"></i>
+        <div class="tooltip tooltip-east">
+          <span class="tooltip-item"></span>
+          <span class="tooltip-content">
+			<span style="font-size: 20px;font-weight: bold;">目录</span>
+            <div class="toc-article">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">1 整体介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Parameters"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 Parameters</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Inputs-input-h-0-c-0"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 Inputs: input, (h_0, c_0)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-Outputs-output-h-n-c-n"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 Outputs: output, (h_n, c_n)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-Variables"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 Variables</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%B0%83%E7%94%A8API"><span class="toc-number">2.</span> <span class="toc-text">2 调用API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-LSTM-without-proj-size"><span class="toc-number">3.</span> <span class="toc-text">3 LSTM without proj_size</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-LSTM-with-proj-size"><span class="toc-number">4.</span> <span class="toc-text">4 LSTM with proj_size</span></a></li></ol>
+            </div>
+          </span>
+        </div>
+      </div>
+	
   </div>
 </aside>
 
@@ -510,7 +761,7 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/post/23f44fab.html</loc>
+    <lastmod>2023-04-13</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/post/b945630.html</loc>
+    <lastmod>2023-04-13</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/post/1229d3b9.html</loc>
+    <lastmod>2023-04-13</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/post/b0d26e2a.html</loc>
+    <lastmod>2023-04-12</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/post/f208623b.html</loc>
     <lastmod>2023-04-12</lastmod>
   </url>
@@ -17,11 +33,7 @@
     <lastmod>2023-04-12</lastmod>
   </url>
   <url>
-    <loc>http://example.com/post/b0d26e2a.html</loc>
-    <lastmod>2023-04-12</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/post/b187ba6d.html</loc>
+    <loc>http://example.com/post/c9ccea0.html</loc>
     <lastmod>2023-04-12</lastmod>
   </url>
   <url>
@@ -33,15 +45,11 @@
     <lastmod>2023-04-12</lastmod>
   </url>
   <url>
+    <loc>http://example.com/post/b187ba6d.html</loc>
+    <lastmod>2023-04-12</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/post/3716e35d.html</loc>
-    <lastmod>2023-04-12</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/post/c9ccea0.html</loc>
-    <lastmod>2023-04-12</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/post/489d1269.html</loc>
     <lastmod>2023-04-12</lastmod>
   </url>
   <url>
@@ -49,7 +57,11 @@
     <lastmod>2023-04-12</lastmod>
   </url>
   <url>
-    <loc>http://example.com/post/565d0c01.html</loc>
+    <loc>http://example.com/post/489d1269.html</loc>
+    <lastmod>2023-04-12</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/post/55849e59.html</loc>
     <lastmod>2023-04-12</lastmod>
   </url>
   <url>
@@ -57,7 +69,7 @@
     <lastmod>2023-04-12</lastmod>
   </url>
   <url>
-    <loc>http://example.com/post/55849e59.html</loc>
+    <loc>http://example.com/post/565d0c01.html</loc>
     <lastmod>2023-04-12</lastmod>
   </url>
   <url>

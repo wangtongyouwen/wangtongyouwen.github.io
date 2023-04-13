@@ -279,6 +279,618 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-pytorch基础入门13-LSTM" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/23f44fab.html">pytorch基础入门13-LSTM</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/23f44fab.html" class="archive-article-date">
+  	<time datetime="2023-04-13T10:13:13.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-13</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">1.5k字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">8min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <p><a target="_blank" rel="noopener" href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">https://colah.github.io/posts/2015-08-Understanding-LSTMs/</a></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131816130.png" alt="image-20230413181558550"></p>
+<h2 id="1-整体介绍"><a href="#1-整体介绍" class="headerlink" title="1 整体介绍"></a>1 整体介绍</h2><p>$$<br>\begin{array}{l}<br>i_{t}=\sigma\left(W_{i i} x_{t}+b_{i i}+W_{h i} h_{t-1}+b_{h i}\right) \<br>f_{t}=\sigma\left(W_{i f} x_{t}+b_{i f}+W_{h f} h_{t-1}+b_{h f}\right) \<br>g_{t}=\tanh \left(W_{i g} x_{t}+b_{i g}+W_{h g} h_{t-1}+b_{h g}\right) \<br>o_{t}=\sigma\left(W_{i o} x_{t}+b_{i o}+W_{h o} h_{t-1}+b_{h o}\right) \<br>c_{t}=f_{t} \odot c_{t-1}+i_{t} \odot g_{t} \<br>h_{t}=o_{t} \odot \tanh \left(c_{t}\right)<br>\end{array}<br>$$</p>
+<ul>
+<li><p>$h_t$: hidden state at time $t$</p>
+</li>
+<li><p>$c_t$: cell state at time $t$</p>
+</li>
+<li><p>$x_t$: input at time $t$</p>
+</li>
+<li><p>$h_{t-1}$: hidden state of the layer at time $t-1$ or the initial hidden state at time o</p>
+</li>
+<li><p>$i_t$: input</p>
+</li>
+<li><p>$f_t$: forget</p>
+</li>
+<li><p>$g_t$: cell</p>
+</li>
+<li><p>$o_t$: output gates</p>
+</li>
+<li><p>$\sigma$: sigmoid function</p>
+</li>
+<li><p>$\odot$: Hadamard product</p>
+</li>
+<li><p>$N$ = batch size</p>
+</li>
+<li><p>$L$ = sequence length</p>
+</li>
+<li><p>$D$ = 2 if bidirectional = True otherwise 1</p>
+</li>
+<li><p>$H_{in}$ = input_size</p>
+</li>
+<li><p>$H_{cell}$ = hidden_size</p>
+</li>
+<li><p>$H_{out}$ = pro_size if pro_size &gt; 0 otherwise hidden_size</p>
+</li>
+</ul>
+<h3 id="1-1-Parameters"><a href="#1-1-Parameters" class="headerlink" title="1.1 Parameters"></a>1.1 Parameters</h3><ul>
+<li><strong>input_size</strong> – The number of expected features in the input x</li>
+<li><strong>hidden_size</strong> – The number of features in the hidden state h</li>
+<li><strong>num_layers</strong> – Number of recurrent layers. E.g., setting <code>num_layers=2</code> would mean stacking two LSTMs together to form a stacked LSTM, with the second LSTM taking in outputs of the first LSTM and computing the final results. Default: 1</li>
+<li><strong>bias</strong> – If <code>False</code>, then the layer does not use bias weights b_ih and b_hh. Default: <code>True</code></li>
+<li><strong>batch_first</strong> – If <code>True</code>, then the input and output tensors are provided as (batch, seq, feature) instead of (seq, batch, feature). Note that this does not apply to hidden or cell states. See the Inputs/Outputs sections below for details. Default: <code>False</code></li>
+<li><strong>dropout</strong> – If non-zero, introduces a Dropout layer on the outputs of each LSTM layer except the last layer, with dropout probability equal to <code>dropout</code>. Default: 0</li>
+<li><strong>bidirectional</strong> – If <code>True</code>, becomes a bidirectional LSTM. Default: <code>False</code></li>
+<li><strong>proj_size</strong> – If <code>&gt; 0</code>, will use LSTM with projections of corresponding size. Default: 0 减少LTSM的参数和计算量</li>
+</ul>
+<h3 id="1-2-Inputs-input-h-0-c-0"><a href="#1-2-Inputs-input-h-0-c-0" class="headerlink" title="1.2 Inputs: input, (h_0, c_0)"></a>1.2 Inputs: input, (h_0, c_0)</h3><ul>
+<li><p>input：</p>
+<ul>
+<li>$(L,H_{in})$-&gt; unbatched input</li>
+<li>$(L,N,H_{in})$-&gt;<code>batch_first=False</code></li>
+<li>$(N,L,H_{in})$-&gt;<code>batch_first=True</code></li>
+</ul>
+</li>
+<li><p>h_0: Defaults to zeros if (h_0, c_0) is not provided</p>
+<ul>
+<li>$(D*num_layers,H_{out})$ for unbatched input</li>
+<li>$(D*num_layers,N,H_{out})$ containing the initial hidden state for each element in the input sequence.</li>
+</ul>
+</li>
+<li><p>c_0: Defaults to zeros if (h_0, c_0) is not provided</p>
+<ul>
+<li>$(D*num_layers,H_{cell})$ for unbatched input</li>
+<li>$(D*num_layers,N,H_{cell})$ containing the initial cell state for each element in the input sequence.</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3-Outputs-output-h-n-c-n"><a href="#1-3-Outputs-output-h-n-c-n" class="headerlink" title="1.3 Outputs: output, (h_n, c_n)"></a>1.3 Outputs: output, (h_n, c_n)</h3><ul>
+<li><p>output:</p>
+<ul>
+<li>$(L,D*H_{out})$-&gt;unbatched input</li>
+<li>$(L,N,D*H_{out})$-&gt;<code>batch_first=False</code> containing the output features (h_t) from the last layer of the LSTM,for each t</li>
+<li>$(N,L,D*H_{out})$-&gt;<code>batch_first=True</code>  containing the output features (h_t) from the last layer of the LSTM,for each t</li>
+<li>If a <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.utils.rnn.PackedSequence.html#torch.nn.utils.rnn.PackedSequence"><code>torch.nn.utils.rnn.PackedSequence</code></a> has been given as the input, the output will also be a packed sequence</li>
+<li>When <code>bidirectional=True</code>, output will contain a concatenation of the forward and reverse hidden states at each time step in the sequence</li>
+</ul>
+</li>
+<li><p>h_n:</p>
+<ul>
+<li>$(D*num_layers,H_{out})$-&gt; unbatched input</li>
+<li>$(D*num_layers,N,H_{out})$-&gt;containing the final hidden state for each element in the sequence. </li>
+<li>When <code>bidirectional=True</code>, h_n will contain a concatenation of the final forward and reverse hidden states, respectively.</li>
+</ul>
+</li>
+<li><p>c_n:</p>
+<ul>
+<li>$(D*num_layers,H_{cell})$-&gt; unbatched input</li>
+<li>$(D*num_layers,N,H_{cell})$-&gt;containing the final hidden state for each element in the sequence. </li>
+<li>When <code>bidirectional=True</code>, h_n will contain a concatenation of the final forward and reverse hidden states, respectively.</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-4-Variables"><a href="#1-4-Variables" class="headerlink" title="1.4 Variables"></a>1.4 Variables</h3><p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131856525.png" alt="image-20230413185629132"></p>
+<h2 id="2-调用API"><a href="#2-调用API" class="headerlink" title="2 调用API"></a>2 调用API</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="comment"># 定义常量</span></span><br><span class="line">bs,T,i_size,h_size = <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br><span class="line"><span class="comment"># proj_size = </span></span><br><span class="line"><span class="built_in">input</span> = torch.randn(bs,T,i_size) <span class="comment"># 输入序列</span></span><br><span class="line">c0 = torch.randn(bs,h_size) <span class="comment"># 初始值，不需要训练</span></span><br><span class="line">h0 = torch.randn(bs,h_size) <span class="comment"># 初始值，不需要训练</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用官方LSTM API</span></span><br><span class="line">lstm_layer = nn.LSTM(i_size,h_size,batch_first=<span class="literal">True</span>)</span><br><span class="line">output,(h_final,c_final) = lstm_layer(<span class="built_in">input</span>,(h0.unsqueeze(<span class="number">0</span>),c0.unsqueeze(<span class="number">0</span>)))</span><br><span class="line"><span class="built_in">print</span>(output)</span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> lstm_layer.named_parameters():</span><br><span class="line">    <span class="built_in">print</span>(k,v.shape)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-LSTM-without-proj-size"><a href="#3-LSTM-without-proj-size" class="headerlink" title="3 LSTM without proj_size"></a>3 LSTM without proj_size</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自己写一个LSTM模型</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">lstm_forward</span>(<span class="params"><span class="built_in">input</span>,inittal_states,w_ih,w_hh,b_ih,b_hh</span>):</span><br><span class="line">    h0,c0 = inittal_states <span class="comment"># 初始状态</span></span><br><span class="line">    bs,T,i_size = <span class="built_in">input</span>.shape</span><br><span class="line">    h_size = w_ih.shape[<span class="number">0</span>] // <span class="number">4</span></span><br><span class="line">    </span><br><span class="line">    prev_h = h0</span><br><span class="line">    prev_c = c0</span><br><span class="line">    batch_w_ih = w_ih.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>) <span class="comment"># (bs,4*h_size,i_size)</span></span><br><span class="line">    batch_w_hh = w_hh.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>) <span class="comment"># (bs,4*h_size,h_size)</span></span><br><span class="line">    </span><br><span class="line">    output_size = h_size</span><br><span class="line">    output = torch.zeros(bs,T,output_size) <span class="comment"># 输出序列</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">        x = <span class="built_in">input</span>[:,t,:] <span class="comment"># 当前时刻的输入向量 (bs,i_size)</span></span><br><span class="line">        w_times_x = torch.bmm(batch_w_ih,x.unsqueeze(-<span class="number">1</span>)) <span class="comment"># [bs,4*h_size,1]</span></span><br><span class="line">        w_times_x = w_times_x.squeeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        w_times_h_prev = torch.bmm(batch_w_hh,prev_h.unsqueeze(-<span class="number">1</span>)) <span class="comment"># [bs,4*h_size,1]</span></span><br><span class="line">        w_times_h_prev = w_times_h_prev.squeeze(-<span class="number">1</span>)   </span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分別计算输入门(i)，遗忘门(f)，cell门(g)，输出门(o)</span></span><br><span class="line">        i_t = torch.sigmoid(w_times_x[:,:h_size] + w_times_h_prev[:,:h_size] + b_ih[:h_size] + b_hh[:h_size])</span><br><span class="line">        f_t = torch.sigmoid(w_times_x[:,h_size:<span class="number">2</span>*h_size] + w_times_h_prev[:,h_size:<span class="number">2</span>*h_size] + b_ih[h_size:<span class="number">2</span>*h_size] + b_hh[h_size:<span class="number">2</span>*h_size])</span><br><span class="line">        g_t = torch.tanh(w_times_x[:,<span class="number">2</span>*h_size:<span class="number">3</span>*h_size] + w_times_h_prev[:,<span class="number">2</span>*h_size:<span class="number">3</span>*h_size] + b_ih[<span class="number">2</span>*h_size:<span class="number">3</span>*h_size] + b_hh[<span class="number">2</span>*h_size:<span class="number">3</span>*h_size])</span><br><span class="line">        o_t = torch.sigmoid(w_times_x[:,<span class="number">3</span>*h_size:<span class="number">4</span>*h_size] + w_times_h_prev[:,<span class="number">3</span>*h_size:<span class="number">4</span>*h_size] + b_ih[<span class="number">3</span>*h_size:<span class="number">4</span>*h_size] + b_hh[<span class="number">3</span>*h_size:<span class="number">4</span>*h_size])</span><br><span class="line"></span><br><span class="line">        prev_c = f_t * prev_c + i_t * g_t</span><br><span class="line">        prev_h = o_t * torch.tanh(prev_c)</span><br><span class="line">        </span><br><span class="line">        output[:,t,:] = prev_h</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> output,(prev_h,prev_c)</span><br><span class="line">    </span><br><span class="line">custom_output,(custom_h_final,custom_c_final) = lstm_forward(<span class="built_in">input</span>,(h0,c0),lstm_layer.weight_ih_l0,lstm_layer.weight_hh_l0,lstm_layer.bias_ih_l0,lstm_layer.bias_hh_l0)    </span><br><span class="line"><span class="built_in">print</span>(torch.allclose(custom_output,output))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(h_final,custom_h_final))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(c_final,custom_c_final))</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-LSTM-with-proj-size"><a href="#4-LSTM-with-proj-size" class="headerlink" title="4 LSTM with proj_size"></a>4 LSTM with proj_size</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义常量</span></span><br><span class="line">bs,T,i_size,h_size = <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br><span class="line">proj_size = <span class="number">3</span></span><br><span class="line"><span class="built_in">input</span> = torch.randn(bs,T,i_size) <span class="comment"># 输入序列</span></span><br><span class="line">c0 = torch.randn(bs,h_size) <span class="comment"># 初始值，不需要训练</span></span><br><span class="line">h0 = torch.randn(bs,proj_size) <span class="comment"># 初始值，不需要训练</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用官方LSTM API</span></span><br><span class="line">lstm_layer = nn.LSTM(i_size,h_size,batch_first=<span class="literal">True</span>,proj_size=proj_size)</span><br><span class="line">output,(h_final,c_final) = lstm_layer(<span class="built_in">input</span>,(h0.unsqueeze(<span class="number">0</span>),c0.unsqueeze(<span class="number">0</span>)))</span><br><span class="line"><span class="built_in">print</span>(output)</span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> lstm_layer.named_parameters():</span><br><span class="line">    <span class="built_in">print</span>(k,v)</span><br></pre></td></tr></table></figure>
+
+<p>eight_ih_l0 torch.Size([20, 4])    h_size<em>4,i_size<br>weight_hh_l0 torch.Size([20, 3])    h_size</em>4,proj_size<br>bias_ih_l0 torch.Size([20])         h_size<em>4<br>bias_hh_l0 torch.Size([20])         h_size</em>4<br>weight_hr_l0 torch.Size([3, 5])     proj_size,h_size<br>只会对 h_state 进行改变，不会对 c_state 进行改变 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">lstm_forward</span>(<span class="params"><span class="built_in">input</span>,inittal_states,w_ih,w_hh,b_ih,b_hh,w_hr=<span class="literal">None</span></span>):</span><br><span class="line">    h0,c0 = inittal_states <span class="comment"># 初始状态</span></span><br><span class="line">    bs,T,i_size = <span class="built_in">input</span>.shape</span><br><span class="line">    h_size = w_ih.shape[<span class="number">0</span>] // <span class="number">4</span></span><br><span class="line">    </span><br><span class="line">    prev_h = h0</span><br><span class="line">    prev_c = c0</span><br><span class="line">    batch_w_ih = w_ih.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>) <span class="comment"># (bs,4*h_size,i_size)</span></span><br><span class="line">    batch_w_hh = w_hh.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>) <span class="comment"># (bs,4*h_size,h_size)</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> w_hr <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        p_size = w_hr.shape[<span class="number">0</span>]</span><br><span class="line">        output_size = p_size</span><br><span class="line">        batch_w_hr = w_hr.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>) <span class="comment"># (bs,proj_size,h_size)</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        output_size = h_size</span><br><span class="line">    output = torch.zeros(bs,T,output_size) <span class="comment"># 输出序列</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">        x = <span class="built_in">input</span>[:,t,:] <span class="comment"># 当前时刻的输入向量 (bs,i_size)</span></span><br><span class="line">        w_times_x = torch.bmm(batch_w_ih,x.unsqueeze(-<span class="number">1</span>)) <span class="comment"># [bs,4*h_size,1]</span></span><br><span class="line">        w_times_x = w_times_x.squeeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        w_times_h_prev = torch.bmm(batch_w_hh,prev_h.unsqueeze(-<span class="number">1</span>)) <span class="comment"># [bs,4*h_size,1]</span></span><br><span class="line">        w_times_h_prev = w_times_h_prev.squeeze(-<span class="number">1</span>)   </span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分別计算输入门(i)，遗忘门(f)，cell门(g)，输出门(o)</span></span><br><span class="line">        i_t = torch.sigmoid(w_times_x[:,:h_size] + w_times_h_prev[:,:h_size] + b_ih[:h_size] + b_hh[:h_size])</span><br><span class="line">        f_t = torch.sigmoid(w_times_x[:,h_size:<span class="number">2</span>*h_size] + w_times_h_prev[:,h_size:<span class="number">2</span>*h_size] + b_ih[h_size:<span class="number">2</span>*h_size] + b_hh[h_size:<span class="number">2</span>*h_size])</span><br><span class="line">        g_t = torch.tanh(w_times_x[:,<span class="number">2</span>*h_size:<span class="number">3</span>*h_size] + w_times_h_prev[:,<span class="number">2</span>*h_size:<span class="number">3</span>*h_size] + b_ih[<span class="number">2</span>*h_size:<span class="number">3</span>*h_size] + b_hh[<span class="number">2</span>*h_size:<span class="number">3</span>*h_size])</span><br><span class="line">        o_t = torch.sigmoid(w_times_x[:,<span class="number">3</span>*h_size:<span class="number">4</span>*h_size] + w_times_h_prev[:,<span class="number">3</span>*h_size:<span class="number">4</span>*h_size] + b_ih[<span class="number">3</span>*h_size:<span class="number">4</span>*h_size] + b_hh[<span class="number">3</span>*h_size:<span class="number">4</span>*h_size])</span><br><span class="line"></span><br><span class="line">        prev_c = f_t * prev_c + i_t * g_t</span><br><span class="line">        prev_h = o_t * torch.tanh(prev_c)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> w_hr <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>: <span class="comment"># 做projection</span></span><br><span class="line">            prev_h = torch.bmm(batch_w_hr,prev_h.unsqueeze(-<span class="number">1</span>)) <span class="comment"># bs,proj_size,1</span></span><br><span class="line">            prev_h = prev_h.squeeze(-<span class="number">1</span>) <span class="comment"># bs,proj_size</span></span><br><span class="line">            </span><br><span class="line">        output[:,t,:] = prev_h</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> output,(prev_h,prev_c)</span><br><span class="line">    </span><br><span class="line">custom_output,(custom_h_final,custom_c_final) = lstm_forward(<span class="built_in">input</span>,(h0,c0),lstm_layer.weight_ih_l0,lstm_layer.weight_hh_l0,</span><br><span class="line">                                                             lstm_layer.bias_ih_l0,lstm_layer.bias_hh_l0,lstm_layer.weight_hr_l0)    </span><br><span class="line"><span class="built_in">print</span>(torch.allclose(custom_output,output))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(h_final,custom_h_final))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(c_final,custom_c_final))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/23f44fab.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
+    <article id="post-pytorch基础入门12-RNN" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/b945630.html">pytorch基础入门12-RNN</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/b945630.html" class="archive-article-date">
+  	<time datetime="2023-04-13T06:29:13.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-13</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">891字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">5min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <p><a target="_blank" rel="noopener" href="https://www.cs.toronto.edu/~graves/preprint.pdf">https://www.cs.toronto.edu/~graves/preprint.pdf</a></p>
+<p>Supervised Sequence Labelling with Recurrent Neural Networks</p>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131437010.png" alt="image-20230413143700100" style="zoom:67%;" />
+
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131437818.png" alt="image-20230413143710020" style="zoom:67%;" />
+
+<p>delay: 能看到前几帧的信息，牺牲一定的时间，预测的更加准确。</p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131448069.png" alt="image-20230413144847329"></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131502377.png" alt="image-20230413150234647"></p>
+<h2 id="1-API"><a href="#1-API" class="headerlink" title="1 API"></a>1 API</h2><p>torch.nn.RNN(*<em>args</em>, **<em>kwargs</em>)</p>
+<p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/_modules/torch/nn/modules/rnn.html#RNN">https://pytorch.org/docs/stable/_modules/torch/nn/modules/rnn.html#RNN</a></p>
+<p>Applies a multi-layer Elman RNN with tanh or ReLU non-linearity to an input sequence.</p>
+<p>For each element in the input sequence, each layer computes the following function:<br>$$<br>h_t = tanh(x_tW_{ih}^T+b_{ih}+h_{t-1}W_{hh}^T+b_{hh})<br>$$<br>where $h_t$ is the hidden state at time t, $x_t$ is the input at time t, and $h_{t-1}$ is the hidden state of the previous layer at time t-1 or the inital hidden state at time 0. If nonlinearity is “relu”, then ReLU is used instead of tanh.</p>
+<ul>
+<li><strong>input_size</strong> – The number of expected features in the input x</li>
+<li><strong>hidden_size</strong> – The number of features in the hidden state h</li>
+<li><strong>num_layers</strong> – Number of recurrent layers. E.g., setting <code>num_layers=2</code> would mean stacking two RNNs together to form a stacked RNN, with the second RNN taking in outputs of the first RNN and computing the final results. Default: 1</li>
+<li><strong>nonlinearity</strong> – The non-linearity to use. Can be either <code>&#39;tanh&#39;</code> or <code>&#39;relu&#39;</code>. Default: <code>&#39;tanh&#39;</code></li>
+<li><strong>bias</strong> – If <code>False</code>, then the layer does not use bias weights b_ih and b_hh. Default: <code>True</code></li>
+<li><strong>batch_first</strong> – If <code>True</code>, then the input and output tensors are provided as (batch, seq, feature) instead of (seq, batch, feature). Note that this does not apply to hidden or cell states. See the Inputs/Outputs sections below for details. Default: <code>False</code></li>
+<li><strong>dropout</strong> – If non-zero, introduces a Dropout layer on the outputs of each RNN layer except the last layer, with dropout probability equal to <code>dropout</code>. Default: 0</li>
+<li><strong>bidirectional</strong> – If <code>True</code>, becomes a bidirectional RNN. Default: <code>False</code></li>
+</ul>
+<p>Inputs: input, h_0</p>
+<ul>
+<li><p>inputs: tensor of shape $(L,H_{in})$ for unbatched input, $(L,N,H_{in})$ when <code>batch_first=False</code> or $(N,L,H_{in})$ when <code>batch_first=True</code></p>
+</li>
+<li><p>h_0: tensor of shape $(D<em>num_layer,H_{out})$ for unbatched input or$ (D</em>num_layers,N,H_{out})$containing the initial hidden state for the input sequence batch. Defaults to zeros if not provided.</p>
+</li>
+</ul>
+<p>$$<br>N=batch\ size \<br>L = sequence\ length \<br>D = 2\ if\ bidirectional = True\ otherwise\ 1 \<br>H_{in} = input _size \<br>H_{out} = hidden_size<br>$$</p>
+<p>Outputs: output, h_n</p>
+<h2 id="2-代码实现"><a href="#2-代码实现" class="headerlink" title="2 代码实现"></a>2 代码实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="comment"># 单向，单层RNN</span></span><br><span class="line">single_rnn = nn.RNN(<span class="number">4</span>,<span class="number">3</span>,<span class="number">1</span>,batch_first=<span class="literal">True</span>) <span class="comment"># feature_size * hidden_size * layer_num</span></span><br><span class="line"><span class="built_in">input</span> = torch.randn(<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>) <span class="comment"># batch_size*sequence_length*feature_size</span></span><br><span class="line">output,h_n = single_rnn(<span class="built_in">input</span>)</span><br><span class="line"><span class="built_in">print</span>(output) <span class="comment"># batch_size*sequence_length*hidden_size</span></span><br><span class="line"><span class="built_in">print</span>(h_n) <span class="comment"># layer_num*batch_size*hidden_size</span></span><br><span class="line"><span class="comment"># 双向，单层RNN</span></span><br><span class="line">bidirectional_rnn = nn.RNN(<span class="number">4</span>,<span class="number">3</span>,<span class="number">1</span>,batch_first=<span class="literal">True</span>,bidirectional=<span class="literal">True</span>)</span><br><span class="line">bi_output,bi_h_n = bidirectional_rnn(<span class="built_in">input</span>)</span><br><span class="line"><span class="built_in">print</span>(bi_output) <span class="comment"># batch_size*sequence_length*(2*hidden_size)</span></span><br><span class="line"><span class="built_in">print</span>(bi_h_n) <span class="comment"># (2*layer_num)*batch_size*hidden_size</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-实现单向单层RNN"><a href="#3-实现单向单层RNN" class="headerlink" title="3 实现单向单层RNN"></a>3 实现单向单层RNN</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step2: 手写一个rnn_forward函数,实现单向rnn的计算原理</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run_forward</span>(<span class="params"><span class="built_in">input</span>,weight_ih,weight_hh,bias_ih,bias_hh,h_prev</span>):</span><br><span class="line">    bs,T,input_size = <span class="built_in">input</span>.shape</span><br><span class="line">    h_dim = weight_ih.shape[<span class="number">0</span>]</span><br><span class="line">    h_out = torch.zeros(bs,T,h_dim) <span class="comment"># 初始化一个输出(状态)矩阵</span></span><br><span class="line">    <span class="comment"># h_prev: bs*hidden_size</span></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">        x = <span class="built_in">input</span>[:,t,:].unsqueeze(<span class="number">2</span>) <span class="comment">#获取当前时刻输入 # bs*input_size*1</span></span><br><span class="line">        w_ih_batch = weight_ih.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>) <span class="comment"># bs*h_dim*input_size</span></span><br><span class="line">        w_hh_batch = weight_hh.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>) <span class="comment"># bs*h_dim*h_dim</span></span><br><span class="line">        </span><br><span class="line">        w_time_x = torch.bmm(w_ih_batch,x).squeeze(-<span class="number">1</span>) <span class="comment"># bs*h_dim</span></span><br><span class="line">        w_time_h = torch.bmm(w_hh_batch,h_prev.unsqueeze(<span class="number">2</span>)).squeeze(-<span class="number">1</span>) <span class="comment">#bs*h_dim</span></span><br><span class="line">        h_prev = torch.tanh(w_time_x + bias_ih + w_time_h + bias_hh) <span class="comment"># t时刻的输出</span></span><br><span class="line">        </span><br><span class="line">        h_out[:,t,:] = h_prev</span><br><span class="line">    <span class="keyword">return</span> h_out,h_prev.unsqueeze(<span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line"><span class="comment"># 验证一下rnn_forward的正确性</span></span><br><span class="line"><span class="comment"># for k,v in rnn.named_parameters():</span></span><br><span class="line"><span class="comment">#     print(k,v)</span></span><br><span class="line">custom_rnn_output,custom_state_final = run_forward(<span class="built_in">input</span>,rnn.weight_ih_l0,rnn.weight_hh_l0,rnn.bias_ih_l0,rnn.bias_hh_l0,h_prev)</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(custom_rnn_output,rnn_output))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(custom_state_final,state_final))</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-实现双向单层RNN"><a href="#4-实现双向单层RNN" class="headerlink" title="4 实现双向单层RNN"></a>4 实现双向单层RNN</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step3: 手写一个bidirectional_rnn_forward函数，实现双向RNN的计算原理</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bidirectional_run_forward</span>(<span class="params"><span class="built_in">input</span>,weight_ih,weight_hh,bias_ih,bias_hh,h_prev,</span></span><br><span class="line"><span class="params">                              weight_ih_reverse,weight_hh_reverse,bias_ih_reverse,bias_hh_reverse,h_prev_reverse</span>):</span><br><span class="line">    bs,T,input_size = <span class="built_in">input</span>.shape</span><br><span class="line">    h_dim = weight_ih.shape[<span class="number">0</span>]</span><br><span class="line">    h_out = torch.zeros(bs,T,h_dim*<span class="number">2</span>) <span class="comment"># 初始化一个输出(状态)矩阵</span></span><br><span class="line">    </span><br><span class="line">    forward_output = run_forward(<span class="built_in">input</span>,weight_ih,weight_hh,bias_ih,bias_hh,h_prev)[<span class="number">0</span>] <span class="comment"># forward layer</span></span><br><span class="line">    backward_output = run_forward(torch.flip(<span class="built_in">input</span>,[<span class="number">1</span>]),</span><br><span class="line">                      weight_ih_reverse,weight_hh_reverse,bias_ih_reverse,bias_hh_reverse,h_prev_reverse)[<span class="number">0</span>]  <span class="comment"># flip 对dim进行翻转, backward layer</span></span><br><span class="line">    </span><br><span class="line">    h_out[:,:,:h_dim] = forward_output</span><br><span class="line">    h_out[:,:,h_dim:] = torch.flip(backward_output,[<span class="number">1</span>]) <span class="comment"># 反向的结果需要在T维度上再次反向，才能与api结果相同</span></span><br><span class="line">    </span><br><span class="line">    h_n = torch.zeros(<span class="number">2</span>,bs,h_dim)</span><br><span class="line">    h_n[<span class="number">0</span>,:,:] = forward_output[:,-<span class="number">1</span>,:]</span><br><span class="line">    h_n[<span class="number">1</span>,:,:] = backward_output[:,-<span class="number">1</span>,:]</span><br><span class="line">        <span class="comment"># h_out[:,-1,:].reshape((bs,2,h_dim)).transpose(0,1)</span></span><br><span class="line">    <span class="keyword">return</span> h_out, h_n</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证一下 bidirectional_rnn_forward正确性</span></span><br><span class="line">bi_rnn = nn.RNN(input_size,hidden_size,batch_first=<span class="literal">True</span>,bidirectional=<span class="literal">True</span>)</span><br><span class="line">h_prev =torch.zeros(<span class="number">2</span>,bs,hidden_size)</span><br><span class="line">bi_rnn_output,bi_state_final = bi_rnn(<span class="built_in">input</span>,h_prev)</span><br><span class="line"></span><br><span class="line">custom_bi_rnn_output,custom_bi_state_final = bidirectional_run_forward(<span class="built_in">input</span>,</span><br><span class="line">                                                                       bi_rnn.weight_ih_l0,</span><br><span class="line">                                                                       bi_rnn.weight_hh_l0,</span><br><span class="line">                                                                       bi_rnn.bias_ih_l0,</span><br><span class="line">                                                                       bi_rnn.bias_hh_l0,</span><br><span class="line">                                                                       h_prev[<span class="number">0</span>],</span><br><span class="line">                                                                       bi_rnn.weight_ih_l0_reverse,</span><br><span class="line">                                                                       bi_rnn.weight_hh_l0_reverse,</span><br><span class="line">                                                                       bi_rnn.bias_ih_l0_reverse,</span><br><span class="line">                                                                       bi_rnn.bias_hh_l0_reverse,</span><br><span class="line">                                                                       h_prev[<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(bi_rnn_output,custom_bi_rnn_output))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(bi_state_final,custom_bi_state_final))</span><br></pre></td></tr></table></figure>
+
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/b945630.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
+    <article id="post-pytorch基础知识11-ViT" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/1229d3b9.html">pytorch基础知识11-ViT</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/1229d3b9.html" class="archive-article-date">
+  	<time datetime="2023-04-12T15:59:34.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-12</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">350字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">2min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <p>AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2010.11929.pdf">https://arxiv.org/pdf/2010.11929.pdf</a></p>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131331748.png" alt="image-20230413132929498"  />
+
+<p>We split an image into fixed-size patches, linearly embed each of them, add position embeddings, and feed the resulting sequence of vectors to a standard Transformer encoder. In order to perform classification, we use the standard approach of adding an extra learnable “classification token” to the sequence. The illustration of the Transformer encoder was inspired by Vaswani et al. (2017).</p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131433347.png" alt="image-20230413143320971"></p>
+<h2 id="1-image2emb"><a href="#1-image2emb" class="headerlink" title="1 image2emb"></a>1 image2emb</h2><h3 id="1-1-分块"><a href="#1-1-分块" class="headerlink" title="1.1 分块"></a>1.1 分块</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">image2emb_naive</span>(<span class="params">image,patch_size,weight</span>):</span><br><span class="line">    <span class="comment"># image size: bs*channel*h*w</span></span><br><span class="line">    patch = F.unfold(image,kernel_size=patch_size,stride=patch_size).transpose(-<span class="number">1</span>,-<span class="number">2</span>) <span class="comment"># bs*patch_num*patch_pixel_num</span></span><br><span class="line">    patch_embedding = patch @ weight</span><br><span class="line">    <span class="keyword">return</span> patch_embedding</span><br><span class="line">        </span><br><span class="line"><span class="comment"># test code for image2emb</span></span><br><span class="line">bs,ic,image_h,image_w = <span class="number">1</span>,<span class="number">3</span>,<span class="number">8</span>,<span class="number">8</span></span><br><span class="line">patch_size = <span class="number">4</span></span><br><span class="line">model_dim = <span class="number">8</span> </span><br><span class="line">patch_depth = patch_size*patch_size*ic <span class="comment"># 每个patch中的元素个数</span></span><br><span class="line">image = torch.randn(bs,ic,image_h,image_w)</span><br><span class="line">weight = torch.randn(patch_depth,model_dim) <span class="comment"># model_dim 是输出通道数目，patch_depth是卷积核的面积乘以输入通道数</span></span><br><span class="line">patch_embedding_naive = image2emb_naive(image,patch_size,weight) <span class="comment"># 分块得到embedding</span></span><br><span class="line"><span class="built_in">print</span>(patch_embedding_naive.shape)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-conv2d"><a href="#1-2-conv2d" class="headerlink" title="1.2 conv2d"></a>1.2 conv2d</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">image2emb_conv</span>(<span class="params">image,kernel,stride</span>):</span><br><span class="line">    conv_output = F.conv2d(image,kernel,stride=stride) <span class="comment"># bs*oc*oh*ow</span></span><br><span class="line">    bs,oc,oh,ow = conv_output.shape</span><br><span class="line">    patch_embedding = conv_output.reshape((bs,oc,oh*ow)).transpose(-<span class="number">1</span>,-<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> patch_embedding</span><br><span class="line"></span><br><span class="line">kernel = weight.transpose(<span class="number">0</span>,<span class="number">1</span>).reshape((-<span class="number">1</span>,ic,patch_size,patch_size)) <span class="comment"># oc*ic*kh*kw</span></span><br><span class="line">patch_embedding_conv = image2emb_conv(image,kernel,stride=patch_size) <span class="comment"># 二维卷积的方法得到embedding</span></span><br><span class="line"><span class="built_in">print</span>(torch.allclose(patch_embedding_conv,patch_embedding_naive))</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-classification-token"><a href="#2-classification-token" class="headerlink" title="2 classification token"></a>2 classification token</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cls_token_embedding = torch.randn(bs,<span class="number">1</span>,model_dim,requires_grad=<span class="literal">True</span>)</span><br><span class="line">token_embedding = torch.cat([cls_token_embedding,patch_embedding_conv],dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-add-position-embedding"><a href="#3-add-position-embedding" class="headerlink" title="3 add position embedding"></a>3 add position embedding</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">position_embedding_table = torch.randn(max_num_token,model_dim,requires_grad=<span class="literal">True</span>)</span><br><span class="line">seq_len = token_embedding.shape[<span class="number">1</span>]</span><br><span class="line">position_embedding = torch.tile(position_embedding_table[:seq_len],[token_embedding.shape[<span class="number">0</span>],<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line">token_embedding += position_embedding</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-pass-embedding-to-Transformer-Encoder"><a href="#4-pass-embedding-to-Transformer-Encoder" class="headerlink" title="4 pass embedding to Transformer Encoder"></a>4 pass embedding to Transformer Encoder</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">encoder_layer = nn.TransformerEncoderLayer(d_model=model_dim, nhead=<span class="number">8</span>)</span><br><span class="line">transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=<span class="number">6</span>)</span><br><span class="line">encoder_output = transformer_encoder(token_embedding)</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-do-classification"><a href="#5-do-classification" class="headerlink" title="5 do classification"></a>5 do classification</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cls_token_output = encoder_output[:,<span class="number">0</span>,:]</span><br><span class="line">liner_layer = nn.Linear(model_dim,num_classes)</span><br><span class="line">logits = liner_layer(cls_token_output)</span><br><span class="line">loss_fn = nn.CrossEntropyLoss()</span><br><span class="line">loss = loss_fn(logits,label)</span><br><span class="line"><span class="built_in">print</span>(loss)</span><br></pre></td></tr></table></figure>
+
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/1229d3b9.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
     <article id="post-pytorch基础知识10-卷积网络" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -324,7 +936,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">2k字</span>
+        <span class="post-count">2.5k字</span>
       </span>
     </span>
 
@@ -333,7 +945,7 @@ var _hmt = _hmt || [];
       <span class="post-meta-item-icon">
 	    <i class="fa fa-pagelines" aria-hidden="true"></i>
         <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">11min</span>
+        <span class="post-count">13min</span>
       </span>
     </span>
 	
@@ -409,6 +1021,18 @@ var _hmt = _hmt || [];
 <p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/_modules/torch/nn/modules/conv.html#ConvTranspose2d">https://pytorch.org/docs/stable/_modules/torch/nn/modules/conv.html#ConvTranspose2d</a></p>
 <p>torch.nn.functional.conv_transpose2d(<em>input</em>, <em>weight</em>, <em>bias=None</em>, <em>stride=1</em>, <em>padding=0</em>, <em>output_padding=0</em>, <em>groups=1</em>, <em>dilation=1</em>)</p>
 <p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.functional.conv_transpose2d.html">https://pytorch.org/docs/stable/generated/torch.nn.functional.conv_transpose2d.html</a></p>
+<h2 id="7-group"><a href="#7-group" class="headerlink" title="7 group"></a>7 group</h2><ul>
+<li><strong>groups</strong> (int,optional) – Number of blocked connections from input channels to output channels. Default: 1</li>
+</ul>
+<h2 id="8-dilation"><a href="#8-dilation" class="headerlink" title="8 dilation"></a>8 dilation</h2><ul>
+<li><strong>dilation</strong> (int or tuple,optional) – Spacing between kernel elements. Default: 1</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = torch.rand(<span class="number">7</span>,<span class="number">7</span>)</span><br><span class="line"><span class="built_in">print</span>(a[<span class="number">0</span>:<span class="number">3</span>,<span class="number">0</span>:<span class="number">3</span>])     <span class="comment"># dilation=1</span></span><br><span class="line"><span class="built_in">print</span>(a[<span class="number">0</span>:<span class="number">5</span>:<span class="number">2</span>,<span class="number">0</span>:<span class="number">5</span>:<span class="number">2</span>]) <span class="comment"># dilation=2</span></span><br><span class="line"><span class="built_in">print</span>(a[<span class="number">0</span>:<span class="number">7</span>:<span class="number">3</span>,<span class="number">0</span>:<span class="number">7</span>:<span class="number">3</span>]) <span class="comment"># dilation=3</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="9-最终版本"><a href="#9-最终版本" class="headerlink" title="9 最终版本"></a>9 最终版本</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">matrix_multiplication_for_conv2d_final</span>(<span class="params"><span class="built_in">input</span>,kernel,bias=<span class="literal">None</span>,stride=<span class="number">1</span>,padding=<span class="number">0</span>,dilation=<span class="number">1</span>,groups=<span class="number">1</span></span>):</span><br><span class="line">    <span class="keyword">if</span> padding &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">input</span> = F.pad(<span class="built_in">input</span>,(padding,padding,padding,padding,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>))</span><br><span class="line">    </span><br><span class="line">    bs, in_channel, input_h, input_w = <span class="built_in">input</span>.shape</span><br><span class="line">    out_channel,_, kernel_h, kernel_w = kernel.shape</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">assert</span> out_channel % groups == <span class="number">0</span> <span class="keyword">and</span> in_channel % groups == <span class="number">0</span>, <span class="string">&quot;group必须要同时被输入通道数和输出通道数整除！&quot;</span></span><br><span class="line">    <span class="built_in">input</span> = <span class="built_in">input</span>.reshape((bs, groups, in_channel//groups, input_h, input_w))</span><br><span class="line">    kernel = kernel.reshape((groups, out_channel//groups, in_channel//groups, kernel_h, kernel_w))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># dilation (往原来的kernel中加入空洞)</span></span><br><span class="line">    kernel_h = (kernel_h - <span class="number">1</span>) * (dilation - <span class="number">1</span>) + kernel_h</span><br><span class="line">    kernel_w = (kernel_w - <span class="number">1</span>) * (dilation - <span class="number">1</span>) + kernel_w    </span><br><span class="line">    <span class="comment"># 输出结果的 feature map</span></span><br><span class="line">    output_h = math.floor((input_h - kernel_h) / stride) + <span class="number">1</span></span><br><span class="line">    output_w = math.floor((input_w - kernel_w) / stride) + <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    output_shape = (bs,groups,out_channel//groups,output_h,output_w)</span><br><span class="line">    output = torch.zeros(output_shape)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> bias <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        bias = torch.zeros(out_channel)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> ind <span class="keyword">in</span> <span class="built_in">range</span>(bs):                                                                           <span class="comment"># 对 batchsize进行遍历</span></span><br><span class="line">        <span class="keyword">for</span> g <span class="keyword">in</span> <span class="built_in">range</span>(groups):                                                                     <span class="comment"># 对群组进行遍历</span></span><br><span class="line">            <span class="keyword">for</span> oc <span class="keyword">in</span> <span class="built_in">range</span>(out_channel // groups):                                                 <span class="comment"># 对分组后的输出通道进行遍历</span></span><br><span class="line">                <span class="keyword">for</span> ic <span class="keyword">in</span> <span class="built_in">range</span>(in_channel // groups):                                              <span class="comment"># 对分组厚的输入通道进行遍历</span></span><br><span class="line">                    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,input_h-kernel_h+<span class="number">1</span>,stride):                                    <span class="comment"># 对kernel高度遍历</span></span><br><span class="line">                        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,input_w-kernel_w+<span class="number">1</span>,stride):                                <span class="comment"># 对kernel宽度遍历</span></span><br><span class="line">                            region = <span class="built_in">input</span>[ind, g, ic, i:i+kernel_h:dilation,j:j+kernel_w:dilation]   <span class="comment"># 特征区域</span></span><br><span class="line">                            output[ind,g,oc,<span class="built_in">int</span>(i/stride),<span class="built_in">int</span>(j/stride)] += torch.<span class="built_in">sum</span>(region * kernel[g,oc,ic])</span><br><span class="line">                output[ind,g,oc] += bias[g*(out_channel//groups)+oc]                                <span class="comment"># 考虑偏置</span></span><br><span class="line">    output = output.reshape((bs,out_channel,output_h,output_w))                                     <span class="comment"># 还原成4维</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 验证</span></span><br><span class="line">kernel_size = <span class="number">3</span></span><br><span class="line">bs, in_channel, input_h, input_w = <span class="number">2</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">5</span></span><br><span class="line">out_channel = <span class="number">4</span></span><br><span class="line">groups, dilation, stride, padding = <span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span></span><br><span class="line"><span class="built_in">input</span> = torch.randn(bs, in_channel, input_h, input_w)</span><br><span class="line">kernel = torch.randn(out_channel,in_channel//groups,kernel_size,kernel_size)</span><br><span class="line">bias = torch.randn(out_channel)</span><br><span class="line"></span><br><span class="line">pytorch_conv2d_api_output = F.conv2d(<span class="built_in">input</span>,kernel,bias=bias,padding=padding,stride=stride,dilation=dilation,groups=groups)</span><br><span class="line">mm_conv2d_final_output = matrix_multiplication_for_conv2d_final(<span class="built_in">input</span>,kernel,bias=bias,stride=stride,padding=padding,dilation=dilation,groups=groups)</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(pytorch_conv2d_api_output,mm_conv2d_final_output))</span><br></pre></td></tr></table></figure>
+
 
 				  
 	  
@@ -1555,520 +2179,6 @@ $$
 
 <!-- 文章页添加mathjax公式 -->
   
-    <article id="post-pytorch基础入门4-module详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/565d0c01.html">pytorch基础入门4-module详解</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/565d0c01.html" class="archive-article-date">
-  	<time datetime="2023-04-06T08:27:23.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-06</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">480字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">2min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <p>介绍了module类中的一些方法</p>
-<p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html?highlight=module#torch.nn.Module">https://pytorch.org/docs/stable/generated/torch.nn.Module.html?highlight=module#torch.nn.Module</a></p>
-<p>路径位置如下：</p>
-<p>D:\0_python\anaconda\envs\pytorch\Lib\site-packages\torch\nn\modules\module.py</p>
-<h4 id="1-register-buffer"><a href="#1-register-buffer" class="headerlink" title="1 register_buffer"></a>1 register_buffer</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061705956.png" alt="image-20230406170548915" style="zoom:80%;" />
-
-<p>让当前模块中添加buffer参数，通过persistent让这个buffer是否一直存在</p>
-<h4 id="2-register-parameter"><a href="#2-register-parameter" class="headerlink" title="2 register_parameter"></a>2 register_parameter</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061708295.png" alt="image-20230406170826936" style="zoom:80%;" />
-
-<h4 id="3-get-parameter"><a href="#3-get-parameter" class="headerlink" title="3 get_parameter"></a>3 get_parameter</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061720617.png" alt="image-20230406172007173" style="zoom:80%;" />
-
-<p>需要把嵌套层都写好，不能只写一层</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_parameter</span>(<span class="params">self, target: <span class="built_in">str</span></span>) -&gt; <span class="string">&quot;Parameter&quot;</span>:</span><br><span class="line">    module_path, _, param_name = target.rpartition(<span class="string">&quot;.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    mod: torch.nn.Module = self.get_submodule(module_path)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(mod, param_name):</span><br><span class="line">        <span class="keyword">raise</span> AttributeError(mod._get_name() + <span class="string">&quot; has no attribute `&quot;</span></span><br><span class="line">                             + param_name + <span class="string">&quot;`&quot;</span>)</span><br><span class="line"></span><br><span class="line">    param: torch.nn.Parameter = <span class="built_in">getattr</span>(mod, param_name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(param, torch.nn.Parameter):</span><br><span class="line">        <span class="keyword">raise</span> AttributeError(<span class="string">&quot;`&quot;</span> + param_name + <span class="string">&quot;` is not an &quot;</span></span><br><span class="line">                             <span class="string">&quot;nn.Parameter&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> param</span><br></pre></td></tr></table></figure>
-
-<p>其中<code>target.rpartition</code>的作用如下：</p>
-<p>Search for the last occurrence of the word “x”, and return a tuple with three elements:</p>
-<p>1 - everything before the “match”<br>2 - the “match”<br>3 - everything after the “match”</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">txt = <span class="string">&quot;I could eat bananas all day, bananas are my favorite fruit&quot;</span></span><br><span class="line"></span><br><span class="line">x = txt.rpartition(<span class="string">&quot;bananas&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(x)</span><br></pre></td></tr></table></figure>
-
-<p>首先判断是否在module中，如果没有这个parameter_name就抛出异常</p>
-<p>然后校验，是否这个parameter在字典中，不存在则抛出异常</p>
-<h4 id="4-get-buffer"><a href="#4-get-buffer" class="headerlink" title="4 get_buffer"></a>4 get_buffer</h4><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20230406172527868.png" alt="image-20230406172527868" style="zoom:80%;" />
-
-<p>同理与get_parameter相似</p>
-<h4 id="5-如何进行断点训练"><a href="#5-如何进行断点训练" class="headerlink" title="5 如何进行断点训练"></a>5 如何进行断点训练</h4><p><a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/recipes/recipes/saving_and_loading_a_general_checkpoint.html">https://pytorch.org/tutorials/recipes/recipes/saving_and_loading_a_general_checkpoint.html</a></p>
-<p><a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/saveloadrun_tutorial.html">https://pytorch.org/tutorials/beginner/basics/saveloadrun_tutorial.html</a></p>
-<h4 id="6-to"><a href="#6-to" class="headerlink" title="6 to"></a>6 to</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061818735.png" alt="image-20230406181821316" style="zoom:80%;" />
-
-<p>example:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Test(torch.nn.Module):</span><br><span class="line">	def __init__(self):</span><br><span class="line">		super(Test, self).__init__()</span><br><span class="line">		self.linear1 = torch.nn.Linear(2,3)</span><br><span class="line">		self.linear2 = torch.nn.Linear(3,4)</span><br><span class="line">		self.batch_norm = torch.nn.BatchNorm2d(4)</span><br><span class="line">test_module = Test()</span><br></pre></td></tr></table></figure>
-
-<p>接下来测试to函数的用法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test_module.to(torch.double)</span><br><span class="line">test_module._modules[<span class="string">&#x27;linear1&#x27;</span>].weight.dtype</span><br></pre></td></tr></table></figure>
-
-<p>为什么能够使用_modules（表示当前模块中的所有子模块）</p>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061831991.png" alt="image-20230406183151791" style="zoom:80%;" />
-
-<p>由此发现当调用_parameters,_buffers时候，只能返回当前模块中的参数和buffers，并不能嵌套查询。</p>
-<h4 id="7-save-to-state-dict"><a href="#7-save-to-state-dict" class="headerlink" title="7 _save_to_state_dict"></a>7 _save_to_state_dict</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061843934.png" alt="image-20230406184301390" style="zoom:80%;" />
-
-<p>将当前module中的name，param，buff都循环保存至destination中</p>
-<h4 id="8-state-dict"><a href="#8-state-dict" class="headerlink" title="8 state_dict"></a>8 state_dict</h4><p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061845557.png" alt="image-20230406184514473"></p>
-<p>这个时候能够实现递归，保存当前模块，并且能够保存所有子模块。</p>
-<h4 id="9-named-members"><a href="#9-named-members" class="headerlink" title="9 _named_members"></a>9 _named_members</h4><p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061923535.png" alt="image-20230406192319875"></p>
-<p>比较通用的一个查询函数：返回迭代器</p>
-<h4 id="10-train"><a href="#10-train" class="headerlink" title="10 train"></a>10 train</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061942823.png" alt="image-20230406194218024" style="zoom:80%;" />
-
-<p>dropout batchnorm中会受到影响。</p>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061944676.png" alt="image-20230406194427357" style="zoom:80%;" />
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/565d0c01.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
-    <article id="post-pytorch实用工具1-网络可视化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/b187ba6d.html">pytorch实用工具1-网络可视化</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/b187ba6d.html" class="archive-article-date">
-  	<time datetime="2023-04-06T03:46:15.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-06</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">410字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <h2 id="1-torchsummary"><a href="#1-torchsummary" class="headerlink" title="1 torchsummary"></a>1 torchsummary</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torchsummary <span class="keyword">import</span> summary</span><br><span class="line"><span class="keyword">from</span> torchvision.models <span class="keyword">import</span> vgg16  <span class="comment"># 以 vgg16 为例</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">myNet = vgg16()  <span class="comment"># 实例化网络，可以换成自己的网络</span></span><br><span class="line">device = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line">myNet.to(device)</span><br><span class="line">summary(myNet, (<span class="number">1</span>,<span class="number">3</span>, <span class="number">64</span>, <span class="number">64</span>))  <span class="comment"># 输出网络结构</span></span><br></pre></td></tr></table></figure>
-
-<p>可以看出，torchsummary 不仅可以查看网络的顺序结构，还有网络参数量，网络模型大小等信息，非常实用。</p>
-<h2 id="2-graphviz-torchviz"><a href="#2-graphviz-torchviz" class="headerlink" title="2 graphviz + torchviz"></a>2 graphviz + torchviz</h2><p>首先下载graphviz，并将其加入到环境变量中</p>
-<p><a target="_blank" rel="noopener" href="https://www2.graphviz.org/Packages/stable/windows/10/cmake/Release/x64/">https://www2.graphviz.org/Packages/stable/windows/10/cmake/Release/x64/</a></p>
-<p><img src="https://img-blog.csdnimg.cn/20210706174457451.png#pic_center" alt="img"></p>
-<p>接下来安装工具</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda install alubbock pygraphviz</span><br><span class="line">pip install torchviz</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torchviz <span class="keyword">import</span> make_dot</span><br><span class="line"><span class="keyword">from</span> torchvision.models <span class="keyword">import</span> vgg16  <span class="comment"># 以 vgg16 为例</span></span><br><span class="line"></span><br><span class="line">x = torch.randn(<span class="number">4</span>, <span class="number">3</span>, <span class="number">32</span>, <span class="number">32</span>)  <span class="comment"># 随机生成一个张量</span></span><br><span class="line">model = vgg16()  <span class="comment"># 实例化 vgg16，网络可以改成自己的网络</span></span><br><span class="line">out = model(x)   <span class="comment"># 将 x 输入网络</span></span><br><span class="line">g = make_dot(out)  <span class="comment"># 实例化 make_dot</span></span><br><span class="line">g.view()  <span class="comment"># 直接在当前路径下保存 pdf 并打开</span></span><br><span class="line"><span class="comment"># g.render(filename=&#x27;netStructure/myNetModel&#x27;, view=False, format=&#x27;pdf&#x27;)  # 保存 pdf 到指定路径不打开</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="3-netron"><a href="#3-netron" class="headerlink" title="3 netron"></a>3 netron</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install netron</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 针对有网络模型，但还没有训练保存 .pth 文件的情况</span></span><br><span class="line"><span class="keyword">import</span> netron</span><br><span class="line"><span class="keyword">import</span> torch.onnx</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"><span class="keyword">from</span> torchvision.models <span class="keyword">import</span> resnet18  <span class="comment"># 以 resnet18 为例</span></span><br><span class="line"></span><br><span class="line">myNet = resnet18()  <span class="comment"># 实例化 resnet18</span></span><br><span class="line">x = torch.randn(<span class="number">16</span>, <span class="number">3</span>, <span class="number">40</span>, <span class="number">40</span>)  <span class="comment"># 随机生成一个输入</span></span><br><span class="line">modelData = <span class="string">&quot;./demo.pth&quot;</span>  <span class="comment"># 定义模型数据保存的路径</span></span><br><span class="line"><span class="comment"># modelData = &quot;./demo.onnx&quot;  # 有人说应该是 onnx 文件，但我尝试 pth 是可以的 </span></span><br><span class="line">torch.onnx.export(myNet, x, modelData)  <span class="comment"># 将 pytorch 模型以 onnx 格式导出并保存</span></span><br><span class="line">netron.start(modelData)  <span class="comment"># 输出网络结构</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  针对已经存在网络模型 .pth 文件的情况</span></span><br><span class="line"><span class="keyword">import</span> netron</span><br><span class="line"></span><br><span class="line">modelData = <span class="string">&quot;./demo.pth&quot;</span>  <span class="comment"># 定义模型数据保存的路径</span></span><br><span class="line">netron.start(modelData)  <span class="comment"># 输出网络结构</span></span><br></pre></td></tr></table></figure>
-
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/b187ba6d.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
-    <article id="post-pytorch基础入门3-搭建分类网络" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/55849e59.html">pytorch基础入门3-搭建分类网络</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/55849e59.html" class="archive-article-date">
-  	<time datetime="2023-04-06T02:45:31.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-06</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">219字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <h2 id="1-get-device-for-training"><a href="#1-get-device-for-training" class="headerlink" title="1 get device for training"></a>1 get device for training</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">device = (</span><br><span class="line">    <span class="string">&quot;cuda&quot;</span></span><br><span class="line">    <span class="keyword">if</span> torch.cuda.is_available()</span><br><span class="line">    <span class="keyword">else</span> <span class="string">&quot;mps&quot;</span></span><br><span class="line">    <span class="keyword">if</span> torch.backends.mps.is_available()</span><br><span class="line">    <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Using <span class="subst">&#123;device&#125;</span> device&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-define-the-class"><a href="#2-define-the-class" class="headerlink" title="2 define the class"></a>2 define the class</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">NeuralNetwork</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line">        self.linear_relu_stack = nn.Sequential(</span><br><span class="line">            nn.Linear(<span class="number">28</span>*<span class="number">28</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">10</span>),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = self.flatten(x)</span><br><span class="line">        logits = self.linear_relu_stack(x)</span><br><span class="line">        <span class="keyword">return</span> logits</span><br></pre></td></tr></table></figure>
-
-<p>在这个网络的定义中最后一层的输出层是10，表示这是一个10分类的问题</p>
-<h2 id="3-use-the-model"><a href="#3-use-the-model" class="headerlink" title="3 use the model"></a>3 use the model</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">model = NeuralNetwork().to(device)</span><br><span class="line"><span class="built_in">print</span>(model)</span><br><span class="line">X = torch.rand(<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>, device=device)</span><br><span class="line">logits = model(X)</span><br><span class="line">pred_probab = nn.Softmax(dim=<span class="number">1</span>)(logits)</span><br><span class="line">y_pred = pred_probab.argmax(<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Predicted class: <span class="subst">&#123;y_pred&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>首先先将模型参数移动到设备上，这个时候初始化参数，最后得到logits。这个logits需要通过softmax各个标签的概率大小，最后得到最大概率的那个。</p>
-<h2 id="4-Model-Layers"><a href="#4-Model-Layers" class="headerlink" title="4 Model Layers"></a>4 Model Layers</h2><p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/nn.html">https://pytorch.org/docs/stable/nn.html</a></p>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061134897.png" alt="image-20230406113408760" style="zoom: 80%;" />
-
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061136988.png" alt="image-20230406113633421" style="zoom:80%;" />
-
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061140214.png" alt="image-20230406114025490"></p>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304121931189.png" alt="image-20230406115016019" style="zoom:80%;" />
-
-
-
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/55849e59.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &gt;&gt;</a>
@@ -2195,19 +2305,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">tips</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
               </li>
             
             <div class="clearfix"></div>
