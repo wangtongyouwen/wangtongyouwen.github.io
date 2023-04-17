@@ -10,16 +10,16 @@
   <title>pytorch实用工具2-编写技巧 | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="编写技巧">
+  <meta name="description" content="编写技巧  1234import torchfrom einops import rearrange,reduce,repeatimport torch.nn.functional as Fx &#x3D; torch.randn(2,2,4,4) # 4D tensor bs*ic*h*w 1 rearrange 1.1 转置 1234# 转置out1 &#x3D; x.transpose(1,2)o">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pytorch实用工具2-编写技巧">
 <meta property="og:url" content="https://wangtongyowen.github.io/post/898bb30b.html">
 <meta property="og:site_name" content="jyh blog">
-<meta property="og:description" content="编写技巧">
+<meta property="og:description" content="编写技巧  1234import torchfrom einops import rearrange,reduce,repeatimport torch.nn.functional as Fx &#x3D; torch.randn(2,2,4,4) # 4D tensor bs*ic*h*w 1 rearrange 1.1 转置 1234# 转置out1 &#x3D; x.transpose(1,2)o">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304172006805.png">
 <meta property="article:published_time" content="2023-04-17T11:36:18.000Z">
-<meta property="article:modified_time" content="2023-04-17T13:04:16.320Z">
+<meta property="article:modified_time" content="2023-04-17T14:20:00.293Z">
 <meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
 <meta property="article:tag" content="tools">
@@ -353,7 +353,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">4字</span>
+        <span class="post-count">421字</span>
       </span>
     </span>
 
@@ -362,7 +362,7 @@ var _hmt = _hmt || [];
       <span class="post-meta-item-icon">
 	    <i class="fa fa-pagelines" aria-hidden="true"></i>
         <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
+        <span class="post-count">2min</span>
       </span>
     </span>
 	
@@ -380,6 +380,25 @@ var _hmt = _hmt || [];
 		  <figure>
 <img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304172006805.png" alt="编写技巧" /><figcaption aria-hidden="true">编写技巧</figcaption>
 </figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> einops <span class="keyword">import</span> rearrange,reduce,repeat</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line">x = torch.randn(<span class="number">2</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">4</span>) <span class="comment"># 4D tensor bs*ic*h*w</span></span><br></pre></td></tr></table></figure>
+<h2 id="rearrange">1 rearrange</h2>
+<h3 id="转置">1.1 转置</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 转置</span></span><br><span class="line">out1 = x.transpose(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">out2 = rearrange(x,<span class="string">&#x27;b i h w -&gt; b h i w&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(out1,out2))</span><br></pre></td></tr></table></figure>
+<h3 id="变形">1.2 变形</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 变形</span></span><br><span class="line">out1 = rearrange(x,<span class="string">&#x27;b i h w -&gt; (b i) h w&#x27;</span>)</span><br><span class="line">out2 = x.reshape(<span class="number">6</span>,<span class="number">4</span>,<span class="number">4</span>)</span><br><span class="line">out3 = rearrange(out2,<span class="string">&#x27;(b i) h w -&gt; b i h w&#x27;</span>,b=<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(out1,out2))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(out3,x))</span><br></pre></td></tr></table></figure>
+<h3 id="image2patch">1.3 image2patch</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># image2patch</span></span><br><span class="line">bs, ic, h, w = x.shape</span><br><span class="line">p = <span class="number">2</span></span><br><span class="line">out1 = rearrange(x,<span class="string">&#x27;b i (h1 p1) (w1 p2) -&gt; b (h1 w1) (i p1 p2)&#x27;</span>,p1=<span class="number">2</span>,p2=<span class="number">2</span>) <span class="comment"># p是patch的边长 [batchsize,num_patch,patch_depth]</span></span><br><span class="line">out2 = F.unfold(x, kernel_size=(p, p),stride=(p, p)).transpose(-<span class="number">1</span>, -<span class="number">2</span>)  <span class="comment"># [bs,num_patch,patch_depth]</span></span><br><span class="line"><span class="built_in">print</span>(torch.allclose(out1,out2))</span><br></pre></td></tr></table></figure>
+<h3 id="堆叠">1.4 堆叠</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 堆叠</span></span><br><span class="line"><span class="built_in">print</span>(bs,i,h,w) <span class="comment"># (2,2,4,4)</span></span><br><span class="line">tensor_list = [x,x,x] <span class="comment"># only in the form of einops</span></span><br><span class="line">out1 = rearrange(tensor_list,<span class="string">&#x27;n b i h w -&gt; n b i h w&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(out1.shape)</span><br><span class="line"></span><br><span class="line">y = torch.randn(<span class="number">1</span>,<span class="number">3</span>)</span><br><span class="line">out2 = y.repeat(bs,i,h,w).reshape(<span class="number">3</span>,bs,i,h,w)</span><br><span class="line"><span class="built_in">print</span>(out2.shape)</span><br></pre></td></tr></table></figure>
+<h2 id="reduce">2 reduce</h2>
+<h3 id="求平均池化">2.1 求平均池化</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 求平均池化</span></span><br><span class="line">out1 = reduce(x,<span class="string">&#x27;b i h w -&gt; b i h&#x27;</span>,<span class="string">&#x27;mean&#x27;</span>) <span class="comment"># mean, min, max, sum, prod</span></span><br><span class="line">out2 = torch.mean(x,(-<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(out1,out2))</span><br></pre></td></tr></table></figure>
+<h3 id="求和">2.2 求和</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 求和</span></span><br><span class="line">out1 = reduce(x,<span class="string">&#x27;b i h w -&gt; b i h 1&#x27;</span>,<span class="string">&#x27;sum&#x27;</span>) <span class="comment"># keep dimension</span></span><br><span class="line">out2 = torch.<span class="built_in">sum</span>(x,(-<span class="number">1</span>)).unsqueeze(-<span class="number">1</span>) </span><br><span class="line"><span class="built_in">print</span>(torch.allclose(out1,out2))</span><br></pre></td></tr></table></figure>
+<h3 id="多个维度操作">2.3 多个维度操作</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 多个维度操作</span></span><br><span class="line">b, i, h, w = x.shape</span><br><span class="line">out1 = reduce(x,<span class="string">&#x27;b i h w -&gt; b i&#x27;</span>,<span class="string">&#x27;max&#x27;</span>)</span><br><span class="line">out2 = torch.max_pool2d(x,(h,w)).reshape(b,i)</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(out1,out2))</span><br></pre></td></tr></table></figure>
+<h2 id="repeat">3 repeat</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复制</span></span><br><span class="line">out1 = rearrange(x,<span class="string">&#x27;b i h w -&gt; b i h w 1&#x27;</span>)</span><br><span class="line">out2 = repeat(out1,<span class="string">&#x27;b i h w 1 -&gt; b i (2 h) w 2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">out3 = torch.tile(out1,(<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,))</span><br><span class="line"><span class="built_in">print</span>(out2.shape)</span><br><span class="line"><span class="built_in">print</span>(out3.shape)</span><br></pre></td></tr></table></figure>
 
 				  
 	  
@@ -429,7 +448,7 @@ var _hmt = _hmt || [];
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年04月17日 21:04:16
+	2023年04月17日 22:20:00
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
@@ -571,7 +590,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              哦，目录不存在
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#rearrange"><span class="toc-number">1.</span> <span class="toc-text">1 rearrange</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 转置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E5%BD%A2"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 变形</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#image2patch"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 image2patch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E5%8F%A0"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 堆叠</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reduce"><span class="toc-number">2.</span> <span class="toc-text">2 reduce</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%82%E5%B9%B3%E5%9D%87%E6%B1%A0%E5%8C%96"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 求平均池化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%82%E5%92%8C"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 求和</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA%E7%BB%B4%E5%BA%A6%E6%93%8D%E4%BD%9C"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 多个维度操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#repeat"><span class="toc-number">3.</span> <span class="toc-text">3 repeat</span></a></li></ol>
             </div>
           </span>
         </div>
