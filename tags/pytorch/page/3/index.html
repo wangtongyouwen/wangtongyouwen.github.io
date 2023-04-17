@@ -7,26 +7,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="https://wangtongyowen.github.io">
-  <title>pytorch基础入门8-CONV层 | jyh blog</title>
+  <title>标签: pytorch | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="CONV2D torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride&#x3D;1, padding&#x3D;0, dilation&#x3D;1, groups&#x3D;1, bias&#x3D;True, padding_mode&#x3D;&#39;zeros&#39;, device&#x3D;None, dtype&#x3D;None)  in_channels (int) – Number of ch">
-<meta property="og:type" content="article">
-<meta property="og:title" content="pytorch基础入门8-CONV层">
-<meta property="og:url" content="https://wangtongyowen.github.io/post/2d27b0da.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="jyh blog">
+<meta property="og:url" content="https://wangtongyowen.github.io/tags/pytorch/page/3/index.html">
 <meta property="og:site_name" content="jyh blog">
-<meta property="og:description" content="CONV2D torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride&#x3D;1, padding&#x3D;0, dilation&#x3D;1, groups&#x3D;1, bias&#x3D;True, padding_mode&#x3D;&#39;zeros&#39;, device&#x3D;None, dtype&#x3D;None)  in_channels (int) – Number of ch">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081528114.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081948885.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081955360.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304082032487.png">
-<meta property="article:published_time" content="2023-04-08T07:26:00.000Z">
-<meta property="article:modified_time" content="2023-04-17T12:55:41.594Z">
 <meta property="article:author" content="jyh">
-<meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081528114.png">
   
   
     <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
@@ -287,196 +277,51 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-pytorch基础入门8-CONV层" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
+            
+  
+  
     
-      <header class="article-header">
-        
-  
-    <h1 class="article-title_code_ant" itemprop="name">
-	  <a href="/post/2d27b0da.html">pytorch基础入门8-CONV层</a>
-	</h1>
-  
-
-        
-		
-		  <a href="/post/2d27b0da.html" class="archive-article-date">
-  	<time datetime="2023-04-08T07:26:00.000Z" itemprop="datePublished">
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2023" class="archive-year">2023</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/post/489d1269.html" class="archive-article-date">
+  	<time datetime="2023-04-05T05:29:58.000Z" itemprop="datePublished">
 	<!-- <i class="icon-calendar icon"></i> -->
 
 	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
 	&nbsp;
-	2023-04-08</time>
+	2023-04-05</time>
 	
 	<!-- busuanzi阅读量统计
-	
-	<span>
-		&nbsp; &nbsp; &nbsp;
-		<span class="post-meta-item-text">阅读量:</span>
-		<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
-		<span class="post-meta-item-text">次</span>
-	</span>
 	
 	-->
 	
     <!-- waline阅读量统计 -->
 	
-	<span>
-		&nbsp; &nbsp; &nbsp;
-		<i class="fa fa-eye" aria-hidden="true"></i>
-		&nbsp;
-		<span class="waline-pageview-count" data-path="/post/2d27b0da.html"><i class="fa fa-spinner fa-spin"></i></span>
-	</span>
-	
 
 </a>
 
 
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">487字</span>
-      </span>
-    </span>
+        </div>
+    	 
+  
+    <h2 itemprop="name">
+      <a class="archive-article-title" href="/post/489d1269.html">pytorch基础入门1-张量运算</a>
+    </h2>
+  
 
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">2min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <h1 id="conv2d">CONV2D</h1>
-<p>torch.nn.Conv2d(<em>in_channels</em>, <em>out_channels</em>, <em>kernel_size</em>, <em>stride=1</em>, <em>padding=0</em>, <em>dilation=1</em>, <em>groups=1</em>, <em>bias=True</em>, <em>padding_mode='zeros'</em>, <em>device=None</em>, <em>dtype=None</em>)</p>
-<ul>
-<li><strong>in_channels</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a>) – Number of channels in the input image</li>
-<li><strong>out_channels</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a>) – Number of channels produced by the convolution</li>
-<li><strong>kernel_size</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a>) – Size of the convolving kernel</li>
-<li><strong>stride</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a><em>,</em> <em>optional</em>) – Stride of the convolution. Default: 1</li>
-<li><strong>padding</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a><em>,</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str"><em>str</em></a><em>,</em> <em>optional</em>) – Padding added to all four sides of the input. Default: 0</li>
-<li><strong>padding_mode</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str"><em>str</em></a><em>,</em> <em>optional</em>) – <code>'zeros'</code>, <code>'reflect'</code>, <code>'replicate'</code> or <code>'circular'</code>. Default: <code>'zeros'</code></li>
-<li><strong>dilation</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a><em>,</em> <em>optional</em>) – Spacing between kernel elements. Default: 1</li>
-<li><strong>groups</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a><em>,</em> <em>optional</em>) – Number of blocked connections from input channels to output channels. Default: 1</li>
-<li><strong>bias</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#bool"><em>bool</em></a><em>,</em> <em>optional</em>) – If <code>True</code>, adds a learnable bias to the output. Default: <code>True</code></li>
-</ul>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081528114.png" alt="image-20230408152839156" style="zoom:80%;" /></p>
-<h1 id="conv_residual_block_fusion">conv_residual_block_fusion</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line">in_channels = <span class="number">2</span></span><br><span class="line">out_channels = <span class="number">2</span></span><br><span class="line">kernel_size = <span class="number">3</span></span><br><span class="line">w = <span class="number">9</span></span><br><span class="line">h = <span class="number">9</span></span><br><span class="line"><span class="comment"># res_block = 3*3 conv + 1*1 conv + input</span></span><br><span class="line">x = torch.ones(<span class="number">1</span>,in_channels,w,h) <span class="comment"># 输入图片大小</span></span><br><span class="line"><span class="comment"># 方法1：原生写法</span></span><br><span class="line">conv_2d = nn.Conv2d(in_channels,out_channels,kernel_size,padding=<span class="string">&quot;same&quot;</span>)</span><br><span class="line">conv_2d_pointwise = nn.Conv2d(in_channels,out_channels,<span class="number">1</span>)</span><br><span class="line">result1 = conv_2d(x) + conv_2d_pointwise(x) + x</span><br><span class="line"><span class="comment"># print(result1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法2：算子融合</span></span><br><span class="line"><span class="comment"># 把point-wise卷积核x本身都写成3*3卷积</span></span><br><span class="line"><span class="comment"># 最终把三个卷积写成一个卷积</span></span><br><span class="line"><span class="comment"># 1*1 -&gt; 3*3</span></span><br><span class="line"><span class="comment"># 1.改造</span></span><br><span class="line">pointwise_to_conv_weight = F.pad(conv_2d_pointwise.weight,[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]) <span class="comment"># 2*2*1*1 -&gt; 2*2*3*3</span></span><br><span class="line">conv_2d_for_pointwise = nn.Conv2d(in_channels,out_channels,kernel_size,padding=<span class="string">&quot;same&quot;</span>)</span><br><span class="line">conv_2d_for_pointwise.weight = nn.Parameter(pointwise_to_conv_weight)</span><br><span class="line">conv_2d_for_pointwise.bias = nn.Parameter(conv_2d_pointwise.bias)</span><br><span class="line"><span class="comment"># x -&gt; 3*3</span></span><br><span class="line"><span class="comment"># 2*2*3*3</span></span><br><span class="line">zeros = torch.unsqueeze(torch.zeros(kernel_size,kernel_size),<span class="number">0</span>) <span class="comment"># 不考虑相邻通道的影响</span></span><br><span class="line">stars = torch.unsqueeze(F.pad(torch.ones(<span class="number">1</span>,<span class="number">1</span>),[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]),<span class="number">0</span>) <span class="comment"># 不考虑周围点的影响(1*1)</span></span><br><span class="line">stars_zeros = torch.unsqueeze(torch.cat([stars,zeros],<span class="number">0</span>),<span class="number">0</span>) <span class="comment"># 第一个输出通道</span></span><br><span class="line">zeros_stars = torch.unsqueeze(torch.cat([stars,zeros],<span class="number">0</span>),<span class="number">0</span>) <span class="comment"># 第二个输出通道</span></span><br><span class="line">identity_to_conv_weight = torch.cat([stars_zeros,zeros_stars],<span class="number">0</span>)  </span><br><span class="line">identity_to_conv_bias = torch.zeros([out_channels])</span><br><span class="line">conv_2d_for_identity = nn.Conv2d(in_channels,out_channels,kernel_size,padding=<span class="string">&quot;same&quot;</span>)</span><br><span class="line">conv_2d_for_identity.weight = nn.Parameter(identity_to_conv_weight)</span><br><span class="line">conv_2d_for_identity.bias = nn.Parameter(identity_to_conv_bias)</span><br><span class="line"></span><br><span class="line">result2 = conv_2d(x) + conv_2d_for_pointwise(x) + conv_2d_for_identity(x)</span><br><span class="line"><span class="comment"># print(result2)</span></span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">all</span>(torch.isclose(result1,result2)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.融合</span></span><br><span class="line">conv_2d_for_fusion = nn.Conv2d(in_channels,out_channels,kernel_size,padding=<span class="string">&quot;same&quot;</span>)</span><br><span class="line">conv_2d_for_fusion.weight = nn.Parameter(conv_2d.weight.data + conv_2d_for_pointwise.weight.data + conv_2d_for_identity.weight.data)</span><br><span class="line">conv_2d_for_fusion.bias = nn.Parameter(conv_2d.bias.data + conv_2d_for_pointwise.bias.data + conv_2d_for_identity.bias.data)</span><br><span class="line">result3 = conv_2d_for_fusion(x)</span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">all</span>(torch.isclose(result2,result3)))</span><br></pre></td></tr></table></figure>
-<p>算子融合能够提升速度。</p>
-<h1 id="convmixer-layer">ConvMixer Layer</h1>
-<p>https://arxiv.org/pdf/2201.09792.pdf</p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081948885.png" alt="image-20230408194824730" /><figcaption aria-hidden="true">image-20230408194824730</figcaption>
-</figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081955360.png" alt="image-20230408195505692" /><figcaption aria-hidden="true">image-20230408195505692</figcaption>
-</figure>
-<p>空间混合(depthwise)+通道混合(pointwise)</p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304082032487.png" alt="image-20230408203214916" /><figcaption aria-hidden="true">image-20230408203214916</figcaption>
-</figure>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-		<!-- reward type 1 -->
-		
-		
-		<!-- reward type 2 -->
-		
-		  <div id="reward-container">
-		    <span class="icon-cursor" title="打赏" id="reward-button"
-			  onclick='var qr = document.getElementById("qr"); qr.style.display = (qr.style.display === "none") ? "block" : "none";'
-			  ><a style="color:#fff;">赏</a></span>
-		    <div id="reward-comment"><i class="icon icon-quo-left"></i>&nbsp;感觉不错 支持一下&nbsp;<i class="icon icon-quo-right"></i></div>
-		  
-		    <div id="qr" style="display: none;">
-			  <div style="display:inline-block">
-			    <img loading="lazy" src="/img/alipay-min.png" alt="支付宝" title="支付宝"/>
-			    <div><span class="reward-type">支付宝</span></div>
-			  </div>
-			
-			  <div style="display:inline-block">
-			    <img loading="lazy" src="/img/wechatpay-min.png" alt="微信支付" title="微信支付"/>
-			    <div><span class="reward-type">微信</span></div>
-			  </div>
-		    </div>
-	      </div>
-	    
-      
-	
-	  <!-- 添加版权声明 -->
-      
-        <!-- 添加版权声明 -->
-<!--https://blog.csdn.net/weixin_41287260/article/details/103050336-->
-
-<div class="declare">
-	<strong class="author">本文作者：</strong>
-	
-	  jyh
-	
-	
-	<!-- <br>
-	<strong class="create-time">发布时间：</strong>
-	2023-04-08 -->
-	
-	<br>
-	<strong class="update-time">最后更新：</strong>
-	2023年04月17日 20:55:41
-	
-	<!-- <br>
-	<strong class="article-titles">本文标题：</strong>
-	<a href="https://wangtongyowen.github.io/post/2d27b0da.html" title="pytorch基础入门8-CONV层" target="_blank">pytorch基础入门8-CONV层</a> -->
-	
-	<br>
-	<strong class="article-url">本文链接：</strong>
-	<a href="https://wangtongyowen.github.io/post/2d27b0da.html" title="pytorch基础入门8-CONV层" target="_blank">https://wangtongyowen.github.io/post/2d27b0da.html</a>
-	
-	<br>
-	<strong class="copyright">版权声明：</strong>
-	本作品采用
-	<a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
-	许可协议进行许可，转载请注明出处！
-	
-	
-</div>
-<!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -488,198 +333,60 @@ var _hmt = _hmt || [];
 		</ul>
 	</div>
 
-      
+          
 
-	  
-	  <!-- 添加展开全文 -->
-      
-	  
-	  <!-- 添加分享 -->
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyowen.github.io/post/2d27b0da.html" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-
-  
-<nav id="article-nav">
-  
-    <a href="/post/c9ccea0.html" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          pytorch基础入门9-transformer
-        
-      </div>
-    </a>
   
   
-    <a href="/post/6ae9c33a.html" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">pytorch基础入门7-dropout</div>
-      <i class="icon-circle-right"></i>
-    </a>
+    </div></section>
   
-</nav>
 
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
     
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-      <div class="toc-container tooltip-left">
-        <i class="icon-font icon-category"></i>
-        <div class="tooltip tooltip-east">
-          <span class="tooltip-item"></span>
-          <span class="tooltip-content">
-			<span style="font-size: 20px;font-weight: bold;">目录</span>
-            <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#conv2d"><span class="toc-number">1.</span> <span class="toc-text">CONV2D</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#conv_residual_block_fusion"><span class="toc-number">2.</span> <span class="toc-text">conv_residual_block_fusion</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#convmixer-layer"><span class="toc-number">3.</span> <span class="toc-text">ConvMixer Layer</span></a></li></ol>
-            </div>
-          </span>
-        </div>
-      </div>
-	
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/tags/pytorch/page/2/">&lt;&lt; 上一页</a><a class="page-number" href="/tags/pytorch/">1</a><a class="page-number" href="/tags/pytorch/page/2/">2</a><span class="page-number current">3</span>
+    </nav>
   
-  <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
-<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet' />
 
-<div id="waline"></div>
+
+
+<!-- 主页添加mathjax公式 -->
+
+  <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
 <script>
-	// 中文默认
-	const locale = {
-	  nick: ' 昵称: ',
-	  nickError: '昵称不能少于3个字符',
-	  mail: '邮箱: ',
-	  mailError: '请填写正确的邮件地址',
-	  link: '网址: ',
-	  placeholder: ' 客官留个言吧(◕ˇ∀ˇ◕)',
-	  sofa: '评论区空空荡荡，客官快来评论吧~',
-	  submit: '提交',
-	  reply: '回复',
-	  cancelReply: '取消回复',
-	  comment: '评论',
-	  more: '加载更多...',
-	  preview: '预览',
-	  emoji: '表情',
-	  uploadImage: '上传图片',
-	  seconds: '秒前',
-	  minutes: '分钟前',
-	  hours: '小时前',
-	  days: '天前',
-	  now: '刚刚',
-	  uploading: '正在上传',
-	  login: '登录',
-	  logout: '退出',
-	  admin: '博主',
-	  word: '字',
-	  wordHint: '评论字数应在 $0 到 $1 字之间！\n当前字数：$2',
-	};
-
-	Waline.init({
-	  el: '#waline',
-	  serverURL: 'your_waline_comments_url',
-	  locale,
-	  login: 'enable',
-	  lang: 'zh-CN ',
-	  dark: '',
-	  // 设置 emoji 为微博与哔哩哔哩
-	  emoji: [
-		'https://unpkg.com/@waline/emojis@1.1.0/weibo',
-		'https://unpkg.com/@waline/emojis@1.1.0/bilibili',
-	  ],
-	  wordLimit: 0,
-	  pageSize: 10,
-	  imageUploader: false,
-	  pageview: true,
-	  meta: ['nick', 'mail', 'link'],  //评论者相关属性，默认['nick', 'mail', 'link'],
-	  requiredMeta: ['nick'], //设置评论者属性必填项，默认[]（即匿名）
-	});
+window.MathJax = {
+  tex: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true
+  },
+  chtml: {
+    scale: 1,                      // global scaling factor for all expressions
+    minScale: .5,                  // smallest scaling factor to use
+    mtextInheritFont: false,       // true to make mtext elements use surrounding font
+    merrorInheritFont: false,      // true to make merror text use surrounding font
+    mtextFont: '',                 // font to use for mtext, if not inheriting (empty means use MathJax fonts)
+    merrorFont: 'serif',           // font to use for merror, if not inheriting (empty means use MathJax fonts)
+    unknownFamily: 'serif',        // font to use for character that aren't in MathJax's fonts
+    mathmlSpacing: false,          // true for MathML spacing rules, false for TeX rules
+    skipAttributes: {},            // RFDa and other attributes NOT to copy to the output
+    exFactor: .5,                  // default size of ex in em units
+    displayAlign: 'center',        // default for indentalign when set to 'auto'
+    displayIndent: '0'             // default for indentshift when set to 'auto'
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+};
 </script>
-  
-  
-  
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 
-  
-
-  
-
-  
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
+<!-- 主页添加mathjax公式 -->
           </div>
         </div>
       </div>
@@ -689,9 +396,9 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: false,

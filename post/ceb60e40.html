@@ -6,29 +6,30 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
-  <link rel="dns-prefetch" href="http://example.com">
-  <title>pytorch项目2-基于GCN(DNN)的文本分类模型(GPU) | Hexo</title>
+  <link rel="dns-prefetch" href="https://wangtongyowen.github.io">
+  <title>pytorch项目2-基于GCN(DNN)的文本分类模型(GPU) | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="https:&#x2F;&#x2F;pytorch.org&#x2F;tutorials&#x2F;distributed&#x2F;home.html  1 单机单卡在 main 函数前加入： 12345if torch.cuda.is_available():    logging.warning(&quot;Cuda is available!&quot;)    os.environ[&quot;CUDA_VISIBLE_DEVICES&amp;">
+  <meta name="description" content="https:&#x2F;&#x2F;pytorch.org&#x2F;tutorials&#x2F;distributed&#x2F;home.html  image-20230415200908110  1 单机单卡 在 main 函数前加入： 12345if torch.cuda.is_available():    logging.warning(&quot;Cuda is available!&quot;)    os.env">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pytorch项目2-基于GCN(DNN)的文本分类模型(GPU)">
-<meta property="og:url" content="http://example.com/post/ceb60e40.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="https:&#x2F;&#x2F;pytorch.org&#x2F;tutorials&#x2F;distributed&#x2F;home.html  1 单机单卡在 main 函数前加入： 12345if torch.cuda.is_available():    logging.warning(&quot;Cuda is available!&quot;)    os.environ[&quot;CUDA_VISIBLE_DEVICES&amp;">
+<meta property="og:url" content="https://wangtongyowen.github.io/post/ceb60e40.html">
+<meta property="og:site_name" content="jyh blog">
+<meta property="og:description" content="https:&#x2F;&#x2F;pytorch.org&#x2F;tutorials&#x2F;distributed&#x2F;home.html  image-20230415200908110  1 单机单卡 在 main 函数前加入： 12345if torch.cuda.is_available():    logging.warning(&quot;Cuda is available!&quot;)    os.env">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304152009298.png">
 <meta property="og:image" content="c:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20230415211135334.png">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304152228839.png">
 <meta property="article:published_time" content="2023-04-15T11:19:44.000Z">
-<meta property="article:modified_time" content="2023-04-15T14:34:00.601Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2023-04-17T12:56:58.717Z">
+<meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="project">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304152009298.png">
   
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
   
   
     <link rel="icon" type="image/x-icon" href="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051210238.jpg">
@@ -354,7 +355,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">570字</span>
+        <span class="post-count">581字</span>
       </span>
     </span>
 
@@ -378,44 +379,51 @@ var _hmt = _hmt || [];
 	  <!-- 添加分类与标签 -->
 	  
 		  
-		  <p><a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/distributed/home.html">https://pytorch.org/tutorials/distributed/home.html</a></p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304152009298.png" alt="image-20230415200908110"></p>
-<h2 id="1-单机单卡"><a href="#1-单机单卡" class="headerlink" title="1 单机单卡"></a>1 单机单卡</h2><p>在 main 函数前加入：</p>
+		  <p>https://pytorch.org/tutorials/distributed/home.html</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304152009298.png" alt="image-20230415200908110" /><figcaption aria-hidden="true">image-20230415200908110</figcaption>
+</figure>
+<h2 id="单机单卡">1 单机单卡</h2>
+<p>在 main 函数前加入：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> torch.cuda.is_available():</span><br><span class="line">    logging.warning(<span class="string">&quot;Cuda is available!&quot;</span>)</span><br><span class="line">    os.environ[<span class="string">&quot;CUDA_VISIBLE_DEVICES&quot;</span>] = <span class="string">&quot;0&quot;</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    logging.warning(<span class="string">&quot;Cuda is not available! Exit!&quot;</span>)</span><br></pre></td></tr></table></figure>
-
 <p>在train函数中，第一次调用模型的地方加入：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.cuda() <span class="comment"># 拷贝到GPU上，模型拷贝</span></span><br></pre></td></tr></table></figure>
-
 <p>在train函数中，每次使用到数据的地方加入(train and eval)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">token_index = token_index.cuda()  <span class="comment"># tensor cuda拷贝方法,数据拷贝</span></span><br><span class="line">target = target.cuda() <span class="comment"># 数据拷贝</span></span><br><span class="line">eval_target = eval_target.cuda()  <span class="comment"># tensor cuda拷贝方法,数据拷贝</span></span><br><span class="line">eval_token_index = eval_token_index.cuda()  <span class="comment"># 数据拷贝</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-单机多卡"><a href="#2-单机多卡" class="headerlink" title="2 单机多卡"></a>2 单机多卡</h2><p>在 main 函数前加入：</p>
+<h2 id="单机多卡">2 单机多卡</h2>
+<p>在 main 函数前加入：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> torch.cuda.is_available():</span><br><span class="line">    logging.warning(<span class="string">&quot;Cuda is available!&quot;</span>)</span><br><span class="line">    os.environ[<span class="string">&quot;CUDA_VISIBLE_DEVICES&quot;</span>] = <span class="string">&quot;0&quot;</span></span><br><span class="line">    <span class="keyword">if</span> torch.cuda.device_count() &gt; <span class="number">1</span>:</span><br><span class="line">        logging.warning(<span class="string">f&quot;find <span class="subst">&#123;torch.cuda.device_count()&#125;</span> GPUs!&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        logging.warning(<span class="string">&quot;Too few GPU!&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    logging.warning(<span class="string">&quot;Cuda is not available! Exit!&quot;</span>)</span><br></pre></td></tr></table></figure>
-
 <p>在train函数中，第一次调用模型的地方加入：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = nn.DataParallel(model.cuda(),device_ids=[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]) <span class="comment"># 拷贝到GPU上，模型拷贝,放入DataParallel</span></span><br></pre></td></tr></table></figure>
-
 <p>在模型的保存中，修改为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> step % save_step_interval == <span class="number">0</span>:</span><br><span class="line">    os.makedirs(save_path, exist_ok=<span class="literal">True</span>)</span><br><span class="line">    save_file = os.path.join(save_path, <span class="string">f&quot;step_<span class="subst">&#123;step&#125;</span>.pt&quot;</span>)</span><br><span class="line">    torch.save(&#123;</span><br><span class="line">		...</span><br><span class="line">        <span class="string">&quot;model_state_dict&quot;</span>: model.module.state_dict(),</span><br><span class="line">		...</span><br><span class="line">    &#125;, save_file)</span><br><span class="line">    logging.warning(<span class="string">f&quot;checkpoint has been saved in <span class="subst">&#123;save_path&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-
 <p>这种方式更加合理：</p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20230415211135334.png" alt="image-20230415211135334"></p>
-<h3 id="2-1-init-process-group"><a href="#2-1-init-process-group" class="headerlink" title="2.1 init_process_group"></a>2.1 init_process_group</h3><p>This sets up the communication backend for distributed training (such as NCCL, Gloo, etc.) and initializes the process group.</p>
-<h4 id="2-1-1-nccl"><a href="#2-1-1-nccl" class="headerlink" title="2.1.1 nccl"></a>2.1.1 nccl</h4><p><a target="_blank" rel="noopener" href="https://developer.nvidia.com/nccl">https://developer.nvidia.com/nccl</a></p>
-<h4 id="2-1-2-world-size"><a href="#2-1-2-world-size" class="headerlink" title="2.1.2 world_size"></a>2.1.2 world_size</h4><p>当前节点上有多少张GPU</p>
-<h4 id="2-1-3-local-rank"><a href="#2-1-3-local-rank" class="headerlink" title="2.1.3 local_rank"></a>2.1.3 local_rank</h4><p>当前进程在某张确定的GPU卡上(因为这里采用了多线程，每个线程表示一张GPU)</p>
-<h3 id="2-2-torch-cuda-set-device-args-local-rank"><a href="#2-2-torch-cuda-set-device-args-local-rank" class="headerlink" title="2.2 torch.cuda.set_device(args.local_rank)"></a>2.2 torch.cuda.set_device(args.local_rank)</h3><p>设定某张卡进行训练</p>
-<h3 id="2-3-对模型进行包裹"><a href="#2-3-对模型进行包裹" class="headerlink" title="2.3 对模型进行包裹"></a>2.3 对模型进行包裹</h3><p>类似DataParallel中的操作</p>
-<h3 id="2-4-train-sampler"><a href="#2-4-train-sampler" class="headerlink" title="2.4 train_sampler"></a>2.4 train_sampler</h3><p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/_modules/torch/utils/data/distributed.html#DistributedSampler">https://pytorch.org/docs/stable/_modules/torch/utils/data/distributed.html#DistributedSampler</a></p>
+<figure>
+<img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20230415211135334.png" alt="image-20230415211135334" /><figcaption aria-hidden="true">image-20230415211135334</figcaption>
+</figure>
+<h3 id="init_process_group">2.1 init_process_group</h3>
+<p>This sets up the communication backend for distributed training (such as NCCL, Gloo, etc.) and initializes the process group.</p>
+<h4 id="nccl">2.1.1 nccl</h4>
+<p>https://developer.nvidia.com/nccl</p>
+<h4 id="world_size">2.1.2 world_size</h4>
+<p>当前节点上有多少张GPU</p>
+<h4 id="local_rank">2.1.3 local_rank</h4>
+<p>当前进程在某张确定的GPU卡上(因为这里采用了多线程，每个线程表示一张GPU)</p>
+<h3 id="torch.cuda.set_deviceargs.local_rank">2.2 torch.cuda.set_device(args.local_rank)</h3>
+<p>设定某张卡进行训练</p>
+<h3 id="对模型进行包裹">2.3 对模型进行包裹</h3>
+<p>类似DataParallel中的操作</p>
+<h3 id="train_sampler">2.4 train_sampler</h3>
+<p>https://pytorch.org/docs/stable/_modules/torch/utils/data/distributed.html#DistributedSampler</p>
 <p>把dataset中的样本分配当不同的GPU上面，这是随机分配的</p>
 <p>It is especially useful in <strong>conjunction</strong> with class:torch.nn.parallel.<strong>DistributedDataParallel</strong></p>
 <p>每张卡上面的参数的总数量：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.num_samples = math.ceil(<span class="built_in">len</span>(self.dataset) / self.num_replicas)  <span class="comment"># type: ignore[arg-<span class="built_in">type</span>]</span></span><br></pre></td></tr></table></figure>
-
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>) -&gt; Iterator[T_co]:</span><br><span class="line">        <span class="keyword">if</span> self.shuffle:</span><br><span class="line">            <span class="comment"># deterministically shuffle based on epoch and seed</span></span><br><span class="line">            g = torch.Generator()</span><br><span class="line">            g.manual_seed(self.seed + self.epoch)  <span class="comment"># 不改变种子和epoch，顺序是相同的(显然不合理)</span></span><br><span class="line">            indices = torch.randperm(<span class="built_in">len</span>(self.dataset), generator=g).tolist()  <span class="comment"># type: </span></span><br></pre></td></tr></table></figure>
-
 <p>显然在需要在每个训练之前对此进行修改，调用sampler.set_epoch方法，把epoch传入进来。</p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304152228839.png" alt="image-20230415222851173"></p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304152228839.png" alt="image-20230415222851173" /><figcaption aria-hidden="true">image-20230415222851173</figcaption>
+</figure>
 
 				  
 	  
@@ -456,7 +464,7 @@ var _hmt = _hmt || [];
 <div class="declare">
 	<strong class="author">本文作者：</strong>
 	
-	  John Doe
+	  jyh
 	
 	
 	<!-- <br>
@@ -465,15 +473,15 @@ var _hmt = _hmt || [];
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年04月15日 22:34:00
+	2023年04月17日 20:56:58
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="http://example.com/post/ceb60e40.html" title="pytorch项目2-基于GCN(DNN)的文本分类模型(GPU)" target="_blank">pytorch项目2-基于GCN(DNN)的文本分类模型(GPU)</a> -->
+	<a href="https://wangtongyowen.github.io/post/ceb60e40.html" title="pytorch项目2-基于GCN(DNN)的文本分类模型(GPU)" target="_blank">pytorch项目2-基于GCN(DNN)的文本分类模型(GPU)</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="http://example.com/post/ceb60e40.html" title="pytorch项目2-基于GCN(DNN)的文本分类模型(GPU)" target="_blank">http://example.com/post/ceb60e40.html</a>
+	<a href="https://wangtongyowen.github.io/post/ceb60e40.html" title="pytorch项目2-基于GCN(DNN)的文本分类模型(GPU)" target="_blank">https://wangtongyowen.github.io/post/ceb60e40.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -500,6 +508,10 @@ var _hmt = _hmt || [];
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">project</a>
         		</li>
       		
 		</ul>
@@ -558,7 +570,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/ceb60e40.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyowen.github.io/post/ceb60e40.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -612,7 +624,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8D%95%E6%9C%BA%E5%8D%95%E5%8D%A1"><span class="toc-number">1.</span> <span class="toc-text">1 单机单卡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%8D%95%E6%9C%BA%E5%A4%9A%E5%8D%A1"><span class="toc-number">2.</span> <span class="toc-text">2 单机多卡</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-init-process-group"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 init_process_group</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-1-nccl"><span class="toc-number">2.1.1.</span> <span class="toc-text">2.1.1 nccl</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-world-size"><span class="toc-number">2.1.2.</span> <span class="toc-text">2.1.2 world_size</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-3-local-rank"><span class="toc-number">2.1.3.</span> <span class="toc-text">2.1.3 local_rank</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-torch-cuda-set-device-args-local-rank"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 torch.cuda.set_device(args.local_rank)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%AF%B9%E6%A8%A1%E5%9E%8B%E8%BF%9B%E8%A1%8C%E5%8C%85%E8%A3%B9"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 对模型进行包裹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-train-sampler"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 train_sampler</span></a></li></ol></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%9C%BA%E5%8D%95%E5%8D%A1"><span class="toc-number">1.</span> <span class="toc-text">1 单机单卡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%9C%BA%E5%A4%9A%E5%8D%A1"><span class="toc-number">2.</span> <span class="toc-text">2 单机多卡</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#init_process_group"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 init_process_group</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nccl"><span class="toc-number">2.1.1.</span> <span class="toc-text">2.1.1 nccl</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#world_size"><span class="toc-number">2.1.2.</span> <span class="toc-text">2.1.2 world_size</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#local_rank"><span class="toc-number">2.1.3.</span> <span class="toc-text">2.1.3 local_rank</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#torch.cuda.set_deviceargs.local_rank"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 torch.cuda.set_device(args.local_rank)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%A8%A1%E5%9E%8B%E8%BF%9B%E8%A1%8C%E5%8C%85%E8%A3%B9"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 对模型进行包裹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#train_sampler"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 train_sampler</span></a></li></ol></li></ol>
             </div>
           </span>
         </div>
@@ -821,6 +833,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">project</a>
               </li>
              
               <li class="article-tag-list-item">

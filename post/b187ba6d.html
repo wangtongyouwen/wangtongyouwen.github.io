@@ -6,28 +6,28 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
-  <link rel="dns-prefetch" href="http://example.com">
-  <title>pytorch实用工具1-网络可视化 | Hexo</title>
+  <link rel="dns-prefetch" href="https://wangtongyowen.github.io">
+  <title>pytorch实用工具1-网络可视化 | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="1 torchsummary1234567from torchsummary import summaryfrom torchvision.models import vgg16  # 以 vgg16 为例import torchmyNet &#x3D; vgg16()  # 实例化网络，可以换成自己的网络device &#x3D; torch.device(&quot;cuda&quot; if torch.cud">
+  <meta name="description" content="1 torchsummary 1234567from torchsummary import summaryfrom torchvision.models import vgg16  # 以 vgg16 为例import torchmyNet &#x3D; vgg16()  # 实例化网络，可以换成自己的网络device &#x3D; torch.device(&quot;cuda&quot; if torch.c">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pytorch实用工具1-网络可视化">
-<meta property="og:url" content="http://example.com/post/b187ba6d.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1 torchsummary1234567from torchsummary import summaryfrom torchvision.models import vgg16  # 以 vgg16 为例import torchmyNet &#x3D; vgg16()  # 实例化网络，可以换成自己的网络device &#x3D; torch.device(&quot;cuda&quot; if torch.cud">
+<meta property="og:url" content="https://wangtongyowen.github.io/post/b187ba6d.html">
+<meta property="og:site_name" content="jyh blog">
+<meta property="og:description" content="1 torchsummary 1234567from torchsummary import summaryfrom torchvision.models import vgg16  # 以 vgg16 为例import torchmyNet &#x3D; vgg16()  # 实例化网络，可以换成自己的网络device &#x3D; torch.device(&quot;cuda&quot; if torch.c">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20210706174457451.png#pic_center">
 <meta property="article:published_time" content="2023-04-06T03:46:15.000Z">
-<meta property="article:modified_time" content="2023-04-16T15:20:10.503Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2023-04-17T12:53:39.630Z">
+<meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
 <meta property="article:tag" content="tools">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://img-blog.csdnimg.cn/20210706174457451.png#pic_center">
   
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
   
   
     <link rel="icon" type="image/x-icon" href="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051210238.jpg">
@@ -344,7 +344,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">440字</span>
+        <span class="post-count">444字</span>
       </span>
     </span>
 
@@ -368,25 +368,23 @@ var _hmt = _hmt || [];
 	  <!-- 添加分类与标签 -->
 	  
 		  
-		  <h2 id="1-torchsummary"><a href="#1-torchsummary" class="headerlink" title="1 torchsummary"></a>1 torchsummary</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torchsummary <span class="keyword">import</span> summary</span><br><span class="line"><span class="keyword">from</span> torchvision.models <span class="keyword">import</span> vgg16  <span class="comment"># 以 vgg16 为例</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">myNet = vgg16()  <span class="comment"># 实例化网络，可以换成自己的网络</span></span><br><span class="line">device = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line">myNet.to(device)</span><br><span class="line">summary(myNet, (<span class="number">1</span>,<span class="number">3</span>, <span class="number">64</span>, <span class="number">64</span>))  <span class="comment"># 输出网络结构</span></span><br></pre></td></tr></table></figure>
-
+		  <h2 id="torchsummary">1 torchsummary</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torchsummary <span class="keyword">import</span> summary</span><br><span class="line"><span class="keyword">from</span> torchvision.models <span class="keyword">import</span> vgg16  <span class="comment"># 以 vgg16 为例</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">myNet = vgg16()  <span class="comment"># 实例化网络，可以换成自己的网络</span></span><br><span class="line">device = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line">myNet.to(device)</span><br><span class="line">summary(myNet, (<span class="number">1</span>,<span class="number">3</span>, <span class="number">64</span>, <span class="number">64</span>))  <span class="comment"># 输出网络结构</span></span><br></pre></td></tr></table></figure>
 <p>可以看出，torchsummary 不仅可以查看网络的顺序结构，还有网络参数量，网络模型大小等信息，非常实用。</p>
-<h2 id="2-graphviz-torchviz"><a href="#2-graphviz-torchviz" class="headerlink" title="2 graphviz + torchviz"></a>2 graphviz + torchviz</h2><p>首先下载graphviz，并将其加入到环境变量中</p>
-<p><a target="_blank" rel="noopener" href="https://www2.graphviz.org/Packages/stable/windows/10/cmake/Release/x64/">https://www2.graphviz.org/Packages/stable/windows/10/cmake/Release/x64/</a></p>
-<p><img src="https://img-blog.csdnimg.cn/20210706174457451.png#pic_center" alt="img"></p>
+<h2 id="graphviz-torchviz">2 graphviz + torchviz</h2>
+<p>首先下载graphviz，并将其加入到环境变量中</p>
+<p>https://www2.graphviz.org/Packages/stable/windows/10/cmake/Release/x64/</p>
+<figure>
+<img src="https://img-blog.csdnimg.cn/20210706174457451.png#pic_center" alt="img" /><figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>接下来安装工具</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda install alubbock pygraphviz</span><br><span class="line">pip install torchviz</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torchviz <span class="keyword">import</span> make_dot</span><br><span class="line"><span class="keyword">from</span> torchvision.models <span class="keyword">import</span> vgg16  <span class="comment"># 以 vgg16 为例</span></span><br><span class="line"></span><br><span class="line">x = torch.randn(<span class="number">4</span>, <span class="number">3</span>, <span class="number">32</span>, <span class="number">32</span>)  <span class="comment"># 随机生成一个张量</span></span><br><span class="line">model = vgg16()  <span class="comment"># 实例化 vgg16，网络可以改成自己的网络</span></span><br><span class="line">out = model(x)   <span class="comment"># 将 x 输入网络</span></span><br><span class="line">g = make_dot(out)  <span class="comment"># 实例化 make_dot</span></span><br><span class="line">g.view()  <span class="comment"># 直接在当前路径下保存 pdf 并打开</span></span><br><span class="line"><span class="comment"># g.render(filename=&#x27;netStructure/myNetModel&#x27;, view=False, format=&#x27;pdf&#x27;)  # 保存 pdf 到指定路径不打开</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="3-netron"><a href="#3-netron" class="headerlink" title="3 netron"></a>3 netron</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install netron</span><br></pre></td></tr></table></figure>
-
+<h2 id="netron">3 netron</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install netron</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 针对有网络模型，但还没有训练保存 .pth 文件的情况</span></span><br><span class="line"><span class="keyword">import</span> netron</span><br><span class="line"><span class="keyword">import</span> torch.onnx</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"><span class="keyword">from</span> torchvision.models <span class="keyword">import</span> resnet18  <span class="comment"># 以 resnet18 为例</span></span><br><span class="line"></span><br><span class="line">myNet = resnet18()  <span class="comment"># 实例化 resnet18</span></span><br><span class="line">x = torch.randn(<span class="number">16</span>, <span class="number">3</span>, <span class="number">40</span>, <span class="number">40</span>)  <span class="comment"># 随机生成一个输入</span></span><br><span class="line">modelData = <span class="string">&quot;./demo.pth&quot;</span>  <span class="comment"># 定义模型数据保存的路径</span></span><br><span class="line"><span class="comment"># modelData = &quot;./demo.onnx&quot;  # 有人说应该是 onnx 文件，但我尝试 pth 是可以的 </span></span><br><span class="line">torch.onnx.export(myNet, x, modelData)  <span class="comment"># 将 pytorch 模型以 onnx 格式导出并保存</span></span><br><span class="line">netron.start(modelData)  <span class="comment"># 输出网络结构</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  针对已经存在网络模型 .pth 文件的情况</span></span><br><span class="line"><span class="keyword">import</span> netron</span><br><span class="line"></span><br><span class="line">modelData = <span class="string">&quot;./demo.pth&quot;</span>  <span class="comment"># 定义模型数据保存的路径</span></span><br><span class="line">netron.start(modelData)  <span class="comment"># 输出网络结构</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="4-python-代码"><a href="#4-python-代码" class="headerlink" title="4 python 代码"></a>4 python 代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_n_params</span>(<span class="params">model</span>):</span><br><span class="line">    pp = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> <span class="built_in">list</span>(model.parameters()):</span><br><span class="line">        nn = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> s <span class="keyword">in</span> <span class="built_in">list</span>(p.size()):</span><br><span class="line">            nn = nn * s</span><br><span class="line">        pp += nn</span><br><span class="line">    <span class="keyword">return</span> pp</span><br></pre></td></tr></table></figure>
-
+<h2 id="python-代码">4 python 代码</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_n_params</span>(<span class="params">model</span>):</span><br><span class="line">    pp = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> <span class="built_in">list</span>(model.parameters()):</span><br><span class="line">        nn = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> s <span class="keyword">in</span> <span class="built_in">list</span>(p.size()):</span><br><span class="line">            nn = nn * s</span><br><span class="line">        pp += nn</span><br><span class="line">    <span class="keyword">return</span> pp</span><br></pre></td></tr></table></figure>
 
 				  
 	  
@@ -427,7 +425,7 @@ var _hmt = _hmt || [];
 <div class="declare">
 	<strong class="author">本文作者：</strong>
 	
-	  John Doe
+	  jyh
 	
 	
 	<!-- <br>
@@ -436,15 +434,15 @@ var _hmt = _hmt || [];
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年04月16日 23:20:10
+	2023年04月17日 20:53:39
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="http://example.com/post/b187ba6d.html" title="pytorch实用工具1-网络可视化" target="_blank">pytorch实用工具1-网络可视化</a> -->
+	<a href="https://wangtongyowen.github.io/post/b187ba6d.html" title="pytorch实用工具1-网络可视化" target="_blank">pytorch实用工具1-网络可视化</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="http://example.com/post/b187ba6d.html" title="pytorch实用工具1-网络可视化" target="_blank">http://example.com/post/b187ba6d.html</a>
+	<a href="https://wangtongyowen.github.io/post/b187ba6d.html" title="pytorch实用工具1-网络可视化" target="_blank">https://wangtongyowen.github.io/post/b187ba6d.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -533,7 +531,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/b187ba6d.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyowen.github.io/post/b187ba6d.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -587,7 +585,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-torchsummary"><span class="toc-number">1.</span> <span class="toc-text">1 torchsummary</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-graphviz-torchviz"><span class="toc-number">2.</span> <span class="toc-text">2 graphviz + torchviz</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-netron"><span class="toc-number">3.</span> <span class="toc-text">3 netron</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-python-%E4%BB%A3%E7%A0%81"><span class="toc-number">4.</span> <span class="toc-text">4 python 代码</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#torchsummary"><span class="toc-number">1.</span> <span class="toc-text">1 torchsummary</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#graphviz-torchviz"><span class="toc-number">2.</span> <span class="toc-text">2 graphviz + torchviz</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#netron"><span class="toc-number">3.</span> <span class="toc-text">3 netron</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E4%BB%A3%E7%A0%81"><span class="toc-number">4.</span> <span class="toc-text">4 python 代码</span></a></li></ol>
             </div>
           </span>
         </div>
@@ -765,6 +763,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">project</a>
               </li>
              
               <li class="article-tag-list-item">

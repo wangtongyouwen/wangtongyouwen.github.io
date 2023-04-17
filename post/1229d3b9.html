@@ -6,28 +6,28 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
-  <link rel="dns-prefetch" href="http://example.com">
-  <title>pytorch基础知识11-ViT | Hexo</title>
+  <link rel="dns-prefetch" href="https://wangtongyowen.github.io">
+  <title>pytorch基础知识11-ViT | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2010.11929.pdf   We split an image into fixed-size patches, linearly embed each of them, add position e">
+  <meta name="description" content="AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2010.11929.pdf  We split an image into fixed-size patches, linearly embed each of them, add position">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pytorch基础知识11-ViT">
-<meta property="og:url" content="http://example.com/post/1229d3b9.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2010.11929.pdf   We split an image into fixed-size patches, linearly embed each of them, add position e">
+<meta property="og:url" content="https://wangtongyowen.github.io/post/1229d3b9.html">
+<meta property="og:site_name" content="jyh blog">
+<meta property="og:description" content="AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2010.11929.pdf  We split an image into fixed-size patches, linearly embed each of them, add position">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131331748.png">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131433347.png">
 <meta property="article:published_time" content="2023-04-12T15:59:34.000Z">
 <meta property="article:modified_time" content="2023-04-13T06:33:31.369Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131331748.png">
   
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
   
   
     <link rel="icon" type="image/x-icon" href="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051210238.jpg">
@@ -285,7 +285,7 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-pytorch基础知识11-ViT" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-pytorch基础入门11-ViT" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -353,7 +353,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">350字</span>
+        <span class="post-count">358字</span>
       </span>
     </span>
 
@@ -378,23 +378,25 @@ var _hmt = _hmt || [];
 	  
 		  
 		  <p>AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</p>
-<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2010.11929.pdf">https://arxiv.org/pdf/2010.11929.pdf</a></p>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131331748.png" alt="image-20230413132929498"  />
-
+<p>https://arxiv.org/pdf/2010.11929.pdf</p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131331748.png" alt="image-20230413132929498"  /></p>
 <p>We split an image into fixed-size patches, linearly embed each of them, add position embeddings, and feed the resulting sequence of vectors to a standard Transformer encoder. In order to perform classification, we use the standard approach of adding an extra learnable “classification token” to the sequence. The illustration of the Transformer encoder was inspired by Vaswani et al. (2017).</p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131433347.png" alt="image-20230413143320971"></p>
-<h2 id="1-image2emb"><a href="#1-image2emb" class="headerlink" title="1 image2emb"></a>1 image2emb</h2><h3 id="1-1-分块"><a href="#1-1-分块" class="headerlink" title="1.1 分块"></a>1.1 分块</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">image2emb_naive</span>(<span class="params">image,patch_size,weight</span>):</span><br><span class="line">    <span class="comment"># image size: bs*channel*h*w</span></span><br><span class="line">    patch = F.unfold(image,kernel_size=patch_size,stride=patch_size).transpose(-<span class="number">1</span>,-<span class="number">2</span>) <span class="comment"># bs*patch_num*patch_pixel_num</span></span><br><span class="line">    patch_embedding = patch @ weight</span><br><span class="line">    <span class="keyword">return</span> patch_embedding</span><br><span class="line">        </span><br><span class="line"><span class="comment"># test code for image2emb</span></span><br><span class="line">bs,ic,image_h,image_w = <span class="number">1</span>,<span class="number">3</span>,<span class="number">8</span>,<span class="number">8</span></span><br><span class="line">patch_size = <span class="number">4</span></span><br><span class="line">model_dim = <span class="number">8</span> </span><br><span class="line">patch_depth = patch_size*patch_size*ic <span class="comment"># 每个patch中的元素个数</span></span><br><span class="line">image = torch.randn(bs,ic,image_h,image_w)</span><br><span class="line">weight = torch.randn(patch_depth,model_dim) <span class="comment"># model_dim 是输出通道数目，patch_depth是卷积核的面积乘以输入通道数</span></span><br><span class="line">patch_embedding_naive = image2emb_naive(image,patch_size,weight) <span class="comment"># 分块得到embedding</span></span><br><span class="line"><span class="built_in">print</span>(patch_embedding_naive.shape)</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-2-conv2d"><a href="#1-2-conv2d" class="headerlink" title="1.2 conv2d"></a>1.2 conv2d</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">image2emb_conv</span>(<span class="params">image,kernel,stride</span>):</span><br><span class="line">    conv_output = F.conv2d(image,kernel,stride=stride) <span class="comment"># bs*oc*oh*ow</span></span><br><span class="line">    bs,oc,oh,ow = conv_output.shape</span><br><span class="line">    patch_embedding = conv_output.reshape((bs,oc,oh*ow)).transpose(-<span class="number">1</span>,-<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> patch_embedding</span><br><span class="line"></span><br><span class="line">kernel = weight.transpose(<span class="number">0</span>,<span class="number">1</span>).reshape((-<span class="number">1</span>,ic,patch_size,patch_size)) <span class="comment"># oc*ic*kh*kw</span></span><br><span class="line">patch_embedding_conv = image2emb_conv(image,kernel,stride=patch_size) <span class="comment"># 二维卷积的方法得到embedding</span></span><br><span class="line"><span class="built_in">print</span>(torch.allclose(patch_embedding_conv,patch_embedding_naive))</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-classification-token"><a href="#2-classification-token" class="headerlink" title="2 classification token"></a>2 classification token</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cls_token_embedding = torch.randn(bs,<span class="number">1</span>,model_dim,requires_grad=<span class="literal">True</span>)</span><br><span class="line">token_embedding = torch.cat([cls_token_embedding,patch_embedding_conv],dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-add-position-embedding"><a href="#3-add-position-embedding" class="headerlink" title="3 add position embedding"></a>3 add position embedding</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">position_embedding_table = torch.randn(max_num_token,model_dim,requires_grad=<span class="literal">True</span>)</span><br><span class="line">seq_len = token_embedding.shape[<span class="number">1</span>]</span><br><span class="line">position_embedding = torch.tile(position_embedding_table[:seq_len],[token_embedding.shape[<span class="number">0</span>],<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line">token_embedding += position_embedding</span><br></pre></td></tr></table></figure>
-
-<h2 id="4-pass-embedding-to-Transformer-Encoder"><a href="#4-pass-embedding-to-Transformer-Encoder" class="headerlink" title="4 pass embedding to Transformer Encoder"></a>4 pass embedding to Transformer Encoder</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">encoder_layer = nn.TransformerEncoderLayer(d_model=model_dim, nhead=<span class="number">8</span>)</span><br><span class="line">transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=<span class="number">6</span>)</span><br><span class="line">encoder_output = transformer_encoder(token_embedding)</span><br></pre></td></tr></table></figure>
-
-<h2 id="5-do-classification"><a href="#5-do-classification" class="headerlink" title="5 do classification"></a>5 do classification</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cls_token_output = encoder_output[:,<span class="number">0</span>,:]</span><br><span class="line">liner_layer = nn.Linear(model_dim,num_classes)</span><br><span class="line">logits = liner_layer(cls_token_output)</span><br><span class="line">loss_fn = nn.CrossEntropyLoss()</span><br><span class="line">loss = loss_fn(logits,label)</span><br><span class="line"><span class="built_in">print</span>(loss)</span><br></pre></td></tr></table></figure>
-
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131433347.png" alt="image-20230413143320971" /><figcaption aria-hidden="true">image-20230413143320971</figcaption>
+</figure>
+<h2 id="image2emb">1 image2emb</h2>
+<h3 id="分块">1.1 分块</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">image2emb_naive</span>(<span class="params">image,patch_size,weight</span>):</span><br><span class="line">    <span class="comment"># image size: bs*channel*h*w</span></span><br><span class="line">    patch = F.unfold(image,kernel_size=patch_size,stride=patch_size).transpose(-<span class="number">1</span>,-<span class="number">2</span>) <span class="comment"># bs*patch_num*patch_pixel_num</span></span><br><span class="line">    patch_embedding = patch @ weight</span><br><span class="line">    <span class="keyword">return</span> patch_embedding</span><br><span class="line">        </span><br><span class="line"><span class="comment"># test code for image2emb</span></span><br><span class="line">bs,ic,image_h,image_w = <span class="number">1</span>,<span class="number">3</span>,<span class="number">8</span>,<span class="number">8</span></span><br><span class="line">patch_size = <span class="number">4</span></span><br><span class="line">model_dim = <span class="number">8</span> </span><br><span class="line">patch_depth = patch_size*patch_size*ic <span class="comment"># 每个patch中的元素个数</span></span><br><span class="line">image = torch.randn(bs,ic,image_h,image_w)</span><br><span class="line">weight = torch.randn(patch_depth,model_dim) <span class="comment"># model_dim 是输出通道数目，patch_depth是卷积核的面积乘以输入通道数</span></span><br><span class="line">patch_embedding_naive = image2emb_naive(image,patch_size,weight) <span class="comment"># 分块得到embedding</span></span><br><span class="line"><span class="built_in">print</span>(patch_embedding_naive.shape)</span><br></pre></td></tr></table></figure>
+<h3 id="conv2d">1.2 conv2d</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">image2emb_conv</span>(<span class="params">image,kernel,stride</span>):</span><br><span class="line">    conv_output = F.conv2d(image,kernel,stride=stride) <span class="comment"># bs*oc*oh*ow</span></span><br><span class="line">    bs,oc,oh,ow = conv_output.shape</span><br><span class="line">    patch_embedding = conv_output.reshape((bs,oc,oh*ow)).transpose(-<span class="number">1</span>,-<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> patch_embedding</span><br><span class="line"></span><br><span class="line">kernel = weight.transpose(<span class="number">0</span>,<span class="number">1</span>).reshape((-<span class="number">1</span>,ic,patch_size,patch_size)) <span class="comment"># oc*ic*kh*kw</span></span><br><span class="line">patch_embedding_conv = image2emb_conv(image,kernel,stride=patch_size) <span class="comment"># 二维卷积的方法得到embedding</span></span><br><span class="line"><span class="built_in">print</span>(torch.allclose(patch_embedding_conv,patch_embedding_naive))</span><br></pre></td></tr></table></figure>
+<h2 id="classification-token">2 classification token</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cls_token_embedding = torch.randn(bs,<span class="number">1</span>,model_dim,requires_grad=<span class="literal">True</span>)</span><br><span class="line">token_embedding = torch.cat([cls_token_embedding,patch_embedding_conv],dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="add-position-embedding">3 add position embedding</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">position_embedding_table = torch.randn(max_num_token,model_dim,requires_grad=<span class="literal">True</span>)</span><br><span class="line">seq_len = token_embedding.shape[<span class="number">1</span>]</span><br><span class="line">position_embedding = torch.tile(position_embedding_table[:seq_len],[token_embedding.shape[<span class="number">0</span>],<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line">token_embedding += position_embedding</span><br></pre></td></tr></table></figure>
+<h2 id="pass-embedding-to-transformer-encoder">4 pass embedding to Transformer Encoder</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">encoder_layer = nn.TransformerEncoderLayer(d_model=model_dim, nhead=<span class="number">8</span>)</span><br><span class="line">transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=<span class="number">6</span>)</span><br><span class="line">encoder_output = transformer_encoder(token_embedding)</span><br></pre></td></tr></table></figure>
+<h2 id="do-classification">5 do classification</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cls_token_output = encoder_output[:,<span class="number">0</span>,:]</span><br><span class="line">liner_layer = nn.Linear(model_dim,num_classes)</span><br><span class="line">logits = liner_layer(cls_token_output)</span><br><span class="line">loss_fn = nn.CrossEntropyLoss()</span><br><span class="line">loss = loss_fn(logits,label)</span><br><span class="line"><span class="built_in">print</span>(loss)</span><br></pre></td></tr></table></figure>
 
 				  
 	  
@@ -435,7 +437,7 @@ var _hmt = _hmt || [];
 <div class="declare">
 	<strong class="author">本文作者：</strong>
 	
-	  John Doe
+	  jyh
 	
 	
 	<!-- <br>
@@ -448,11 +450,11 @@ var _hmt = _hmt || [];
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="http://example.com/post/1229d3b9.html" title="pytorch基础知识11-ViT" target="_blank">pytorch基础知识11-ViT</a> -->
+	<a href="https://wangtongyowen.github.io/post/1229d3b9.html" title="pytorch基础知识11-ViT" target="_blank">pytorch基础知识11-ViT</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="http://example.com/post/1229d3b9.html" title="pytorch基础知识11-ViT" target="_blank">http://example.com/post/1229d3b9.html</a>
+	<a href="https://wangtongyowen.github.io/post/1229d3b9.html" title="pytorch基础知识11-ViT" target="_blank">https://wangtongyowen.github.io/post/1229d3b9.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -537,7 +539,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/1229d3b9.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyowen.github.io/post/1229d3b9.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -591,7 +593,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-image2emb"><span class="toc-number">1.</span> <span class="toc-text">1 image2emb</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%88%86%E5%9D%97"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 分块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-conv2d"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 conv2d</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-classification-token"><span class="toc-number">2.</span> <span class="toc-text">2 classification token</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-add-position-embedding"><span class="toc-number">3.</span> <span class="toc-text">3 add position embedding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-pass-embedding-to-Transformer-Encoder"><span class="toc-number">4.</span> <span class="toc-text">4 pass embedding to Transformer Encoder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-do-classification"><span class="toc-number">5.</span> <span class="toc-text">5 do classification</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#image2emb"><span class="toc-number">1.</span> <span class="toc-text">1 image2emb</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%9D%97"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 分块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#conv2d"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 conv2d</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#classification-token"><span class="toc-number">2.</span> <span class="toc-text">2 classification token</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#add-position-embedding"><span class="toc-number">3.</span> <span class="toc-text">3 add position embedding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pass-embedding-to-transformer-encoder"><span class="toc-number">4.</span> <span class="toc-text">4 pass embedding to Transformer Encoder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#do-classification"><span class="toc-number">5.</span> <span class="toc-text">5 do classification</span></a></li></ol>
             </div>
           </span>
         </div>
@@ -800,6 +802,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">project</a>
               </li>
              
               <li class="article-tag-list-item">

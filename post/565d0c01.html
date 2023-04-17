@@ -6,16 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
-  <link rel="dns-prefetch" href="http://example.com">
-  <title>pytorch基础入门4-module详解 | Hexo</title>
+  <link rel="dns-prefetch" href="https://wangtongyowen.github.io">
+  <title>pytorch基础入门4-module详解 | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="介绍了module类中的一些方法 https:&#x2F;&#x2F;pytorch.org&#x2F;docs&#x2F;stable&#x2F;generated&#x2F;torch.nn.Module.html?highlight&#x3D;module#torch.nn.Module 路径位置如下： D:\0_python\anaconda\envs\pytorch\Lib\site-packages\torch\nn\modules\module.py">
+  <meta name="description" content="介绍了module类中的一些方法 https:&#x2F;&#x2F;pytorch.org&#x2F;docs&#x2F;stable&#x2F;generated&#x2F;torch.nn.Module.html?highlight&#x3D;module#torch.nn.Module 路径位置如下： D:\0_python-packages.py 1 register_buffer  让当前模块中添加buffer参数，通过persistent让">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pytorch基础入门4-module详解">
-<meta property="og:url" content="http://example.com/post/565d0c01.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="介绍了module类中的一些方法 https:&#x2F;&#x2F;pytorch.org&#x2F;docs&#x2F;stable&#x2F;generated&#x2F;torch.nn.Module.html?highlight&#x3D;module#torch.nn.Module 路径位置如下： D:\0_python\anaconda\envs\pytorch\Lib\site-packages\torch\nn\modules\module.py">
+<meta property="og:url" content="https://wangtongyowen.github.io/post/565d0c01.html">
+<meta property="og:site_name" content="jyh blog">
+<meta property="og:description" content="介绍了module类中的一些方法 https:&#x2F;&#x2F;pytorch.org&#x2F;docs&#x2F;stable&#x2F;generated&#x2F;torch.nn.Module.html?highlight&#x3D;module#torch.nn.Module 路径位置如下： D:\0_python-packages.py 1 register_buffer  让当前模块中添加buffer参数，通过persistent让">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061705956.png">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061708295.png">
@@ -30,13 +30,13 @@
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061944676.png">
 <meta property="article:published_time" content="2023-04-06T08:27:23.000Z">
 <meta property="article:modified_time" content="2023-04-12T12:30:11.323Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061705956.png">
   
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
   
   
     <link rel="icon" type="image/x-icon" href="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051210238.jpg">
@@ -353,7 +353,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">480字</span>
+        <span class="post-count">475字</span>
       </span>
     </span>
 
@@ -378,54 +378,56 @@ var _hmt = _hmt || [];
 	  
 		  
 		  <p>介绍了module类中的一些方法</p>
-<p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html?highlight=module#torch.nn.Module">https://pytorch.org/docs/stable/generated/torch.nn.Module.html?highlight=module#torch.nn.Module</a></p>
+<p>https://pytorch.org/docs/stable/generated/torch.nn.Module.html?highlight=module#torch.nn.Module</p>
 <p>路径位置如下：</p>
-<p>D:\0_python\anaconda\envs\pytorch\Lib\site-packages\torch\nn\modules\module.py</p>
-<h4 id="1-register-buffer"><a href="#1-register-buffer" class="headerlink" title="1 register_buffer"></a>1 register_buffer</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061705956.png" alt="image-20230406170548915" style="zoom:80%;" />
-
+<p>D:\0_python-packages.py</p>
+<h4 id="register_buffer">1 register_buffer</h4>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061705956.png" alt="image-20230406170548915" style="zoom:80%;" /></p>
 <p>让当前模块中添加buffer参数，通过persistent让这个buffer是否一直存在</p>
-<h4 id="2-register-parameter"><a href="#2-register-parameter" class="headerlink" title="2 register_parameter"></a>2 register_parameter</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061708295.png" alt="image-20230406170826936" style="zoom:80%;" />
-
-<h4 id="3-get-parameter"><a href="#3-get-parameter" class="headerlink" title="3 get_parameter"></a>3 get_parameter</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061720617.png" alt="image-20230406172007173" style="zoom:80%;" />
-
+<h4 id="register_parameter">2 register_parameter</h4>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061708295.png" alt="image-20230406170826936" style="zoom:80%;" /></p>
+<h4 id="get_parameter">3 get_parameter</h4>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061720617.png" alt="image-20230406172007173" style="zoom:80%;" /></p>
 <p>需要把嵌套层都写好，不能只写一层</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_parameter</span>(<span class="params">self, target: <span class="built_in">str</span></span>) -&gt; <span class="string">&quot;Parameter&quot;</span>:</span><br><span class="line">    module_path, _, param_name = target.rpartition(<span class="string">&quot;.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    mod: torch.nn.Module = self.get_submodule(module_path)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(mod, param_name):</span><br><span class="line">        <span class="keyword">raise</span> AttributeError(mod._get_name() + <span class="string">&quot; has no attribute `&quot;</span></span><br><span class="line">                             + param_name + <span class="string">&quot;`&quot;</span>)</span><br><span class="line"></span><br><span class="line">    param: torch.nn.Parameter = <span class="built_in">getattr</span>(mod, param_name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(param, torch.nn.Parameter):</span><br><span class="line">        <span class="keyword">raise</span> AttributeError(<span class="string">&quot;`&quot;</span> + param_name + <span class="string">&quot;` is not an &quot;</span></span><br><span class="line">                             <span class="string">&quot;nn.Parameter&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> param</span><br></pre></td></tr></table></figure>
-
 <p>其中<code>target.rpartition</code>的作用如下：</p>
-<p>Search for the last occurrence of the word “x”, and return a tuple with three elements:</p>
-<p>1 - everything before the “match”<br>2 - the “match”<br>3 - everything after the “match”</p>
+<p>Search for the last occurrence of the word "x", and return a tuple with three elements:</p>
+<p>1 - everything before the "match" 2 - the "match" 3 - everything after the "match"</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">txt = <span class="string">&quot;I could eat bananas all day, bananas are my favorite fruit&quot;</span></span><br><span class="line"></span><br><span class="line">x = txt.rpartition(<span class="string">&quot;bananas&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(x)</span><br></pre></td></tr></table></figure>
-
 <p>首先判断是否在module中，如果没有这个parameter_name就抛出异常</p>
 <p>然后校验，是否这个parameter在字典中，不存在则抛出异常</p>
-<h4 id="4-get-buffer"><a href="#4-get-buffer" class="headerlink" title="4 get_buffer"></a>4 get_buffer</h4><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20230406172527868.png" alt="image-20230406172527868" style="zoom:80%;" />
-
+<h4 id="get_buffer">4 get_buffer</h4>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20230406172527868.png" alt="image-20230406172527868" style="zoom:80%;" /></p>
 <p>同理与get_parameter相似</p>
-<h4 id="5-如何进行断点训练"><a href="#5-如何进行断点训练" class="headerlink" title="5 如何进行断点训练"></a>5 如何进行断点训练</h4><p><a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/recipes/recipes/saving_and_loading_a_general_checkpoint.html">https://pytorch.org/tutorials/recipes/recipes/saving_and_loading_a_general_checkpoint.html</a></p>
-<p><a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/saveloadrun_tutorial.html">https://pytorch.org/tutorials/beginner/basics/saveloadrun_tutorial.html</a></p>
-<h4 id="6-to"><a href="#6-to" class="headerlink" title="6 to"></a>6 to</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061818735.png" alt="image-20230406181821316" style="zoom:80%;" />
-
+<h4 id="如何进行断点训练">5 如何进行断点训练</h4>
+<p>https://pytorch.org/tutorials/recipes/recipes/saving_and_loading_a_general_checkpoint.html</p>
+<p>https://pytorch.org/tutorials/beginner/basics/saveloadrun_tutorial.html</p>
+<h4 id="to">6 to</h4>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061818735.png" alt="image-20230406181821316" style="zoom:80%;" /></p>
 <p>example:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Test(torch.nn.Module):</span><br><span class="line">	def __init__(self):</span><br><span class="line">		super(Test, self).__init__()</span><br><span class="line">		self.linear1 = torch.nn.Linear(2,3)</span><br><span class="line">		self.linear2 = torch.nn.Linear(3,4)</span><br><span class="line">		self.batch_norm = torch.nn.BatchNorm2d(4)</span><br><span class="line">test_module = Test()</span><br></pre></td></tr></table></figure>
-
 <p>接下来测试to函数的用法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test_module.to(torch.double)</span><br><span class="line">test_module._modules[<span class="string">&#x27;linear1&#x27;</span>].weight.dtype</span><br></pre></td></tr></table></figure>
-
 <p>为什么能够使用_modules（表示当前模块中的所有子模块）</p>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061831991.png" alt="image-20230406183151791" style="zoom:80%;" />
-
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061831991.png" alt="image-20230406183151791" style="zoom:80%;" /></p>
 <p>由此发现当调用_parameters,_buffers时候，只能返回当前模块中的参数和buffers，并不能嵌套查询。</p>
-<h4 id="7-save-to-state-dict"><a href="#7-save-to-state-dict" class="headerlink" title="7 _save_to_state_dict"></a>7 _save_to_state_dict</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061843934.png" alt="image-20230406184301390" style="zoom:80%;" />
-
+<h4 id="save_to_state_dict">7 _save_to_state_dict</h4>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061843934.png" alt="image-20230406184301390" style="zoom:80%;" /></p>
 <p>将当前module中的name，param，buff都循环保存至destination中</p>
-<h4 id="8-state-dict"><a href="#8-state-dict" class="headerlink" title="8 state_dict"></a>8 state_dict</h4><p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061845557.png" alt="image-20230406184514473"></p>
+<h4 id="state_dict">8 state_dict</h4>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061845557.png" alt="image-20230406184514473" /><figcaption aria-hidden="true">image-20230406184514473</figcaption>
+</figure>
 <p>这个时候能够实现递归，保存当前模块，并且能够保存所有子模块。</p>
-<h4 id="9-named-members"><a href="#9-named-members" class="headerlink" title="9 _named_members"></a>9 _named_members</h4><p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061923535.png" alt="image-20230406192319875"></p>
+<h4 id="named_members">9 _named_members</h4>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061923535.png" alt="image-20230406192319875" /><figcaption aria-hidden="true">image-20230406192319875</figcaption>
+</figure>
 <p>比较通用的一个查询函数：返回迭代器</p>
-<h4 id="10-train"><a href="#10-train" class="headerlink" title="10 train"></a>10 train</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061942823.png" alt="image-20230406194218024" style="zoom:80%;" />
-
+<h4 id="train">10 train</h4>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061942823.png" alt="image-20230406194218024" style="zoom:80%;" /></p>
 <p>dropout batchnorm中会受到影响。</p>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061944676.png" alt="image-20230406194427357" style="zoom:80%;" />
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061944676.png" alt="image-20230406194427357" style="zoom:80%;" /></p>
 
 				  
 	  
@@ -466,7 +468,7 @@ var _hmt = _hmt || [];
 <div class="declare">
 	<strong class="author">本文作者：</strong>
 	
-	  John Doe
+	  jyh
 	
 	
 	<!-- <br>
@@ -479,11 +481,11 @@ var _hmt = _hmt || [];
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="http://example.com/post/565d0c01.html" title="pytorch基础入门4-module详解" target="_blank">pytorch基础入门4-module详解</a> -->
+	<a href="https://wangtongyowen.github.io/post/565d0c01.html" title="pytorch基础入门4-module详解" target="_blank">pytorch基础入门4-module详解</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="http://example.com/post/565d0c01.html" title="pytorch基础入门4-module详解" target="_blank">http://example.com/post/565d0c01.html</a>
+	<a href="https://wangtongyowen.github.io/post/565d0c01.html" title="pytorch基础入门4-module详解" target="_blank">https://wangtongyowen.github.io/post/565d0c01.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -568,7 +570,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/565d0c01.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyowen.github.io/post/565d0c01.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -622,7 +624,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-register-buffer"><span class="toc-number">1.</span> <span class="toc-text">1 register_buffer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-register-parameter"><span class="toc-number">2.</span> <span class="toc-text">2 register_parameter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-get-parameter"><span class="toc-number">3.</span> <span class="toc-text">3 get_parameter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-get-buffer"><span class="toc-number">4.</span> <span class="toc-text">4 get_buffer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E6%96%AD%E7%82%B9%E8%AE%AD%E7%BB%83"><span class="toc-number">5.</span> <span class="toc-text">5 如何进行断点训练</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-to"><span class="toc-number">6.</span> <span class="toc-text">6 to</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-save-to-state-dict"><span class="toc-number">7.</span> <span class="toc-text">7 _save_to_state_dict</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-state-dict"><span class="toc-number">8.</span> <span class="toc-text">8 state_dict</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-named-members"><span class="toc-number">9.</span> <span class="toc-text">9 _named_members</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-train"><span class="toc-number">10.</span> <span class="toc-text">10 train</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#register_buffer"><span class="toc-number">1.</span> <span class="toc-text">1 register_buffer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#register_parameter"><span class="toc-number">2.</span> <span class="toc-text">2 register_parameter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#get_parameter"><span class="toc-number">3.</span> <span class="toc-text">3 get_parameter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#get_buffer"><span class="toc-number">4.</span> <span class="toc-text">4 get_buffer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E6%96%AD%E7%82%B9%E8%AE%AD%E7%BB%83"><span class="toc-number">5.</span> <span class="toc-text">5 如何进行断点训练</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#to"><span class="toc-number">6.</span> <span class="toc-text">6 to</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#save_to_state_dict"><span class="toc-number">7.</span> <span class="toc-text">7 _save_to_state_dict</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#state_dict"><span class="toc-number">8.</span> <span class="toc-text">8 state_dict</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#named_members"><span class="toc-number">9.</span> <span class="toc-text">9 _named_members</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#train"><span class="toc-number">10.</span> <span class="toc-text">10 train</span></a></li></ol>
             </div>
           </span>
         </div>
@@ -800,6 +802,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">project</a>
               </li>
              
               <li class="article-tag-list-item">

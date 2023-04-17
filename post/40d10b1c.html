@@ -6,29 +6,29 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
-  <link rel="dns-prefetch" href="http://example.com">
-  <title>pytorch基础入门6-autograd | Hexo</title>
+  <link rel="dns-prefetch" href="https://wangtongyowen.github.io">
+  <title>pytorch基础入门6-autograd | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="训练神经网络如何使用pytorch中的自动微分 https:&#x2F;&#x2F;pytorch.org&#x2F;tutorials&#x2F;beginner&#x2F;basics&#x2F;autogradqs_tutorial.html  1 得到计算图    1234567import torchx &#x3D; torch.ones(5)  # input tensory &#x3D; torch.zeros(3)  # expected outputw &#x3D;">
+  <meta name="description" content="训练神经网络如何使用pytorch中的自动微分 https:&#x2F;&#x2F;pytorch.org&#x2F;tutorials&#x2F;beginner&#x2F;basics&#x2F;autogradqs_tutorial.html  image-20230406203624607  1 得到计算图  1234567import torchx &#x3D; torch.ones(5)  # input tensory &#x3D; torch.z">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pytorch基础入门6-autograd">
-<meta property="og:url" content="http://example.com/post/40d10b1c.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="训练神经网络如何使用pytorch中的自动微分 https:&#x2F;&#x2F;pytorch.org&#x2F;tutorials&#x2F;beginner&#x2F;basics&#x2F;autogradqs_tutorial.html  1 得到计算图    1234567import torchx &#x3D; torch.ones(5)  # input tensory &#x3D; torch.zeros(3)  # expected outputw &#x3D;">
+<meta property="og:url" content="https://wangtongyowen.github.io/post/40d10b1c.html">
+<meta property="og:site_name" content="jyh blog">
+<meta property="og:description" content="训练神经网络如何使用pytorch中的自动微分 https:&#x2F;&#x2F;pytorch.org&#x2F;tutorials&#x2F;beginner&#x2F;basics&#x2F;autogradqs_tutorial.html  image-20230406203624607  1 得到计算图  1234567import torchx &#x3D; torch.ones(5)  # input tensory &#x3D; torch.z">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062036309.png">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062042317.png">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062118841.png">
 <meta property="article:published_time" content="2023-04-06T12:25:44.000Z">
 <meta property="article:modified_time" content="2023-04-12T12:30:11.323Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062036309.png">
   
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
   
   
     <link rel="icon" type="image/x-icon" href="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051210238.jpg">
@@ -345,7 +345,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">591字</span>
+        <span class="post-count">596字</span>
       </span>
     </span>
 
@@ -370,50 +370,48 @@ var _hmt = _hmt || [];
 	  
 		  
 		  <p>训练神经网络如何使用pytorch中的自动微分</p>
-<p><a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html">https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html</a></p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062036309.png" alt="image-20230406203624607"></p>
-<h4 id="1-得到计算图"><a href="#1-得到计算图" class="headerlink" title="1 得到计算图"></a>1 得到计算图</h4><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062042317.png" alt="image-20230406204239318" style="zoom:67%;" />
-
-
-
+<p>https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062036309.png" alt="image-20230406203624607" /><figcaption aria-hidden="true">image-20230406203624607</figcaption>
+</figure>
+<h4 id="得到计算图">1 得到计算图</h4>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062042317.png" alt="image-20230406204239318" style="zoom:67%;" /></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">x = torch.ones(<span class="number">5</span>)  <span class="comment"># input tensor</span></span><br><span class="line">y = torch.zeros(<span class="number">3</span>)  <span class="comment"># expected output</span></span><br><span class="line">w = torch.randn(<span class="number">5</span>, <span class="number">3</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">b = torch.randn(<span class="number">3</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">z = torch.matmul(x, w)+b</span><br><span class="line">loss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)</span><br></pre></td></tr></table></figure>
-
 <p>通过对参数进行单个源操作，得到计算图，然后进一步进行反向梯度回传计算</p>
-<h4 id="2-计算"><a href="#2-计算" class="headerlink" title="2 计算"></a>2 计算</h4><p>我们对其中设置grad为true 的变量进行梯度回传计算。使用backward函数</p>
+<h4 id="计算">2 计算</h4>
+<p>我们对其中设置grad为true 的变量进行梯度回传计算。使用backward函数</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">loss.backward()</span><br><span class="line"><span class="built_in">print</span>(w.grad)</span><br><span class="line"><span class="built_in">print</span>(b.grad)</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>我们只能对计算图中requires_grad为true的进行梯度回传计算，比如dropout，batchnorm等都不行</li>
-<li>由于我们只能在回传计算时生成一个图，如果我们需要对一个静态图进行多次梯度回传，我们需要把 retain_graph=True </li>
+<li>由于我们只能在回传计算时生成一个图，如果我们需要对一个静态图进行多次梯度回传，我们需要把 retain_graph=True</li>
 </ul>
-<h4 id="3-将某些计算节点取消梯度回传"><a href="#3-将某些计算节点取消梯度回传" class="headerlink" title="3 将某些计算节点取消梯度回传"></a>3 将某些计算节点取消梯度回传</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">z = torch.matmul(x, w)+b</span><br><span class="line"><span class="built_in">print</span>(z.requires_grad)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    z = torch.matmul(x, w)+b</span><br><span class="line"><span class="built_in">print</span>(z.requires_grad)</span><br></pre></td></tr></table></figure>
-
+<h4 id="将某些计算节点取消梯度回传">3 将某些计算节点取消梯度回传</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">z = torch.matmul(x, w)+b</span><br><span class="line"><span class="built_in">print</span>(z.requires_grad)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    z = torch.matmul(x, w)+b</span><br><span class="line"><span class="built_in">print</span>(z.requires_grad)</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">z = torch.matmul(x, w)+b</span><br><span class="line">z_det = z.detach()</span><br><span class="line"><span class="built_in">print</span>(z_det.requires_grad)</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>某些 frozen parameters</li>
 <li>加速运算</li>
 </ul>
-<h4 id="4-grad-zero"><a href="#4-grad-zero" class="headerlink" title="4 grad.zero_()"></a>4 grad.zero_()</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">inp = torch.eye(<span class="number">4</span>, <span class="number">5</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">out = (inp+<span class="number">1</span>).<span class="built_in">pow</span>(<span class="number">2</span>).t()</span><br><span class="line">out.backward(torch.ones_like(out), retain_graph=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;First call\n<span class="subst">&#123;inp.grad&#125;</span>&quot;</span>)</span><br><span class="line">out.backward(torch.ones_like(out), retain_graph=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;\nSecond call\n<span class="subst">&#123;inp.grad&#125;</span>&quot;</span>)</span><br><span class="line">inp.grad.zero_()</span><br><span class="line">out.backward(torch.ones_like(out), retain_graph=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;\nCall after zeroing gradients\n<span class="subst">&#123;inp.grad&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-
+<h4 id="grad.zero_">4 grad.zero_()</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">inp = torch.eye(<span class="number">4</span>, <span class="number">5</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">out = (inp+<span class="number">1</span>).<span class="built_in">pow</span>(<span class="number">2</span>).t()</span><br><span class="line">out.backward(torch.ones_like(out), retain_graph=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;First call\n<span class="subst">&#123;inp.grad&#125;</span>&quot;</span>)</span><br><span class="line">out.backward(torch.ones_like(out), retain_graph=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;\nSecond call\n<span class="subst">&#123;inp.grad&#125;</span>&quot;</span>)</span><br><span class="line">inp.grad.zero_()</span><br><span class="line">out.backward(torch.ones_like(out), retain_graph=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;\nCall after zeroing gradients\n<span class="subst">&#123;inp.grad&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
 <p>由于梯度在每次调用的时候都会累加(<strong>Jacobian Product</strong>),我们需要使用grad.zero_()这样的梯度才是正确的。</p>
-<h4 id="5-jacobian在pytorch中的实现"><a href="#5-jacobian在pytorch中的实现" class="headerlink" title="5 jacobian在pytorch中的实现"></a>5 jacobian在pytorch中的实现</h4><p>torch.autograd.functional.jacobian(<em>func</em>, <em>inputs</em>, <em>create_graph=False</em>, <em>strict=False</em>, <em>vectorize=False</em>, <em>strategy=’reverse-mode’</em>)</p>
-<p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/_modules/torch/autograd/functional.html#jacobian">https://pytorch.org/docs/stable/_modules/torch/autograd/functional.html#jacobian</a></p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062118841.png" alt="image-20230406211810400"></p>
+<h4 id="jacobian在pytorch中的实现">5 jacobian在pytorch中的实现</h4>
+<p>torch.autograd.functional.jacobian(<em>func</em>, <em>inputs</em>, <em>create_graph=False</em>, <em>strict=False</em>, <em>vectorize=False</em>, <em>strategy='reverse-mode'</em>)</p>
+<p>https://pytorch.org/docs/stable/_modules/torch/autograd/functional.html#jacobian</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062118841.png" alt="image-20230406211810400" /><figcaption aria-hidden="true">image-20230406211810400</figcaption>
+</figure>
 <p>这个求偏导表示：生成的sum第一个数与原张量的第二行没有关系，所以求偏导也是0</p>
-<h4 id="6-向量对向量的微分"><a href="#6-向量对向量的微分" class="headerlink" title="6 向量对向量的微分"></a>6 向量对向量的微分</h4><p>首先当其中一个向量是列向量时候：</p>
+<h4 id="向量对向量的微分">6 向量对向量的微分</h4>
+<p>首先当其中一个向量是列向量时候：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = torch.randn(<span class="number">3</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> a + x</span><br><span class="line">x = torch.randn(<span class="number">3</span>)</span><br><span class="line">torch.autograd.functional.jacobian(func,x)</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tensor([[1., 0., 0.],</span><br><span class="line">        [0., 1., 0.],</span><br><span class="line">        [0., 0., 1.]])</span><br></pre></td></tr></table></figure>
-
 <p>显然这里的结果表示，f = a + x 中 ，f1,2,3 只与 x1,2,3 有关，所以是个对角阵</p>
 <p>向量对向量：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a = torch.randn(<span class="number">3</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> a + x</span><br><span class="line">x = torch.randn(<span class="number">3</span>,requires_grad = <span class="literal">True</span>)</span><br><span class="line">torch.autograd.functional.jacobian(func,x)</span><br><span class="line">y = func(x)</span><br><span class="line">y.backward(torch.ones_like(y))</span><br><span class="line">x.grad</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.ones_like(y) @ torch.autograd.functional.jacobian(func,x)</span><br></pre></td></tr></table></figure>
-
-<h4 id="7-矩阵对矩阵的偏导"><a href="#7-矩阵对矩阵的偏导" class="headerlink" title="7 矩阵对矩阵的偏导"></a>7 矩阵对矩阵的偏导</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = torch.randn(<span class="number">2</span>,<span class="number">3</span>,requires_grad = <span class="literal">True</span>)</span><br><span class="line">b = torch.randn(<span class="number">3</span>,<span class="number">2</span>,requires_grad = <span class="literal">True</span>)</span><br><span class="line">y = a @ b</span><br></pre></td></tr></table></figure>
-
+<h4 id="矩阵对矩阵的偏导">7 矩阵对矩阵的偏导</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = torch.randn(<span class="number">2</span>,<span class="number">3</span>,requires_grad = <span class="literal">True</span>)</span><br><span class="line">b = torch.randn(<span class="number">3</span>,<span class="number">2</span>,requires_grad = <span class="literal">True</span>)</span><br><span class="line">y = a @ b</span><br></pre></td></tr></table></figure>
 
 				  
 	  
@@ -454,7 +452,7 @@ var _hmt = _hmt || [];
 <div class="declare">
 	<strong class="author">本文作者：</strong>
 	
-	  John Doe
+	  jyh
 	
 	
 	<!-- <br>
@@ -467,11 +465,11 @@ var _hmt = _hmt || [];
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="http://example.com/post/40d10b1c.html" title="pytorch基础入门6-autograd" target="_blank">pytorch基础入门6-autograd</a> -->
+	<a href="https://wangtongyowen.github.io/post/40d10b1c.html" title="pytorch基础入门6-autograd" target="_blank">pytorch基础入门6-autograd</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="http://example.com/post/40d10b1c.html" title="pytorch基础入门6-autograd" target="_blank">http://example.com/post/40d10b1c.html</a>
+	<a href="https://wangtongyowen.github.io/post/40d10b1c.html" title="pytorch基础入门6-autograd" target="_blank">https://wangtongyowen.github.io/post/40d10b1c.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -556,7 +554,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/40d10b1c.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyowen.github.io/post/40d10b1c.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -610,7 +608,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%BE%97%E5%88%B0%E8%AE%A1%E7%AE%97%E5%9B%BE"><span class="toc-number">1.</span> <span class="toc-text">1 得到计算图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E8%AE%A1%E7%AE%97"><span class="toc-number">2.</span> <span class="toc-text">2 计算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%B0%86%E6%9F%90%E4%BA%9B%E8%AE%A1%E7%AE%97%E8%8A%82%E7%82%B9%E5%8F%96%E6%B6%88%E6%A2%AF%E5%BA%A6%E5%9B%9E%E4%BC%A0"><span class="toc-number">3.</span> <span class="toc-text">3 将某些计算节点取消梯度回传</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-grad-zero"><span class="toc-number">4.</span> <span class="toc-text">4 grad.zero_()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-jacobian%E5%9C%A8pytorch%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">5 jacobian在pytorch中的实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E5%90%91%E9%87%8F%E5%AF%B9%E5%90%91%E9%87%8F%E7%9A%84%E5%BE%AE%E5%88%86"><span class="toc-number">6.</span> <span class="toc-text">6 向量对向量的微分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-%E7%9F%A9%E9%98%B5%E5%AF%B9%E7%9F%A9%E9%98%B5%E7%9A%84%E5%81%8F%E5%AF%BC"><span class="toc-number">7.</span> <span class="toc-text">7 矩阵对矩阵的偏导</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BE%97%E5%88%B0%E8%AE%A1%E7%AE%97%E5%9B%BE"><span class="toc-number">1.</span> <span class="toc-text">1 得到计算图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97"><span class="toc-number">2.</span> <span class="toc-text">2 计算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%86%E6%9F%90%E4%BA%9B%E8%AE%A1%E7%AE%97%E8%8A%82%E7%82%B9%E5%8F%96%E6%B6%88%E6%A2%AF%E5%BA%A6%E5%9B%9E%E4%BC%A0"><span class="toc-number">3.</span> <span class="toc-text">3 将某些计算节点取消梯度回传</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#grad.zero_"><span class="toc-number">4.</span> <span class="toc-text">4 grad.zero_()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jacobian%E5%9C%A8pytorch%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">5 jacobian在pytorch中的实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%91%E9%87%8F%E5%AF%B9%E5%90%91%E9%87%8F%E7%9A%84%E5%BE%AE%E5%88%86"><span class="toc-number">6.</span> <span class="toc-text">6 向量对向量的微分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E5%AF%B9%E7%9F%A9%E9%98%B5%E7%9A%84%E5%81%8F%E5%AF%BC"><span class="toc-number">7.</span> <span class="toc-text">7 矩阵对矩阵的偏导</span></a></li></ol>
             </div>
           </span>
         </div>
@@ -788,6 +786,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">project</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -6,27 +6,27 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
-  <link rel="dns-prefetch" href="http://example.com">
-  <title>pytorch基础入门14-GRU | Hexo</title>
+  <link rel="dns-prefetch" href="https://wangtongyowen.github.io">
+  <title>pytorch基础入门14-GRU | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="torch.nn.GRU(*args, **kwargs) https:&#x2F;&#x2F;pytorch.org&#x2F;docs&#x2F;stable&#x2F;generated&#x2F;torch.nn.GRU.html?highlight&#x3D;gru#torch.nn.GRU$$\begin{aligned}r_{t} &amp; &#x3D;\sigma\left(W_{i r} x_{t}+b_{i r}+W_{h r} h_{(t-1)}+b_">
+  <meta name="description" content="torch.nn.GRU(args, kwargs*) https:&#x2F;&#x2F;pytorch.org&#x2F;docs&#x2F;stable&#x2F;generated&#x2F;torch.nn.GRU.html?highlight&#x3D;gru#torch.nn.GRU \[ \begin{aligned} r_{t} &amp; &#x3D;\sigma\left(W_{i r} x_{t}+b_{i r}+W_{h r} h_{(t-1)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pytorch基础入门14-GRU">
-<meta property="og:url" content="http://example.com/post/f22b56ba.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="torch.nn.GRU(*args, **kwargs) https:&#x2F;&#x2F;pytorch.org&#x2F;docs&#x2F;stable&#x2F;generated&#x2F;torch.nn.GRU.html?highlight&#x3D;gru#torch.nn.GRU$$\begin{aligned}r_{t} &amp; &#x3D;\sigma\left(W_{i r} x_{t}+b_{i r}+W_{h r} h_{(t-1)}+b_">
+<meta property="og:url" content="https://wangtongyowen.github.io/post/f22b56ba.html">
+<meta property="og:site_name" content="jyh blog">
+<meta property="og:description" content="torch.nn.GRU(args, kwargs*) https:&#x2F;&#x2F;pytorch.org&#x2F;docs&#x2F;stable&#x2F;generated&#x2F;torch.nn.GRU.html?highlight&#x3D;gru#torch.nn.GRU \[ \begin{aligned} r_{t} &amp; &#x3D;\sigma\left(W_{i r} x_{t}+b_{i r}+W_{h r} h_{(t-1)">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304141848732.png">
 <meta property="article:published_time" content="2023-04-14T09:47:29.000Z">
-<meta property="article:modified_time" content="2023-04-15T07:03:45.911Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2023-04-17T03:39:02.632Z">
+<meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304141848732.png">
   
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
   
   
     <link rel="icon" type="image/x-icon" href="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051210238.jpg">
@@ -352,7 +352,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">563字</span>
+        <span class="post-count">566字</span>
       </span>
     </span>
 
@@ -376,12 +376,23 @@ var _hmt = _hmt || [];
 	  <!-- 添加分类与标签 -->
 	  
 		  
-		  <p>torch.nn.GRU(*<em>args</em>, **<em>kwargs</em>)</p>
-<p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.GRU.html?highlight=gru#torch.nn.GRU">https://pytorch.org/docs/stable/generated/torch.nn.GRU.html?highlight=gru#torch.nn.GRU</a><br>$$<br>\begin{aligned}<br>r_{t} &amp; =\sigma\left(W_{i r} x_{t}+b_{i r}+W_{h r} h_{(t-1)}+b_{h r}\right) \<br>z_{t} &amp; =\sigma\left(W_{i z} x_{t}+b_{i z}+W_{h z} h_{(t-1)}+b_{h z}\right) \<br>n_{t} &amp; =\tanh \left(W_{i n} x_{t}+b_{i n}+r_{t} *\left(W_{h n} h_{(t-1)}+b_{h n}\right)\right) \<br>h_{t} &amp; =\left(1-z_{t}\right) * n_{t}+z_{t} * h_{(t-1)}<br>\end{aligned}<br>$$<br>同等<code>hidden size</code>的参数量，GRU是LSTM的$\frac{3}{4}$</p>
+		  <p>torch.nn.GRU(<strong>args<em>, </em></strong>kwargs*)</p>
+<p>https://pytorch.org/docs/stable/generated/torch.nn.GRU.html?highlight=gru#torch.nn.GRU <span class="math display">\[
+\begin{aligned}
+r_{t} &amp; =\sigma\left(W_{i r} x_{t}+b_{i r}+W_{h r} h_{(t-1)}+b_{h r}\right) \\
+z_{t} &amp; =\sigma\left(W_{i z} x_{t}+b_{i z}+W_{h z} h_{(t-1)}+b_{h z}\right) \\
+n_{t} &amp; =\tanh \left(W_{i n} x_{t}+b_{i n}+r_{t} *\left(W_{h n} h_{(t-1)}+b_{h n}\right)\right) \\
+h_{t} &amp; =\left(1-z_{t}\right) * n_{t}+z_{t} * h_{(t-1)}
+\end{aligned}
+\]</span> 同等<code>hidden size</code>的参数量，GRU是LSTM的<span class="math inline">\(\frac{3}{4}\)</span></p>
 <p>何时使用GRU，何时使用LSTM？</p>
-<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1412.3555.pdf">https://arxiv.org/pdf/1412.3555.pdf</a></p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304141848732.png" alt="image-20230414180541344"></p>
-<h2 id="1-API"><a href="#1-API" class="headerlink" title="1 API"></a>1 API</h2><h3 id="1-1-Parameters"><a href="#1-1-Parameters" class="headerlink" title="1.1 Parameters"></a>1.1 Parameters</h3><ul>
+<p>https://arxiv.org/pdf/1412.3555.pdf</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304141848732.png" alt="image-20230414180541344" /><figcaption aria-hidden="true">image-20230414180541344</figcaption>
+</figure>
+<h2 id="api">1 API</h2>
+<h3 id="parameters">1.1 Parameters</h3>
+<ul>
 <li><strong>input_size</strong> – The number of expected features in the input x</li>
 <li><strong>hidden_size</strong> – The number of features in the hidden state h</li>
 <li><strong>num_layers</strong> – Number of recurrent layers. E.g., setting <code>num_layers=2</code> would mean stacking two GRUs together to form a stacked GRU, with the second GRU taking in outputs of the first GRU and computing the final results. Default: 1</li>
@@ -390,10 +401,9 @@ var _hmt = _hmt || [];
 <li><strong>dropout</strong> – If non-zero, introduces a Dropout layer on the outputs of each GRU layer except the last layer, with dropout probability equal to <code>dropout</code>. Default: 0</li>
 <li><strong>bidirectional</strong> – If <code>True</code>, becomes a bidirectional GRU. Default: <code>False</code></li>
 </ul>
-<h2 id="2-实现"><a href="#2-实现" class="headerlink" title="2 实现"></a>2 实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gru_forward</span>(<span class="params"><span class="built_in">input</span>,initial_states,w_ih,w_hh,b_ih,b_hh</span>):</span><br><span class="line">    prev_h = initial_states</span><br><span class="line">    bs,T,i_size = <span class="built_in">input</span>.shape</span><br><span class="line">    h_size = w_ih.shape[<span class="number">0</span>] // <span class="number">3</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 对权重扩维，复制成batch_size倍</span></span><br><span class="line">    batch_w_ih = w_ih.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">    batch_w_hh = w_hh.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    output = torch.zeros(bs,T,h_size) <span class="comment"># GRU网络的输出状态序列</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">        x = <span class="built_in">input</span>[:,t,:] <span class="comment"># t时刻的GRU cell的输入特征向量 [bs,i_size]</span></span><br><span class="line">        w_time_x = torch.bmm(batch_w_ih,x.unsqueeze(-<span class="number">1</span>)) <span class="comment">#[bs,3*i_size,1]</span></span><br><span class="line">        w_time_x = w_time_x.squeeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        w_time_h_prev = torch.bmm(batch_w_hh,prev_h.unsqueeze(-<span class="number">1</span>)) <span class="comment">#[bs,3*i_size,1]</span></span><br><span class="line">        w_time_h_prev = w_time_h_prev.squeeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        r_t = torch.sigmoid(w_time_x[:,:h_size] + w_time_h_prev[:,:h_size] + b_ih[:h_size] + b_hh[:h_size]) <span class="comment"># 重置门</span></span><br><span class="line">        z_t = torch.sigmoid(w_time_x[:,h_size:<span class="number">2</span>*h_size] + w_time_h_prev[:,h_size:<span class="number">2</span>*h_size] + b_ih[h_size:<span class="number">2</span>*h_size] + b_hh[h_size:<span class="number">2</span>*h_size]) <span class="comment"># 更新门</span></span><br><span class="line">        </span><br><span class="line">        n_t = torch.tanh(w_time_x[:,<span class="number">2</span>*h_size:<span class="number">3</span>*h_size]+b_ih[<span class="number">2</span>*h_size:<span class="number">3</span>*h_size]+</span><br><span class="line">                         r_t*(w_time_h_prev[:,<span class="number">2</span>*h_size: <span class="number">3</span>*h_size]+b_hh[<span class="number">2</span>*h_size: <span class="number">3</span>*h_size]))   <span class="comment"># 候选状态</span></span><br><span class="line">        </span><br><span class="line">        prev_h = (<span class="number">1</span>-z_t)*n_t + z_t*prev_h <span class="comment"># 增量更新得到当前时刻最新隐含状态</span></span><br><span class="line">        output[:,t,:] = prev_h</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> output,prev_h</span><br><span class="line">        </span><br></pre></td></tr></table></figure>
-
+<h2 id="实现">2 实现</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gru_forward</span>(<span class="params"><span class="built_in">input</span>,initial_states,w_ih,w_hh,b_ih,b_hh</span>):</span><br><span class="line">    prev_h = initial_states</span><br><span class="line">    bs,T,i_size = <span class="built_in">input</span>.shape</span><br><span class="line">    h_size = w_ih.shape[<span class="number">0</span>] // <span class="number">3</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 对权重扩维，复制成batch_size倍</span></span><br><span class="line">    batch_w_ih = w_ih.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">    batch_w_hh = w_hh.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    output = torch.zeros(bs,T,h_size) <span class="comment"># GRU网络的输出状态序列</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">        x = <span class="built_in">input</span>[:,t,:] <span class="comment"># t时刻的GRU cell的输入特征向量 [bs,i_size]</span></span><br><span class="line">        w_time_x = torch.bmm(batch_w_ih,x.unsqueeze(-<span class="number">1</span>)) <span class="comment">#[bs,3*i_size,1]</span></span><br><span class="line">        w_time_x = w_time_x.squeeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        w_time_h_prev = torch.bmm(batch_w_hh,prev_h.unsqueeze(-<span class="number">1</span>)) <span class="comment">#[bs,3*i_size,1]</span></span><br><span class="line">        w_time_h_prev = w_time_h_prev.squeeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        r_t = torch.sigmoid(w_time_x[:,:h_size] + w_time_h_prev[:,:h_size] + b_ih[:h_size] + b_hh[:h_size]) <span class="comment"># 重置门</span></span><br><span class="line">        z_t = torch.sigmoid(w_time_x[:,h_size:<span class="number">2</span>*h_size] + w_time_h_prev[:,h_size:<span class="number">2</span>*h_size] + b_ih[h_size:<span class="number">2</span>*h_size] + b_hh[h_size:<span class="number">2</span>*h_size]) <span class="comment"># 更新门</span></span><br><span class="line">        </span><br><span class="line">        n_t = torch.tanh(w_time_x[:,<span class="number">2</span>*h_size:<span class="number">3</span>*h_size]+b_ih[<span class="number">2</span>*h_size:<span class="number">3</span>*h_size]+</span><br><span class="line">                         r_t*(w_time_h_prev[:,<span class="number">2</span>*h_size: <span class="number">3</span>*h_size]+b_hh[<span class="number">2</span>*h_size: <span class="number">3</span>*h_size]))   <span class="comment"># 候选状态</span></span><br><span class="line">        </span><br><span class="line">        prev_h = (<span class="number">1</span>-z_t)*n_t + z_t*prev_h <span class="comment"># 增量更新得到当前时刻最新隐含状态</span></span><br><span class="line">        output[:,t,:] = prev_h</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> output,prev_h</span><br><span class="line">        </span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">bs,T,i_size,h_size = <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br><span class="line"><span class="built_in">input</span> = torch.randn(bs,T,i_size)</span><br><span class="line">h0 = torch.randn(bs,h_size)</span><br><span class="line"></span><br><span class="line">gru_layer = nn.GRU(i_size,h_size,batch_first = <span class="literal">True</span>)</span><br><span class="line">output,h_final = gru_layer(<span class="built_in">input</span>,h0.unsqueeze(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">output_custom,h_final_custom = gru_forward(<span class="built_in">input</span>,h0,gru_layer.weight_ih_l0,gru_layer.weight_hh_l0,gru_layer.bias_ih_l0,gru_layer.bias_hh_l0)</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(h_final,h_final_custom))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(output,output_custom))</span><br></pre></td></tr></table></figure>
-
 
 				  
 	  
@@ -434,7 +444,7 @@ var _hmt = _hmt || [];
 <div class="declare">
 	<strong class="author">本文作者：</strong>
 	
-	  John Doe
+	  jyh
 	
 	
 	<!-- <br>
@@ -443,15 +453,15 @@ var _hmt = _hmt || [];
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年04月15日 15:03:45
+	2023年04月17日 11:39:02
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="http://example.com/post/f22b56ba.html" title="pytorch基础入门14-GRU" target="_blank">pytorch基础入门14-GRU</a> -->
+	<a href="https://wangtongyowen.github.io/post/f22b56ba.html" title="pytorch基础入门14-GRU" target="_blank">pytorch基础入门14-GRU</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="http://example.com/post/f22b56ba.html" title="pytorch基础入门14-GRU" target="_blank">http://example.com/post/f22b56ba.html</a>
+	<a href="https://wangtongyowen.github.io/post/f22b56ba.html" title="pytorch基础入门14-GRU" target="_blank">https://wangtongyowen.github.io/post/f22b56ba.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -536,7 +546,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/f22b56ba.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyowen.github.io/post/f22b56ba.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -590,7 +600,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-API"><span class="toc-number">1.</span> <span class="toc-text">1 API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Parameters"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 Parameters</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">2 实现</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#api"><span class="toc-number">1.</span> <span class="toc-text">1 API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#parameters"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 Parameters</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">2 实现</span></a></li></ol>
             </div>
           </span>
         </div>
@@ -799,6 +809,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">project</a>
               </li>
              
               <li class="article-tag-list-item">

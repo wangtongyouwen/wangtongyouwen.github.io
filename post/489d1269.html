@@ -6,29 +6,29 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
-  <link rel="dns-prefetch" href="http://example.com">
-  <title>pytorch基础入门1-张量运算 | Hexo</title>
+  <link rel="dns-prefetch" href="https://wangtongyowen.github.io">
+  <title>pytorch基础入门1-张量运算 | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="1 准备工作安装anaconda，cuda，cudnn等内容（略） 配置jupyter notebook  如何再jupyter notebook中看到不同的conda环境  123456conda activate emotiona_analysis  # 切换到虚拟环境emotiona_analysis pip install ipykernel    #  在tensorflow  中安装">
+  <meta name="description" content="1 准备工作 安装anaconda，cuda，cudnn等内容（略） 配置jupyter notebook  如何再jupyter notebook中看到不同的conda环境  123456conda activate emotiona_analysis  # 切换到虚拟环境emotiona_analysis pip install ipykernel    #  在tensorflo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pytorch基础入门1-张量运算">
-<meta property="og:url" content="http://example.com/post/489d1269.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1 准备工作安装anaconda，cuda，cudnn等内容（略） 配置jupyter notebook  如何再jupyter notebook中看到不同的conda环境  123456conda activate emotiona_analysis  # 切换到虚拟环境emotiona_analysis pip install ipykernel    #  在tensorflow  中安装">
+<meta property="og:url" content="https://wangtongyowen.github.io/post/489d1269.html">
+<meta property="og:site_name" content="jyh blog">
+<meta property="og:description" content="1 准备工作 安装anaconda，cuda，cudnn等内容（略） 配置jupyter notebook  如何再jupyter notebook中看到不同的conda环境  123456conda activate emotiona_analysis  # 切换到虚拟环境emotiona_analysis pip install ipykernel    #  在tensorflo">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051548693.webp">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051549896.webp">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051551671.webp">
 <meta property="article:published_time" content="2023-04-05T05:29:58.000Z">
 <meta property="article:modified_time" content="2023-04-12T12:30:11.323Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051548693.webp">
   
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
   
   
     <link rel="icon" type="image/x-icon" href="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051210238.jpg">
@@ -345,7 +345,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">687字</span>
+        <span class="post-count">694字</span>
       </span>
     </span>
 
@@ -369,94 +369,74 @@ var _hmt = _hmt || [];
 	  <!-- 添加分类与标签 -->
 	  
 		  
-		  <h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作</h2><p>安装anaconda，cuda，cudnn等内容（略）</p>
+		  <h2 id="准备工作">1 准备工作</h2>
+<p>安装anaconda，cuda，cudnn等内容（略）</p>
 <p>配置jupyter notebook</p>
 <ul>
 <li>如何再jupyter notebook中看到不同的conda环境</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">conda activate emotiona_analysis  <span class="comment"># 切换到虚拟环境emotiona_analysis </span></span><br><span class="line"></span><br><span class="line">pip install ipykernel    <span class="comment">#  在tensorflow  中安装 ipykernel 包</span></span><br><span class="line"></span><br><span class="line">python -m ipykernel install --name emotiona_analysis   <span class="comment"># 向 jupyter 中添加虚拟环境</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-tensor-操作"><a href="#2-tensor-操作" class="headerlink" title="2 tensor 操作"></a>2 tensor 操作</h2><p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/torch.html">https://pytorch.org/docs/stable/torch.html</a> </p>
+<h2 id="tensor-操作">2 tensor 操作</h2>
+<p>https://pytorch.org/docs/stable/torch.html</p>
 <p>Over 100 tensor operations, including arithmetic, linear algebra, matrix manipulation (transposing, indexing, slicing), sampling and more are comprehensively described</p>
 <ul>
-<li><p>tensor.cat  (Concatenates the given sequence of <code>seq</code> tensors in the given dimension. All tensors must either have the same shape (except in the concatenating dimension) or be empty.)</p>
-</li>
-<li><p>tensor.chunk (Attempts to split a tensor into the specified number of chunks. Each chunk is a view of the input tensor.)</p>
-</li>
-<li><p>torch.numel (Returns the total number of elements in the <code>input</code> tensor.)</p>
-</li>
-<li><p>torch.set_default_tensor_type(t) </p>
+<li><p>tensor.cat (Concatenates the given sequence of <code>seq</code> tensors in the given dimension. All tensors must either have the same shape (except in the concatenating dimension) or be empty.)</p></li>
+<li><p>tensor.chunk (Attempts to split a tensor into the specified number of chunks. Each chunk is a view of the input tensor.)</p></li>
+<li><p>torch.numel (Returns the total number of elements in the <code>input</code> tensor.)</p></li>
+<li><p>torch.set_default_tensor_type(t)</p>
 <p>(Sets the default <code>torch.Tensor</code> type to floating point tensor type <code>t</code>. This type will also be used as default floating point type for type inference in <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.tensor.html#torch.tensor"><code>torch.tensor()</code></a>.</p>
-<p>The default floating point tensor type is initially <code>torch.FloatTensor</code>.)</p>
-</li>
-<li><p>torch.gather(input, dim, index, *, sparse_grad=False, out=None) → Tensor</p>
-</li>
+<p>The default floating point tensor type is initially <code>torch.FloatTensor</code>.)</p></li>
+<li><p>torch.gather(input, dim, index, *, sparse_grad=False, out=None) → Tensor</p></li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">out[i][j][k] = input[index[i][j][k]][j][k]  # if dim == 0</span><br><span class="line">out[i][j][k] = input[i][index[i][j][k]][k]  # if dim == 1</span><br><span class="line">out[i][j][k] = input[i][j][index[i][j][k]]  # if dim == 2</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>Tensor.scatter_(dim, index, src, reduce=None) → Tensor</li>
 <li>torch.reshape</li>
 </ul>
 <p>eturns a tensor with the same data and number of elements as <code>input</code>, but with the specified shape. When possible, the returned tensor will be a view of <code>input</code>. Otherwise, it will be a copy. Contiguous inputs and inputs with compatible strides can be reshaped without copying, but you should not depend on the copying vs. viewing behavior.</p>
 <ul>
-<li><p>torch.full(size, fill_value, *, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) → Tensor</p>
-</li>
-<li><p>torch.split(tensor, split_size_or_sections, dim=0)</p>
-</li>
-<li><p>torch.squeeze(input, dim=None) → Tensor</p>
-</li>
-<li><p>torch.stack(tensors, dim=0, *, out=None) → Tensor</p>
-</li>
-<li><p>torch.tile(input, dims) → Tensor</p>
-</li>
-<li><p>torch.transpose(<em>input</em>, <em>dim0</em>, <em>dim1</em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a></p>
-</li>
-<li><p>torch.unbind(<em>input</em>, <em>dim=0</em>) → seq</p>
-</li>
-<li><p>torch.unsqueeze(<em>input</em>, <em>dim</em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a></p>
-</li>
-<li><p>torch.where(<em>condition</em>, <em>input</em>, <em>other</em>, ***, <em>out=None</em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a>  <em>masked</em></p>
-</li>
-<li><p>torch.rand 与 torch.randn 区别，前者是0-1均匀分布中取值，后者是0,1正态分布中取值</p>
-</li>
-<li><p>torch.manual_seed(seed)</p>
-</li>
-<li><p>torch.bernoulli(<em>input</em>, ***, <em>generator=None</em>, <em>out=None</em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a></p>
-</li>
-<li><p>torch.normal(<em>mean</em>, <em>std</em>, ***, <em>generator=None</em>, <em>out=None</em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a> 返回高斯分布</p>
-</li>
-<li><p>torch.randperm(<em>n</em>, ***, <em>generator=None</em>, <em>out=None</em>, <em>dtype=torch.int64</em>, <em>layout=torch.strided</em>, <em>device=None</em>, <em>requires_grad=False</em>, <em>pin_memory=False</em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a> 通常用于构建数据集的索引 随机组合</p>
-</li>
+<li><p>torch.full(size, fill_value, *, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) → Tensor</p></li>
+<li><p>torch.split(tensor, split_size_or_sections, dim=0)</p></li>
+<li><p>torch.squeeze(input, dim=None) → Tensor</p></li>
+<li><p>torch.stack(tensors, dim=0, *, out=None) → Tensor</p></li>
+<li><p>torch.tile(input, dims) → Tensor</p></li>
+<li><p>torch.transpose(<em>input</em>, <em>dim0</em>, <em>dim1</em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a></p></li>
+<li><p>torch.unbind(<em>input</em>, <em>dim=0</em>) → seq</p></li>
+<li><p>torch.unsqueeze(<em>input</em>, <em>dim</em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a></p></li>
+<li><p>torch.where(<em>condition</em>, <em>input</em>, <em>other</em>, **<em>, </em>out=None<em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a> </em>masked*</p></li>
+<li><p>torch.rand 与 torch.randn 区别，前者是0-1均匀分布中取值，后者是0,1正态分布中取值</p></li>
+<li><p>torch.manual_seed(seed)</p></li>
+<li><p>torch.bernoulli(<em>input</em>, **<em>, </em>generator=None<em>, </em>out=None*) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a></p></li>
+<li><p>torch.normal(<em>mean</em>, <em>std</em>, **<em>, </em>generator=None<em>, </em>out=None*) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a> 返回高斯分布</p></li>
+<li><p>torch.randperm(<em>n</em>, **<em>, </em>generator=None<em>, </em>out=None<em>, </em>dtype=torch.int64<em>, </em>layout=torch.strided<em>, </em>device=None<em>, </em>requires_grad=False<em>, </em>pin_memory=False*) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a> 通常用于构建数据集的索引 随机组合</p></li>
 </ul>
-<h2 id="3-如何理解tensor-gather-和-tensor-tensor-scatter"><a href="#3-如何理解tensor-gather-和-tensor-tensor-scatter" class="headerlink" title="3 如何理解tensor.gather 和 tensor.tensor.scatter"></a>3 如何理解tensor.gather 和 tensor.tensor.scatter</h2><p>tensor.gather:</p>
+<h2 id="如何理解tensor.gather-和-tensor.tensor.scatter">3 如何理解tensor.gather 和 tensor.tensor.scatter</h2>
+<p>tensor.gather:</p>
 <p>用途：方便从批量tensor中获取指定索引下的数据，该索引是<strong>高度自定义化</strong>的，可乱序的</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">tensor_0 = torch.arange(<span class="number">3</span>, <span class="number">12</span>).view(<span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(tensor_0)</span><br></pre></td></tr></table></figure>
-
-<p>1  <strong>输入行向量index，并替换行索引(dim=0)</strong></p>
+<p>1 <strong>输入行向量index，并替换行索引(dim=0)</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">index = torch.tensor([[<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">tensor_1 = tensor_0.gather(<span class="number">0</span>, index)</span><br><span class="line"><span class="built_in">print</span>(tensor_1)</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result: tensor([[9, 7, 5]])</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051548693.webp" alt="v2-1aed61fbaa97775e816c23d8d907bea3_720w"></p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051548693.webp" alt="v2-1aed61fbaa97775e816c23d8d907bea3_720w" /><figcaption aria-hidden="true">v2-1aed61fbaa97775e816c23d8d907bea3_720w</figcaption>
+</figure>
 <p>2 <strong>输入行向量index，并替换列索引(dim=1)</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">index = torch.tensor([[<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">tensor_1 = tensor_0.gather(<span class="number">1</span>, index)</span><br><span class="line"><span class="built_in">print</span>(tensor_1)</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result: tensor([[5, 4, 3]])</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051549896.webp" alt="v2-a437754fed6b29f5af13927ee06e13f9_720w"></p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051549896.webp" alt="v2-a437754fed6b29f5af13927ee06e13f9_720w" /><figcaption aria-hidden="true">v2-a437754fed6b29f5af13927ee06e13f9_720w</figcaption>
+</figure>
 <p>3 <strong>输入列向量index，并替换列索引(dim=1)</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">index = torch.tensor([[<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>]]).t()</span><br><span class="line">tensor_1 = tensor_0.gather(<span class="number">1</span>, index)</span><br><span class="line"><span class="built_in">print</span>(tensor_1)</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result: tensor([[5],</span><br><span class="line">        [7],</span><br><span class="line">        [9]])</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051551671.webp" alt="v2-75bcf4697138165941cb2ed083475a07_720w"></p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051551671.webp" alt="v2-75bcf4697138165941cb2ed083475a07_720w" /><figcaption aria-hidden="true">v2-75bcf4697138165941cb2ed083475a07_720w</figcaption>
+</figure>
 <p>4 <strong>输入二维矩阵index，并替换列索引(dim=1)</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">index = torch.tensor([[<span class="number">0</span>, <span class="number">2</span>], </span><br><span class="line">                      [<span class="number">1</span>, <span class="number">2</span>]])</span><br><span class="line">tensor_1 = tensor_0.gather(<span class="number">1</span>, index)</span><br><span class="line"><span class="built_in">print</span>(tensor_1)</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result: tensor([[3, 5],</span><br><span class="line">        [7, 8]])</span><br></pre></td></tr></table></figure>
-
-<h2 id="4-tensor-的数据类型"><a href="#4-tensor-的数据类型" class="headerlink" title="4 tensor 的数据类型"></a>4 tensor 的数据类型</h2><p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensor_attributes.html">https://pytorch.org/docs/stable/tensor_attributes.html</a></p>
+<h2 id="tensor-的数据类型">4 tensor 的数据类型</h2>
+<p>https://pytorch.org/docs/stable/tensor_attributes.html</p>
 
 				  
 	  
@@ -497,7 +477,7 @@ var _hmt = _hmt || [];
 <div class="declare">
 	<strong class="author">本文作者：</strong>
 	
-	  John Doe
+	  jyh
 	
 	
 	<!-- <br>
@@ -510,11 +490,11 @@ var _hmt = _hmt || [];
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="http://example.com/post/489d1269.html" title="pytorch基础入门1-张量运算" target="_blank">pytorch基础入门1-张量运算</a> -->
+	<a href="https://wangtongyowen.github.io/post/489d1269.html" title="pytorch基础入门1-张量运算" target="_blank">pytorch基础入门1-张量运算</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="http://example.com/post/489d1269.html" title="pytorch基础入门1-张量运算" target="_blank">http://example.com/post/489d1269.html</a>
+	<a href="https://wangtongyowen.github.io/post/489d1269.html" title="pytorch基础入门1-张量运算" target="_blank">https://wangtongyowen.github.io/post/489d1269.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -599,7 +579,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/489d1269.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyowen.github.io/post/489d1269.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -653,7 +633,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">1 准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-tensor-%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">2 tensor 操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3tensor-gather-%E5%92%8C-tensor-tensor-scatter"><span class="toc-number">3.</span> <span class="toc-text">3 如何理解tensor.gather 和 tensor.tensor.scatter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-tensor-%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">4 tensor 的数据类型</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">1 准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tensor-%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">2 tensor 操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3tensor.gather-%E5%92%8C-tensor.tensor.scatter"><span class="toc-number">3.</span> <span class="toc-text">3 如何理解tensor.gather 和 tensor.tensor.scatter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tensor-%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">4 tensor 的数据类型</span></a></li></ol>
             </div>
           </span>
         </div>
@@ -831,6 +811,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">project</a>
               </li>
              
               <li class="article-tag-list-item">

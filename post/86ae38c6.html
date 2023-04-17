@@ -7,26 +7,26 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="https://wangtongyowen.github.io">
-  <title>pytorch基础入门8-CONV层 | jyh blog</title>
+  <title>pytorch基础入门16-seq2seq2 | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="CONV2D torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride&#x3D;1, padding&#x3D;0, dilation&#x3D;1, groups&#x3D;1, bias&#x3D;True, padding_mode&#x3D;&#39;zeros&#39;, device&#x3D;None, dtype&#x3D;None)  in_channels (int) – Number of ch">
+  <meta name="description" content="1 NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1409.0473.pdf?utm_source&#x3D;ColumnsChannel  image-20230417144427318  2 Effective Approaches to Attention">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pytorch基础入门8-CONV层">
-<meta property="og:url" content="https://wangtongyowen.github.io/post/2d27b0da.html">
+<meta property="og:title" content="pytorch基础入门16-seq2seq2">
+<meta property="og:url" content="https://wangtongyowen.github.io/post/86ae38c6.html">
 <meta property="og:site_name" content="jyh blog">
-<meta property="og:description" content="CONV2D torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride&#x3D;1, padding&#x3D;0, dilation&#x3D;1, groups&#x3D;1, bias&#x3D;True, padding_mode&#x3D;&#39;zeros&#39;, device&#x3D;None, dtype&#x3D;None)  in_channels (int) – Number of ch">
+<meta property="og:description" content="1 NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1409.0473.pdf?utm_source&#x3D;ColumnsChannel  image-20230417144427318  2 Effective Approaches to Attention">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081528114.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081948885.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081955360.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304082032487.png">
-<meta property="article:published_time" content="2023-04-08T07:26:00.000Z">
-<meta property="article:modified_time" content="2023-04-17T12:55:41.594Z">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171444845.png">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171447590.png">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171454431.png">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171935294.png">
+<meta property="article:published_time" content="2023-04-17T04:40:39.000Z">
+<meta property="article:modified_time" content="2023-04-17T12:58:01.417Z">
 <meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081528114.png">
+<meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171444845.png">
   
   
     <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
@@ -287,26 +287,26 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-pytorch基础入门8-CONV层" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-pytorch基础入门16-seq2seq2" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title_code_ant" itemprop="name">
-	  <a href="/post/2d27b0da.html">pytorch基础入门8-CONV层</a>
+	  <a href="/post/86ae38c6.html">pytorch基础入门16-seq2seq2</a>
 	</h1>
   
 
         
 		
-		  <a href="/post/2d27b0da.html" class="archive-article-date">
-  	<time datetime="2023-04-08T07:26:00.000Z" itemprop="datePublished">
+		  <a href="/post/86ae38c6.html" class="archive-article-date">
+  	<time datetime="2023-04-17T04:40:39.000Z" itemprop="datePublished">
 	<!-- <i class="icon-calendar icon"></i> -->
 
 	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
 	&nbsp;
-	2023-04-08</time>
+	2023-04-17</time>
 	
 	<!-- busuanzi阅读量统计
 	
@@ -325,7 +325,7 @@ var _hmt = _hmt || [];
 		&nbsp; &nbsp; &nbsp;
 		<i class="fa fa-eye" aria-hidden="true"></i>
 		&nbsp;
-		<span class="waline-pageview-count" data-path="/post/2d27b0da.html"><i class="fa fa-spinner fa-spin"></i></span>
+		<span class="waline-pageview-count" data-path="/post/86ae38c6.html"><i class="fa fa-spinner fa-spin"></i></span>
 	</span>
 	
 
@@ -339,6 +339,15 @@ var _hmt = _hmt || [];
 <div class="word-count">
 	
       
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
     
 	
     <span class="post-time">
@@ -346,7 +355,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">487字</span>
+        <span class="post-count">1.3k字</span>
       </span>
     </span>
 
@@ -355,7 +364,7 @@ var _hmt = _hmt || [];
       <span class="post-meta-item-icon">
 	    <i class="fa fa-pagelines" aria-hidden="true"></i>
         <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">2min</span>
+        <span class="post-count">7min</span>
       </span>
     </span>
 	
@@ -370,34 +379,71 @@ var _hmt = _hmt || [];
 	  <!-- 添加分类与标签 -->
 	  
 		  
-		  <h1 id="conv2d">CONV2D</h1>
-<p>torch.nn.Conv2d(<em>in_channels</em>, <em>out_channels</em>, <em>kernel_size</em>, <em>stride=1</em>, <em>padding=0</em>, <em>dilation=1</em>, <em>groups=1</em>, <em>bias=True</em>, <em>padding_mode='zeros'</em>, <em>device=None</em>, <em>dtype=None</em>)</p>
+		  <h1 id="neural-machine-translation-by-jointly-learning-to-align-and-translate">1 NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</h1>
+<p>https://arxiv.org/pdf/1409.0473.pdf?utm_source=ColumnsChannel</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171444845.png" alt="image-20230417144427318" /><figcaption aria-hidden="true">image-20230417144427318</figcaption>
+</figure>
+<h1 id="effective-approaches-to-attention-based-neural-machine-translation">2 Effective Approaches to Attention-based Neural Machine Translation</h1>
+<p>https://arxiv.org/pdf/1508.04025)</p>
+<h2 id="global-attention">2.1 global attention</h2>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171447590.png" alt="image-20230417144755015" /><figcaption aria-hidden="true">image-20230417144755015</figcaption>
+</figure>
+<p>The idea of a global attentional model is to consider all the hidden states of the encoder when deriving the <strong>context vector</strong> <span class="math inline">\(c_t\)</span> . In this model type, a <strong>variable-length alignment vector</strong> <span class="math inline">\(a_t\)</span> , whose size equals the number of time steps on the source side, is derived by comparing the current target hidden state ht with each <strong>source hidden state</strong> <span class="math inline">\(\bar h _s\)</span>: <span class="math display">\[
+\begin{aligned}
+\boldsymbol{a}_{t}(s) &amp; =\operatorname{align}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s}\right) \\
+&amp; =\frac{\exp \left(\operatorname{score}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s}\right)\right)}{\sum_{s^{\prime}} \exp \left(\operatorname{score}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s^{\prime}}\right)\right)}
+\end{aligned}
+\]</span> score is referred as a <strong>content-based function</strong> for which we consider three different alternatives <span class="math display">\[
+\operatorname{score}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s}\right)=\left\{\begin{array}{ll}
+\boldsymbol{h}_{t}^{\top} \overline{\boldsymbol{h}}_{s} &amp; \text { dot } \\
+\boldsymbol{h}_{t}^{\top} \boldsymbol{W}_{\boldsymbol{a}} \overline{\boldsymbol{h}}_{s} &amp; \text { general } \\
+\boldsymbol{v}_{a}^{\top} \tanh \left(\boldsymbol{W}_{\boldsymbol{a}}\left[\boldsymbol{h}_{t} ; \overline{\boldsymbol{h}}_{s}\right]\right) &amp; \text { concat }
+\end{array}\right.
+\]</span> dot: transformer Q K V 并行计算</p>
+<p>general: 乘法注意力机制</p>
+<p>concat: 加法注意力机制</p>
+<p>基于位置的: location-based function in which the <strong>alignment scores</strong> are computed from solely the target hidden state <span class="math inline">\(h_t\)</span> <span class="math display">\[
+a_t = softmax(W_ah_t)  \     \ location
+\]</span></p>
+<p>全局注意力计算量大，有些任务也不需要进行全局注意力计算。</p>
+<h2 id="local-attention">2.2 local attention</h2>
+<p>This model takes inspiration from the tradeoff between the <strong>soft and hard</strong> attentional models</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171454431.png" alt="image-20230417145444733" /><figcaption aria-hidden="true">image-20230417145444733</figcaption>
+</figure>
 <ul>
-<li><strong>in_channels</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a>) – Number of channels in the input image</li>
-<li><strong>out_channels</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a>) – Number of channels produced by the convolution</li>
-<li><strong>kernel_size</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a>) – Size of the convolving kernel</li>
-<li><strong>stride</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a><em>,</em> <em>optional</em>) – Stride of the convolution. Default: 1</li>
-<li><strong>padding</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a><em>,</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str"><em>str</em></a><em>,</em> <em>optional</em>) – Padding added to all four sides of the input. Default: 0</li>
-<li><strong>padding_mode</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str"><em>str</em></a><em>,</em> <em>optional</em>) – <code>'zeros'</code>, <code>'reflect'</code>, <code>'replicate'</code> or <code>'circular'</code>. Default: <code>'zeros'</code></li>
-<li><strong>dilation</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a><em>,</em> <em>optional</em>) – Spacing between kernel elements. Default: 1</li>
-<li><strong>groups</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a><em>,</em> <em>optional</em>) – Number of blocked connections from input channels to output channels. Default: 1</li>
-<li><strong>bias</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#bool"><em>bool</em></a><em>,</em> <em>optional</em>) – If <code>True</code>, adds a learnable bias to the output. Default: <code>True</code></li>
+<li>generate an aligned position <span class="math inline">\(p_t\)</span> for each target word at time <span class="math inline">\(t\)</span></li>
+<li>the context vector <span class="math inline">\(c_t\)</span> is then derived as a weighted average over the set of source hidden states within the window <span class="math inline">\([p_t-D,p_t+D]\)</span> <span class="math inline">\(D\)</span> is empirically selected</li>
+<li><span class="math inline">\(a_t\)</span> is fixed-dimensional, i.e. <span class="math inline">\(\in \R^{2D+1}\)</span></li>
+<li>Monotonic alignment (<strong>local-m</strong>) <span class="math inline">\(p_t = t\)</span> assuming that source and target sequences are roughly monotonically aligned 编码器的中心位置是经验性的，不是训练出来的。hard 方法</li>
+<li>Predictive alignment (<strong>local-p</strong>) 模型能够计算出编码器的中心位置，这是训练得到的 soft 方法</li>
 </ul>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081528114.png" alt="image-20230408152839156" style="zoom:80%;" /></p>
-<h1 id="conv_residual_block_fusion">conv_residual_block_fusion</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line">in_channels = <span class="number">2</span></span><br><span class="line">out_channels = <span class="number">2</span></span><br><span class="line">kernel_size = <span class="number">3</span></span><br><span class="line">w = <span class="number">9</span></span><br><span class="line">h = <span class="number">9</span></span><br><span class="line"><span class="comment"># res_block = 3*3 conv + 1*1 conv + input</span></span><br><span class="line">x = torch.ones(<span class="number">1</span>,in_channels,w,h) <span class="comment"># 输入图片大小</span></span><br><span class="line"><span class="comment"># 方法1：原生写法</span></span><br><span class="line">conv_2d = nn.Conv2d(in_channels,out_channels,kernel_size,padding=<span class="string">&quot;same&quot;</span>)</span><br><span class="line">conv_2d_pointwise = nn.Conv2d(in_channels,out_channels,<span class="number">1</span>)</span><br><span class="line">result1 = conv_2d(x) + conv_2d_pointwise(x) + x</span><br><span class="line"><span class="comment"># print(result1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法2：算子融合</span></span><br><span class="line"><span class="comment"># 把point-wise卷积核x本身都写成3*3卷积</span></span><br><span class="line"><span class="comment"># 最终把三个卷积写成一个卷积</span></span><br><span class="line"><span class="comment"># 1*1 -&gt; 3*3</span></span><br><span class="line"><span class="comment"># 1.改造</span></span><br><span class="line">pointwise_to_conv_weight = F.pad(conv_2d_pointwise.weight,[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]) <span class="comment"># 2*2*1*1 -&gt; 2*2*3*3</span></span><br><span class="line">conv_2d_for_pointwise = nn.Conv2d(in_channels,out_channels,kernel_size,padding=<span class="string">&quot;same&quot;</span>)</span><br><span class="line">conv_2d_for_pointwise.weight = nn.Parameter(pointwise_to_conv_weight)</span><br><span class="line">conv_2d_for_pointwise.bias = nn.Parameter(conv_2d_pointwise.bias)</span><br><span class="line"><span class="comment"># x -&gt; 3*3</span></span><br><span class="line"><span class="comment"># 2*2*3*3</span></span><br><span class="line">zeros = torch.unsqueeze(torch.zeros(kernel_size,kernel_size),<span class="number">0</span>) <span class="comment"># 不考虑相邻通道的影响</span></span><br><span class="line">stars = torch.unsqueeze(F.pad(torch.ones(<span class="number">1</span>,<span class="number">1</span>),[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]),<span class="number">0</span>) <span class="comment"># 不考虑周围点的影响(1*1)</span></span><br><span class="line">stars_zeros = torch.unsqueeze(torch.cat([stars,zeros],<span class="number">0</span>),<span class="number">0</span>) <span class="comment"># 第一个输出通道</span></span><br><span class="line">zeros_stars = torch.unsqueeze(torch.cat([stars,zeros],<span class="number">0</span>),<span class="number">0</span>) <span class="comment"># 第二个输出通道</span></span><br><span class="line">identity_to_conv_weight = torch.cat([stars_zeros,zeros_stars],<span class="number">0</span>)  </span><br><span class="line">identity_to_conv_bias = torch.zeros([out_channels])</span><br><span class="line">conv_2d_for_identity = nn.Conv2d(in_channels,out_channels,kernel_size,padding=<span class="string">&quot;same&quot;</span>)</span><br><span class="line">conv_2d_for_identity.weight = nn.Parameter(identity_to_conv_weight)</span><br><span class="line">conv_2d_for_identity.bias = nn.Parameter(identity_to_conv_bias)</span><br><span class="line"></span><br><span class="line">result2 = conv_2d(x) + conv_2d_for_pointwise(x) + conv_2d_for_identity(x)</span><br><span class="line"><span class="comment"># print(result2)</span></span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">all</span>(torch.isclose(result1,result2)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.融合</span></span><br><span class="line">conv_2d_for_fusion = nn.Conv2d(in_channels,out_channels,kernel_size,padding=<span class="string">&quot;same&quot;</span>)</span><br><span class="line">conv_2d_for_fusion.weight = nn.Parameter(conv_2d.weight.data + conv_2d_for_pointwise.weight.data + conv_2d_for_identity.weight.data)</span><br><span class="line">conv_2d_for_fusion.bias = nn.Parameter(conv_2d.bias.data + conv_2d_for_pointwise.bias.data + conv_2d_for_identity.bias.data)</span><br><span class="line">result3 = conv_2d_for_fusion(x)</span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">all</span>(torch.isclose(result2,result3)))</span><br></pre></td></tr></table></figure>
-<p>算子融合能够提升速度。</p>
-<h1 id="convmixer-layer">ConvMixer Layer</h1>
-<p>https://arxiv.org/pdf/2201.09792.pdf</p>
+<p><span class="math display">\[
+p_{t}=S \cdot \operatorname{sigmoid}\left(\boldsymbol{v}_{p}^{\top} \tanh \left(\boldsymbol{W}_{\boldsymbol{p}} \boldsymbol{h}_{t}\right)\right)
+\]</span></p>
+<ul>
+<li><ul>
+<li><span class="math inline">\(W_p,v_p\)</span>: the model parameters which will be learned to predict positions</li>
+<li><span class="math inline">\(S\)</span>: the source sentence length</li>
+</ul></li>
+<li>alignment weights -&gt; Gaussian distribution</li>
+</ul>
+<p><span class="math display">\[
+\boldsymbol{a}_{t}(s)=\operatorname{align}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s}\right) \exp \left(-\frac{\left(s-p_{t}\right)^{2}}{2 \sigma^{2}}\right)  where \ \sigma = \frac{D}{2}
+\]</span></p>
+<h1 id="代码实现">3 代码实现</h1>
+<h2 id="encoder">3.1 encoder</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&quot;&quot;&quot;以离散符号(索引的符号)的分类任务为例，实现基于注意力机制的seq2seq模型&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Seq2SeqEncoder(nn.Module):</span><br><span class="line">    &quot;&quot;&quot;实现基于LSTM的编码器，也可以是其他类型的，如CNN，TransformerEncoder&quot;&quot;&quot;</span><br><span class="line">    &quot;&quot;&quot;对原序列进行上下文相关的表征&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, embedding_dim, hidden_size, source_vocab_size):</span><br><span class="line">        super(Seq2SeqEncoder, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.lstm_layer = nn.LSTM(input_size=embedding_dim, hidden_size=hidden_size, batch_first=True)</span><br><span class="line">        # num_embeddings (int): size of the dictionary of embeddings</span><br><span class="line">        # embedding_dim (int): the size of each embedding vector</span><br><span class="line">        self.embedding_table = nn.Embedding(source_vocab_size, embedding_dim)  # 将token转换成 token_embedding # 可训练</span><br><span class="line"></span><br><span class="line">    def forward(self, input_ids):</span><br><span class="line">        # 原序列不是流式的，所以能够一次性拿到全部序列</span><br><span class="line">        input_sequence = self.embedding_table(input_ids)  # [bs,source_length,embedding_dim]</span><br><span class="line">        output_states, (final_h, final_c) = self.lstm_layer(input_sequence)</span><br><span class="line"></span><br><span class="line">        return output_states, final_h</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="attentionmechanism">3.2 AttentionMechanism</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class Seq2SeqAttentionMechanism(nn.Module):</span><br><span class="line">    &quot;&quot;&quot;实现dot-product的attention&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self):</span><br><span class="line">        super(Seq2SeqAttentionMechanism, self).__init__()</span><br><span class="line"></span><br><span class="line">    def forward(self, decoder_state_t, encoder_states):</span><br><span class="line">        # encoder_states: 完整的编码序列</span><br><span class="line">        # decoder_State_t: t 时刻的decoder序列</span><br><span class="line">        bs, source_length, hidden_size = encoder_states.shape</span><br><span class="line"></span><br><span class="line">        decoder_state_t = decoder_state_t.unsqueeze(1)  # [bs,1,hidden_size]</span><br><span class="line">        decoder_state_t = torch.tile(decoder_state_t, dims=(1, source_length, 1))  # 复制为 [bs,source_length,hidden_size]</span><br><span class="line"></span><br><span class="line">        score = torch.sum(decoder_state_t * encoder_states, dim=-1)  # [bs,source_length]</span><br><span class="line"></span><br><span class="line">        attn_prob = F.softmax(score, dim=-1)  # 得到序列中每个具体索引在整个序列中的权重值,总和为1 [bs,source_length]</span><br><span class="line"></span><br><span class="line">        # 加权求和</span><br><span class="line">        # 使用了广播机制 attn_prob: [bs,source_length], decoder_state_t: [bs,source_length,hidden_size]</span><br><span class="line">        context = torch.sum(attn_prob.unsqueeze(-1) * encoder_states,1) # [bs,hidden_size] -&gt; 第t时刻解码器需要的上下文向量</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        return attn_prob, context</span><br></pre></td></tr></table></figure>
+<h2 id="decoder">3.3 Decoder</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">class Seq2SeqDecoder(nn.Module):</span><br><span class="line"></span><br><span class="line">    def __init__(self, embedding_dim, hidden_size, num_classes, target_vocab_size, start_id, end_id):</span><br><span class="line">        super(Seq2SeqDecoder, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.lstm_cell = nn.LSTMCell(embedding_dim, hidden_size) # cell 是单步完成，[bs,embedding_dim]</span><br><span class="line">        self.proj_layer = nn.Linear(hidden_size * 2, num_classes) # [context_vector+decode_state_t,num_classes]</span><br><span class="line">        self.attention_mechanism = Seq2SeqAttentionMechanism()</span><br><span class="line">        self.num_classes = num_classes</span><br><span class="line">        self.embedding_table = nn.Embedding(target_vocab_size, embedding_dim)</span><br><span class="line">        self.start_id = start_id # 会传入一个真实的target作为输入，可以进行第一个位置的预测</span><br><span class="line">        self.end_id = end_id # 能够判断序列的截止位置</span><br><span class="line"></span><br><span class="line">    def forward(self, shifted_target_ids, encoder_states):</span><br><span class="line">        # 训练阶段调用，teacher-force mode</span><br><span class="line">        # shifted_target_ids 真实的序列id</span><br><span class="line">        shifted_target = self.embedding_table(shifted_target_ids)</span><br><span class="line"></span><br><span class="line">        bs, target_length, embedding_dim = shifted_target.shape</span><br><span class="line">        bs, source_length, hidden_size = encoder_states.shape</span><br><span class="line"></span><br><span class="line">        logits = torch.zeros(bs, target_length, self.num_classes)</span><br><span class="line">        probs = torch.zeros(bs, target_length, source_length)</span><br><span class="line"></span><br><span class="line">        for t in range(target_length):</span><br><span class="line">            decoder_input_t = shifted_target[:, t, :]  # [bs,embedding_dim]</span><br><span class="line">            if t == 0:</span><br><span class="line">                h_t, c_t = self.lstm_cell(decoder_input_t)</span><br><span class="line">            else:</span><br><span class="line">                h_t, c_t = self.lstm_cell(decoder_input_t, (h_t, c_t))</span><br><span class="line"></span><br><span class="line">            attn_prob, context = self.attention_mechanism(h_t, encoder_states) # [decoder_state_t, encoder_states]</span><br><span class="line">            # context: [bs,hidden_size] h_t: [bs,hidden_size]</span><br><span class="line">            decoder_output = torch.cat((context, h_t), -1)</span><br><span class="line">            logits[:, t, :] = self.proj_layer(decoder_output)</span><br><span class="line">            probs[:, t, :] = attn_prob # [bs,source_length]</span><br><span class="line"></span><br><span class="line">        return probs, logits</span><br><span class="line"></span><br><span class="line">    def inference(self, encoder_states):</span><br><span class="line">        # 推理阶段使用</span><br><span class="line">        target_id = self.start_id</span><br><span class="line">        h_t = None</span><br><span class="line">        result = []</span><br><span class="line"></span><br><span class="line">        while True:</span><br><span class="line">            decoder_input_t = self.embedding_table(target_id)</span><br><span class="line">            if h_t is None:</span><br><span class="line">                h_t, c_t = self.lstm_cell(decoder_input_t)</span><br><span class="line">            else:</span><br><span class="line">                h_t, c_t = self.lstm_cell(decoder_input_t, (h_t, c_t))</span><br><span class="line"></span><br><span class="line">            attn_prob, context = self.attention_mechanism(h_t, encoder_states)</span><br><span class="line"></span><br><span class="line">            decoder_output = torch.cat((context, h_t), -1)</span><br><span class="line">            logits = self.proj_layer(decoder_output)</span><br><span class="line"></span><br><span class="line">            target_id = torch.argmax(logits, -1)</span><br><span class="line">            result.append(target_id)</span><br><span class="line"></span><br><span class="line">            if torch.any(target_id == self.end_id): # 解码终止条件,在构造训练数据的时候需要在每个句子后面添加一个字符用做end id</span><br><span class="line">                print(&quot;start coding!&quot;)</span><br><span class="line">                break</span><br><span class="line">        predict_ids = torch.stack(result, dim=0)</span><br><span class="line"></span><br><span class="line">        return predict_ids</span><br></pre></td></tr></table></figure>
+<h2 id="model">3.4 Model</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Model</span>(nn.Module):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, embedding_dim, hidden_size, num_classes, source_vocab_size, target_vocab_size, start_id, end_id</span>):</span><br><span class="line">        <span class="built_in">super</span>(Model, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.encoder = Seq2SeqEncoder(embedding_dim, hidden_size, source_vocab_size)</span><br><span class="line">        self.decoder = Seq2SeqDecoder(embedding_dim, hidden_size, num_classes, target_vocab_size, start_id, end_id)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, input_sequence_ids, shifted_target_ids</span>):</span><br><span class="line">        <span class="comment"># 训练阶段</span></span><br><span class="line">        encoder_states, final_h = self.encoder(input_sequence_ids)</span><br><span class="line">        probs, logits = self.decoder(shifted_target_ids, encoder_states)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> probs, logits</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inference</span>(<span class="params">self,predict_ids,input_sequence_ids</span>):</span><br><span class="line">        <span class="comment"># 推理阶段</span></span><br><span class="line">        encoder_states, final_h = self.encoder(input_sequence_ids)</span><br><span class="line">        probs, logits = self.decoder(predict_ids, encoder_states)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> probs, logits</span><br></pre></td></tr></table></figure>
 <figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081948885.png" alt="image-20230408194824730" /><figcaption aria-hidden="true">image-20230408194824730</figcaption>
-</figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081955360.png" alt="image-20230408195505692" /><figcaption aria-hidden="true">image-20230408195505692</figcaption>
-</figure>
-<p>空间混合(depthwise)+通道混合(pointwise)</p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304082032487.png" alt="image-20230408203214916" /><figcaption aria-hidden="true">image-20230408203214916</figcaption>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171935294.png" alt="seq2seq代码编写技巧" /><figcaption aria-hidden="true">seq2seq代码编写技巧</figcaption>
 </figure>
 
 				  
@@ -444,19 +490,19 @@ var _hmt = _hmt || [];
 	
 	<!-- <br>
 	<strong class="create-time">发布时间：</strong>
-	2023-04-08 -->
+	2023-04-17 -->
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年04月17日 20:55:41
+	2023年04月17日 20:58:01
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="https://wangtongyowen.github.io/post/2d27b0da.html" title="pytorch基础入门8-CONV层" target="_blank">pytorch基础入门8-CONV层</a> -->
+	<a href="https://wangtongyowen.github.io/post/86ae38c6.html" title="pytorch基础入门16-seq2seq2" target="_blank">pytorch基础入门16-seq2seq2</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="https://wangtongyowen.github.io/post/2d27b0da.html" title="pytorch基础入门8-CONV层" target="_blank">https://wangtongyowen.github.io/post/2d27b0da.html</a>
+	<a href="https://wangtongyowen.github.io/post/86ae38c6.html" title="pytorch基础入门16-seq2seq2" target="_blank">https://wangtongyowen.github.io/post/86ae38c6.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -541,7 +587,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyowen.github.io/post/2d27b0da.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyowen.github.io/post/86ae38c6.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -558,18 +604,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/post/c9ccea0.html" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/post/898bb30b.html" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          pytorch基础入门9-transformer
+          pytorch实用工具2-编写技巧
         
       </div>
     </a>
   
   
-    <a href="/post/6ae9c33a.html" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">pytorch基础入门7-dropout</div>
+    <a href="/post/daaec8c8.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">pytorch基础入门15-SwimTransformer</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -595,7 +641,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#conv2d"><span class="toc-number">1.</span> <span class="toc-text">CONV2D</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#conv_residual_block_fusion"><span class="toc-number">2.</span> <span class="toc-text">conv_residual_block_fusion</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#convmixer-layer"><span class="toc-number">3.</span> <span class="toc-text">ConvMixer Layer</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#neural-machine-translation-by-jointly-learning-to-align-and-translate"><span class="toc-number">1.</span> <span class="toc-text">1 NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#effective-approaches-to-attention-based-neural-machine-translation"><span class="toc-number">2.</span> <span class="toc-text">2 Effective Approaches to Attention-based Neural Machine Translation</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#global-attention"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 global attention</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#local-attention"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 local attention</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">3 代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#encoder"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 encoder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#attentionmechanism"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 AttentionMechanism</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#decoder"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 Decoder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#model"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 Model</span></a></li></ol></li></ol>
             </div>
           </span>
         </div>
@@ -676,6 +722,37 @@ var _hmt = _hmt || [];
 
 
 <!-- 文章页添加mathjax公式 -->
+
+  
+    <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true
+  },
+  chtml: {
+    scale: 1,                      // global scaling factor for all expressions
+    minScale: .5,                  // smallest scaling factor to use
+    mtextInheritFont: false,       // true to make mtext elements use surrounding font
+    merrorInheritFont: false,      // true to make merror text use surrounding font
+    mtextFont: '',                 // font to use for mtext, if not inheriting (empty means use MathJax fonts)
+    merrorFont: 'serif',           // font to use for merror, if not inheriting (empty means use MathJax fonts)
+    unknownFamily: 'serif',        // font to use for character that aren't in MathJax's fonts
+    mathmlSpacing: false,          // true for MathML spacing rules, false for TeX rules
+    skipAttributes: {},            // RFDa and other attributes NOT to copy to the output
+    exFactor: .5,                  // default size of ex in em units
+    displayAlign: 'center',        // default for indentalign when set to 'auto'
+    displayIndent: '0'             // default for indentshift when set to 'auto'
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+};
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   
 

@@ -6,16 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
-  <link rel="dns-prefetch" href="http://example.com">
-  <title>pytorch基础入门3-搭建分类网络 | Hexo</title>
+  <link rel="dns-prefetch" href="https://wangtongyowen.github.io">
+  <title>pytorch基础入门3-搭建分类网络 | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="1 get device for training12345678device &#x3D; (    &quot;cuda&quot;    if torch.cuda.is_available()    else &quot;mps&quot;    if torch.backends.mps.is_available()    else &quot;cpu&quot;)print(f&quot;Usi">
+  <meta name="description" content="1 get device for training 12345678device &#x3D; (    &quot;cuda&quot;    if torch.cuda.is_available()    else &quot;mps&quot;    if torch.backends.mps.is_available()    else &quot;cpu&quot;)print(f&quot;U">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pytorch基础入门3-搭建分类网络">
-<meta property="og:url" content="http://example.com/post/55849e59.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1 get device for training12345678device &#x3D; (    &quot;cuda&quot;    if torch.cuda.is_available()    else &quot;mps&quot;    if torch.backends.mps.is_available()    else &quot;cpu&quot;)print(f&quot;Usi">
+<meta property="og:url" content="https://wangtongyowen.github.io/post/55849e59.html">
+<meta property="og:site_name" content="jyh blog">
+<meta property="og:description" content="1 get device for training 12345678device &#x3D; (    &quot;cuda&quot;    if torch.cuda.is_available()    else &quot;mps&quot;    if torch.backends.mps.is_available()    else &quot;cpu&quot;)print(f&quot;U">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061134897.png">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061136988.png">
@@ -23,13 +23,13 @@
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304121931189.png">
 <meta property="article:published_time" content="2023-04-06T02:45:31.000Z">
 <meta property="article:modified_time" content="2023-04-12T12:30:11.323Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061134897.png">
   
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
   
   
     <link rel="icon" type="image/x-icon" href="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051210238.jpg">
@@ -346,7 +346,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">219字</span>
+        <span class="post-count">225字</span>
       </span>
     </span>
 
@@ -370,24 +370,22 @@ var _hmt = _hmt || [];
 	  <!-- 添加分类与标签 -->
 	  
 		  
-		  <h2 id="1-get-device-for-training"><a href="#1-get-device-for-training" class="headerlink" title="1 get device for training"></a>1 get device for training</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">device = (</span><br><span class="line">    <span class="string">&quot;cuda&quot;</span></span><br><span class="line">    <span class="keyword">if</span> torch.cuda.is_available()</span><br><span class="line">    <span class="keyword">else</span> <span class="string">&quot;mps&quot;</span></span><br><span class="line">    <span class="keyword">if</span> torch.backends.mps.is_available()</span><br><span class="line">    <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Using <span class="subst">&#123;device&#125;</span> device&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-define-the-class"><a href="#2-define-the-class" class="headerlink" title="2 define the class"></a>2 define the class</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">NeuralNetwork</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line">        self.linear_relu_stack = nn.Sequential(</span><br><span class="line">            nn.Linear(<span class="number">28</span>*<span class="number">28</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">10</span>),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = self.flatten(x)</span><br><span class="line">        logits = self.linear_relu_stack(x)</span><br><span class="line">        <span class="keyword">return</span> logits</span><br></pre></td></tr></table></figure>
-
+		  <h2 id="get-device-for-training">1 get device for training</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">device = (</span><br><span class="line">    <span class="string">&quot;cuda&quot;</span></span><br><span class="line">    <span class="keyword">if</span> torch.cuda.is_available()</span><br><span class="line">    <span class="keyword">else</span> <span class="string">&quot;mps&quot;</span></span><br><span class="line">    <span class="keyword">if</span> torch.backends.mps.is_available()</span><br><span class="line">    <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Using <span class="subst">&#123;device&#125;</span> device&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="define-the-class">2 define the class</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">NeuralNetwork</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line">        self.linear_relu_stack = nn.Sequential(</span><br><span class="line">            nn.Linear(<span class="number">28</span>*<span class="number">28</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">512</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">10</span>),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = self.flatten(x)</span><br><span class="line">        logits = self.linear_relu_stack(x)</span><br><span class="line">        <span class="keyword">return</span> logits</span><br></pre></td></tr></table></figure>
 <p>在这个网络的定义中最后一层的输出层是10，表示这是一个10分类的问题</p>
-<h2 id="3-use-the-model"><a href="#3-use-the-model" class="headerlink" title="3 use the model"></a>3 use the model</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">model = NeuralNetwork().to(device)</span><br><span class="line"><span class="built_in">print</span>(model)</span><br><span class="line">X = torch.rand(<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>, device=device)</span><br><span class="line">logits = model(X)</span><br><span class="line">pred_probab = nn.Softmax(dim=<span class="number">1</span>)(logits)</span><br><span class="line">y_pred = pred_probab.argmax(<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Predicted class: <span class="subst">&#123;y_pred&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-
+<h2 id="use-the-model">3 use the model</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">model = NeuralNetwork().to(device)</span><br><span class="line"><span class="built_in">print</span>(model)</span><br><span class="line">X = torch.rand(<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>, device=device)</span><br><span class="line">logits = model(X)</span><br><span class="line">pred_probab = nn.Softmax(dim=<span class="number">1</span>)(logits)</span><br><span class="line">y_pred = pred_probab.argmax(<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Predicted class: <span class="subst">&#123;y_pred&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
 <p>首先先将模型参数移动到设备上，这个时候初始化参数，最后得到logits。这个logits需要通过softmax各个标签的概率大小，最后得到最大概率的那个。</p>
-<h2 id="4-Model-Layers"><a href="#4-Model-Layers" class="headerlink" title="4 Model Layers"></a>4 Model Layers</h2><p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/nn.html">https://pytorch.org/docs/stable/nn.html</a></p>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061134897.png" alt="image-20230406113408760" style="zoom: 80%;" />
-
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061136988.png" alt="image-20230406113633421" style="zoom:80%;" />
-
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061140214.png" alt="image-20230406114025490"></p>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304121931189.png" alt="image-20230406115016019" style="zoom:80%;" />
-
-
-
+<h2 id="model-layers">4 Model Layers</h2>
+<p>https://pytorch.org/docs/stable/nn.html</p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061134897.png" alt="image-20230406113408760" style="zoom: 80%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061136988.png" alt="image-20230406113633421" style="zoom:80%;" /></p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061140214.png" alt="image-20230406114025490" /><figcaption aria-hidden="true">image-20230406114025490</figcaption>
+</figure>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304121931189.png" alt="image-20230406115016019" style="zoom:80%;" /></p>
 
 				  
 	  
@@ -428,7 +426,7 @@ var _hmt = _hmt || [];
 <div class="declare">
 	<strong class="author">本文作者：</strong>
 	
-	  John Doe
+	  jyh
 	
 	
 	<!-- <br>
@@ -441,11 +439,11 @@ var _hmt = _hmt || [];
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="http://example.com/post/55849e59.html" title="pytorch基础入门3-搭建分类网络" target="_blank">pytorch基础入门3-搭建分类网络</a> -->
+	<a href="https://wangtongyowen.github.io/post/55849e59.html" title="pytorch基础入门3-搭建分类网络" target="_blank">pytorch基础入门3-搭建分类网络</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="http://example.com/post/55849e59.html" title="pytorch基础入门3-搭建分类网络" target="_blank">http://example.com/post/55849e59.html</a>
+	<a href="https://wangtongyowen.github.io/post/55849e59.html" title="pytorch基础入门3-搭建分类网络" target="_blank">https://wangtongyowen.github.io/post/55849e59.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -530,7 +528,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/55849e59.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyowen.github.io/post/55849e59.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -584,7 +582,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-get-device-for-training"><span class="toc-number">1.</span> <span class="toc-text">1 get device for training</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-define-the-class"><span class="toc-number">2.</span> <span class="toc-text">2 define the class</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-use-the-model"><span class="toc-number">3.</span> <span class="toc-text">3 use the model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Model-Layers"><span class="toc-number">4.</span> <span class="toc-text">4 Model Layers</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#get-device-for-training"><span class="toc-number">1.</span> <span class="toc-text">1 get device for training</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#define-the-class"><span class="toc-number">2.</span> <span class="toc-text">2 define the class</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#use-the-model"><span class="toc-number">3.</span> <span class="toc-text">3 use the model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#model-layers"><span class="toc-number">4.</span> <span class="toc-text">4 Model Layers</span></a></li></ol>
             </div>
           </span>
         </div>
@@ -762,6 +760,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">project</a>
               </li>
              
               <li class="article-tag-list-item">
