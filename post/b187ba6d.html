@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20210706174457451.png#pic_center">
 <meta property="article:published_time" content="2023-04-06T03:46:15.000Z">
-<meta property="article:modified_time" content="2023-04-12T12:30:11.339Z">
+<meta property="article:modified_time" content="2023-04-16T15:20:10.503Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="pytorch">
 <meta property="article:tag" content="tools">
@@ -344,7 +344,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">410字</span>
+        <span class="post-count">440字</span>
       </span>
     </span>
 
@@ -353,7 +353,7 @@ var _hmt = _hmt || [];
       <span class="post-meta-item-icon">
 	    <i class="fa fa-pagelines" aria-hidden="true"></i>
         <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
+        <span class="post-count">2min</span>
       </span>
     </span>
 	
@@ -384,6 +384,8 @@ var _hmt = _hmt || [];
 <h2 id="3-netron"><a href="#3-netron" class="headerlink" title="3 netron"></a>3 netron</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install netron</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 针对有网络模型，但还没有训练保存 .pth 文件的情况</span></span><br><span class="line"><span class="keyword">import</span> netron</span><br><span class="line"><span class="keyword">import</span> torch.onnx</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"><span class="keyword">from</span> torchvision.models <span class="keyword">import</span> resnet18  <span class="comment"># 以 resnet18 为例</span></span><br><span class="line"></span><br><span class="line">myNet = resnet18()  <span class="comment"># 实例化 resnet18</span></span><br><span class="line">x = torch.randn(<span class="number">16</span>, <span class="number">3</span>, <span class="number">40</span>, <span class="number">40</span>)  <span class="comment"># 随机生成一个输入</span></span><br><span class="line">modelData = <span class="string">&quot;./demo.pth&quot;</span>  <span class="comment"># 定义模型数据保存的路径</span></span><br><span class="line"><span class="comment"># modelData = &quot;./demo.onnx&quot;  # 有人说应该是 onnx 文件，但我尝试 pth 是可以的 </span></span><br><span class="line">torch.onnx.export(myNet, x, modelData)  <span class="comment"># 将 pytorch 模型以 onnx 格式导出并保存</span></span><br><span class="line">netron.start(modelData)  <span class="comment"># 输出网络结构</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  针对已经存在网络模型 .pth 文件的情况</span></span><br><span class="line"><span class="keyword">import</span> netron</span><br><span class="line"></span><br><span class="line">modelData = <span class="string">&quot;./demo.pth&quot;</span>  <span class="comment"># 定义模型数据保存的路径</span></span><br><span class="line">netron.start(modelData)  <span class="comment"># 输出网络结构</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-python-代码"><a href="#4-python-代码" class="headerlink" title="4 python 代码"></a>4 python 代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_n_params</span>(<span class="params">model</span>):</span><br><span class="line">    pp = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> <span class="built_in">list</span>(model.parameters()):</span><br><span class="line">        nn = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> s <span class="keyword">in</span> <span class="built_in">list</span>(p.size()):</span><br><span class="line">            nn = nn * s</span><br><span class="line">        pp += nn</span><br><span class="line">    <span class="keyword">return</span> pp</span><br></pre></td></tr></table></figure>
 
 
 				  
@@ -434,7 +436,7 @@ var _hmt = _hmt || [];
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年04月12日 20:30:11
+	2023年04月16日 23:20:10
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
@@ -585,7 +587,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-torchsummary"><span class="toc-number">1.</span> <span class="toc-text">1 torchsummary</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-graphviz-torchviz"><span class="toc-number">2.</span> <span class="toc-text">2 graphviz + torchviz</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-netron"><span class="toc-number">3.</span> <span class="toc-text">3 netron</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-torchsummary"><span class="toc-number">1.</span> <span class="toc-text">1 torchsummary</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-graphviz-torchviz"><span class="toc-number">2.</span> <span class="toc-text">2 graphviz + torchviz</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-netron"><span class="toc-number">3.</span> <span class="toc-text">3 netron</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-python-%E4%BB%A3%E7%A0%81"><span class="toc-number">4.</span> <span class="toc-text">4 python 代码</span></a></li></ol>
             </div>
           </span>
         </div>
@@ -762,11 +764,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+                <a href="javascript:void(0)" class="js-tag color5">tips</a>
               </li>
             
             <div class="clearfix"></div>

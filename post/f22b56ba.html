@@ -7,28 +7,23 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="http://example.com">
-  <title>pytorch基础知识1-自动微分 | Hexo</title>
+  <title>pytorch基础入门14-GRU | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1502.05767.pdf  几种的常见微分方式：   符号微分：求导 数值微分：不稳定，并且不准确 自动微分：这个例子是一个前向过程，通过预设dv &#x3D; 1，然后根据每一步的dv表达式求出当前，v和dv的值  1 forward mode AD 分为三个部分：输入节点，隐藏节点，输出节点。其中隐藏节点也可以为称为元操作 首先设置初值为2,5，初始倒数x">
+  <meta name="description" content="torch.nn.GRU(*args, **kwargs) https:&#x2F;&#x2F;pytorch.org&#x2F;docs&#x2F;stable&#x2F;generated&#x2F;torch.nn.GRU.html?highlight&#x3D;gru#torch.nn.GRU$$\begin{aligned}r_{t} &amp; &#x3D;\sigma\left(W_{i r} x_{t}+b_{i r}+W_{h r} h_{(t-1)}+b_">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pytorch基础知识1-自动微分">
-<meta property="og:url" content="http://example.com/post/42120d73.html">
+<meta property="og:title" content="pytorch基础入门14-GRU">
+<meta property="og:url" content="http://example.com/post/f22b56ba.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1502.05767.pdf  几种的常见微分方式：   符号微分：求导 数值微分：不稳定，并且不准确 自动微分：这个例子是一个前向过程，通过预设dv &#x3D; 1，然后根据每一步的dv表达式求出当前，v和dv的值  1 forward mode AD 分为三个部分：输入节点，隐藏节点，输出节点。其中隐藏节点也可以为称为元操作 首先设置初值为2,5，初始倒数x">
+<meta property="og:description" content="torch.nn.GRU(*args, **kwargs) https:&#x2F;&#x2F;pytorch.org&#x2F;docs&#x2F;stable&#x2F;generated&#x2F;torch.nn.GRU.html?highlight&#x3D;gru#torch.nn.GRU$$\begin{aligned}r_{t} &amp; &#x3D;\sigma\left(W_{i r} x_{t}+b_{i r}+W_{h r} h_{(t-1)}+b_">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071556707.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071601783.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071629866.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072114545.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072123618.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072113372.png">
-<meta property="article:published_time" content="2023-04-07T06:57:37.000Z">
-<meta property="article:modified_time" content="2023-04-12T12:30:11.339Z">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304141848732.png">
+<meta property="article:published_time" content="2023-04-14T09:47:29.000Z">
+<meta property="article:modified_time" content="2023-04-15T07:03:45.911Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071556707.png">
+<meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304141848732.png">
   
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -289,26 +284,26 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-pytorch基础知识1-自动微分" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-pytorch基础入门14-GRU" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title_code_ant" itemprop="name">
-	  <a href="/post/42120d73.html">pytorch基础知识1-自动微分</a>
+	  <a href="/post/f22b56ba.html">pytorch基础入门14-GRU</a>
 	</h1>
   
 
         
 		
-		  <a href="/post/42120d73.html" class="archive-article-date">
-  	<time datetime="2023-04-07T06:57:37.000Z" itemprop="datePublished">
+		  <a href="/post/f22b56ba.html" class="archive-article-date">
+  	<time datetime="2023-04-14T09:47:29.000Z" itemprop="datePublished">
 	<!-- <i class="icon-calendar icon"></i> -->
 
 	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
 	&nbsp;
-	2023-04-07</time>
+	2023-04-14</time>
 	
 	<!-- busuanzi阅读量统计
 	
@@ -327,7 +322,7 @@ var _hmt = _hmt || [];
 		&nbsp; &nbsp; &nbsp;
 		<i class="fa fa-eye" aria-hidden="true"></i>
 		&nbsp;
-		<span class="waline-pageview-count" data-path="/post/42120d73.html"><i class="fa fa-spinner fa-spin"></i></span>
+		<span class="waline-pageview-count" data-path="/post/f22b56ba.html"><i class="fa fa-spinner fa-spin"></i></span>
 	</span>
 	
 
@@ -341,6 +336,15 @@ var _hmt = _hmt || [];
 <div class="word-count">
 	
       
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
     
 	
     <span class="post-time">
@@ -348,7 +352,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">375字</span>
+        <span class="post-count">563字</span>
       </span>
     </span>
 
@@ -357,7 +361,7 @@ var _hmt = _hmt || [];
       <span class="post-meta-item-icon">
 	    <i class="fa fa-pagelines" aria-hidden="true"></i>
         <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
+        <span class="post-count">3min</span>
       </span>
     </span>
 	
@@ -372,47 +376,24 @@ var _hmt = _hmt || [];
 	  <!-- 添加分类与标签 -->
 	  
 		  
-		  <p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1502.05767.pdf">https://arxiv.org/pdf/1502.05767.pdf</a></p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071556707.png" alt="image-20230407155605114"></p>
-<p>几种的常见微分方式：</p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071601783.png" alt="image-20230407160104716"></p>
-<ul>
-<li>符号微分：求导</li>
-<li>数值微分：不稳定，并且不准确</li>
-<li>自动微分：这个例子是一个前向过程，通过预设dv = 1，然后根据每一步的dv表达式求出当前，v和dv的值</li>
+		  <p>torch.nn.GRU(*<em>args</em>, **<em>kwargs</em>)</p>
+<p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.GRU.html?highlight=gru#torch.nn.GRU">https://pytorch.org/docs/stable/generated/torch.nn.GRU.html?highlight=gru#torch.nn.GRU</a><br>$$<br>\begin{aligned}<br>r_{t} &amp; =\sigma\left(W_{i r} x_{t}+b_{i r}+W_{h r} h_{(t-1)}+b_{h r}\right) \<br>z_{t} &amp; =\sigma\left(W_{i z} x_{t}+b_{i z}+W_{h z} h_{(t-1)}+b_{h z}\right) \<br>n_{t} &amp; =\tanh \left(W_{i n} x_{t}+b_{i n}+r_{t} *\left(W_{h n} h_{(t-1)}+b_{h n}\right)\right) \<br>h_{t} &amp; =\left(1-z_{t}\right) * n_{t}+z_{t} * h_{(t-1)}<br>\end{aligned}<br>$$<br>同等<code>hidden size</code>的参数量，GRU是LSTM的$\frac{3}{4}$</p>
+<p>何时使用GRU，何时使用LSTM？</p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1412.3555.pdf">https://arxiv.org/pdf/1412.3555.pdf</a></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304141848732.png" alt="image-20230414180541344"></p>
+<h2 id="1-API"><a href="#1-API" class="headerlink" title="1 API"></a>1 API</h2><h3 id="1-1-Parameters"><a href="#1-1-Parameters" class="headerlink" title="1.1 Parameters"></a>1.1 Parameters</h3><ul>
+<li><strong>input_size</strong> – The number of expected features in the input x</li>
+<li><strong>hidden_size</strong> – The number of features in the hidden state h</li>
+<li><strong>num_layers</strong> – Number of recurrent layers. E.g., setting <code>num_layers=2</code> would mean stacking two GRUs together to form a stacked GRU, with the second GRU taking in outputs of the first GRU and computing the final results. Default: 1</li>
+<li><strong>bias</strong> – If <code>False</code>, then the layer does not use bias weights b_ih and b_hh. Default: <code>True</code></li>
+<li><strong>batch_first</strong> – If <code>True</code>, then the input and output tensors are provided as (batch, seq, feature) instead of (seq, batch, feature). Note that this does not apply to hidden or cell states. See the Inputs/Outputs sections below for details. Default: <code>False</code></li>
+<li><strong>dropout</strong> – If non-zero, introduces a Dropout layer on the outputs of each GRU layer except the last layer, with dropout probability equal to <code>dropout</code>. Default: 0</li>
+<li><strong>bidirectional</strong> – If <code>True</code>, becomes a bidirectional GRU. Default: <code>False</code></li>
 </ul>
-<h3 id="1-forward-mode-AD"><a href="#1-forward-mode-AD" class="headerlink" title="1 forward mode AD"></a>1 forward mode AD</h3><p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071629866.png" alt="image-20230407162927134"></p>
-<p>分为三个部分：输入节点，隐藏节点，输出节点。其中隐藏节点也可以为称为元操作</p>
-<p>首先设置初值为2,5，初始倒数x1为1，x2为0.</p>
-<p>使用前向微分的特点：</p>
-<ul>
-<li>能够在前向运算的同时，计算前向微分的值，能够计算出每个元操作的输入节点的偏导数值</li>
-<li>但是一次只能计算一个输入节点的偏导数</li>
-</ul>
-<p>或者能够采用对偶数的计算方法：</p>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072114545.png" alt="image-20230407211449434" style="zoom:80%;" />
-$$
-\left.\frac{d f(x)}{d x}\right|_{x=v}=\operatorname{epsilon-coefficient}(\text { dual-version }(f)(v+1 \epsilon)) \text {. }
-$$
+<h2 id="2-实现"><a href="#2-实现" class="headerlink" title="2 实现"></a>2 实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gru_forward</span>(<span class="params"><span class="built_in">input</span>,initial_states,w_ih,w_hh,b_ih,b_hh</span>):</span><br><span class="line">    prev_h = initial_states</span><br><span class="line">    bs,T,i_size = <span class="built_in">input</span>.shape</span><br><span class="line">    h_size = w_ih.shape[<span class="number">0</span>] // <span class="number">3</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 对权重扩维，复制成batch_size倍</span></span><br><span class="line">    batch_w_ih = w_ih.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">    batch_w_hh = w_hh.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    output = torch.zeros(bs,T,h_size) <span class="comment"># GRU网络的输出状态序列</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">        x = <span class="built_in">input</span>[:,t,:] <span class="comment"># t时刻的GRU cell的输入特征向量 [bs,i_size]</span></span><br><span class="line">        w_time_x = torch.bmm(batch_w_ih,x.unsqueeze(-<span class="number">1</span>)) <span class="comment">#[bs,3*i_size,1]</span></span><br><span class="line">        w_time_x = w_time_x.squeeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        w_time_h_prev = torch.bmm(batch_w_hh,prev_h.unsqueeze(-<span class="number">1</span>)) <span class="comment">#[bs,3*i_size,1]</span></span><br><span class="line">        w_time_h_prev = w_time_h_prev.squeeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        r_t = torch.sigmoid(w_time_x[:,:h_size] + w_time_h_prev[:,:h_size] + b_ih[:h_size] + b_hh[:h_size]) <span class="comment"># 重置门</span></span><br><span class="line">        z_t = torch.sigmoid(w_time_x[:,h_size:<span class="number">2</span>*h_size] + w_time_h_prev[:,h_size:<span class="number">2</span>*h_size] + b_ih[h_size:<span class="number">2</span>*h_size] + b_hh[h_size:<span class="number">2</span>*h_size]) <span class="comment"># 更新门</span></span><br><span class="line">        </span><br><span class="line">        n_t = torch.tanh(w_time_x[:,<span class="number">2</span>*h_size:<span class="number">3</span>*h_size]+b_ih[<span class="number">2</span>*h_size:<span class="number">3</span>*h_size]+</span><br><span class="line">                         r_t*(w_time_h_prev[:,<span class="number">2</span>*h_size: <span class="number">3</span>*h_size]+b_hh[<span class="number">2</span>*h_size: <span class="number">3</span>*h_size]))   <span class="comment"># 候选状态</span></span><br><span class="line">        </span><br><span class="line">        prev_h = (<span class="number">1</span>-z_t)*n_t + z_t*prev_h <span class="comment"># 增量更新得到当前时刻最新隐含状态</span></span><br><span class="line">        output[:,t,:] = prev_h</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> output,prev_h</span><br><span class="line">        </span><br></pre></td></tr></table></figure>
 
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">bs,T,i_size,h_size = <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br><span class="line"><span class="built_in">input</span> = torch.randn(bs,T,i_size)</span><br><span class="line">h0 = torch.randn(bs,h_size)</span><br><span class="line"></span><br><span class="line">gru_layer = nn.GRU(i_size,h_size,batch_first = <span class="literal">True</span>)</span><br><span class="line">output,h_final = gru_layer(<span class="built_in">input</span>,h0.unsqueeze(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">output_custom,h_final_custom = gru_forward(<span class="built_in">input</span>,h0,gru_layer.weight_ih_l0,gru_layer.weight_hh_l0,gru_layer.bias_ih_l0,gru_layer.bias_hh_l0)</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(h_final,h_final_custom))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(output,output_custom))</span><br></pre></td></tr></table></figure>
 
-<h3 id="2-reverse-mode-AD"><a href="#2-reverse-mode-AD" class="headerlink" title="2 reverse mode AD"></a>2 reverse mode AD</h3><p>链式法则：</p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072123618.png" alt="image-20230407212309766"></p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072113372.png" alt="image-20230407211303243"></p>
-<p>v0的倒数在这个例子中进行了梯度累加。</p>
-<p>假设 a=f(x),b=g(a).y=h(b)<br>$$<br>\frac{d_y}{d_x} = \frac{d_h}{d_b} <em>\frac{d_b}{d_a}</em> \frac{d_a}{d_x}<br>$$<br>雅克比矩阵的维度为：|y|*|b|,|b|*|a|,|a|*|x|</p>
-<p>分别统计计算量：</p>
-<ul>
-<li><p>forward mode AD：|y|*|b|*(|b|*|a|,|a|*|x|) = bax + ybx</p>
-</li>
-<li><p>reverse mode AD: |y|*|b|*|b|*|a|*|a|*|x| = yba + yax</p>
-</li>
-</ul>
-<p>假设 a = b 比较 x 和 y 的大小：</p>
-<ul>
-<li>当x&gt;y，输入特征大于输出特征，reverse mode 计算量小</li>
-<li>当x&lt;y，输入特征大小于输出特征，forward mode 计算量小</li>
-</ul>
 
 				  
 	  
@@ -458,19 +439,19 @@ $$
 	
 	<!-- <br>
 	<strong class="create-time">发布时间：</strong>
-	2023-04-07 -->
+	2023-04-14 -->
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年04月12日 20:30:11
+	2023年04月15日 15:03:45
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="http://example.com/post/42120d73.html" title="pytorch基础知识1-自动微分" target="_blank">pytorch基础知识1-自动微分</a> -->
+	<a href="http://example.com/post/f22b56ba.html" title="pytorch基础入门14-GRU" target="_blank">pytorch基础入门14-GRU</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="http://example.com/post/42120d73.html" title="pytorch基础知识1-自动微分" target="_blank">http://example.com/post/42120d73.html</a>
+	<a href="http://example.com/post/f22b56ba.html" title="pytorch基础入门14-GRU" target="_blank">http://example.com/post/f22b56ba.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -555,7 +536,7 @@ $$
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/42120d73.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/post/f22b56ba.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -572,18 +553,18 @@ $$
   
 <nav id="article-nav">
   
-    <a href="/post/6ae9c33a.html" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/post/27f58942.html" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          pytorch基础入门7-dropout
+          pytorch项目1-基于GCN+DNN的文本分类模型
         
       </div>
     </a>
   
   
-    <a href="/post/40d10b1c.html" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">pytorch基础入门6-autograd</div>
+    <a href="/post/23f44fab.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">pytorch基础入门13-LSTM</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -609,7 +590,7 @@ $$
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-forward-mode-AD"><span class="toc-number">1.</span> <span class="toc-text">1 forward mode AD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-reverse-mode-AD"><span class="toc-number">2.</span> <span class="toc-text">2 reverse mode AD</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-API"><span class="toc-number">1.</span> <span class="toc-text">1 API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Parameters"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 Parameters</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">2 实现</span></a></li></ol>
             </div>
           </span>
         </div>
@@ -690,6 +671,37 @@ $$
 
 
 <!-- 文章页添加mathjax公式 -->
+
+  
+    <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true
+  },
+  chtml: {
+    scale: 1,                      // global scaling factor for all expressions
+    minScale: .5,                  // smallest scaling factor to use
+    mtextInheritFont: false,       // true to make mtext elements use surrounding font
+    merrorInheritFont: false,      // true to make merror text use surrounding font
+    mtextFont: '',                 // font to use for mtext, if not inheriting (empty means use MathJax fonts)
+    merrorFont: 'serif',           // font to use for merror, if not inheriting (empty means use MathJax fonts)
+    unknownFamily: 'serif',        // font to use for character that aren't in MathJax's fonts
+    mathmlSpacing: false,          // true for MathML spacing rules, false for TeX rules
+    skipAttributes: {},            // RFDa and other attributes NOT to copy to the output
+    exFactor: .5,                  // default size of ex in em units
+    displayAlign: 'center',        // default for indentalign when set to 'auto'
+    displayIndent: '0'             // default for indentshift when set to 'auto'
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+};
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   
 
