@@ -3,11 +3,11 @@
   <title>jyh blog</title>
   
   
-  <link href="https://wangtongyowen.github.io/atom.xml" rel="self"/>
+  <link href="https://wangtongyouwen.github.io/atom.xml" rel="self"/>
   
-  <link href="https://wangtongyowen.github.io/"/>
+  <link href="https://wangtongyouwen.github.io/"/>
   <updated>2023-04-17T14:20:00.293Z</updated>
-  <id>https://wangtongyowen.github.io/</id>
+  <id>https://wangtongyouwen.github.io/</id>
   
   <author>
     <name>jyh</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>pytorch实用工具2-编写技巧</title>
-    <link href="https://wangtongyowen.github.io/post/898bb30b.html"/>
-    <id>https://wangtongyowen.github.io/post/898bb30b.html</id>
+    <link href="https://wangtongyouwen.github.io/post/898bb30b.html"/>
+    <id>https://wangtongyouwen.github.io/post/898bb30b.html</id>
     <published>2023-04-17T11:36:18.000Z</published>
     <updated>2023-04-17T14:20:00.293Z</updated>
     
@@ -34,21 +34,21 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/categories/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/categories/pytorch/"/>
     
-    <category term="tools" scheme="https://wangtongyowen.github.io/categories/pytorch/tools/"/>
+    <category term="tools" scheme="https://wangtongyouwen.github.io/categories/pytorch/tools/"/>
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
-    <category term="tools" scheme="https://wangtongyowen.github.io/tags/tools/"/>
+    <category term="tools" scheme="https://wangtongyouwen.github.io/tags/tools/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门16-seq2seq2</title>
-    <link href="https://wangtongyowen.github.io/post/86ae38c6.html"/>
-    <id>https://wangtongyowen.github.io/post/86ae38c6.html</id>
+    <link href="https://wangtongyouwen.github.io/post/86ae38c6.html"/>
+    <id>https://wangtongyouwen.github.io/post/86ae38c6.html</id>
     <published>2023-04-17T04:40:39.000Z</published>
     <updated>2023-04-17T12:58:01.417Z</updated>
     
@@ -62,17 +62,17 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/categories/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/categories/pytorch/"/>
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门15-SwimTransformer</title>
-    <link href="https://wangtongyowen.github.io/post/daaec8c8.html"/>
-    <id>https://wangtongyowen.github.io/post/daaec8c8.html</id>
+    <link href="https://wangtongyouwen.github.io/post/daaec8c8.html"/>
+    <id>https://wangtongyouwen.github.io/post/daaec8c8.html</id>
     <published>2023-04-15T14:34:26.000Z</published>
     <updated>2023-04-17T03:39:02.629Z</updated>
     
@@ -87,17 +87,17 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/categories/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/categories/pytorch/"/>
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch项目2-基于GCN(DNN)的文本分类模型(GPU)</title>
-    <link href="https://wangtongyowen.github.io/post/ceb60e40.html"/>
-    <id>https://wangtongyowen.github.io/post/ceb60e40.html</id>
+    <link href="https://wangtongyouwen.github.io/post/ceb60e40.html"/>
+    <id>https://wangtongyouwen.github.io/post/ceb60e40.html</id>
     <published>2023-04-15T11:19:44.000Z</published>
     <updated>2023-04-17T12:56:58.717Z</updated>
     
@@ -113,21 +113,21 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/categories/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/categories/pytorch/"/>
     
-    <category term="project" scheme="https://wangtongyowen.github.io/categories/pytorch/project/"/>
+    <category term="project" scheme="https://wangtongyouwen.github.io/categories/pytorch/project/"/>
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
-    <category term="project" scheme="https://wangtongyowen.github.io/tags/project/"/>
+    <category term="project" scheme="https://wangtongyouwen.github.io/tags/project/"/>
     
   </entry>
   
   <entry>
     <title>pytorch项目1-基于GCN+DNN的文本分类模型</title>
-    <link href="https://wangtongyowen.github.io/post/27f58942.html"/>
-    <id>https://wangtongyowen.github.io/post/27f58942.html</id>
+    <link href="https://wangtongyouwen.github.io/post/27f58942.html"/>
+    <id>https://wangtongyouwen.github.io/post/27f58942.html</id>
     <published>2023-04-15T07:04:41.000Z</published>
     <updated>2023-04-17T12:55:13.613Z</updated>
     
@@ -143,21 +143,21 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/categories/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/categories/pytorch/"/>
     
-    <category term="project" scheme="https://wangtongyowen.github.io/categories/pytorch/project/"/>
+    <category term="project" scheme="https://wangtongyouwen.github.io/categories/pytorch/project/"/>
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
-    <category term="project" scheme="https://wangtongyowen.github.io/tags/project/"/>
+    <category term="project" scheme="https://wangtongyouwen.github.io/tags/project/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门14-GRU</title>
-    <link href="https://wangtongyowen.github.io/post/f22b56ba.html"/>
-    <id>https://wangtongyowen.github.io/post/f22b56ba.html</id>
+    <link href="https://wangtongyouwen.github.io/post/f22b56ba.html"/>
+    <id>https://wangtongyouwen.github.io/post/f22b56ba.html</id>
     <published>2023-04-14T09:47:29.000Z</published>
     <updated>2023-04-17T03:39:02.632Z</updated>
     
@@ -172,17 +172,17 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/categories/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/categories/pytorch/"/>
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门13-LSTM</title>
-    <link href="https://wangtongyowen.github.io/post/23f44fab.html"/>
-    <id>https://wangtongyowen.github.io/post/23f44fab.html</id>
+    <link href="https://wangtongyouwen.github.io/post/23f44fab.html"/>
+    <id>https://wangtongyouwen.github.io/post/23f44fab.html</id>
     <published>2023-04-13T10:13:13.000Z</published>
     <updated>2023-04-13T12:26:22.728Z</updated>
     
@@ -198,17 +198,17 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/categories/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/categories/pytorch/"/>
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门12-RNN</title>
-    <link href="https://wangtongyowen.github.io/post/b945630.html"/>
-    <id>https://wangtongyowen.github.io/post/b945630.html</id>
+    <link href="https://wangtongyouwen.github.io/post/b945630.html"/>
+    <id>https://wangtongyouwen.github.io/post/b945630.html</id>
     <published>2023-04-13T06:29:13.000Z</published>
     <updated>2023-04-13T09:31:09.288Z</updated>
     
@@ -224,17 +224,17 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/categories/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/categories/pytorch/"/>
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础知识11-ViT</title>
-    <link href="https://wangtongyowen.github.io/post/1229d3b9.html"/>
-    <id>https://wangtongyowen.github.io/post/1229d3b9.html</id>
+    <link href="https://wangtongyouwen.github.io/post/1229d3b9.html"/>
+    <id>https://wangtongyouwen.github.io/post/1229d3b9.html</id>
     <published>2023-04-12T15:59:34.000Z</published>
     <updated>2023-04-13T06:33:31.369Z</updated>
     
@@ -250,17 +250,17 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/categories/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/categories/pytorch/"/>
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础知识10-卷积网络</title>
-    <link href="https://wangtongyowen.github.io/post/b0d26e2a.html"/>
-    <id>https://wangtongyowen.github.io/post/b0d26e2a.html</id>
+    <link href="https://wangtongyouwen.github.io/post/b0d26e2a.html"/>
+    <id>https://wangtongyouwen.github.io/post/b0d26e2a.html</id>
     <published>2023-04-10T09:16:59.000Z</published>
     <updated>2023-04-12T15:56:33.111Z</updated>
     
@@ -275,14 +275,14 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门9-transformer</title>
-    <link href="https://wangtongyowen.github.io/post/c9ccea0.html"/>
-    <id>https://wangtongyowen.github.io/post/c9ccea0.html</id>
+    <link href="https://wangtongyouwen.github.io/post/c9ccea0.html"/>
+    <id>https://wangtongyouwen.github.io/post/c9ccea0.html</id>
     <published>2023-04-08T12:33:48.000Z</published>
     <updated>2023-04-17T12:55:31.323Z</updated>
     
@@ -299,14 +299,14 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门8-CONV层</title>
-    <link href="https://wangtongyowen.github.io/post/2d27b0da.html"/>
-    <id>https://wangtongyowen.github.io/post/2d27b0da.html</id>
+    <link href="https://wangtongyouwen.github.io/post/2d27b0da.html"/>
+    <id>https://wangtongyouwen.github.io/post/2d27b0da.html</id>
     <published>2023-04-08T07:26:00.000Z</published>
     <updated>2023-04-17T12:55:41.594Z</updated>
     
@@ -322,14 +322,14 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门7-dropout</title>
-    <link href="https://wangtongyowen.github.io/post/6ae9c33a.html"/>
-    <id>https://wangtongyowen.github.io/post/6ae9c33a.html</id>
+    <link href="https://wangtongyouwen.github.io/post/6ae9c33a.html"/>
+    <id>https://wangtongyouwen.github.io/post/6ae9c33a.html</id>
     <published>2023-04-07T14:34:02.000Z</published>
     <updated>2023-04-12T12:30:11.339Z</updated>
     
@@ -348,14 +348,14 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础知识1-自动微分</title>
-    <link href="https://wangtongyowen.github.io/post/42120d73.html"/>
-    <id>https://wangtongyowen.github.io/post/42120d73.html</id>
+    <link href="https://wangtongyouwen.github.io/post/42120d73.html"/>
+    <id>https://wangtongyouwen.github.io/post/42120d73.html</id>
     <published>2023-04-07T06:57:37.000Z</published>
     <updated>2023-04-12T12:30:11.339Z</updated>
     
@@ -372,14 +372,14 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门6-autograd</title>
-    <link href="https://wangtongyowen.github.io/post/40d10b1c.html"/>
-    <id>https://wangtongyowen.github.io/post/40d10b1c.html</id>
+    <link href="https://wangtongyouwen.github.io/post/40d10b1c.html"/>
+    <id>https://wangtongyouwen.github.io/post/40d10b1c.html</id>
     <published>2023-04-06T12:25:44.000Z</published>
     <updated>2023-04-12T12:30:11.323Z</updated>
     
@@ -397,14 +397,14 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门5-container详解</title>
-    <link href="https://wangtongyowen.github.io/post/f208623b.html"/>
-    <id>https://wangtongyowen.github.io/post/f208623b.html</id>
+    <link href="https://wangtongyouwen.github.io/post/f208623b.html"/>
+    <id>https://wangtongyouwen.github.io/post/f208623b.html</id>
     <published>2023-04-06T11:55:57.000Z</published>
     <updated>2023-04-12T12:30:11.339Z</updated>
     
@@ -419,14 +419,14 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门4-module详解</title>
-    <link href="https://wangtongyowen.github.io/post/565d0c01.html"/>
-    <id>https://wangtongyowen.github.io/post/565d0c01.html</id>
+    <link href="https://wangtongyouwen.github.io/post/565d0c01.html"/>
+    <id>https://wangtongyouwen.github.io/post/565d0c01.html</id>
     <published>2023-04-06T08:27:23.000Z</published>
     <updated>2023-04-12T12:30:11.323Z</updated>
     
@@ -443,14 +443,14 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch实用工具1-网络可视化</title>
-    <link href="https://wangtongyowen.github.io/post/b187ba6d.html"/>
-    <id>https://wangtongyowen.github.io/post/b187ba6d.html</id>
+    <link href="https://wangtongyouwen.github.io/post/b187ba6d.html"/>
+    <id>https://wangtongyouwen.github.io/post/b187ba6d.html</id>
     <published>2023-04-06T03:46:15.000Z</published>
     <updated>2023-04-17T12:53:39.630Z</updated>
     
@@ -465,21 +465,21 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/categories/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/categories/pytorch/"/>
     
-    <category term="tools" scheme="https://wangtongyowen.github.io/categories/pytorch/tools/"/>
+    <category term="tools" scheme="https://wangtongyouwen.github.io/categories/pytorch/tools/"/>
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
-    <category term="tools" scheme="https://wangtongyowen.github.io/tags/tools/"/>
+    <category term="tools" scheme="https://wangtongyouwen.github.io/tags/tools/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门3-搭建分类网络</title>
-    <link href="https://wangtongyowen.github.io/post/55849e59.html"/>
-    <id>https://wangtongyowen.github.io/post/55849e59.html</id>
+    <link href="https://wangtongyouwen.github.io/post/55849e59.html"/>
+    <id>https://wangtongyouwen.github.io/post/55849e59.html</id>
     <published>2023-04-06T02:45:31.000Z</published>
     <updated>2023-04-12T12:30:11.323Z</updated>
     
@@ -495,14 +495,14 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
   <entry>
     <title>pytorch基础入门2-Data loader</title>
-    <link href="https://wangtongyowen.github.io/post/2d21482d.html"/>
-    <id>https://wangtongyowen.github.io/post/2d21482d.html</id>
+    <link href="https://wangtongyouwen.github.io/post/2d21482d.html"/>
+    <id>https://wangtongyouwen.github.io/post/2d21482d.html</id>
     <published>2023-04-05T10:49:14.000Z</published>
     <updated>2023-04-12T12:30:11.323Z</updated>
     
@@ -519,7 +519,7 @@
     
     
     
-    <category term="pytorch" scheme="https://wangtongyowen.github.io/tags/pytorch/"/>
+    <category term="pytorch" scheme="https://wangtongyouwen.github.io/tags/pytorch/"/>
     
   </entry>
   
