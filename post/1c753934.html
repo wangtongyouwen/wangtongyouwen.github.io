@@ -7,15 +7,20 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="https://wangtongyouwen.github.io">
-  <title>归档: 2023 | jyh blog</title>
+  <title>pytorch基础入门19-ResNet | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="jyh blog">
-<meta property="og:url" content="https://wangtongyouwen.github.io/archives/2023/page/3/index.html">
+  <meta name="description" content="https:&#x2F;&#x2F;openaccess.thecvf.com&#x2F;content_cvpr_2016&#x2F;papers&#x2F;He_Deep_Residual_Learning_CVPR_2016_paper.pdf 使用timm复现ResNet 论文内容略，本文采用的python+pytorch 环境为: torch 1.13.1+cu117 python 3.7 timm 0.4.12 12imp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch基础入门19-ResNet">
+<meta property="og:url" content="https://wangtongyouwen.github.io/post/1c753934.html">
 <meta property="og:site_name" content="jyh blog">
+<meta property="og:description" content="https:&#x2F;&#x2F;openaccess.thecvf.com&#x2F;content_cvpr_2016&#x2F;papers&#x2F;He_Deep_Residual_Learning_CVPR_2016_paper.pdf 使用timm复现ResNet 论文内容略，本文采用的python+pytorch 环境为: torch 1.13.1+cu117 python 3.7 timm 0.4.12 12imp">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-19T11:24:03.000Z">
+<meta property="article:modified_time" content="2023-04-19T13:20:38.322Z">
 <meta property="article:author" content="jyh">
+<meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary">
   
   
@@ -277,51 +282,227 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-pytorch基础入门19-ResNet" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title_code_ant" itemprop="name">
+	  <a href="/post/1c753934.html">pytorch基础入门19-ResNet</a>
+	</h1>
+  
+
+        
+		
+		  <a href="/post/1c753934.html" class="archive-article-date">
+  	<time datetime="2023-04-19T11:24:03.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-19</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	<span>
+		&nbsp; &nbsp; &nbsp;
+		<span class="post-meta-item-text">阅读量:</span>
+		<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+		<span class="post-meta-item-text">次</span>
+	</span>
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+	<span>
+		&nbsp; &nbsp; &nbsp;
+		<i class="fa fa-eye" aria-hidden="true"></i>
+		&nbsp;
+		<span class="waline-pageview-count" data-path="/post/1c753934.html"><i class="fa fa-spinner fa-spin"></i></span>
+	</span>
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
       
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/565d0c01.html" class="archive-article-date">
-  	<time datetime="2023-04-06T08:27:23.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-06</time>
 	
-	<!-- busuanzi阅读量统计
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">3.3k字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">18min</span>
+      </span>
+    </span>
 	
-	-->
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
 	
-    <!-- waline阅读量统计 -->
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <p>https://openaccess.thecvf.com/content_cvpr_2016/papers/He_Deep_Residual_Learning_CVPR_2016_paper.pdf</p>
+<h1 id="使用timm复现resnet">使用timm复现ResNet</h1>
+<p>论文内容略，本文采用的python+pytorch 环境为:</p>
+<p>torch 1.13.1+cu117</p>
+<p>python 3.7</p>
+<p>timm 0.4.12</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> timm</span><br><span class="line">timm.create_model(<span class="string">&quot;resnet50&quot;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br></pre></td><td class="code"><pre><span class="line">ResNet(</span><br><span class="line">  (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)</span><br><span class="line">  (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">  (act1): ReLU(inplace=True)</span><br><span class="line">  (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)</span><br><span class="line">  (layer1): Sequential(</span><br><span class="line">    (0): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">      (downsample): Sequential(</span><br><span class="line">        (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      )</span><br><span class="line">    )</span><br><span class="line">    (1): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">    )</span><br><span class="line">    (2): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">    )</span><br><span class="line">  )</span><br><span class="line">  (layer2): Sequential(</span><br><span class="line">    (0): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">      (downsample): Sequential(</span><br><span class="line">        (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)</span><br><span class="line">        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      )</span><br><span class="line">    )</span><br><span class="line">    (1): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">    )</span><br><span class="line">    (2): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">    )</span><br><span class="line">    (3): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">    )</span><br><span class="line">  )</span><br><span class="line">  (layer3): Sequential(</span><br><span class="line">    (0): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">      (downsample): Sequential(</span><br><span class="line">        (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False)</span><br><span class="line">        (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      )</span><br><span class="line">    )</span><br><span class="line">    (1): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">    )</span><br><span class="line">    (2): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">    )</span><br><span class="line">    (3): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">    )</span><br><span class="line">    (4): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">    )</span><br><span class="line">    (5): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">    )</span><br><span class="line">  )</span><br><span class="line">  (layer4): Sequential(</span><br><span class="line">    (0): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">      (downsample): Sequential(</span><br><span class="line">        (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)</span><br><span class="line">        (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      )</span><br><span class="line">    )</span><br><span class="line">    (1): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">    )</span><br><span class="line">    (2): Bottleneck(</span><br><span class="line">      (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act1): ReLU(inplace=True)</span><br><span class="line">      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)</span><br><span class="line">      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act2): ReLU(inplace=True)</span><br><span class="line">      (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)</span><br><span class="line">      (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)</span><br><span class="line">      (act3): ReLU(inplace=True)</span><br><span class="line">    )</span><br><span class="line">  )</span><br><span class="line">  (global_pool): SelectAdaptivePool2d (pool_type=avg, flatten=True)</span><br><span class="line">  (fc): Linear(in_features=2048, out_features=1000, bias=True)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>lib/site-packages/timm/models/resnet.py</p>
+<h2 id="resnet">1 ResNet</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Stem</span></span><br><span class="line">self.conv1 = nn.Conv2d(in_chans, inplanes, kernel_size=<span class="number">7</span>, stride=<span class="number">2</span>, padding=<span class="number">3</span>, bias=<span class="literal">False</span>)</span><br><span class="line">self.bn1 = norm_layer(inplanes)</span><br><span class="line">self.act1 = act_layer(inplace=<span class="literal">True</span>)</span><br><span class="line">self.feature_info = [<span class="built_in">dict</span>(num_chs=inplanes, reduction=<span class="number">2</span>, module=<span class="string">&#x27;act1&#x27;</span>)]</span><br><span class="line">    </span><br><span class="line"><span class="comment"># Stem Pooling</span></span><br><span class="line"><span class="keyword">if</span> aa_layer <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">	self.maxpool = nn.Sequential(*[</span><br><span class="line">		nn.MaxPool2d(kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">		aa_layer(channels=inplanes, stride=<span class="number">2</span>)])</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		self.maxpool = nn.MaxPool2d(kernel_size=<span class="number">3</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>核心部分：feature map</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Feature Blocks</span></span><br><span class="line">channels = [<span class="number">64</span>, <span class="number">128</span>, <span class="number">256</span>, <span class="number">512</span>]</span><br><span class="line">stage_modules, stage_feature_info = make_blocks(</span><br><span class="line">	block, channels, layers, inplanes, cardinality=cardinality, base_width=base_width,</span><br><span class="line">	output_stride=output_stride, reduce_first=block_reduce_first, avg_down=avg_down,</span><br><span class="line">	down_kernel_size=down_kernel_size, act_layer=act_layer, norm_layer=norm_layer, aa_layer=aa_layer,</span><br><span class="line">	drop_block_rate=drop_block_rate, drop_path_rate=drop_path_rate, **block_args)</span><br><span class="line"><span class="keyword">for</span> stage <span class="keyword">in</span> stage_modules:</span><br><span class="line">	self.add_module(*stage)  <span class="comment"># layer1, layer2, etc</span></span><br><span class="line">self.feature_info.extend(stage_feature_info)</span><br></pre></td></tr></table></figure>
+<p>其中make_blocks是构建每个stage的具体实现，这里具体内容在第二部分查看</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.num_features = <span class="number">512</span> * block.expansion</span><br><span class="line">self.global_pool, self.fc = create_classifier(self.num_features, self.num_classes, pool_type=global_pool)</span><br></pre></td></tr></table></figure>
+<p>为什么这里有block.expansion?</p>
+<p>在ResNet50中有些stage之间的通道数是不相同的，如果直接使用残差连接，无法完成直接相加，需要对某些深度通道进行压缩，expansion能够保证某些通道的输出维度是匹配的</p>
+<h2 id="make_blocks">2 make_blocks</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">make_blocks</span>(<span class="params"></span></span><br><span class="line"><span class="params">        block_fn, channels, block_repeats, inplanes, reduce_first=<span class="number">1</span>, output_stride=<span class="number">32</span>,</span></span><br><span class="line"><span class="params">        down_kernel_size=<span class="number">1</span>, avg_down=<span class="literal">False</span>, drop_block_rate=<span class="number">0.</span>, drop_path_rate=<span class="number">0.</span>, **kwargs</span>):</span><br><span class="line">    stages = []</span><br><span class="line">    feature_info = []</span><br><span class="line">    net_num_blocks = <span class="built_in">sum</span>(block_repeats)</span><br><span class="line">    net_block_idx = <span class="number">0</span></span><br><span class="line">    net_stride = <span class="number">4</span></span><br><span class="line">    dilation = prev_dilation = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> stage_idx, (planes, num_blocks, db) <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="built_in">zip</span>(channels, block_repeats, drop_blocks(drop_block_rate))):</span><br><span class="line">        stage_name = <span class="string">f&#x27;layer<span class="subst">&#123;stage_idx + <span class="number">1</span>&#125;</span>&#x27;</span>  <span class="comment"># never liked this name, but weight compat requires it</span></span><br><span class="line">        stride = <span class="number">1</span> <span class="keyword">if</span> stage_idx == <span class="number">0</span> <span class="keyword">else</span> <span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> net_stride &gt;= output_stride:</span><br><span class="line">            dilation *= stride</span><br><span class="line">            stride = <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            net_stride *= stride</span><br><span class="line"></span><br><span class="line">        downsample = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">if</span> stride != <span class="number">1</span> <span class="keyword">or</span> inplanes != planes * block_fn.expansion:</span><br><span class="line">            down_kwargs = <span class="built_in">dict</span>(</span><br><span class="line">                in_channels=inplanes, out_channels=planes * block_fn.expansion, kernel_size=down_kernel_size,</span><br><span class="line">                stride=stride, dilation=dilation, first_dilation=prev_dilation, norm_layer=kwargs.get(<span class="string">&#x27;norm_layer&#x27;</span>))</span><br><span class="line">            downsample = downsample_avg(**down_kwargs) <span class="keyword">if</span> avg_down <span class="keyword">else</span> downsample_conv(**down_kwargs)</span><br><span class="line"></span><br><span class="line">        block_kwargs = <span class="built_in">dict</span>(reduce_first=reduce_first, dilation=dilation, drop_block=db, **kwargs)</span><br><span class="line">        blocks = []</span><br><span class="line">        <span class="keyword">for</span> block_idx <span class="keyword">in</span> <span class="built_in">range</span>(num_blocks):</span><br><span class="line">            downsample = downsample <span class="keyword">if</span> block_idx == <span class="number">0</span> <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">            stride = stride <span class="keyword">if</span> block_idx == <span class="number">0</span> <span class="keyword">else</span> <span class="number">1</span></span><br><span class="line">            block_dpr = drop_path_rate * net_block_idx / (net_num_blocks - <span class="number">1</span>)  <span class="comment"># stochastic depth linear decay rule</span></span><br><span class="line">            blocks.append(block_fn(</span><br><span class="line">                inplanes, planes, stride, downsample, first_dilation=prev_dilation,</span><br><span class="line">                drop_path=DropPath(block_dpr) <span class="keyword">if</span> block_dpr &gt; <span class="number">0.</span> <span class="keyword">else</span> <span class="literal">None</span>, **block_kwargs))</span><br><span class="line">            prev_dilation = dilation</span><br><span class="line">            inplanes = planes * block_fn.expansion</span><br><span class="line">            net_block_idx += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        stages.append((stage_name, nn.Sequential(*blocks)))</span><br><span class="line">        feature_info.append(<span class="built_in">dict</span>(num_chs=inplanes, reduction=net_stride, module=stage_name))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> stages, feature_info</span><br></pre></td></tr></table></figure>
+<p>这段代码定义了一个名为<code>make_blocks</code>的函数，用于构建一系列残差块（residual blocks）并形成卷积神经网络（CNN）的多个阶段。这种结构在 ResNet 及其变体中很常见。<code>make_blocks</code>函数接收多个参数，用于控制网络的结构和行为。函数的主要目的是根据给定的参数创建网络的各个阶段并返回这些阶段及其相关的特征信息。</p>
+<p>以下是函数参数的简要说明：</p>
+<ul>
+<li><code>block_fn</code>：残差块的函数，如 ResNet 中的基本块或瓶颈块。</li>
+<li><code>channels</code>：每个阶段的输出通道数量。</li>
+<li><code>block_repeats</code>：每个阶段的残差块重复次数。</li>
+<li><code>inplanes</code>：输入通道数量。</li>
+<li>其他参数用于控制步长（<code>output_stride</code>）、下采样方式（<code>avg_down</code>）、DropBlock（<code>drop_block_rate</code>）和 Stochastic Depth（<code>drop_path_rate</code>）等高级功能。</li>
+</ul>
+<p>代码的主要部分是一个循环，针对每个阶段执行以下操作：</p>
+<ol type="1">
+<li>为每个阶段创建一个名为<code>stage_name</code>的变量，如<code>layer1</code>、<code>layer2</code>等。</li>
+<li>计算步长（<code>stride</code>）和扩张率（<code>dilation</code>），这些值控制每个阶段的空间分辨率。</li>
+<li>如果需要，创建下采样层（<code>downsample</code>），以使输入与输出具有兼容的尺寸。</li>
+<li>根据给定的参数，创建一系列残差块。</li>
+<li>将这些残差块组合成一个名为<code>nn.Sequential</code>的模块，将其添加到<code>stages</code>列表中。</li>
+<li>将每个阶段的特征信息添加到<code>feature_info</code>列表中。</li>
+</ol>
+<p>最后，函数返回<code>stages</code>和<code>feature_info</code>，它们分别表示网络的各个阶段及其相关的特征信息。这些信息通常在之后的代码中用于构建完整的神经网络，并在训练过程中用于损失计算和评估等任务。</p>
+<ul>
+<li>downsample和block.expansion之间的联系：</li>
+</ul>
+<p><code>downsample</code> 和 <code>block.expansion</code> 在这段代码中具有不同的目的，但它们之间存在联系。首先，让我们解释它们各自的作用：</p>
+<ol type="1">
+<li><code>downsample</code>：<code>downsample</code> 是一个可选的下采样层，用于在输入和输出之间调整维度。在构建残差网络时，<code>downsample</code> 的目的是使跳过连接（skip connection）中的输入与残差块输出具有相同的尺寸，以便将它们相加。<code>downsample</code> 层通常包含一个卷积层和一个批量归一化层，用于调整输入的通道数量和/或分辨率。这样，即使输入和输出具有不同的尺寸，也可以将它们相加。</li>
+<li><code>block.expansion</code>：<code>block.expansion</code> 是残差块中的扩张因子，用于控制输入和输出通道的增长。在 ResNet 架构中，基本块的扩张因子为 1（即输入和输出通道数量相同），而瓶颈块的扩张因子为 4（即输出通道数量为输入通道数量的 4 倍）。</li>
+</ol>
+<p>这两者之间的联系是：<code>downsample</code> 层用于调整输入的通道数量，使其与残差块输出的通道数量匹配。而<code>block.expansion</code> 则决定了残差块输出的通道数量。因此，在计算下采样层时，通常会将输出通道数量设置为 <code>planes * block_fn.expansion</code>，其中 <code>planes</code> 是当前阶段的输出通道数量，<code>block_fn.expansion</code> 是残差块的扩张因子。</p>
+<p>简而言之，<code>downsample</code> 和 <code>block.expansion</code> 分别负责调整输入尺寸以匹配输出尺寸，以及控制残差块中输入和输出通道的增长。尽管它们具有不同的目的，但它们之间存在联系，共同影响网络的整体结构。</p>
+<h2 id="basicblock">3 BasicBlock</h2>
+<p>这个类就是对ResNet进行的一个实现，这个网络中的block大小都是相同的，所以没有用到上述的downsample和block.expansion</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BasicBlock</span>(nn.Module):</span><br><span class="line">    expansion = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, inplanes, planes, stride=<span class="number">1</span>, downsample=<span class="literal">None</span>, cardinality=<span class="number">1</span>, base_width=<span class="number">64</span>,</span></span><br><span class="line"><span class="params">                 reduce_first=<span class="number">1</span>, dilation=<span class="number">1</span>, first_dilation=<span class="literal">None</span>, act_layer=nn.ReLU, norm_layer=nn.BatchNorm2d,</span></span><br><span class="line"><span class="params">                 attn_layer=<span class="literal">None</span>, aa_layer=<span class="literal">None</span>, drop_block=<span class="literal">None</span>, drop_path=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(BasicBlock, self).__init__()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> cardinality == <span class="number">1</span>, <span class="string">&#x27;BasicBlock only supports cardinality of 1&#x27;</span></span><br><span class="line">        <span class="keyword">assert</span> base_width == <span class="number">64</span>, <span class="string">&#x27;BasicBlock does not support changing base width&#x27;</span></span><br><span class="line">        first_planes = planes // reduce_first</span><br><span class="line">        outplanes = planes * self.expansion</span><br><span class="line">        first_dilation = first_dilation <span class="keyword">or</span> dilation</span><br><span class="line">        use_aa = aa_layer <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> (stride == <span class="number">2</span> <span class="keyword">or</span> first_dilation != dilation)</span><br><span class="line"></span><br><span class="line">        self.conv1 = nn.Conv2d(</span><br><span class="line">            inplanes, first_planes, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span> <span class="keyword">if</span> use_aa <span class="keyword">else</span> stride, padding=first_dilation,</span><br><span class="line">            dilation=first_dilation, bias=<span class="literal">False</span>)</span><br><span class="line">        self.bn1 = norm_layer(first_planes)</span><br><span class="line">        self.act1 = act_layer(inplace=<span class="literal">True</span>)</span><br><span class="line">        self.aa = aa_layer(channels=first_planes, stride=stride) <span class="keyword">if</span> use_aa <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        self.conv2 = nn.Conv2d(</span><br><span class="line">            first_planes, outplanes, kernel_size=<span class="number">3</span>, padding=dilation, dilation=dilation, bias=<span class="literal">False</span>)</span><br><span class="line">        self.bn2 = norm_layer(outplanes)</span><br><span class="line"></span><br><span class="line">        self.se = create_attn(attn_layer, outplanes)</span><br><span class="line"></span><br><span class="line">        self.act2 = act_layer(inplace=<span class="literal">True</span>)</span><br><span class="line">        self.downsample = downsample</span><br><span class="line">        self.stride = stride</span><br><span class="line">        self.dilation = dilation</span><br><span class="line">        self.drop_block = drop_block</span><br><span class="line">        self.drop_path = drop_path</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">zero_init_last_bn</span>(<span class="params">self</span>):</span><br><span class="line">        nn.init.zeros_(self.bn2.weight)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        shortcut = x</span><br><span class="line"></span><br><span class="line">        x = self.conv1(x)</span><br><span class="line">        x = self.bn1(x)</span><br><span class="line">        <span class="keyword">if</span> self.drop_block <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            x = self.drop_block(x)</span><br><span class="line">        x = self.act1(x)</span><br><span class="line">        <span class="keyword">if</span> self.aa <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            x = self.aa(x)</span><br><span class="line"></span><br><span class="line">        x = self.conv2(x)</span><br><span class="line">        x = self.bn2(x)</span><br><span class="line">        <span class="keyword">if</span> self.drop_block <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            x = self.drop_block(x)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.se <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            x = self.se(x)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.drop_path <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            x = self.drop_path(x)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.downsample <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            shortcut = self.downsample(shortcut)</span><br><span class="line">        x += shortcut</span><br><span class="line">        x = self.act2(x)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+		<!-- reward type 1 -->
+		
+		
+		<!-- reward type 2 -->
+		
+		  <div id="reward-container">
+		    <span class="icon-cursor" title="打赏" id="reward-button"
+			  onclick='var qr = document.getElementById("qr"); qr.style.display = (qr.style.display === "none") ? "block" : "none";'
+			  ><a style="color:#fff;">赏</a></span>
+		    <div id="reward-comment"><i class="icon icon-quo-left"></i>&nbsp;感觉不错 支持一下&nbsp;<i class="icon icon-quo-right"></i></div>
+		  
+		    <div id="qr" style="display: none;">
+			  <div style="display:inline-block">
+			    <img loading="lazy" src="/img/alipay-min.png" alt="支付宝" title="支付宝"/>
+			    <div><span class="reward-type">支付宝</span></div>
+			  </div>
+			
+			  <div style="display:inline-block">
+			    <img loading="lazy" src="/img/wechatpay-min.png" alt="微信支付" title="微信支付"/>
+			    <div><span class="reward-type">微信</span></div>
+			  </div>
+		    </div>
+	      </div>
+	    
+      
 	
+	  <!-- 添加版权声明 -->
+      
+        <!-- 添加版权声明 -->
+<!--https://blog.csdn.net/weixin_41287260/article/details/103050336-->
 
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/565d0c01.html">pytorch基础入门4-module详解</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
+<div class="declare">
+	<strong class="author">本文作者：</strong>
+	
+	  jyh
+	
+	
+	<!-- <br>
+	<strong class="create-time">发布时间：</strong>
+	2023-04-19 -->
+	
+	<br>
+	<strong class="update-time">最后更新：</strong>
+	2023年04月19日 21:20:38
+	
+	<!-- <br>
+	<strong class="article-titles">本文标题：</strong>
+	<a href="https://wangtongyouwen.github.io/post/1c753934.html" title="pytorch基础入门19-ResNet" target="_blank">pytorch基础入门19-ResNet</a> -->
+	
+	<br>
+	<strong class="article-url">本文链接：</strong>
+	<a href="https://wangtongyouwen.github.io/post/1c753934.html" title="pytorch基础入门19-ResNet" target="_blank">https://wangtongyouwen.github.io/post/1c753934.html</a>
+	
+	<br>
+	<strong class="copyright">版权声明：</strong>
+	本作品采用
+	<a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+	许可协议进行许可，转载请注明出处！
+	
+	
+</div>
+<!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -333,457 +514,197 @@ var _hmt = _hmt || [];
 		</ul>
 	</div>
 
-          
+      
 
+	  
+	  <!-- 添加展开全文 -->
+      
+	  
+	  <!-- 添加分享 -->
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyouwen.github.io/post/1c753934.html" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
   </div>
 </article>
+
+
   
+<nav id="article-nav">
+  
+    <a href="/post/f0f056f4.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          pytorch基础入门20-MAE
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/aa153511.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">pytorch基础入门18-ConvNext</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
     
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/b187ba6d.html" class="archive-article-date">
-  	<time datetime="2023-04-06T03:46:15.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-06</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
+      <div class="toc-container tooltip-left">
+        <i class="icon-font icon-category"></i>
+        <div class="tooltip tooltip-east">
+          <span class="tooltip-item"></span>
+          <span class="tooltip-content">
+			<span style="font-size: 20px;font-weight: bold;">目录</span>
+            <div class="toc-article">
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8timm%E5%A4%8D%E7%8E%B0resnet"><span class="toc-number">1.</span> <span class="toc-text">使用timm复现ResNet</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#resnet"><span class="toc-number">1.1.</span> <span class="toc-text">1 ResNet</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#make_blocks"><span class="toc-number">1.2.</span> <span class="toc-text">2 make_blocks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#basicblock"><span class="toc-number">1.3.</span> <span class="toc-text">3 BasicBlock</span></a></li></ol></li></ol>
+            </div>
+          </span>
         </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/b187ba6d.html">pytorch实用工具1-网络可视化</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+	
   </div>
-</article>
+</aside>
+
+<!-- 添加评论 -->
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/55849e59.html" class="archive-article-date">
-  	<time datetime="2023-04-06T02:45:31.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
+  <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet' />
 
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-06</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
+<div id="waline"></div>
+<script>
+	// 中文默认
+	const locale = {
+	  nick: ' 昵称: ',
+	  nickError: '昵称不能少于3个字符',
+	  mail: '邮箱: ',
+	  mailError: '请填写正确的邮件地址',
+	  link: '网址: ',
+	  placeholder: ' 客官留个言吧(◕ˇ∀ˇ◕)',
+	  sofa: '评论区空空荡荡，客官快来评论吧~',
+	  submit: '提交',
+	  reply: '回复',
+	  cancelReply: '取消回复',
+	  comment: '评论',
+	  more: '加载更多...',
+	  preview: '预览',
+	  emoji: '表情',
+	  uploadImage: '上传图片',
+	  seconds: '秒前',
+	  minutes: '分钟前',
+	  hours: '小时前',
+	  days: '天前',
+	  now: '刚刚',
+	  uploading: '正在上传',
+	  login: '登录',
+	  logout: '退出',
+	  admin: '博主',
+	  word: '字',
+	  wordHint: '评论字数应在 $0 到 $1 字之间！\n当前字数：$2',
+	};
 
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/55849e59.html">pytorch基础入门3-搭建分类网络</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/2d21482d.html" class="archive-article-date">
-  	<time datetime="2023-04-05T10:49:14.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/2d21482d.html">pytorch基础入门2-Data loader</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/489d1269.html" class="archive-article-date">
-  	<time datetime="2023-04-05T05:29:58.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/489d1269.html">pytorch基础入门1-张量运算</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/20651907.html" class="archive-article-date">
-  	<time datetime="2023-04-05T04:29:49.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/20651907.html">一些常用的小技巧</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tips</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/f0ef2eb8.html" class="archive-article-date">
-  	<time datetime="2023-04-05T04:27:57.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/f0ef2eb8.html">使用finalshell工具配置虚拟机的ssm服务</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/9c4101a6.html" class="archive-article-date">
-  	<time datetime="2023-04-05T04:23:40.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/9c4101a6.html">about me</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">aboutme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/3716e35d.html" class="archive-article-date">
-  	<time datetime="2023-04-05T03:22:00.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/3716e35d.html">建立自己的blog--基于hexo</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+	Waline.init({
+	  el: '#waline',
+	  serverURL: 'your_waline_comments_url',
+	  locale,
+	  login: 'enable',
+	  lang: 'zh-CN ',
+	  dark: '',
+	  // 设置 emoji 为微博与哔哩哔哩
+	  emoji: [
+		'https://unpkg.com/@waline/emojis@1.1.0/weibo',
+		'https://unpkg.com/@waline/emojis@1.1.0/bilibili',
+	  ],
+	  wordLimit: 0,
+	  pageSize: 10,
+	  imageUploader: false,
+	  pageview: true,
+	  meta: ['nick', 'mail', 'link'],  //评论者相关属性，默认['nick', 'mail', 'link'],
+	  requiredMeta: ['nick'], //设置评论者属性必填项，默认[]（即匿名）
+	});
+</script>
   
   
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2023/page/2/">&lt;&lt; 上一页</a><a class="page-number" href="/archives/2023/">1</a><a class="page-number" href="/archives/2023/page/2/">2</a><span class="page-number current">3</span>
-    </nav>
   
 
 
+  
 
-<!-- 主页添加mathjax公式 -->
+  
 
-  <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
+  
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+    <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
 <script>
 window.MathJax = {
   tex: {
@@ -813,8 +734,9 @@ window.MathJax = {
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
+  
 
-<!-- 主页添加mathjax公式 -->
+<!-- 文章页添加mathjax公式 -->
           </div>
         </div>
       </div>
@@ -824,8 +746,8 @@ window.MathJax = {
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

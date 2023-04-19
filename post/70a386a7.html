@@ -7,16 +7,25 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="https://wangtongyouwen.github.io">
-  <title>归档: 2023 | jyh blog</title>
+  <title>pytorch基础入门17-word embedding | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="jyh blog">
-<meta property="og:url" content="https://wangtongyouwen.github.io/archives/2023/page/3/index.html">
+  <meta name="description" content="语言建模  基于已有的人类组织的文本语料，基于无监督学习如何组织一句话并还能得到单词的语义表征 统计模型：n-gram 无监督学习：NNLM 大规模无监督学习：word2vec,BERT  1 n-gram  特点：统计性、简单、泛化能力差、无法得到单词的语义信息 定义：n个相邻字符构成的序列  unigram bigram trigram  用途：基于n-gram">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch基础入门17-word embedding">
+<meta property="og:url" content="https://wangtongyouwen.github.io/post/70a386a7.html">
 <meta property="og:site_name" content="jyh blog">
+<meta property="og:description" content="语言建模  基于已有的人类组织的文本语料，基于无监督学习如何组织一句话并还能得到单词的语义表征 统计模型：n-gram 无监督学习：NNLM 大规模无监督学习：word2vec,BERT  1 n-gram  特点：统计性、简单、泛化能力差、无法得到单词的语义信息 定义：n个相邻字符构成的序列  unigram bigram trigram  用途：基于n-gram">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/dQiaQ6INiazLoDx1sOWTQSTiaoLahdlZvZ9gBdtWVSS6gsqz8PLgHAPUesz0mqVCyo2MwjO6yssqnBOPO5BJ8z1lg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://www.baeldung.com/wp-content/uploads/sites/4/2021/03/Screenshot-2021-03-05-at-11.29.31-1024x616-1.png">
+<meta property="og:image" content="https://www.ruder.io/content/images/2016/05/hierarchical_softmax.png">
+<meta property="article:published_time" content="2023-04-17T14:27:03.000Z">
+<meta property="article:modified_time" content="2023-04-18T09:58:52.587Z">
 <meta property="article:author" content="jyh">
+<meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/dQiaQ6INiazLoDx1sOWTQSTiaoLahdlZvZ9gBdtWVSS6gsqz8PLgHAPUesz0mqVCyo2MwjO6yssqnBOPO5BJ8z1lg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1">
   
   
     <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
@@ -277,51 +286,304 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-pytorch基础入门17-word embedding" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title_code_ant" itemprop="name">
+	  <a href="/post/70a386a7.html">pytorch基础入门17-word embedding</a>
+	</h1>
+  
+
+        
+		
+		  <a href="/post/70a386a7.html" class="archive-article-date">
+  	<time datetime="2023-04-17T14:27:03.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-17</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	<span>
+		&nbsp; &nbsp; &nbsp;
+		<span class="post-meta-item-text">阅读量:</span>
+		<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+		<span class="post-meta-item-text">次</span>
+	</span>
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+	<span>
+		&nbsp; &nbsp; &nbsp;
+		<i class="fa fa-eye" aria-hidden="true"></i>
+		&nbsp;
+		<span class="waline-pageview-count" data-path="/post/70a386a7.html"><i class="fa fa-spinner fa-spin"></i></span>
+	</span>
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
       
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/565d0c01.html" class="archive-article-date">
-  	<time datetime="2023-04-06T08:27:23.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-06</time>
 	
-	<!-- busuanzi阅读量统计
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">828字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">3min</span>
+      </span>
+    </span>
 	
-	-->
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
 	
-    <!-- waline阅读量统计 -->
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h2 id="语言建模">语言建模</h2>
+<ul>
+<li>基于已有的人类组织的文本语料，基于无监督学习如何组织一句话并还能得到单词的语义表征</li>
+<li>统计模型：n-gram</li>
+<li>无监督学习：NNLM</li>
+<li>大规模无监督学习：word2vec,BERT</li>
+</ul>
+<h3 id="n-gram">1 n-gram</h3>
+<ul>
+<li>特点：统计性、简单、泛化能力差、无法得到单词的语义信息</li>
+<li>定义：n个相邻字符构成的序列
+<ul>
+<li>unigram</li>
+<li>bigram</li>
+<li>trigram</li>
+</ul></li>
+<li>用途：基于n-gram的频数分析文本，如垃圾邮件分类</li>
+<li>对于word n-gram，特征维度随着语料词汇增大和n增大而指数增大(curse of dimensionality 维度灾难)</li>
+<li>对于character n-gram，特征维度只随着n增大而增大</li>
+</ul>
+<h3 id="单词的语义表征">2 单词的语义表征</h3>
+<ul>
+<li>稀疏式
+<ul>
+<li>one-hot encoding 只能反应出单词在单词表中的位置信息，不能得出任何语义上的信息</li>
+</ul></li>
+<li>分布式
+<ul>
+<li>类似于word embedding 固定长度，每个位置上都是浮点型，这种语义表征是隐式的，是训练获得的(通过向量点积能得到相似度)</li>
+</ul></li>
+<li>应用场景
+<ul>
+<li>word/character/phrase/sentence/paragraph embedding</li>
+<li>speaker/user/item embedding</li>
+</ul></li>
+</ul>
+<h3 id="基于神经网络的语言模型nnlm">3 基于神经网络的语言模型(NNLM)</h3>
+<ul>
+<li>NNLM包括：
+<ul>
+<li>输入层(one-hot)</li>
+<li>投影层</li>
+<li>隐含层</li>
+<li>输出层</li>
+</ul></li>
+<li>word embeddings为副产物，隐含的语义表征</li>
+<li>主要复杂度： N*D*H+H*V</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/dQiaQ6INiazLoDx1sOWTQSTiaoLahdlZvZ9gBdtWVSS6gsqz8PLgHAPUesz0mqVCyo2MwjO6yssqnBOPO5BJ8z1lg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="Image" style="zoom:67%;" /></p>
+<ul>
+<li>如何降低复杂度？如何训练大规模数据？</li>
+</ul>
+<h3 id="word2vec">4 word2vec</h3>
+<h4 id="改进1抛弃了隐含层并提出cbow和skip-gram">改进1：抛弃了隐含层，并提出CBOW和Skip-gram</h4>
+<ul>
+<li>continuous Bag-of-Words
+<ul>
+<li>不同于NNLM，CBOW考虑到了前后上下文</li>
+<li>使用周围单词预测中间单词</li>
+<li>输入：前n个单词和后n个单词</li>
+<li>目标：基于H-softmax预测中间单词</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[
+J_{\theta}=\frac{1}{T}\sum^T_{t=1}log P(w_t|w_{t-n},\dots,w_{t-1},w_{t+1},\dots,w_{t+n})
+\]</span></p>
+<ul>
+<li>Skip-gram
+<ul>
+<li>与CBOW相反，使用中间单词预测周围单词</li>
+<li>输入：中间单词</li>
+<li>目标：基于H-softmax预测前n个单词和后n个单词</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[
+J_{\theta} = \frac{1}{T}\sum^T_{t=1} \sum_{-n\le j\le n,n\ne 0}log\ \ p(w_{t+j}|w_t)
+\]</span></p>
+<figure>
+<img src="https://www.baeldung.com/wp-content/uploads/sites/4/2021/03/Screenshot-2021-03-05-at-11.29.31-1024x616-1.png" alt="Screenshot-2021-03-05-at-11.29.31" /><figcaption aria-hidden="true">Screenshot-2021-03-05-at-11.29.31</figcaption>
+</figure>
+<h4 id="改进2优化softmax">改进2：优化softmax</h4>
+<ul>
+<li>softmax
+<ul>
+<li>计算量跟单词表数目K呈线性关系</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[
+\sigma(\vec z)_i = \frac{e^{z_i}}{\sum^K_{j=1}e^{z_j}}
+\]</span></p>
+<ul>
+<li>hierarchical softmax(huffman树)</li>
+</ul>
+<ol type="1">
+<li>将{w1,w2,...,wn}看成是由n棵树的森林(每棵树仅有一个节点)</li>
+<li>在森林中选出两个树节点的权值最小的树合并，作为一棵新树的左右子树，且新树的根节点权值为其左、右子树节点权值之和</li>
+<li>从森林中删除选取的两棵树，并将新树加入森林</li>
+<li>重复2,3步，知道森林中只剩一棵树为止，该树就为所求的Huffman树</li>
+</ol>
+<p><img src="https://www.ruder.io/content/images/2016/05/hierarchical_softmax.png" alt="img" /> <span class="math display">\[
+p(right|n,c)=\sigma(h^Tv&#39;_n)
+\]</span></p>
+<p><span class="math display">\[
+p(left|n,c) = 1-\sigma(h^Tv&#39;_n)
+\]</span></p>
+<h4 id="改进3引入负采样">改进3：引入负采样</h4>
+<ul>
+<li>continuous bag ofwords
+<ul>
+<li>输入：前n个单词和后n个单词</li>
+<li>目标：使得预测中间单词的概率最大，负样本单词的概率最小</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[
+g(w) = \prod_{u\in {w} \bigcup NEG(w)}p(u|Context(w))
+\]</span></p>
+<ul>
+<li>Skip-gram
+<ul>
+<li>入：中间单词</li>
+<li>目标：使得上下文单词概率最大，负样本单词的概率最小</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[
+g(w) = \prod_{\tilde w\in {Context(w)}} \prod_{u\in {w} \bigcup  NEG^{\tilde w}(w)} p(u|\tilde w)
+\]</span></p>
+<h2 id="word-embeddings-in-pytorch">word embeddings in pytorch</h2>
+<p>https://pytorch.org/tutorials/beginner/nlp/word_embeddings_tutorial.html</p>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+		<!-- reward type 1 -->
+		
+		
+		<!-- reward type 2 -->
+		
+		  <div id="reward-container">
+		    <span class="icon-cursor" title="打赏" id="reward-button"
+			  onclick='var qr = document.getElementById("qr"); qr.style.display = (qr.style.display === "none") ? "block" : "none";'
+			  ><a style="color:#fff;">赏</a></span>
+		    <div id="reward-comment"><i class="icon icon-quo-left"></i>&nbsp;感觉不错 支持一下&nbsp;<i class="icon icon-quo-right"></i></div>
+		  
+		    <div id="qr" style="display: none;">
+			  <div style="display:inline-block">
+			    <img loading="lazy" src="/img/alipay-min.png" alt="支付宝" title="支付宝"/>
+			    <div><span class="reward-type">支付宝</span></div>
+			  </div>
+			
+			  <div style="display:inline-block">
+			    <img loading="lazy" src="/img/wechatpay-min.png" alt="微信支付" title="微信支付"/>
+			    <div><span class="reward-type">微信</span></div>
+			  </div>
+		    </div>
+	      </div>
+	    
+      
 	
+	  <!-- 添加版权声明 -->
+      
+        <!-- 添加版权声明 -->
+<!--https://blog.csdn.net/weixin_41287260/article/details/103050336-->
 
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/565d0c01.html">pytorch基础入门4-module详解</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
+<div class="declare">
+	<strong class="author">本文作者：</strong>
+	
+	  jyh
+	
+	
+	<!-- <br>
+	<strong class="create-time">发布时间：</strong>
+	2023-04-17 -->
+	
+	<br>
+	<strong class="update-time">最后更新：</strong>
+	2023年04月18日 17:58:52
+	
+	<!-- <br>
+	<strong class="article-titles">本文标题：</strong>
+	<a href="https://wangtongyouwen.github.io/post/70a386a7.html" title="pytorch基础入门17-word embedding" target="_blank">pytorch基础入门17-word embedding</a> -->
+	
+	<br>
+	<strong class="article-url">本文链接：</strong>
+	<a href="https://wangtongyouwen.github.io/post/70a386a7.html" title="pytorch基础入门17-word embedding" target="_blank">https://wangtongyouwen.github.io/post/70a386a7.html</a>
+	
+	<br>
+	<strong class="copyright">版权声明：</strong>
+	本作品采用
+	<a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+	许可协议进行许可，转载请注明出处！
+	
+	
+</div>
+<!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -333,457 +595,197 @@ var _hmt = _hmt || [];
 		</ul>
 	</div>
 
-          
+      
 
+	  
+	  <!-- 添加展开全文 -->
+      
+	  
+	  <!-- 添加分享 -->
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyouwen.github.io/post/70a386a7.html" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
   </div>
 </article>
+
+
   
+<nav id="article-nav">
+  
+    <a href="/post/aa153511.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          pytorch基础入门18-ConvNext
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/898bb30b.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">pytorch实用工具2-编写技巧</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
     
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/b187ba6d.html" class="archive-article-date">
-  	<time datetime="2023-04-06T03:46:15.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-06</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
+      <div class="toc-container tooltip-left">
+        <i class="icon-font icon-category"></i>
+        <div class="tooltip tooltip-east">
+          <span class="tooltip-item"></span>
+          <span class="tooltip-content">
+			<span style="font-size: 20px;font-weight: bold;">目录</span>
+            <div class="toc-article">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E8%A8%80%E5%BB%BA%E6%A8%A1"><span class="toc-number">1.</span> <span class="toc-text">语言建模</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#n-gram"><span class="toc-number">1.1.</span> <span class="toc-text">1 n-gram</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E8%AF%8D%E7%9A%84%E8%AF%AD%E4%B9%89%E8%A1%A8%E5%BE%81"><span class="toc-number">1.2.</span> <span class="toc-text">2 单词的语义表征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8Bnnlm"><span class="toc-number">1.3.</span> <span class="toc-text">3 基于神经网络的语言模型(NNLM)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#word2vec"><span class="toc-number">1.4.</span> <span class="toc-text">4 word2vec</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%B9%E8%BF%9B1%E6%8A%9B%E5%BC%83%E4%BA%86%E9%9A%90%E5%90%AB%E5%B1%82%E5%B9%B6%E6%8F%90%E5%87%BAcbow%E5%92%8Cskip-gram"><span class="toc-number">1.4.1.</span> <span class="toc-text">改进1：抛弃了隐含层，并提出CBOW和Skip-gram</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%B9%E8%BF%9B2%E4%BC%98%E5%8C%96softmax"><span class="toc-number">1.4.2.</span> <span class="toc-text">改进2：优化softmax</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%B9%E8%BF%9B3%E5%BC%95%E5%85%A5%E8%B4%9F%E9%87%87%E6%A0%B7"><span class="toc-number">1.4.3.</span> <span class="toc-text">改进3：引入负采样</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#word-embeddings-in-pytorch"><span class="toc-number">2.</span> <span class="toc-text">word embeddings in pytorch</span></a></li></ol>
+            </div>
+          </span>
         </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/b187ba6d.html">pytorch实用工具1-网络可视化</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+	
   </div>
-</article>
+</aside>
+
+<!-- 添加评论 -->
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/55849e59.html" class="archive-article-date">
-  	<time datetime="2023-04-06T02:45:31.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
+  <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet' />
 
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-06</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
+<div id="waline"></div>
+<script>
+	// 中文默认
+	const locale = {
+	  nick: ' 昵称: ',
+	  nickError: '昵称不能少于3个字符',
+	  mail: '邮箱: ',
+	  mailError: '请填写正确的邮件地址',
+	  link: '网址: ',
+	  placeholder: ' 客官留个言吧(◕ˇ∀ˇ◕)',
+	  sofa: '评论区空空荡荡，客官快来评论吧~',
+	  submit: '提交',
+	  reply: '回复',
+	  cancelReply: '取消回复',
+	  comment: '评论',
+	  more: '加载更多...',
+	  preview: '预览',
+	  emoji: '表情',
+	  uploadImage: '上传图片',
+	  seconds: '秒前',
+	  minutes: '分钟前',
+	  hours: '小时前',
+	  days: '天前',
+	  now: '刚刚',
+	  uploading: '正在上传',
+	  login: '登录',
+	  logout: '退出',
+	  admin: '博主',
+	  word: '字',
+	  wordHint: '评论字数应在 $0 到 $1 字之间！\n当前字数：$2',
+	};
 
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/55849e59.html">pytorch基础入门3-搭建分类网络</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/2d21482d.html" class="archive-article-date">
-  	<time datetime="2023-04-05T10:49:14.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/2d21482d.html">pytorch基础入门2-Data loader</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/489d1269.html" class="archive-article-date">
-  	<time datetime="2023-04-05T05:29:58.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/489d1269.html">pytorch基础入门1-张量运算</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/20651907.html" class="archive-article-date">
-  	<time datetime="2023-04-05T04:29:49.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/20651907.html">一些常用的小技巧</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tips</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/f0ef2eb8.html" class="archive-article-date">
-  	<time datetime="2023-04-05T04:27:57.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/f0ef2eb8.html">使用finalshell工具配置虚拟机的ssm服务</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/9c4101a6.html" class="archive-article-date">
-  	<time datetime="2023-04-05T04:23:40.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/9c4101a6.html">about me</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">aboutme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/3716e35d.html" class="archive-article-date">
-  	<time datetime="2023-04-05T03:22:00.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/3716e35d.html">建立自己的blog--基于hexo</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+	Waline.init({
+	  el: '#waline',
+	  serverURL: 'your_waline_comments_url',
+	  locale,
+	  login: 'enable',
+	  lang: 'zh-CN ',
+	  dark: '',
+	  // 设置 emoji 为微博与哔哩哔哩
+	  emoji: [
+		'https://unpkg.com/@waline/emojis@1.1.0/weibo',
+		'https://unpkg.com/@waline/emojis@1.1.0/bilibili',
+	  ],
+	  wordLimit: 0,
+	  pageSize: 10,
+	  imageUploader: false,
+	  pageview: true,
+	  meta: ['nick', 'mail', 'link'],  //评论者相关属性，默认['nick', 'mail', 'link'],
+	  requiredMeta: ['nick'], //设置评论者属性必填项，默认[]（即匿名）
+	});
+</script>
   
   
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2023/page/2/">&lt;&lt; 上一页</a><a class="page-number" href="/archives/2023/">1</a><a class="page-number" href="/archives/2023/page/2/">2</a><span class="page-number current">3</span>
-    </nav>
   
 
 
+  
 
-<!-- 主页添加mathjax公式 -->
+  
 
-  <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
+  
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+    <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
 <script>
 window.MathJax = {
   tex: {
@@ -813,8 +815,9 @@ window.MathJax = {
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
+  
 
-<!-- 主页添加mathjax公式 -->
+<!-- 文章页添加mathjax公式 -->
           </div>
         </div>
       </div>
@@ -824,8 +827,8 @@ window.MathJax = {
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

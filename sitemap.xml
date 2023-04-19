@@ -2,6 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://wangtongyouwen.github.io/post/f0f056f4.html</loc>
+    
+    <lastmod>2023-04-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtongyouwen.github.io/post/1c753934.html</loc>
+    
+    <lastmod>2023-04-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtongyouwen.github.io/post/aa153511.html</loc>
+    
+    <lastmod>2023-04-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtongyouwen.github.io/post/70a386a7.html</loc>
+    
+    <lastmod>2023-04-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://wangtongyouwen.github.io/post/898bb30b.html</loc>
     
     <lastmod>2023-04-17</lastmod>
@@ -283,7 +319,7 @@
 
   <url>
     <loc>https://wangtongyouwen.github.io/</loc>
-    <lastmod>2023-04-17</lastmod>
+    <lastmod>2023-04-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -291,35 +327,35 @@
   
   <url>
     <loc>https://wangtongyouwen.github.io/tags/aboutme/</loc>
-    <lastmod>2023-04-17</lastmod>
+    <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/tags/pytorch/</loc>
-    <lastmod>2023-04-17</lastmod>
+    <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/tags/tools/</loc>
-    <lastmod>2023-04-17</lastmod>
+    <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/tags/project/</loc>
-    <lastmod>2023-04-17</lastmod>
+    <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/tags/tips/</loc>
-    <lastmod>2023-04-17</lastmod>
+    <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -328,35 +364,35 @@
   
   <url>
     <loc>https://wangtongyouwen.github.io/categories/pytorch/</loc>
-    <lastmod>2023-04-17</lastmod>
+    <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/categories/pytorch/tools/</loc>
-    <lastmod>2023-04-17</lastmod>
+    <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/categories/pytorch/project/</loc>
-    <lastmod>2023-04-17</lastmod>
+    <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/categories/tips/</loc>
-    <lastmod>2023-04-17</lastmod>
+    <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/categories/tools/</loc>
-    <lastmod>2023-04-17</lastmod>
+    <lastmod>2023-04-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
