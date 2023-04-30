@@ -7,28 +7,24 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="https://wangtongyouwen.github.io">
-  <title>pytorch基础知识10-卷积网络 | jyh blog</title>
+  <title>用pytorch实现基础网络12-Unet | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="1 卷积的API 1.1 CONV2D torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride&#x3D;1, padding&#x3D;0, dilation&#x3D;1, groups&#x3D;1, bias&#x3D;True, padding_mode&#x3D;&#39;zeros&#39;, device&#x3D;None, dtype&#x3D;None) https:&#x2F;&#x2F;pytorch.or">
+  <meta name="description" content="U-Net: Convolutional Networks for Biomedical Image Segmentation https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1505.04597.pdf  image-20230430141414836   为什么输入图片和输出图片的大小不同？---因为输入的图片本质也是388*388的，只是通过了一定的填充方式变成了572*572。这是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pytorch基础知识10-卷积网络">
-<meta property="og:url" content="https://wangtongyouwen.github.io/post/b0d26e2a.html">
+<meta property="og:title" content="用pytorch实现基础网络12-Unet">
+<meta property="og:url" content="https://wangtongyouwen.github.io/post/94472398.html">
 <meta property="og:site_name" content="jyh blog">
-<meta property="og:description" content="1 卷积的API 1.1 CONV2D torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride&#x3D;1, padding&#x3D;0, dilation&#x3D;1, groups&#x3D;1, bias&#x3D;True, padding_mode&#x3D;&#39;zeros&#39;, device&#x3D;None, dtype&#x3D;None) https:&#x2F;&#x2F;pytorch.or">
+<meta property="og:description" content="U-Net: Convolutional Networks for Biomedical Image Segmentation https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1505.04597.pdf  image-20230430141414836   为什么输入图片和输出图片的大小不同？---因为输入的图片本质也是388*388的，只是通过了一定的填充方式变成了572*572。这是">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304101930110.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304101932268.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304111953529.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304112015956.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304112028509.png">
-<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304112057860.png">
-<meta property="article:published_time" content="2023-04-10T09:16:59.000Z">
-<meta property="article:modified_time" content="2023-04-12T15:56:33.111Z">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304301414602.png">
+<meta property="article:published_time" content="2023-04-30T06:12:22.000Z">
+<meta property="article:modified_time" content="2023-04-30T13:07:07.759Z">
 <meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="network">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304101930110.png">
+<meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304301414602.png">
   
   
     <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
@@ -289,26 +285,26 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-pytorch基础入门10-卷积网络" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-用pytorch实现基础网络12-Unet(待完善)" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title_code_ant" itemprop="name">
-	  <a href="/post/b0d26e2a.html">pytorch基础知识10-卷积网络</a>
+	  <a href="/post/94472398.html">用pytorch实现基础网络12-Unet</a>
 	</h1>
   
 
         
 		
-		  <a href="/post/b0d26e2a.html" class="archive-article-date">
-  	<time datetime="2023-04-10T09:16:59.000Z" itemprop="datePublished">
+		  <a href="/post/94472398.html" class="archive-article-date">
+  	<time datetime="2023-04-30T06:12:22.000Z" itemprop="datePublished">
 	<!-- <i class="icon-calendar icon"></i> -->
 
 	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
 	&nbsp;
-	2023-04-10</time>
+	2023-04-30</time>
 	
 	<!-- busuanzi阅读量统计
 	
@@ -327,7 +323,7 @@ var _hmt = _hmt || [];
 		&nbsp; &nbsp; &nbsp;
 		<i class="fa fa-eye" aria-hidden="true"></i>
 		&nbsp;
-		<span class="waline-pageview-count" data-path="/post/b0d26e2a.html"><i class="fa fa-spinner fa-spin"></i></span>
+		<span class="waline-pageview-count" data-path="/post/94472398.html"><i class="fa fa-spinner fa-spin"></i></span>
 	</span>
 	
 
@@ -341,6 +337,15 @@ var _hmt = _hmt || [];
 <div class="word-count">
 	
       
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
     
 	
     <span class="post-time">
@@ -348,7 +353,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">2.5k字</span>
+        <span class="post-count">92字</span>
       </span>
     </span>
 
@@ -357,7 +362,7 @@ var _hmt = _hmt || [];
       <span class="post-meta-item-icon">
 	    <i class="fa fa-pagelines" aria-hidden="true"></i>
         <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">13min</span>
+        <span class="post-count">1min</span>
       </span>
     </span>
 	
@@ -372,91 +377,16 @@ var _hmt = _hmt || [];
 	  <!-- 添加分类与标签 -->
 	  
 		  
-		  <p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304101930110.png" alt="image-20230410193006020" style="zoom:80%;" /></p>
-<h2 id="卷积的api">1 卷积的API</h2>
-<h3 id="conv2d">1.1 CONV2D</h3>
-<p>torch.nn.Conv2d(<em>in_channels</em>, <em>out_channels</em>, <em>kernel_size</em>, <em>stride=1</em>, <em>padding=0</em>, <em>dilation=1</em>, <em>groups=1</em>, <em>bias=True</em>, <em>padding_mode='zeros'</em>, <em>device=None</em>, <em>dtype=None</em>)</p>
-<p>https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html#torch.nn.Conv2d</p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304101932268.png" alt="image-20230410193201892" style="zoom:67%;" /></p>
-<ul>
-<li><strong>in_channels</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a>) – Number of channels in the input image</li>
-<li><strong>out_channels</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a>) – Number of channels produced by the convolution</li>
-<li><strong>kernel_size</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a>) – Size of the convolving kernel</li>
-<li><strong>stride</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a><em>,</em> <em>optional</em>) – Stride of the convolution. Default: 1</li>
-<li><strong>padding</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a><em>,</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str"><em>str</em></a><em>,</em> <em>optional</em>) – Padding added to all four sides of the input. Default: 0</li>
-<li><strong>padding_mode</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str"><em>str</em></a><em>,</em> <em>optional</em>) – <code>'zeros'</code>, <code>'reflect'</code>, <code>'replicate'</code> or <code>'circular'</code>. Default: <code>'zeros'</code></li>
-<li><strong>dilation</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a><em>,</em> <em>optional</em>) – Spacing between kernel elements. Default: 1</li>
-<li><strong>groups</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a><em>,</em> <em>optional</em>) – Number of blocked connections from input channels to output channels. Default: 1</li>
-<li><strong>bias</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#bool"><em>bool</em></a><em>,</em> <em>optional</em>) – If <code>True</code>, adds a learnable bias to the output. Default: <code>True</code></li>
-</ul>
+		  <h1 id="u-net-convolutional-networks-for-biomedical-image-segmentation">U-Net: Convolutional Networks for Biomedical Image Segmentation</h1>
+<p>https://arxiv.org/pdf/1505.04597.pdf</p>
 <figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304111953529.png" alt="image-20230411195325050" /><figcaption aria-hidden="true">image-20230411195325050</figcaption>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304301414602.png" alt="image-20230430141414836" /><figcaption aria-hidden="true">image-20230430141414836</figcaption>
 </figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line">in_channels = <span class="number">1</span></span><br><span class="line">out_channels = <span class="number">1</span></span><br><span class="line">kernel_size = <span class="number">3</span></span><br><span class="line">bias = <span class="literal">False</span></span><br><span class="line">input_size = [in_channels,<span class="number">4</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">conv_layer = nn.Conv2d(in_channels,out_channels,kernel_size,bias=bias)</span><br><span class="line">input_feature_map = torch.randn(input_size)</span><br><span class="line">output_feature_map = conv_layer(input_feature_map) <span class="comment"># 直接调用卷积这个方法</span></span><br><span class="line"><span class="built_in">print</span>(input_feature_map,<span class="string">&#x27;\n&#x27;</span>,output_feature_map)</span><br><span class="line"><span class="built_in">print</span>(conv_layer.weight) <span class="comment"># 1*1*3*3 out_channels*in_channels*height*width</span></span><br></pre></td></tr></table></figure>
-<h3 id="functional.conv2d">1.2 FUNCTIONAL.CONV2D</h3>
-<p>torch.nn.functional.conv2d(<em>input</em>, <em>weight</em>, <em>bias=None</em>, <em>stride=1</em>, <em>padding=0</em>, <em>dilation=1</em>, <em>groups=1</em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a></p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304112015956.png" alt="image-20230411201534888" style="zoom:67%;" /></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">output_feature_map1 = F.conv2d(input_feature_map,conv_layer.weight) <span class="comment"># functional,需要传入卷积的weight</span></span><br><span class="line"><span class="built_in">print</span>(output_feature_map)</span><br><span class="line"><span class="built_in">print</span>(output_feature_map1)</span><br></pre></td></tr></table></figure>
-<h2 id="padding-and-stride">2 padding and stride</h2>
-<p>https://d2l.ai/chapter_convolutional-neural-networks/padding-and-strides.html</p>
-<h3 id="padding">2.1 padding</h3>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304112028509.png" alt="image-20230411202806742" /><figcaption aria-hidden="true">image-20230411202806742</figcaption>
-</figure>
-<p>In general, if we add a total of <span class="math inline">\(p_h\)</span> rows of padding (roughly half on top and half on bottom) and a total of <span class="math inline">\(p_w\)</span> columns of padding (roughly half on the left and half on the right), the output shape will be <span class="math display">\[
-(n_k - k_h + p_h + 1)\times (n_w - k_w + p_w + 1)
-\]</span></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># We define a helper function to calculate convolutions. It initializes the</span></span><br><span class="line"><span class="comment"># convolutional layer weights and performs corresponding dimensionality</span></span><br><span class="line"><span class="comment"># elevations and reductions on the input and output</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">comp_conv2d</span>(<span class="params">conv2d, X</span>):</span><br><span class="line">    <span class="comment"># (1, 1) indicates that batch size and the number of channels are both 1</span></span><br><span class="line">    X = X.reshape((<span class="number">1</span>, <span class="number">1</span>) + X.shape)</span><br><span class="line">    Y = conv2d(X)</span><br><span class="line">    <span class="comment"># Strip the first two dimensions: examples and channels</span></span><br><span class="line">    <span class="keyword">return</span> Y.reshape(Y.shape[<span class="number">2</span>:])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1 row and column is padded on either side, so a total of 2 rows or columns</span></span><br><span class="line"><span class="comment"># are added</span></span><br><span class="line">conv2d = nn.LazyConv2d(<span class="number">1</span>, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>)</span><br><span class="line">X = torch.rand(size=(<span class="number">8</span>, <span class="number">8</span>))</span><br><span class="line">comp_conv2d(conv2d, X).shape</span><br></pre></td></tr></table></figure>
-<p>When the height and width of the convolution kernel are different, we can make the output and input have the same height and width by setting different padding numbers for height and width</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># We use a convolution kernel with height 5 and width 3. The padding on either</span></span><br><span class="line"><span class="comment"># side of the height and width are 2 and 1, respectively</span></span><br><span class="line">conv2d = nn.LazyConv2d(<span class="number">1</span>, kernel_size=(<span class="number">5</span>, <span class="number">3</span>), padding=(<span class="number">2</span>, <span class="number">1</span>))</span><br><span class="line">comp_conv2d(conv2d, X).shape</span><br></pre></td></tr></table></figure>
-<h3 id="stride">2.2 stride</h3>
-<p>In general, when the stride for the height is <span class="math inline">\(s_h\)</span> and the stride for the width is <span class="math inline">\(s_w\)</span>, the output shape is <span class="math display">\[
-[(n_h-k_h+p_h+s_h)/s_h] \times [((n_w-k_w+p_w+s_w)/s_w)]
-\]</span> f we set<span class="math inline">\(p_h =k_h -1\)</span> and <span class="math inline">\(p_w = k_w -1\)</span>, then the output shape can be simplified to <span class="math inline">\([(n_h+s_h-1)/s_h\times (n_w+s_w-1)/s_w]\)</span>. Going a step further, if the input height and width are divisible by the strides on the height and width, then the output shape will be <span class="math inline">\((n_h/s_h)\times (n_w/s_w)\)</span></p>
-<p>note: the [] means floor</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conv2d = nn.LazyConv2d(<span class="number">1</span>, kernel_size=(<span class="number">3</span>, <span class="number">5</span>), padding=(<span class="number">0</span>, <span class="number">1</span>), stride=(<span class="number">3</span>, <span class="number">4</span>))</span><br><span class="line">comp_conv2d(conv2d, X).shape</span><br></pre></td></tr></table></figure>
-<h3 id="demo">2.3 demo</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># With square kernels and equal stride</span></span><br><span class="line">m = nn.Conv2d(<span class="number">16</span>, <span class="number">33</span>, <span class="number">3</span>, stride=<span class="number">2</span>)</span><br><span class="line"><span class="comment"># non-square kernels and unequal stride and with padding</span></span><br><span class="line">m = nn.Conv2d(<span class="number">16</span>, <span class="number">33</span>, (<span class="number">3</span>, <span class="number">5</span>), stride=(<span class="number">2</span>, <span class="number">1</span>), padding=(<span class="number">4</span>, <span class="number">2</span>))</span><br><span class="line"><span class="comment"># non-square kernels and unequal stride and with padding and dilation</span></span><br><span class="line">m = nn.Conv2d(<span class="number">16</span>, <span class="number">33</span>, (<span class="number">3</span>, <span class="number">5</span>), stride=(<span class="number">2</span>, <span class="number">1</span>), padding=(<span class="number">4</span>, <span class="number">2</span>), dilation=(<span class="number">3</span>, <span class="number">1</span>))</span><br><span class="line"><span class="built_in">input</span> = torch.randn(<span class="number">20</span>, <span class="number">16</span>, <span class="number">50</span>, <span class="number">100</span>)</span><br><span class="line">output = m(<span class="built_in">input</span>)</span><br><span class="line"><span class="built_in">print</span>(output.shape)</span><br></pre></td></tr></table></figure>
-<h2 id="multiple-input-and-multiple-output-channels">3 Multiple Input and Multiple Output Channels</h2>
-<h3 id="multiple-input-channels">3.1 Multiple Input Channels</h3>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304112057860.png" alt="image-20230411205730182" /><figcaption aria-hidden="true">image-20230411205730182</figcaption>
-</figure>
-<h3 id="multiple-output-channels">3.2 Multiple Output Channels</h3>
-<p>we actually increase the channel dimension as we go deeper in the neural network, typically downsampling to trade off spatial resolution for greater <em>channel depth</em>. Intuitively, you could think of each channel as responding to a different set of features.</p>
-<p>把每个输出通道都看做一个单独的操作，最后stack起来得到结果</p>
-<h2 id="矩阵运算实现卷积操作">4 矩阵运算实现卷积操作</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">input</span> = torch.randn(<span class="number">5</span>,<span class="number">5</span>) <span class="comment"># 卷积的输入特征图</span></span><br><span class="line">kernel = torch.randn(<span class="number">3</span>,<span class="number">3</span>) <span class="comment"># 卷积核</span></span><br><span class="line">bias = torch.randn(<span class="number">1</span>) <span class="comment"># 卷积偏置，默认输出通道数目等于1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># step1 用原始的矩阵运算来实现二维卷积,先不考虑 batchsize 维度和 channel 维度</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">matrix_multiplication_for_conv2d</span>(<span class="params"><span class="built_in">input</span>,kernel,bias = <span class="number">0</span>,stride = <span class="number">1</span>,padding = <span class="number">0</span></span>):</span><br><span class="line">    <span class="keyword">if</span> padding &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">input</span> = F.pad(<span class="built_in">input</span>,(padding,padding,padding,padding))</span><br><span class="line">        </span><br><span class="line">    input_h,input_w = <span class="built_in">input</span>.shape</span><br><span class="line">    kernel_h,kernel_w = kernel.shape</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    output_h = math.floor((input_h - kernel_h)/stride) + <span class="number">1</span> <span class="comment"># 输出高度</span></span><br><span class="line">    output_w = math.floor((input_w - kernel_w)/stride) + <span class="number">1</span> <span class="comment"># 输出宽度</span></span><br><span class="line">    output = torch.zeros((output_h,output_w))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,input_h - kernel_h + <span class="number">1</span>,stride):  <span class="comment"># 对高度遍历</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,input_w - kernel_w + <span class="number">1</span>,stride): <span class="comment"># 对宽度遍历</span></span><br><span class="line">            region = <span class="built_in">input</span>[i:i+kernel_h,j:j+kernel_w] <span class="comment"># 取出被核滑动到的区域</span></span><br><span class="line">            output[<span class="built_in">int</span>(i/stride)][<span class="built_in">int</span>(j/stride)] = torch.<span class="built_in">sum</span>(region * kernel) + bias <span class="comment"># 点乘，并赋值给输出位置的元素</span></span><br><span class="line">    <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line">mat_mul_conv_output = matrix_multiplication_for_conv2d(<span class="built_in">input</span>,kernel,bias=bias,padding=<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(mat_mul_conv_output)</span><br><span class="line">pytorch_api_conv_output = F.conv2d(<span class="built_in">input</span>.reshape(<span class="number">1</span>,<span class="number">1</span>,<span class="built_in">input</span>.shape[<span class="number">0</span>],<span class="built_in">input</span>.shape[<span class="number">1</span>]),kernel.reshape(<span class="number">1</span>,<span class="number">1</span>,kernel.shape[<span class="number">0</span>],kernel.shape[<span class="number">1</span>]),bias=bias,padding=<span class="number">1</span>).squeeze(<span class="number">0</span>).squeeze(<span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(pytorch_api_conv_output)</span><br></pre></td></tr></table></figure>
-<h2 id="向量内积实现卷积操作">5 向量内积实现卷积操作</h2>
-<h3 id="flatten">5.1 flatten</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step2 用原始的矩阵运算来实现二维卷积,先不考虑 batchsize 维度和 channel 维度, flatten 版本</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">matrix_multiplication_for_conv2d_flatten</span>(<span class="params"><span class="built_in">input</span>,kernel,bias = <span class="number">0</span>,stride = <span class="number">1</span>,padding = <span class="number">0</span></span>):</span><br><span class="line">    <span class="keyword">if</span> padding &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">input</span> = F.pad(<span class="built_in">input</span>,(padding,padding,padding,padding))</span><br><span class="line">        </span><br><span class="line">    input_h,input_w = <span class="built_in">input</span>.shape</span><br><span class="line">    kernel_h,kernel_w = kernel.shape</span><br><span class="line">    </span><br><span class="line">    output_h = math.floor((input_h - kernel_h)/stride) + <span class="number">1</span> <span class="comment"># 输出高度</span></span><br><span class="line">    output_w = math.floor((input_w - kernel_w)/stride) + <span class="number">1</span> <span class="comment"># 输出宽度</span></span><br><span class="line">    output = torch.zeros((output_h,output_w))</span><br><span class="line">    region_matrix = torch.zeros(output.numel(),kernel.numel()) <span class="comment"># 存储所有的拉平后的特征区域</span></span><br><span class="line">    kernel_matrix = kernel.reshape((kernel.numel(),<span class="number">1</span>)) <span class="comment"># 变为列向量,kernel的列向量形式</span></span><br><span class="line">    row_index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,input_h - kernel_h + <span class="number">1</span>,stride):  <span class="comment"># 对高度遍历</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,input_w - kernel_w + <span class="number">1</span>,stride): <span class="comment"># 对宽度遍历</span></span><br><span class="line">            region = <span class="built_in">input</span>[i:i+kernel_h,j:j+kernel_w] <span class="comment"># 取出被核滑动到的区域</span></span><br><span class="line">            region_vetor = torch.flatten(region) </span><br><span class="line">            region_matrix[row_index] = region_vetor</span><br><span class="line">            row_index += <span class="number">1</span></span><br><span class="line">    output_matrix = region_matrix @ kernel_matrix</span><br><span class="line">    output = output_matrix.reshape((output_h,output_w)) + bias</span><br><span class="line">    <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line"><span class="comment"># flatten input</span></span><br><span class="line">pytorch_api_conv_output = F.conv2d(<span class="built_in">input</span>.reshape(<span class="number">1</span>,<span class="number">1</span>,<span class="built_in">input</span>.shape[<span class="number">0</span>],<span class="built_in">input</span>.shape[<span class="number">1</span>]),</span><br><span class="line">                                   kernel.reshape(<span class="number">1</span>,<span class="number">1</span>,kernel.shape[<span class="number">0</span>],kernel.shape[<span class="number">1</span>]),</span><br><span class="line">                                   bias=bias,padding=<span class="number">1</span>).squeeze(<span class="number">0</span>).squeeze(<span class="number">0</span>)</span><br><span class="line">mat_mul_conv_output_flatten = matrix_multiplication_for_conv2d_flatten(<span class="built_in">input</span>,kernel,bias=bias,padding=<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(pytorch_api_conv_output,mat_mul_conv_output_flatten))</span><br></pre></td></tr></table></figure>
-<p>这里可以使用torch.unfold实现flatten操作</p>
-<p>torch.nn.Unfold(<em>kernel_size</em>, <em>dilation=1</em>, <em>padding=0</em>, <em>stride=1</em>)</p>
-<p>https://pytorch.org/docs/stable/generated/torch.nn.Unfold.html</p>
-<h3 id="考虑batchsize维度和channel维度">5.2 考虑batchsize维度和channel维度</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step3 用原始的矩阵运算来实现二维卷积，考虑batchsize维度和channel维度</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">matrix_multiplication_for_conv2d_full</span>(<span class="params"><span class="built_in">input</span>,kernel,bias=<span class="number">0</span>,stride=<span class="number">1</span>,padding=<span class="number">0</span></span>):</span><br><span class="line">    <span class="comment"># input和kernel 都是4维张量 </span></span><br><span class="line">    <span class="keyword">if</span> padding &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">input</span> = F.pad(<span class="built_in">input</span>,(padding,padding,padding,padding,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)) <span class="comment"># w,h,input_channel,batchsize</span></span><br><span class="line">        </span><br><span class="line">    bs,in_channel,input_h,input_w = <span class="built_in">input</span>.shape <span class="comment"># batchsize,in_channel,input_h,input_w</span></span><br><span class="line">    out_channel,in_channel,kernel_h,kernel_w = kernel.shape</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> bias <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        bias = torch.zeros(out_channel)</span><br><span class="line">    </span><br><span class="line">    output_h = math.floor((input_h - kernel_h)/stride) + <span class="number">1</span> <span class="comment"># 输出高度</span></span><br><span class="line">    output_w = math.floor((input_w - kernel_w)/stride) + <span class="number">1</span> <span class="comment"># 输出宽度</span></span><br><span class="line">    output = torch.zeros(bs,out_channel,output_h,output_w)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> ind <span class="keyword">in</span> <span class="built_in">range</span>(bs):</span><br><span class="line">        <span class="keyword">for</span> oc <span class="keyword">in</span> <span class="built_in">range</span>(out_channel):</span><br><span class="line">            <span class="keyword">for</span> ic <span class="keyword">in</span> <span class="built_in">range</span>(in_channel):</span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,input_h - kernel_h + <span class="number">1</span>,stride):  <span class="comment"># 对高度遍历</span></span><br><span class="line">                    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,input_w - kernel_w + <span class="number">1</span>,stride): <span class="comment"># 对宽度遍历</span></span><br><span class="line">                        region = <span class="built_in">input</span>[ind,ic,i:i+kernel_h,j:j+kernel_w] <span class="comment"># 取出被核滑动到的区域</span></span><br><span class="line">                        output[ind,oc,<span class="built_in">int</span>(i/stride),<span class="built_in">int</span>(j/stride)] += torch.<span class="built_in">sum</span>(region * kernel[oc,ic]) <span class="comment"># 点乘，并赋值给输出位置的元素</span></span><br><span class="line">            output[ind,oc] += bias[oc]</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">input</span> = torch.randn(<span class="number">2</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">5</span>) <span class="comment"># 卷积的输入特征图(batchsize,in_channel,in_h,in_w)</span></span><br><span class="line">kernel = torch.randn(<span class="number">3</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>) <span class="comment"># 卷积核(out_channel,in_channel,kernel_h,kernel_w)</span></span><br><span class="line">bias = torch.randn(<span class="number">3</span>) <span class="comment"># 卷积偏置，默认输出通道数目等于1</span></span><br><span class="line">pytorch_conv2d_api_output = F.conv2d(<span class="built_in">input</span>,kernel,bias=bias,padding=<span class="number">1</span>,stride=<span class="number">2</span>)</span><br><span class="line">mm_conv2d_full_output = matrix_multiplication_for_conv2d_full(<span class="built_in">input</span>,kernel,bias=bias,padding=<span class="number">1</span>,stride=<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(pytorch_conv2d_api_output,mm_conv2d_full_output))</span><br></pre></td></tr></table></figure>
-<h2 id="转置卷积">6 转置卷积</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step4 通过对kernel进行展开来实现二维卷积，并推导出转置卷积</span></span><br><span class="line"><span class="comment"># 把input 和 kernel 都resize 列向量(把kernel空缺的位置用0填充) 不考虑padding,假设stride=1</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_kernel_matrix</span>(<span class="params">kernel,input_size,stride=<span class="number">1</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;基于kernel和输入特征图的大小来得到填充拉直后的kernel堆叠后的矩阵&quot;&quot;&quot;</span></span><br><span class="line">    kernel_h, kernel_w = kernel.shape</span><br><span class="line">    input_h,input_w = input_size</span><br><span class="line">    num_out_feature_map = (math.floor((input_h - kernel_h)/stride) + <span class="number">1</span>) * (math.floor((input_w - kernel_w)/stride) + <span class="number">1</span>)</span><br><span class="line">    result = torch.zeros((num_out_feature_map,input_h*input_w)) <span class="comment"># 初始化结果矩阵，输出特征图元素个数*输入特征图元素个数</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,input_h-kernel_h+<span class="number">1</span>,stride):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,input_w-kernel_w+<span class="number">1</span>,stride):</span><br><span class="line">            padded_kernel = F.pad(kernel,(i,input_h-kernel_h-i,j,input_w-kernel_w-j),) <span class="comment"># 上下左右</span></span><br><span class="line">            result[count] = padded_kernel.flatten()</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">    </span><br><span class="line">kernel = torch.randn(<span class="number">3</span>,<span class="number">3</span>)</span><br><span class="line"><span class="built_in">input</span> = torch.randn(<span class="number">4</span>,<span class="number">4</span>)</span><br><span class="line">kernel_matrix = get_kernel_matrix(kernel,<span class="built_in">input</span>.shape) <span class="comment"># 4*16</span></span><br><span class="line"><span class="built_in">print</span>(kernel)</span><br><span class="line"><span class="built_in">print</span>(kernel_matrix)</span><br></pre></td></tr></table></figure>
-<h3 id="验证二维卷积">6.1 验证二维卷积</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 测试1：验证二维卷积</span></span><br><span class="line">pytorch_conv2d_output = F.conv2d(<span class="built_in">input</span>.unsqueeze(<span class="number">0</span>).unsqueeze(<span class="number">0</span>),kernel.unsqueeze(<span class="number">0</span>).unsqueeze(<span class="number">0</span>)) <span class="comment"># output 2*2</span></span><br><span class="line"><span class="comment"># 因为计算得到的 mm_conv2d_output 是列向量，所以需要reshape为大小一致的矩阵，再进行比较</span></span><br><span class="line">mm_conv2d_output = (kernel_matrix @ <span class="built_in">input</span>.reshape((-<span class="number">1</span>,<span class="number">1</span>))).reshape(pytorch_conv2d_output.shape).transpose(<span class="number">2</span>,<span class="number">3</span>) <span class="comment"># 通过矩阵乘积来计算卷积</span></span><br><span class="line"><span class="built_in">print</span>(torch.allclose(mm_conv2d_output,pytorch_conv2d_output))</span><br></pre></td></tr></table></figure>
-<h3 id="验证二维转置卷积">6.2 验证二维转置卷积</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 测试2：验证二维转置卷积</span></span><br><span class="line"><span class="comment"># 2*2 -&gt; 4*4 一般用于上采样过程 output 的 feature map 恢复到输入的 feature map 的 size</span></span><br><span class="line"><span class="comment"># 卷积的梯度,后项传播实现 √</span></span><br><span class="line"><span class="comment"># 使用填充的方式实现 ×</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>torch.nn.ConvTranspose2d(<em>in_channels</em>, <em>out_channels</em>, <em>kernel_size</em>, <em>stride=1</em>, <em>padding=0</em>, <em>output_padding=0</em>, <em>groups=1</em>, <em>bias=True</em>, <em>dilation=1</em>, <em>padding_mode='zeros'</em>, <em>device=None</em>, <em>dtype=None</em>)</p>
-<p>https://pytorch.org/docs/stable/_modules/torch/nn/modules/conv.html#ConvTranspose2d</p>
-<p>torch.nn.functional.conv_transpose2d(<em>input</em>, <em>weight</em>, <em>bias=None</em>, <em>stride=1</em>, <em>padding=0</em>, <em>output_padding=0</em>, <em>groups=1</em>, <em>dilation=1</em>)</p>
-<p>https://pytorch.org/docs/stable/generated/torch.nn.functional.conv_transpose2d.html</p>
-<h2 id="group">7 group</h2>
 <ul>
-<li><strong>groups</strong> (int,optional) – Number of blocked connections from input channels to output channels. Default: 1</li>
+<li>为什么输入图片和输出图片的大小不同？---因为输入的图片本质也是388*388的，只是通过了一定的填充方式变成了572*572。这是为了让边缘的像素具有更好的上下文信息。</li>
 </ul>
-<h2 id="dilation">8 dilation</h2>
-<ul>
-<li><strong>dilation</strong> (int or tuple,optional) – Spacing between kernel elements. Default: 1</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = torch.rand(<span class="number">7</span>,<span class="number">7</span>)</span><br><span class="line"><span class="built_in">print</span>(a[<span class="number">0</span>:<span class="number">3</span>,<span class="number">0</span>:<span class="number">3</span>])     <span class="comment"># dilation=1</span></span><br><span class="line"><span class="built_in">print</span>(a[<span class="number">0</span>:<span class="number">5</span>:<span class="number">2</span>,<span class="number">0</span>:<span class="number">5</span>:<span class="number">2</span>]) <span class="comment"># dilation=2</span></span><br><span class="line"><span class="built_in">print</span>(a[<span class="number">0</span>:<span class="number">7</span>:<span class="number">3</span>,<span class="number">0</span>:<span class="number">7</span>:<span class="number">3</span>]) <span class="comment"># dilation=3</span></span><br></pre></td></tr></table></figure>
-<h2 id="最终版本">9 最终版本</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">matrix_multiplication_for_conv2d_final</span>(<span class="params"><span class="built_in">input</span>,kernel,bias=<span class="literal">None</span>,stride=<span class="number">1</span>,padding=<span class="number">0</span>,dilation=<span class="number">1</span>,groups=<span class="number">1</span></span>):</span><br><span class="line">    <span class="keyword">if</span> padding &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">input</span> = F.pad(<span class="built_in">input</span>,(padding,padding,padding,padding,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>))</span><br><span class="line">    </span><br><span class="line">    bs, in_channel, input_h, input_w = <span class="built_in">input</span>.shape</span><br><span class="line">    out_channel,_, kernel_h, kernel_w = kernel.shape</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">assert</span> out_channel % groups == <span class="number">0</span> <span class="keyword">and</span> in_channel % groups == <span class="number">0</span>, <span class="string">&quot;group必须要同时被输入通道数和输出通道数整除！&quot;</span></span><br><span class="line">    <span class="built_in">input</span> = <span class="built_in">input</span>.reshape((bs, groups, in_channel//groups, input_h, input_w))</span><br><span class="line">    kernel = kernel.reshape((groups, out_channel//groups, in_channel//groups, kernel_h, kernel_w))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># dilation (往原来的kernel中加入空洞)</span></span><br><span class="line">    kernel_h = (kernel_h - <span class="number">1</span>) * (dilation - <span class="number">1</span>) + kernel_h</span><br><span class="line">    kernel_w = (kernel_w - <span class="number">1</span>) * (dilation - <span class="number">1</span>) + kernel_w    </span><br><span class="line">    <span class="comment"># 输出结果的 feature map</span></span><br><span class="line">    output_h = math.floor((input_h - kernel_h) / stride) + <span class="number">1</span></span><br><span class="line">    output_w = math.floor((input_w - kernel_w) / stride) + <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    output_shape = (bs,groups,out_channel//groups,output_h,output_w)</span><br><span class="line">    output = torch.zeros(output_shape)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> bias <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        bias = torch.zeros(out_channel)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> ind <span class="keyword">in</span> <span class="built_in">range</span>(bs):                                                                           <span class="comment"># 对 batchsize进行遍历</span></span><br><span class="line">        <span class="keyword">for</span> g <span class="keyword">in</span> <span class="built_in">range</span>(groups):                                                                     <span class="comment"># 对群组进行遍历</span></span><br><span class="line">            <span class="keyword">for</span> oc <span class="keyword">in</span> <span class="built_in">range</span>(out_channel // groups):                                                 <span class="comment"># 对分组后的输出通道进行遍历</span></span><br><span class="line">                <span class="keyword">for</span> ic <span class="keyword">in</span> <span class="built_in">range</span>(in_channel // groups):                                              <span class="comment"># 对分组厚的输入通道进行遍历</span></span><br><span class="line">                    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,input_h-kernel_h+<span class="number">1</span>,stride):                                    <span class="comment"># 对kernel高度遍历</span></span><br><span class="line">                        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,input_w-kernel_w+<span class="number">1</span>,stride):                                <span class="comment"># 对kernel宽度遍历</span></span><br><span class="line">                            region = <span class="built_in">input</span>[ind, g, ic, i:i+kernel_h:dilation,j:j+kernel_w:dilation]   <span class="comment"># 特征区域</span></span><br><span class="line">                            output[ind,g,oc,<span class="built_in">int</span>(i/stride),<span class="built_in">int</span>(j/stride)] += torch.<span class="built_in">sum</span>(region * kernel[g,oc,ic])</span><br><span class="line">                output[ind,g,oc] += bias[g*(out_channel//groups)+oc]                                <span class="comment"># 考虑偏置</span></span><br><span class="line">    output = output.reshape((bs,out_channel,output_h,output_w))                                     <span class="comment"># 还原成4维</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 验证</span></span><br><span class="line">kernel_size = <span class="number">3</span></span><br><span class="line">bs, in_channel, input_h, input_w = <span class="number">2</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">5</span></span><br><span class="line">out_channel = <span class="number">4</span></span><br><span class="line">groups, dilation, stride, padding = <span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span></span><br><span class="line"><span class="built_in">input</span> = torch.randn(bs, in_channel, input_h, input_w)</span><br><span class="line">kernel = torch.randn(out_channel,in_channel//groups,kernel_size,kernel_size)</span><br><span class="line">bias = torch.randn(out_channel)</span><br><span class="line"></span><br><span class="line">pytorch_conv2d_api_output = F.conv2d(<span class="built_in">input</span>,kernel,bias=bias,padding=padding,stride=stride,dilation=dilation,groups=groups)</span><br><span class="line">mm_conv2d_final_output = matrix_multiplication_for_conv2d_final(<span class="built_in">input</span>,kernel,bias=bias,stride=stride,padding=padding,dilation=dilation,groups=groups)</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(pytorch_conv2d_api_output,mm_conv2d_final_output))</span><br></pre></td></tr></table></figure>
+<p>example：</p>
+<p>https://github.com/yassouali/pytorch-segmentation</p>
 
 				  
 	  
@@ -502,19 +432,19 @@ var _hmt = _hmt || [];
 	
 	<!-- <br>
 	<strong class="create-time">发布时间：</strong>
-	2023-04-10 -->
+	2023-04-30 -->
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年04月12日 23:56:33
+	2023年04月30日 21:07:07
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="https://wangtongyouwen.github.io/post/b0d26e2a.html" title="pytorch基础知识10-卷积网络" target="_blank">pytorch基础知识10-卷积网络</a> -->
+	<a href="https://wangtongyouwen.github.io/post/94472398.html" title="用pytorch实现基础网络12-Unet" target="_blank">用pytorch实现基础网络12-Unet</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="https://wangtongyouwen.github.io/post/b0d26e2a.html" title="pytorch基础知识10-卷积网络" target="_blank">https://wangtongyouwen.github.io/post/b0d26e2a.html</a>
+	<a href="https://wangtongyouwen.github.io/post/94472398.html" title="用pytorch实现基础网络12-Unet" target="_blank">https://wangtongyouwen.github.io/post/94472398.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -541,6 +471,10 @@ var _hmt = _hmt || [];
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
         		</li>
       		
 		</ul>
@@ -599,7 +533,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyouwen.github.io/post/b0d26e2a.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyouwen.github.io/post/94472398.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -616,18 +550,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/post/1229d3b9.html" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          pytorch基础知识11-ViT
-        
-      </div>
-    </a>
   
-  
-    <a href="/post/c9ccea0.html" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">pytorch基础入门9-transformer</div>
+    <a href="/post/24351970.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">pytorch基础入门24-损失函数</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -653,7 +578,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B7%E7%A7%AF%E7%9A%84api"><span class="toc-number">1.</span> <span class="toc-text">1 卷积的API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#conv2d"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 CONV2D</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#functional.conv2d"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 FUNCTIONAL.CONV2D</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#padding-and-stride"><span class="toc-number">2.</span> <span class="toc-text">2 padding and stride</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#padding"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 padding</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#stride"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 stride</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#demo"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 demo</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#multiple-input-and-multiple-output-channels"><span class="toc-number">3.</span> <span class="toc-text">3 Multiple Input and Multiple Output Channels</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#multiple-input-channels"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 Multiple Input Channels</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#multiple-output-channels"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 Multiple Output Channels</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97%E5%AE%9E%E7%8E%B0%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C"><span class="toc-number">4.</span> <span class="toc-text">4 矩阵运算实现卷积操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%91%E9%87%8F%E5%86%85%E7%A7%AF%E5%AE%9E%E7%8E%B0%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">5 向量内积实现卷积操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#flatten"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 flatten</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%80%83%E8%99%91batchsize%E7%BB%B4%E5%BA%A6%E5%92%8Cchannel%E7%BB%B4%E5%BA%A6"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 考虑batchsize维度和channel维度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AC%E7%BD%AE%E5%8D%B7%E7%A7%AF"><span class="toc-number">6.</span> <span class="toc-text">6 转置卷积</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E4%BA%8C%E7%BB%B4%E5%8D%B7%E7%A7%AF"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 验证二维卷积</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E4%BA%8C%E7%BB%B4%E8%BD%AC%E7%BD%AE%E5%8D%B7%E7%A7%AF"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 验证二维转置卷积</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#group"><span class="toc-number">7.</span> <span class="toc-text">7 group</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dilation"><span class="toc-number">8.</span> <span class="toc-text">8 dilation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E7%89%88%E6%9C%AC"><span class="toc-number">9.</span> <span class="toc-text">9 最终版本</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#u-net-convolutional-networks-for-biomedical-image-segmentation"><span class="toc-number">1.</span> <span class="toc-text">U-Net: Convolutional Networks for Biomedical Image Segmentation</span></a></li></ol>
             </div>
           </span>
         </div>
@@ -734,6 +659,37 @@ var _hmt = _hmt || [];
 
 
 <!-- 文章页添加mathjax公式 -->
+
+  
+    <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true
+  },
+  chtml: {
+    scale: 1,                      // global scaling factor for all expressions
+    minScale: .5,                  // smallest scaling factor to use
+    mtextInheritFont: false,       // true to make mtext elements use surrounding font
+    merrorInheritFont: false,      // true to make merror text use surrounding font
+    mtextFont: '',                 // font to use for mtext, if not inheriting (empty means use MathJax fonts)
+    merrorFont: 'serif',           // font to use for merror, if not inheriting (empty means use MathJax fonts)
+    unknownFamily: 'serif',        // font to use for character that aren't in MathJax's fonts
+    mathmlSpacing: false,          // true for MathML spacing rules, false for TeX rules
+    skipAttributes: {},            // RFDa and other attributes NOT to copy to the output
+    exFactor: .5,                  // default size of ex in em units
+    displayAlign: 'center',        // default for indentalign when set to 'auto'
+    displayIndent: '0'             // default for indentshift when set to 'auto'
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+};
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   
 
@@ -822,11 +778,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
+                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
+                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -839,6 +795,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">tips</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">network</a>
               </li>
             
             <div class="clearfix"></div>

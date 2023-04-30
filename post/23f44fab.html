@@ -7,12 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="https://wangtongyouwen.github.io">
-  <title>pytorch基础入门13-LSTM | jyh blog</title>
+  <title>用pytorch实现基础网络5-LSTM | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <meta name="description" content="https:&#x2F;&#x2F;colah.github.io&#x2F;posts&#x2F;2015-08-Understanding-LSTMs&#x2F;  image-20230413181558550  1 整体介绍 \[ \begin{array}{l} i_{t}&#x3D;\sigma\left(W_{i i} x_{t}+b_{i i}+W_{h i} h_{t-1}+b_{h i}\right) \\ f_{t}&#x3D;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pytorch基础入门13-LSTM">
+<meta property="og:title" content="用pytorch实现基础网络5-LSTM">
 <meta property="og:url" content="https://wangtongyouwen.github.io/post/23f44fab.html">
 <meta property="og:site_name" content="jyh blog">
 <meta property="og:description" content="https:&#x2F;&#x2F;colah.github.io&#x2F;posts&#x2F;2015-08-Understanding-LSTMs&#x2F;  image-20230413181558550  1 整体介绍 \[ \begin{array}{l} i_{t}&#x3D;\sigma\left(W_{i i} x_{t}+b_{i i}+W_{h i} h_{t-1}+b_{h i}\right) \\ f_{t}&#x3D;">
@@ -20,9 +20,10 @@
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131816130.png">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131856525.png">
 <meta property="article:published_time" content="2023-04-13T10:13:13.000Z">
-<meta property="article:modified_time" content="2023-04-13T12:26:22.728Z">
+<meta property="article:modified_time" content="2023-04-30T06:05:06.917Z">
 <meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="network">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131816130.png">
   
@@ -285,14 +286,14 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-pytorch基础入门13-LSTM" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-用pytorch实现基础网络5-LTSM" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title_code_ant" itemprop="name">
-	  <a href="/post/23f44fab.html">pytorch基础入门13-LSTM</a>
+	  <a href="/post/23f44fab.html">用pytorch实现基础网络5-LSTM</a>
 	</h1>
   
 
@@ -524,15 +525,15 @@ h_{t}=o_{t} \odot \tanh \left(c_{t}\right)
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年04月13日 20:26:22
+	2023年04月30日 14:05:06
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="https://wangtongyouwen.github.io/post/23f44fab.html" title="pytorch基础入门13-LSTM" target="_blank">pytorch基础入门13-LSTM</a> -->
+	<a href="https://wangtongyouwen.github.io/post/23f44fab.html" title="用pytorch实现基础网络5-LSTM" target="_blank">用pytorch实现基础网络5-LSTM</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="https://wangtongyouwen.github.io/post/23f44fab.html" title="pytorch基础入门13-LSTM" target="_blank">https://wangtongyouwen.github.io/post/23f44fab.html</a>
+	<a href="https://wangtongyouwen.github.io/post/23f44fab.html" title="用pytorch实现基础网络5-LSTM" target="_blank">https://wangtongyouwen.github.io/post/23f44fab.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -559,6 +560,10 @@ h_{t}=o_{t} \odot \tanh \left(c_{t}\right)
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
         		</li>
       		
 		</ul>
@@ -638,14 +643,14 @@ h_{t}=o_{t} \odot \tanh \left(c_{t}\right)
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          pytorch基础入门14-GRU
+          用pytorch实现基础网络6-GRU
         
       </div>
     </a>
   
   
     <a href="/post/b945630.html" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">pytorch基础入门12-RNN</div>
+      <div class="article-nav-title">用pytorch实现基础网络4-RNN</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -840,11 +845,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
+                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
+                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -857,6 +862,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">tips</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">network</a>
               </li>
             
             <div class="clearfix"></div>

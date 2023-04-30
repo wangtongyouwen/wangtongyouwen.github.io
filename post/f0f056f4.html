@@ -7,12 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="https://wangtongyouwen.github.io">
-  <title>pytorch基础入门20-MAE | jyh blog</title>
+  <title>用pytorch实现基础网络10-MAE | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <meta name="description" content="Masked Autoencoders Are Scalable Vision Learners 2111.06377.pdf (arxiv.org) 本文表明，掩蔽自编码器（MAE）是计算机视觉领域可扩展的自监督学习方法。我们的 MAE 方法很简单：我们随机遮盖输入图像的一部分区域，并重建丢失的像素。该方法基于两个核心设计。首先，我们开发了一种非对称的编码器-解码器架构，其中编码器仅对可见子">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pytorch基础入门20-MAE">
+<meta property="og:title" content="用pytorch实现基础网络10-MAE">
 <meta property="og:url" content="https://wangtongyouwen.github.io/post/f0f056f4.html">
 <meta property="og:site_name" content="jyh blog">
 <meta property="og:description" content="Masked Autoencoders Are Scalable Vision Learners 2111.06377.pdf (arxiv.org) 本文表明，掩蔽自编码器（MAE）是计算机视觉领域可扩展的自监督学习方法。我们的 MAE 方法很简单：我们随机遮盖输入图像的一部分区域，并重建丢失的像素。该方法基于两个核心设计。首先，我们开发了一种非对称的编码器-解码器架构，其中编码器仅对可见子">
@@ -25,9 +25,10 @@
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304201725532.png">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304201725555.png">
 <meta property="article:published_time" content="2023-04-19T13:21:04.000Z">
-<meta property="article:modified_time" content="2023-04-20T09:28:35.505Z">
+<meta property="article:modified_time" content="2023-04-30T06:09:49.154Z">
 <meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="network">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304192127666.png">
   
@@ -290,14 +291,14 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-pytorch基础入门20-MAE" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-用pytorch实现基础网络10-MAE" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title_code_ant" itemprop="name">
-	  <a href="/post/f0f056f4.html">pytorch基础入门20-MAE</a>
+	  <a href="/post/f0f056f4.html">用pytorch实现基础网络10-MAE</a>
 	</h1>
   
 
@@ -553,15 +554,15 @@ var _hmt = _hmt || [];
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年04月20日 17:28:35
+	2023年04月30日 14:09:49
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="https://wangtongyouwen.github.io/post/f0f056f4.html" title="pytorch基础入门20-MAE" target="_blank">pytorch基础入门20-MAE</a> -->
+	<a href="https://wangtongyouwen.github.io/post/f0f056f4.html" title="用pytorch实现基础网络10-MAE" target="_blank">用pytorch实现基础网络10-MAE</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="https://wangtongyouwen.github.io/post/f0f056f4.html" title="pytorch基础入门20-MAE" target="_blank">https://wangtongyouwen.github.io/post/f0f056f4.html</a>
+	<a href="https://wangtongyouwen.github.io/post/f0f056f4.html" title="用pytorch实现基础网络10-MAE" target="_blank">https://wangtongyouwen.github.io/post/f0f056f4.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -588,6 +589,10 @@ var _hmt = _hmt || [];
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
         		</li>
       		
 		</ul>
@@ -663,9 +668,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
+    <a href="/post/87a49949.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          pytorch基础入门11-Normalization
+        
+      </div>
+    </a>
   
-    <a href="/post/1c753934.html" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">pytorch基础入门19-ResNet</div>
+  
+    <a href="/post/aa153511.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">用pytorch实现基础网络8-ConvNext</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -891,11 +905,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
+                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
+                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -908,6 +922,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">tips</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">network</a>
               </li>
             
             <div class="clearfix"></div>

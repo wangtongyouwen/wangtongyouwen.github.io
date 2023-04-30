@@ -7,12 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="https://wangtongyouwen.github.io">
-  <title>pytorch基础入门18-ConvNext | jyh blog</title>
+  <title>用pytorch实现基础网络8-ConvNext | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <meta name="description" content="A ConvNet for the 2020s https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2201.03545.pdf A vanilla ViT, on the other hand, faces difficulties when applied to general computer vision tasks such as object detection and semantic">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pytorch基础入门18-ConvNext">
+<meta property="og:title" content="用pytorch实现基础网络8-ConvNext">
 <meta property="og:url" content="https://wangtongyouwen.github.io/post/aa153511.html">
 <meta property="og:site_name" content="jyh blog">
 <meta property="og:description" content="A ConvNet for the 2020s https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2201.03545.pdf A vanilla ViT, on the other hand, faces difficulties when applied to general computer vision tasks such as object detection and semantic">
@@ -23,9 +23,10 @@
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304191505813.png">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304191537246.png">
 <meta property="article:published_time" content="2023-04-18T10:32:10.000Z">
-<meta property="article:modified_time" content="2023-04-19T15:02:39.748Z">
+<meta property="article:modified_time" content="2023-04-30T06:08:29.723Z">
 <meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="network">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://iq.opengenus.org/content/images/2020/03/Screenshot-from-2020-03-20-15-49-54.png">
   
@@ -288,14 +289,14 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-pytorch基础入门18-ConvNext" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-用pytorch实现基础网络8-ConvNext" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title_code_ant" itemprop="name">
-	  <a href="/post/aa153511.html">pytorch基础入门18-ConvNext</a>
+	  <a href="/post/aa153511.html">用pytorch实现基础网络8-ConvNext</a>
 	</h1>
   
 
@@ -530,15 +531,15 @@ var _hmt = _hmt || [];
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年04月19日 23:02:39
+	2023年04月30日 14:08:29
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="https://wangtongyouwen.github.io/post/aa153511.html" title="pytorch基础入门18-ConvNext" target="_blank">pytorch基础入门18-ConvNext</a> -->
+	<a href="https://wangtongyouwen.github.io/post/aa153511.html" title="用pytorch实现基础网络8-ConvNext" target="_blank">用pytorch实现基础网络8-ConvNext</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="https://wangtongyouwen.github.io/post/aa153511.html" title="pytorch基础入门18-ConvNext" target="_blank">https://wangtongyouwen.github.io/post/aa153511.html</a>
+	<a href="https://wangtongyouwen.github.io/post/aa153511.html" title="用pytorch实现基础网络8-ConvNext" target="_blank">https://wangtongyouwen.github.io/post/aa153511.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -565,6 +566,10 @@ var _hmt = _hmt || [];
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
         		</li>
       		
 		</ul>
@@ -640,18 +645,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/post/1c753934.html" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/post/f0f056f4.html" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          pytorch基础入门19-ResNet
+          用pytorch实现基础网络10-MAE
         
       </div>
     </a>
   
   
     <a href="/post/70a386a7.html" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">pytorch基础入门17-word embedding</div>
+      <div class="article-nav-title">pytorch基础入门10-word embedding</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -877,11 +882,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
+                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
+                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -894,6 +899,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">tips</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">network</a>
               </li>
             
             <div class="clearfix"></div>

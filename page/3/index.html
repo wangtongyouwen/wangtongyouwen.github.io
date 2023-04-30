@@ -279,6 +279,1056 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-用pytorch实现基础网络2-ViT" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/1229d3b9.html">用pytorch实现基础网络2-ViT</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/1229d3b9.html" class="archive-article-date">
+  	<time datetime="2023-04-12T15:59:34.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-12</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">358字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">2min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <p>AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</p>
+<p>https://arxiv.org/pdf/2010.11929.pdf</p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131331748.png" alt="image-20230413132929498"  /></p>
+<p>We split an image into fixed-size patches, linearly embed each of them, add position embeddings, and feed the resulting sequence of vectors to a standard Transformer encoder. In order to perform classification, we use the standard approach of adding an extra learnable “classification token” to the sequence. The illustration of the Transformer encoder was inspired by Vaswani et al. (2017).</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131433347.png" alt="image-20230413143320971" /><figcaption aria-hidden="true">image-20230413143320971</figcaption>
+</figure>
+<h2 id="image2emb">1 image2emb</h2>
+<h3 id="分块">1.1 分块</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">image2emb_naive</span>(<span class="params">image,patch_size,weight</span>):</span><br><span class="line">    <span class="comment"># image size: bs*channel*h*w</span></span><br><span class="line">    patch = F.unfold(image,kernel_size=patch_size,stride=patch_size).transpose(-<span class="number">1</span>,-<span class="number">2</span>) <span class="comment"># bs*patch_num*patch_pixel_num</span></span><br><span class="line">    patch_embedding = patch @ weight</span><br><span class="line">    <span class="keyword">return</span> patch_embedding</span><br><span class="line">        </span><br><span class="line"><span class="comment"># test code for image2emb</span></span><br><span class="line">bs,ic,image_h,image_w = <span class="number">1</span>,<span class="number">3</span>,<span class="number">8</span>,<span class="number">8</span></span><br><span class="line">patch_size = <span class="number">4</span></span><br><span class="line">model_dim = <span class="number">8</span> </span><br><span class="line">patch_depth = patch_size*patch_size*ic <span class="comment"># 每个patch中的元素个数</span></span><br><span class="line">image = torch.randn(bs,ic,image_h,image_w)</span><br><span class="line">weight = torch.randn(patch_depth,model_dim) <span class="comment"># model_dim 是输出通道数目，patch_depth是卷积核的面积乘以输入通道数</span></span><br><span class="line">patch_embedding_naive = image2emb_naive(image,patch_size,weight) <span class="comment"># 分块得到embedding</span></span><br><span class="line"><span class="built_in">print</span>(patch_embedding_naive.shape)</span><br></pre></td></tr></table></figure>
+<h3 id="conv2d">1.2 conv2d</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">image2emb_conv</span>(<span class="params">image,kernel,stride</span>):</span><br><span class="line">    conv_output = F.conv2d(image,kernel,stride=stride) <span class="comment"># bs*oc*oh*ow</span></span><br><span class="line">    bs,oc,oh,ow = conv_output.shape</span><br><span class="line">    patch_embedding = conv_output.reshape((bs,oc,oh*ow)).transpose(-<span class="number">1</span>,-<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> patch_embedding</span><br><span class="line"></span><br><span class="line">kernel = weight.transpose(<span class="number">0</span>,<span class="number">1</span>).reshape((-<span class="number">1</span>,ic,patch_size,patch_size)) <span class="comment"># oc*ic*kh*kw</span></span><br><span class="line">patch_embedding_conv = image2emb_conv(image,kernel,stride=patch_size) <span class="comment"># 二维卷积的方法得到embedding</span></span><br><span class="line"><span class="built_in">print</span>(torch.allclose(patch_embedding_conv,patch_embedding_naive))</span><br></pre></td></tr></table></figure>
+<h2 id="classification-token">2 classification token</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cls_token_embedding = torch.randn(bs,<span class="number">1</span>,model_dim,requires_grad=<span class="literal">True</span>)</span><br><span class="line">token_embedding = torch.cat([cls_token_embedding,patch_embedding_conv],dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="add-position-embedding">3 add position embedding</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">position_embedding_table = torch.randn(max_num_token,model_dim,requires_grad=<span class="literal">True</span>)</span><br><span class="line">seq_len = token_embedding.shape[<span class="number">1</span>]</span><br><span class="line">position_embedding = torch.tile(position_embedding_table[:seq_len],[token_embedding.shape[<span class="number">0</span>],<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line">token_embedding += position_embedding</span><br></pre></td></tr></table></figure>
+<h2 id="pass-embedding-to-transformer-encoder">4 pass embedding to Transformer Encoder</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">encoder_layer = nn.TransformerEncoderLayer(d_model=model_dim, nhead=<span class="number">8</span>)</span><br><span class="line">transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=<span class="number">6</span>)</span><br><span class="line">encoder_output = transformer_encoder(token_embedding)</span><br></pre></td></tr></table></figure>
+<h2 id="do-classification">5 do classification</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cls_token_output = encoder_output[:,<span class="number">0</span>,:]</span><br><span class="line">liner_layer = nn.Linear(model_dim,num_classes)</span><br><span class="line">logits = liner_layer(cls_token_output)</span><br><span class="line">loss_fn = nn.CrossEntropyLoss()</span><br><span class="line">loss = loss_fn(logits,label)</span><br><span class="line"><span class="built_in">print</span>(loss)</span><br></pre></td></tr></table></figure>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/1229d3b9.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
+    <article id="post-pytorch基础入门8-CONV层" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/2d27b0da.html">pytorch基础入门8-CONV层</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/2d27b0da.html" class="archive-article-date">
+  	<time datetime="2023-04-08T07:26:00.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-08</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">487字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">2min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h1 id="conv2d">CONV2D</h1>
+<p>torch.nn.Conv2d(<em>in_channels</em>, <em>out_channels</em>, <em>kernel_size</em>, <em>stride=1</em>, <em>padding=0</em>, <em>dilation=1</em>, <em>groups=1</em>, <em>bias=True</em>, <em>padding_mode='zeros'</em>, <em>device=None</em>, <em>dtype=None</em>)</p>
+<ul>
+<li><strong>in_channels</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a>) – Number of channels in the input image</li>
+<li><strong>out_channels</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a>) – Number of channels produced by the convolution</li>
+<li><strong>kernel_size</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a>) – Size of the convolving kernel</li>
+<li><strong>stride</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a><em>,</em> <em>optional</em>) – Stride of the convolution. Default: 1</li>
+<li><strong>padding</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a><em>,</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str"><em>str</em></a><em>,</em> <em>optional</em>) – Padding added to all four sides of the input. Default: 0</li>
+<li><strong>padding_mode</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str"><em>str</em></a><em>,</em> <em>optional</em>) – <code>'zeros'</code>, <code>'reflect'</code>, <code>'replicate'</code> or <code>'circular'</code>. Default: <code>'zeros'</code></li>
+<li><strong>dilation</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a> <em>or</em> <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#tuple"><em>tuple</em></a><em>,</em> <em>optional</em>) – Spacing between kernel elements. Default: 1</li>
+<li><strong>groups</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><em>int</em></a><em>,</em> <em>optional</em>) – Number of blocked connections from input channels to output channels. Default: 1</li>
+<li><strong>bias</strong> (<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#bool"><em>bool</em></a><em>,</em> <em>optional</em>) – If <code>True</code>, adds a learnable bias to the output. Default: <code>True</code></li>
+</ul>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081528114.png" alt="image-20230408152839156" style="zoom:80%;" /></p>
+<h1 id="conv_residual_block_fusion">conv_residual_block_fusion</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line">in_channels = <span class="number">2</span></span><br><span class="line">out_channels = <span class="number">2</span></span><br><span class="line">kernel_size = <span class="number">3</span></span><br><span class="line">w = <span class="number">9</span></span><br><span class="line">h = <span class="number">9</span></span><br><span class="line"><span class="comment"># res_block = 3*3 conv + 1*1 conv + input</span></span><br><span class="line">x = torch.ones(<span class="number">1</span>,in_channels,w,h) <span class="comment"># 输入图片大小</span></span><br><span class="line"><span class="comment"># 方法1：原生写法</span></span><br><span class="line">conv_2d = nn.Conv2d(in_channels,out_channels,kernel_size,padding=<span class="string">&quot;same&quot;</span>)</span><br><span class="line">conv_2d_pointwise = nn.Conv2d(in_channels,out_channels,<span class="number">1</span>)</span><br><span class="line">result1 = conv_2d(x) + conv_2d_pointwise(x) + x</span><br><span class="line"><span class="comment"># print(result1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法2：算子融合</span></span><br><span class="line"><span class="comment"># 把point-wise卷积核x本身都写成3*3卷积</span></span><br><span class="line"><span class="comment"># 最终把三个卷积写成一个卷积</span></span><br><span class="line"><span class="comment"># 1*1 -&gt; 3*3</span></span><br><span class="line"><span class="comment"># 1.改造</span></span><br><span class="line">pointwise_to_conv_weight = F.pad(conv_2d_pointwise.weight,[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]) <span class="comment"># 2*2*1*1 -&gt; 2*2*3*3</span></span><br><span class="line">conv_2d_for_pointwise = nn.Conv2d(in_channels,out_channels,kernel_size,padding=<span class="string">&quot;same&quot;</span>)</span><br><span class="line">conv_2d_for_pointwise.weight = nn.Parameter(pointwise_to_conv_weight)</span><br><span class="line">conv_2d_for_pointwise.bias = nn.Parameter(conv_2d_pointwise.bias)</span><br><span class="line"><span class="comment"># x -&gt; 3*3</span></span><br><span class="line"><span class="comment"># 2*2*3*3</span></span><br><span class="line">zeros = torch.unsqueeze(torch.zeros(kernel_size,kernel_size),<span class="number">0</span>) <span class="comment"># 不考虑相邻通道的影响</span></span><br><span class="line">stars = torch.unsqueeze(F.pad(torch.ones(<span class="number">1</span>,<span class="number">1</span>),[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]),<span class="number">0</span>) <span class="comment"># 不考虑周围点的影响(1*1)</span></span><br><span class="line">stars_zeros = torch.unsqueeze(torch.cat([stars,zeros],<span class="number">0</span>),<span class="number">0</span>) <span class="comment"># 第一个输出通道</span></span><br><span class="line">zeros_stars = torch.unsqueeze(torch.cat([stars,zeros],<span class="number">0</span>),<span class="number">0</span>) <span class="comment"># 第二个输出通道</span></span><br><span class="line">identity_to_conv_weight = torch.cat([stars_zeros,zeros_stars],<span class="number">0</span>)  </span><br><span class="line">identity_to_conv_bias = torch.zeros([out_channels])</span><br><span class="line">conv_2d_for_identity = nn.Conv2d(in_channels,out_channels,kernel_size,padding=<span class="string">&quot;same&quot;</span>)</span><br><span class="line">conv_2d_for_identity.weight = nn.Parameter(identity_to_conv_weight)</span><br><span class="line">conv_2d_for_identity.bias = nn.Parameter(identity_to_conv_bias)</span><br><span class="line"></span><br><span class="line">result2 = conv_2d(x) + conv_2d_for_pointwise(x) + conv_2d_for_identity(x)</span><br><span class="line"><span class="comment"># print(result2)</span></span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">all</span>(torch.isclose(result1,result2)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.融合</span></span><br><span class="line">conv_2d_for_fusion = nn.Conv2d(in_channels,out_channels,kernel_size,padding=<span class="string">&quot;same&quot;</span>)</span><br><span class="line">conv_2d_for_fusion.weight = nn.Parameter(conv_2d.weight.data + conv_2d_for_pointwise.weight.data + conv_2d_for_identity.weight.data)</span><br><span class="line">conv_2d_for_fusion.bias = nn.Parameter(conv_2d.bias.data + conv_2d_for_pointwise.bias.data + conv_2d_for_identity.bias.data)</span><br><span class="line">result3 = conv_2d_for_fusion(x)</span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">all</span>(torch.isclose(result2,result3)))</span><br></pre></td></tr></table></figure>
+<p>算子融合能够提升速度。</p>
+<h1 id="convmixer-layer">ConvMixer Layer</h1>
+<p>https://arxiv.org/pdf/2201.09792.pdf</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081948885.png" alt="image-20230408194824730" /><figcaption aria-hidden="true">image-20230408194824730</figcaption>
+</figure>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081955360.png" alt="image-20230408195505692" /><figcaption aria-hidden="true">image-20230408195505692</figcaption>
+</figure>
+<p>空间混合(depthwise)+通道混合(pointwise)</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304082032487.png" alt="image-20230408203214916" /><figcaption aria-hidden="true">image-20230408203214916</figcaption>
+</figure>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/2d27b0da.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
+    <article id="post-pytorch基础入门7-dropout" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/6ae9c33a.html">pytorch基础入门7-dropout</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/6ae9c33a.html" class="archive-article-date">
+  	<time datetime="2023-04-07T14:34:02.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-07</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">315字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">1min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h2 id="dropout">1 dropout</h2>
+<ul>
+<li>dropout class实现</li>
+</ul>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072236280.png" alt="image-20230407223601601" style="zoom:80%;" /></p>
+<ul>
+<li>dropout函数实现</li>
+</ul>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072237668.png" alt="image-20230407223740635" style="zoom:80%;" /></p>
+<p>training = self.training</p>
+<p>Dropout: A Simple Way to Prevent Neural Networks from Overfitting</p>
+<p>https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf?utm_content=buffer79b43&amp;utm_medium=social&amp;utm_source=twitter.com&amp;utm_campaign=buffer,</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081429465.png" alt="image-20230408142934611" /><figcaption aria-hidden="true">image-20230408142934611</figcaption>
+</figure>
+<p>https://zhuanlan.zhihu.com/p/38200980</p>
+<h3 id="在-numpy-中实现-dropout">在 numpy 中实现 dropout：</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># implement dropout in numpy codes</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">rate,x,w1,w2,b1,b2</span>):</span><br><span class="line">    <span class="comment"># suppose two layers</span></span><br><span class="line">    layer1 = np.maximum(<span class="number">0</span>,np.dot(w1,x) + b1)  <span class="comment"># relu linear layer</span></span><br><span class="line">    mask1 = np.random.binomial(<span class="number">1</span>,<span class="number">1</span> - rate,layer1.shape)   <span class="comment"># p: 为1 的概率</span></span><br><span class="line">    layer1 = mask1 * layer1</span><br><span class="line">    </span><br><span class="line">    layer2 = np.maximum(<span class="number">0</span>,np.dot(w2,layer1) + b2)  <span class="comment"># relu linear layer</span></span><br><span class="line">    mask2 = np.random.binomial(<span class="number">1</span>,<span class="number">1</span> - rate,layer2.shape)   <span class="comment"># p: 为1 的概率</span></span><br><span class="line">    layer2 = mask2 * layer2</span><br><span class="line">    <span class="keyword">return</span> layer2</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">rate,x,w1,b1,w2,b2</span>):</span><br><span class="line">    layer1 = np.maximum(<span class="number">0</span>,np.dot(w1,x) + b1)  <span class="comment"># relu linear layer</span></span><br><span class="line">    layer1 = layer1 * (<span class="number">1</span> - rate)</span><br><span class="line">    layer2 = np.maximum(<span class="number">0</span>,np.dot(w2,layer1) + b2)  <span class="comment"># relu linear layer</span></span><br><span class="line">    layer2 = layer2 * (<span class="number">1</span> - rate)</span><br><span class="line">    <span class="keyword">return</span> layer2</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test scale in the train</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">another_train</span>(<span class="params">rate,x,w1,w2,b1,b2</span>):</span><br><span class="line">    <span class="comment"># suppose two layers</span></span><br><span class="line">    layer1 = np.maximum(<span class="number">0</span>,np.dot(w1,x) + b1)  <span class="comment"># relu linear layer</span></span><br><span class="line">    mask1 = np.random.binomial(<span class="number">1</span>,<span class="number">1</span> - rate,layer1.shape)   <span class="comment"># p: 为1 的概率</span></span><br><span class="line">    layer1 = mask1 * layer1</span><br><span class="line">    layer1 = layer1 / (<span class="number">1</span> - rate)</span><br><span class="line">    </span><br><span class="line">    layer2 = np.maximum(<span class="number">0</span>,np.dot(w2,layer1) + b2)  <span class="comment"># relu linear layer</span></span><br><span class="line">    mask2 = np.random.binomial(<span class="number">1</span>,<span class="number">1</span> - rate,layer2.shape)   <span class="comment"># p: 为1 的概率</span></span><br><span class="line">    layer2 = mask2 * layer2</span><br><span class="line">    layer2 = layer2 / (<span class="number">1</span> - rate)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> layer2</span><br><span class="line"></span><br><span class="line"><span class="comment"># without the scale</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">another_test</span>(<span class="params">x,w1,b1,w2,b2</span>):</span><br><span class="line">    layer1 = np.maximum(<span class="number">0</span>,np.dot(w1,x) + b1)  <span class="comment"># relu linear layer</span></span><br><span class="line">    layer2 = np.maximum(<span class="number">0</span>,np.dot(w2,layer1) + b2)  <span class="comment"># relu linear layer</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> layer2</span><br></pre></td></tr></table></figure>
+<h2 id="r-dropout">2 r dropout</h2>
+<p>https://proceedings.neurips.cc/paper/2021/file/5a66b9200f29ac3fa0ae244cc2a51b39-Paper.pdf</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20230408151201702.png" alt="image-20230408151201702" style="zoom:67%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081515075.png" alt="image-20230408151505168" style="zoom:80%;" /></p>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/6ae9c33a.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
+    <article id="post-pytorch基础入门1-自动微分" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/42120d73.html">pytorch基础知识1-自动微分</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/42120d73.html" class="archive-article-date">
+  	<time datetime="2023-04-07T06:57:37.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-07</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">385字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">1min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <p>https://arxiv.org/pdf/1502.05767.pdf</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071556707.png" alt="image-20230407155605114" /><figcaption aria-hidden="true">image-20230407155605114</figcaption>
+</figure>
+<p>几种的常见微分方式：</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071601783.png" alt="image-20230407160104716" /><figcaption aria-hidden="true">image-20230407160104716</figcaption>
+</figure>
+<ul>
+<li>符号微分：求导</li>
+<li>数值微分：不稳定，并且不准确</li>
+<li>自动微分：这个例子是一个前向过程，通过预设dv = 1，然后根据每一步的dv表达式求出当前，v和dv的值</li>
+</ul>
+<h3 id="forward-mode-ad">1 forward mode AD</h3>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071629866.png" alt="image-20230407162927134" /><figcaption aria-hidden="true">image-20230407162927134</figcaption>
+</figure>
+<p>分为三个部分：输入节点，隐藏节点，输出节点。其中隐藏节点也可以为称为元操作</p>
+<p>首先设置初值为2,5，初始倒数x1为1，x2为0.</p>
+<p>使用前向微分的特点：</p>
+<ul>
+<li>能够在前向运算的同时，计算前向微分的值，能够计算出每个元操作的输入节点的偏导数值</li>
+<li>但是一次只能计算一个输入节点的偏导数</li>
+</ul>
+<p>或者能够采用对偶数的计算方法：</p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072114545.png" alt="image-20230407211449434" style="zoom:80%;" /> <span class="math display">\[
+\left.\frac{d f(x)}{d x}\right|_{x=v}=\operatorname{epsilon-coefficient}(\text { dual-version }(f)(v+1 \epsilon)) \text {. }
+\]</span></p>
+<h3 id="reverse-mode-ad">2 reverse mode AD</h3>
+<p>链式法则：</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072123618.png" alt="image-20230407212309766" /><figcaption aria-hidden="true">image-20230407212309766</figcaption>
+</figure>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072113372.png" alt="image-20230407211303243" /><figcaption aria-hidden="true">image-20230407211303243</figcaption>
+</figure>
+<p>v0的倒数在这个例子中进行了梯度累加。</p>
+<p>假设 a=f(x),b=g(a).y=h(b) <span class="math display">\[
+\frac{d_y}{d_x} = \frac{d_h}{d_b} *\frac{d_b}{d_a}* \frac{d_a}{d_x}
+\]</span> 雅克比矩阵的维度为：|y|*|b|,|b|*|a|,|a|*|x|</p>
+<p>分别统计计算量：</p>
+<ul>
+<li><p>forward mode AD：|y|*|b|*(|b|*|a|,|a|*|x|) = bax + ybx</p></li>
+<li><p>reverse mode AD: |y|*|b|*|b|*|a|*|a|*|x| = yba + yax</p></li>
+</ul>
+<p>假设 a = b 比较 x 和 y 的大小：</p>
+<ul>
+<li>当x&gt;y，输入特征大于输出特征，reverse mode 计算量小</li>
+<li>当x&lt;y，输入特征大小于输出特征，forward mode 计算量小</li>
+</ul>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/42120d73.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
+    <article id="post-pytorch基础入门6-autograd" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/40d10b1c.html">pytorch基础入门6-autograd</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/40d10b1c.html" class="archive-article-date">
+  	<time datetime="2023-04-06T12:25:44.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-06</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">596字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">2min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <p>训练神经网络如何使用pytorch中的自动微分</p>
+<p>https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062036309.png" alt="image-20230406203624607" /><figcaption aria-hidden="true">image-20230406203624607</figcaption>
+</figure>
+<h4 id="得到计算图">1 得到计算图</h4>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062042317.png" alt="image-20230406204239318" style="zoom:67%;" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">x = torch.ones(<span class="number">5</span>)  <span class="comment"># input tensor</span></span><br><span class="line">y = torch.zeros(<span class="number">3</span>)  <span class="comment"># expected output</span></span><br><span class="line">w = torch.randn(<span class="number">5</span>, <span class="number">3</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">b = torch.randn(<span class="number">3</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">z = torch.matmul(x, w)+b</span><br><span class="line">loss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)</span><br></pre></td></tr></table></figure>
+<p>通过对参数进行单个源操作，得到计算图，然后进一步进行反向梯度回传计算</p>
+<h4 id="计算">2 计算</h4>
+<p>我们对其中设置grad为true 的变量进行梯度回传计算。使用backward函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">loss.backward()</span><br><span class="line"><span class="built_in">print</span>(w.grad)</span><br><span class="line"><span class="built_in">print</span>(b.grad)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>我们只能对计算图中requires_grad为true的进行梯度回传计算，比如dropout，batchnorm等都不行</li>
+<li>由于我们只能在回传计算时生成一个图，如果我们需要对一个静态图进行多次梯度回传，我们需要把 retain_graph=True</li>
+</ul>
+<h4 id="将某些计算节点取消梯度回传">3 将某些计算节点取消梯度回传</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">z = torch.matmul(x, w)+b</span><br><span class="line"><span class="built_in">print</span>(z.requires_grad)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    z = torch.matmul(x, w)+b</span><br><span class="line"><span class="built_in">print</span>(z.requires_grad)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">z = torch.matmul(x, w)+b</span><br><span class="line">z_det = z.detach()</span><br><span class="line"><span class="built_in">print</span>(z_det.requires_grad)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>某些 frozen parameters</li>
+<li>加速运算</li>
+</ul>
+<h4 id="grad.zero_">4 grad.zero_()</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">inp = torch.eye(<span class="number">4</span>, <span class="number">5</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">out = (inp+<span class="number">1</span>).<span class="built_in">pow</span>(<span class="number">2</span>).t()</span><br><span class="line">out.backward(torch.ones_like(out), retain_graph=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;First call\n<span class="subst">&#123;inp.grad&#125;</span>&quot;</span>)</span><br><span class="line">out.backward(torch.ones_like(out), retain_graph=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;\nSecond call\n<span class="subst">&#123;inp.grad&#125;</span>&quot;</span>)</span><br><span class="line">inp.grad.zero_()</span><br><span class="line">out.backward(torch.ones_like(out), retain_graph=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;\nCall after zeroing gradients\n<span class="subst">&#123;inp.grad&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>由于梯度在每次调用的时候都会累加(<strong>Jacobian Product</strong>),我们需要使用grad.zero_()这样的梯度才是正确的。</p>
+<h4 id="jacobian在pytorch中的实现">5 jacobian在pytorch中的实现</h4>
+<p>torch.autograd.functional.jacobian(<em>func</em>, <em>inputs</em>, <em>create_graph=False</em>, <em>strict=False</em>, <em>vectorize=False</em>, <em>strategy='reverse-mode'</em>)</p>
+<p>https://pytorch.org/docs/stable/_modules/torch/autograd/functional.html#jacobian</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062118841.png" alt="image-20230406211810400" /><figcaption aria-hidden="true">image-20230406211810400</figcaption>
+</figure>
+<p>这个求偏导表示：生成的sum第一个数与原张量的第二行没有关系，所以求偏导也是0</p>
+<h4 id="向量对向量的微分">6 向量对向量的微分</h4>
+<p>首先当其中一个向量是列向量时候：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = torch.randn(<span class="number">3</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> a + x</span><br><span class="line">x = torch.randn(<span class="number">3</span>)</span><br><span class="line">torch.autograd.functional.jacobian(func,x)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tensor([[1., 0., 0.],</span><br><span class="line">        [0., 1., 0.],</span><br><span class="line">        [0., 0., 1.]])</span><br></pre></td></tr></table></figure>
+<p>显然这里的结果表示，f = a + x 中 ，f1,2,3 只与 x1,2,3 有关，所以是个对角阵</p>
+<p>向量对向量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a = torch.randn(<span class="number">3</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> a + x</span><br><span class="line">x = torch.randn(<span class="number">3</span>,requires_grad = <span class="literal">True</span>)</span><br><span class="line">torch.autograd.functional.jacobian(func,x)</span><br><span class="line">y = func(x)</span><br><span class="line">y.backward(torch.ones_like(y))</span><br><span class="line">x.grad</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.ones_like(y) @ torch.autograd.functional.jacobian(func,x)</span><br></pre></td></tr></table></figure>
+<h4 id="矩阵对矩阵的偏导">7 矩阵对矩阵的偏导</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = torch.randn(<span class="number">2</span>,<span class="number">3</span>,requires_grad = <span class="literal">True</span>)</span><br><span class="line">b = torch.randn(<span class="number">3</span>,<span class="number">2</span>,requires_grad = <span class="literal">True</span>)</span><br><span class="line">y = a @ b</span><br></pre></td></tr></table></figure>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/40d10b1c.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
+    <article id="post-pytorch基础入门5-container详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/f208623b.html">pytorch基础入门5-container详解</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/f208623b.html" class="archive-article-date">
+  	<time datetime="2023-04-06T11:55:57.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-06</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">149字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">1min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h5 id="torch.nn.sequentialargs-module">1 torch.nn.Sequential(args: <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module">Module</a>)</h5>
+<p>https://pytorch.org/docs/stable/_modules/torch/nn/modules/container.html#Sequential</p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062008133.png" alt="image-20230406200820589" style="zoom:80%;" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, <span class="built_in">input</span></span>):</span><br><span class="line">    <span class="keyword">for</span> module <span class="keyword">in</span> self:</span><br><span class="line">        <span class="built_in">input</span> = module(<span class="built_in">input</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">input</span></span><br></pre></td></tr></table></figure>
+<h5 id="torch.nn.modulelistmodulesnone">2 torch.nn.ModuleList(modules=None)</h5>
+<p>(https://pytorch.org/docs/stable/_modules/torch/nn/modules/container.html#ModuleList)</p>
+<p>Holds submodules in a list.</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062017290.png" alt="image-20230406201713167" /><figcaption aria-hidden="true">image-20230406201713167</figcaption>
+</figure>
+<h5 id="torch.nn.moduledictmodulesnone">3 torch.nn.ModuleDict(modules=None)</h5>
+<p>https://pytorch.org/docs/stable/_modules/torch/nn/modules/container.html#ModuleDict</p>
+<p>Holds submodules in a dictionary.</p>
+<h5 id="torch.nn.parameterlistvaluesnone">4 torch.nn.ParameterList(values=None)</h5>
+<p>https://pytorch.org/docs/stable/_modules/torch/nn/modules/container.html#ParameterList</p>
+<p>Holds submodules in a list.</p>
+<h5 id="torch.nn.parameterdictparametersnone">5 torch.nn.ParameterDict(<em>parameters=None</em>)</h5>
+<p>https://pytorch.org/docs/stable/_modules/torch/nn/modules/container.html#ParameterDict</p>
+<p>Holds parameters in a dictionary.</p>
+<p>其中sequential能使用forward，其他容器不能，所以一般都使用sequential这个容器</p>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/f208623b.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
     <article id="post-pytorch基础入门4-module详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1026,1056 +2076,9 @@ var _hmt = _hmt || [];
 
 <!-- 文章页添加mathjax公式 -->
   
-    <article id="post-pytorch基础入门1-张量运算" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/489d1269.html">pytorch基础入门1-张量运算</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/489d1269.html" class="archive-article-date">
-  	<time datetime="2023-04-05T05:29:58.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">694字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">3min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <h2 id="准备工作">1 准备工作</h2>
-<p>安装anaconda，cuda，cudnn等内容（略）</p>
-<p>配置jupyter notebook</p>
-<ul>
-<li>如何再jupyter notebook中看到不同的conda环境</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">conda activate emotiona_analysis  <span class="comment"># 切换到虚拟环境emotiona_analysis </span></span><br><span class="line"></span><br><span class="line">pip install ipykernel    <span class="comment">#  在tensorflow  中安装 ipykernel 包</span></span><br><span class="line"></span><br><span class="line">python -m ipykernel install --name emotiona_analysis   <span class="comment"># 向 jupyter 中添加虚拟环境</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="tensor-操作">2 tensor 操作</h2>
-<p>https://pytorch.org/docs/stable/torch.html</p>
-<p>Over 100 tensor operations, including arithmetic, linear algebra, matrix manipulation (transposing, indexing, slicing), sampling and more are comprehensively described</p>
-<ul>
-<li><p>tensor.cat (Concatenates the given sequence of <code>seq</code> tensors in the given dimension. All tensors must either have the same shape (except in the concatenating dimension) or be empty.)</p></li>
-<li><p>tensor.chunk (Attempts to split a tensor into the specified number of chunks. Each chunk is a view of the input tensor.)</p></li>
-<li><p>torch.numel (Returns the total number of elements in the <code>input</code> tensor.)</p></li>
-<li><p>torch.set_default_tensor_type(t)</p>
-<p>(Sets the default <code>torch.Tensor</code> type to floating point tensor type <code>t</code>. This type will also be used as default floating point type for type inference in <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.tensor.html#torch.tensor"><code>torch.tensor()</code></a>.</p>
-<p>The default floating point tensor type is initially <code>torch.FloatTensor</code>.)</p></li>
-<li><p>torch.gather(input, dim, index, *, sparse_grad=False, out=None) → Tensor</p></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">out[i][j][k] = input[index[i][j][k]][j][k]  # if dim == 0</span><br><span class="line">out[i][j][k] = input[i][index[i][j][k]][k]  # if dim == 1</span><br><span class="line">out[i][j][k] = input[i][j][index[i][j][k]]  # if dim == 2</span><br></pre></td></tr></table></figure>
-<ul>
-<li>Tensor.scatter_(dim, index, src, reduce=None) → Tensor</li>
-<li>torch.reshape</li>
-</ul>
-<p>eturns a tensor with the same data and number of elements as <code>input</code>, but with the specified shape. When possible, the returned tensor will be a view of <code>input</code>. Otherwise, it will be a copy. Contiguous inputs and inputs with compatible strides can be reshaped without copying, but you should not depend on the copying vs. viewing behavior.</p>
-<ul>
-<li><p>torch.full(size, fill_value, *, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) → Tensor</p></li>
-<li><p>torch.split(tensor, split_size_or_sections, dim=0)</p></li>
-<li><p>torch.squeeze(input, dim=None) → Tensor</p></li>
-<li><p>torch.stack(tensors, dim=0, *, out=None) → Tensor</p></li>
-<li><p>torch.tile(input, dims) → Tensor</p></li>
-<li><p>torch.transpose(<em>input</em>, <em>dim0</em>, <em>dim1</em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a></p></li>
-<li><p>torch.unbind(<em>input</em>, <em>dim=0</em>) → seq</p></li>
-<li><p>torch.unsqueeze(<em>input</em>, <em>dim</em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a></p></li>
-<li><p>torch.where(<em>condition</em>, <em>input</em>, <em>other</em>, **<em>, </em>out=None<em>) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a> </em>masked*</p></li>
-<li><p>torch.rand 与 torch.randn 区别，前者是0-1均匀分布中取值，后者是0,1正态分布中取值</p></li>
-<li><p>torch.manual_seed(seed)</p></li>
-<li><p>torch.bernoulli(<em>input</em>, **<em>, </em>generator=None<em>, </em>out=None*) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a></p></li>
-<li><p>torch.normal(<em>mean</em>, <em>std</em>, **<em>, </em>generator=None<em>, </em>out=None*) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a> 返回高斯分布</p></li>
-<li><p>torch.randperm(<em>n</em>, **<em>, </em>generator=None<em>, </em>out=None<em>, </em>dtype=torch.int64<em>, </em>layout=torch.strided<em>, </em>device=None<em>, </em>requires_grad=False<em>, </em>pin_memory=False*) → <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor">Tensor</a> 通常用于构建数据集的索引 随机组合</p></li>
-</ul>
-<h2 id="如何理解tensor.gather-和-tensor.tensor.scatter">3 如何理解tensor.gather 和 tensor.tensor.scatter</h2>
-<p>tensor.gather:</p>
-<p>用途：方便从批量tensor中获取指定索引下的数据，该索引是<strong>高度自定义化</strong>的，可乱序的</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">tensor_0 = torch.arange(<span class="number">3</span>, <span class="number">12</span>).view(<span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(tensor_0)</span><br></pre></td></tr></table></figure>
-<p>1 <strong>输入行向量index，并替换行索引(dim=0)</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">index = torch.tensor([[<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">tensor_1 = tensor_0.gather(<span class="number">0</span>, index)</span><br><span class="line"><span class="built_in">print</span>(tensor_1)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result: tensor([[9, 7, 5]])</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051548693.webp" alt="v2-1aed61fbaa97775e816c23d8d907bea3_720w" /><figcaption aria-hidden="true">v2-1aed61fbaa97775e816c23d8d907bea3_720w</figcaption>
-</figure>
-<p>2 <strong>输入行向量index，并替换列索引(dim=1)</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">index = torch.tensor([[<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">tensor_1 = tensor_0.gather(<span class="number">1</span>, index)</span><br><span class="line"><span class="built_in">print</span>(tensor_1)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result: tensor([[5, 4, 3]])</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051549896.webp" alt="v2-a437754fed6b29f5af13927ee06e13f9_720w" /><figcaption aria-hidden="true">v2-a437754fed6b29f5af13927ee06e13f9_720w</figcaption>
-</figure>
-<p>3 <strong>输入列向量index，并替换列索引(dim=1)</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">index = torch.tensor([[<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>]]).t()</span><br><span class="line">tensor_1 = tensor_0.gather(<span class="number">1</span>, index)</span><br><span class="line"><span class="built_in">print</span>(tensor_1)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result: tensor([[5],</span><br><span class="line">        [7],</span><br><span class="line">        [9]])</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051551671.webp" alt="v2-75bcf4697138165941cb2ed083475a07_720w" /><figcaption aria-hidden="true">v2-75bcf4697138165941cb2ed083475a07_720w</figcaption>
-</figure>
-<p>4 <strong>输入二维矩阵index，并替换列索引(dim=1)</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">index = torch.tensor([[<span class="number">0</span>, <span class="number">2</span>], </span><br><span class="line">                      [<span class="number">1</span>, <span class="number">2</span>]])</span><br><span class="line">tensor_1 = tensor_0.gather(<span class="number">1</span>, index)</span><br><span class="line"><span class="built_in">print</span>(tensor_1)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result: tensor([[3, 5],</span><br><span class="line">        [7, 8]])</span><br></pre></td></tr></table></figure>
-<h2 id="tensor-的数据类型">4 tensor 的数据类型</h2>
-<p>https://pytorch.org/docs/stable/tensor_attributes.html</p>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/489d1269.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
-    <article id="post-一些常用的小技巧" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/20651907.html">一些常用的小技巧</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/20651907.html" class="archive-article-date">
-  	<time datetime="2023-04-05T04:29:49.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">2.4k字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">10min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <p>[toc]</p>
-<h1 id="vscode-中导入路径自动补齐">1 vscode 中导入路径自动补齐</h1>
-<ul>
-<li><p>先安装 Path Autocomplete 插件</p></li>
-<li><p>再在 settings.json 中加入如下代码</p></li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 导入文件是是否携带文件的扩展名</span><br><span class="line">&quot;path-autocomplete.extensionOnImport&quot;: true,</span><br><span class="line">// 配置 @ 的路径提示</span><br><span class="line">&quot;path-autocomplete.pathMappings&quot;: &#123;</span><br><span class="line">    &quot;@&quot;: &quot;$&#123;folder&#125;/src&quot;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<h1 id="vscode-打开文件夹">2 VScode 打开文件夹</h1>
-<p>https://www.jianshu.com/p/e8c29211fba9</p>
-<ul>
-<li>右击打开文件</li>
-</ul>
-<p>1, <code>Win+R</code> 打开运行，输入<code>regedit</code>，打开<code>注册表</code>，找到<code>HKEY_CLASSES_ROOT\*\shell</code>分支，如果没有shell分支，则在*下点击右键，选择“<code>新建</code>－<code>项</code>”，建立shell分支。</p>
-<p>2, 在shell下新建“<code>VisualCode</code>”项，在右侧窗口的“<strong>默认</strong>”双击，在数据里输入“<code>用VSCode打开</code>”。</p>
-<p>3, 在“<code>VisualCode</code>”下再新建<code>Command</code>项，在右侧窗口的“<strong>默认</strong>”键值栏内输入程序所在的安装路径，我的是：<code>"D:\Microsoft VS Code\Code.exe" "%1"</code>。<strong>其中的%1表示要打开的文件参数</strong>。</p>
-<p>4, 配置缩略图。在<code>VisualCode</code>项上新建<code>可扩充字符串值</code>，命名为<code>Icon</code>，双击，把<code>"D:\Microsoft VS Code\Code.exe"</code>放进数据就可以了。</p>
-<p>5, 关闭注册表，即可生效</p>
-<ul>
-<li>右击打开文件夹</li>
-</ul>
-<p>找到<code>HKEY_CLASSES_ROOT\Directory\shell</code>分支</p>
-<ul>
-<li>在空白处打开</li>
-</ul>
-<p>找到<code>HKEY_CLASSES_ROOT\Directory\Background\shell</code>分支</p>
-<p>在“<code>VisualCode</code>”下再新建<code>Command</code>项，在右侧窗口的“<strong>默认</strong>”键值栏内输入程序所在的安装路径，我的是：<code>"D:\Microsoft VS Code\Code.exe" "%V"</code>。</p>
-<h1 id="vue-vscode-插件">3 vue vscode 插件</h1>
-<p>https://zhuanlan.zhihu.com/p/347926284</p>
-<h1 id="数组方法">4 数组方法</h1>
-<h2 id="foreach-与-some">forEach 与 some</h2>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="string">&#x27;小红&#x27;</span>, <span class="string">&#x27;你大红&#x27;</span>, <span class="string">&#x27;苏大强&#x27;</span>, <span class="string">&#x27;宝&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">// forEach 循环一旦开始，无法在中间被停止</span></span><br><span class="line">arr.<span class="title function_">forEach</span>(<span class="function">(<span class="params">item, index</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;object&#x27;</span>)</span><br><span class="line">  <span class="keyword">if</span> (item === <span class="string">&#x27;苏大强&#x27;</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(index)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;) </span><br><span class="line"></span><br><span class="line">arr.<span class="title function_">some</span>(<span class="function">(<span class="params">item, index</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;ok&#x27;</span>)</span><br><span class="line">  <span class="keyword">if</span> (item === <span class="string">&#x27;苏大强&#x27;</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(index)</span><br><span class="line">    <span class="comment">// 在找到对应的项之后，可以通过 return true 固定的语法，来终止 some 循环</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;) </span><br></pre></td></tr></table></figure>
-<h2 id="every">every</h2>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">name</span>: <span class="string">&#x27;西瓜&#x27;</span>, <span class="attr">state</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">name</span>: <span class="string">&#x27;榴莲&#x27;</span>, <span class="attr">state</span>: <span class="literal">false</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">name</span>: <span class="string">&#x27;草莓&#x27;</span>, <span class="attr">state</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 需求：判断数组中，水果是否被全选了！</span></span><br><span class="line"><span class="keyword">const</span> result = arr.<span class="title function_">every</span>(<span class="function"><span class="params">item</span> =&gt;</span> item.<span class="property">state</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result)</span><br></pre></td></tr></table></figure>
-<h2 id="reduce-累加">reduce 累加</h2>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">name</span>: <span class="string">&#x27;西瓜&#x27;</span>, <span class="attr">state</span>: <span class="literal">true</span>, <span class="attr">price</span>: <span class="number">10</span>, <span class="attr">count</span>: <span class="number">1</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">name</span>: <span class="string">&#x27;榴莲&#x27;</span>, <span class="attr">state</span>: <span class="literal">false</span>, <span class="attr">price</span>: <span class="number">80</span>, <span class="attr">count</span>: <span class="number">2</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">name</span>: <span class="string">&#x27;草莓&#x27;</span>, <span class="attr">state</span>: <span class="literal">true</span>, <span class="attr">price</span>: <span class="number">20</span>, <span class="attr">count</span>: <span class="number">3</span> &#125;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 需求：把购物车数组中，已勾选的水果，总价累加起来！</span></span><br><span class="line"><span class="keyword">let</span> amt = <span class="number">0</span> <span class="comment">// 总价</span></span><br><span class="line">    arr.<span class="title function_">filter</span>(<span class="function"><span class="params">item</span> =&gt;</span> item.<span class="property">state</span>).<span class="title function_">forEach</span>(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">      amt += item.<span class="property">price</span> * item.<span class="property">count</span></span><br><span class="line">    &#125;)</span><br><span class="line">    </span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(amt) </span><br><span class="line"></span><br><span class="line"><span class="comment">// arr.filter(item =&gt; item.state).reduce((累加的结果, 当前循环项) =&gt; &#123; &#125;, 初始值)</span></span><br><span class="line"><span class="keyword">const</span> result = arr.<span class="title function_">filter</span>(<span class="function"><span class="params">item</span> =&gt;</span> item.<span class="property">state</span>).<span class="title function_">reduce</span>(<span class="function">(<span class="params">amt, item</span>) =&gt;</span> amt += item.<span class="property">price</span> * item.<span class="property">count</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result)</span><br></pre></td></tr></table></figure>
-<h1 id="leanote-mongdb-配置">5 leanote mongdb 配置</h1>
-<ol type="1">
-<li>找到 /www/wwwroot/leanote/mongodb_backup</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongorestore -h localhost -d leanote --<span class="built_in">dir</span> leanote_install_data/</span><br></pre></td></tr></table></figure>
-<ol start="2" type="1">
-<li>找到bin文件夹</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">nohup</span> bash run.sh &amp;</span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li>将mongdb内容保存到本地</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongodump -h localhost -d leanote -o data/</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
-<li>如果需要更换服务器，只需要执行一下代码</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongorestore -h localhost -d leanote --<span class="built_in">dir</span> data/</span><br></pre></td></tr></table></figure>
-<h1 id="前端">6 前端</h1>
-<h2 id="文本单行显示超出内容省略">6.1 文本单行显示，超出内容省略</h2>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 文字不允许换行（单行文本）</span><br><span class="line"><span class="attribute">white-space</span>: nowrap;</span><br><span class="line">// 溢出部分隐藏</span><br><span class="line"><span class="attribute">overflow</span>: hidden;</span><br><span class="line">// 文本溢出后，使用 ... 代替</span><br><span class="line"><span class="attribute">text-overflow</span>: ellipsis;</span><br></pre></td></tr></table></figure>
-<h2 id="常用的字符实体">6.2 常用的字符实体</h2>
-<table>
-<thead>
-<tr class="header">
-<th>显示结果</th>
-<th>描述</th>
-<th>实体名称</th>
-<th>实体标号</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>空格</td>
-<td>&amp;nbsp;</td>
-<td>&amp;#160;</td>
-</tr>
-<tr class="even">
-<td>&gt;</td>
-<td>大于号</td>
-<td>&amp;lt;</td>
-<td>&amp;#60;</td>
-</tr>
-<tr class="odd">
-<td>&lt;</td>
-<td>小于号</td>
-<td>&amp;gt;</td>
-<td>&amp;#62;</td>
-</tr>
-<tr class="even">
-<td>×</td>
-<td>乘号</td>
-<td>&amp;times;</td>
-<td>&amp;#215;</td>
-</tr>
-<tr class="odd">
-<td>÷</td>
-<td>除号</td>
-<td>&amp;divide;</td>
-<td>&amp;#247;</td>
-</tr>
-</tbody>
-</table>
-<h2 id="谷歌浏览器查看json文件插件">6.3 谷歌浏览器查看json文件插件</h2>
-<p>https://github.com/gildas-lormeau/JSONVue</p>
-<p>download and plugin(src folder)</p>
-<h1 id="ij操作">7 IJ操作</h1>
-<h2 id="插件安装">7.1 插件安装</h2>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/note/Maven/202209231631287.png" alt="image-20220923163105626" /><figcaption aria-hidden="true">image-20220923163105626</figcaption>
-</figure>
-<p>https://plugins.jetbrains.com/</p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/note/MyBatisPlus/202210052210026.png" alt="image-20220923163512224" /><figcaption aria-hidden="true">image-20220923163512224</figcaption>
-</figure>
-<h2 id="快捷键">7.2 快捷键</h2>
-<ul>
-<li>查看类图：ctrl+alt+u</li>
-<li>查看接口所有方法：ctrl+f12</li>
-<li>查找类：Ctrl + Shift + n double shift</li>
-<li>通过类图查看源码：f4</li>
-<li>快速补齐对象和返回类型：ctrl+enter</li>
-<li>将对象转换为lamada表达式：ctrl+enter</li>
-<li>快速生成try catch方法: ctrl+alt+t</li>
-<li>查看父方法 ctrl+alt+鼠标左键</li>
-<li>run context configuration ctrl+shift+f10</li>
-<li>抽取 ctrl+alt+m</li>
-<li>选中相同的类同时修改：ctrl+shift+f6</li>
-</ul>
-<h2 id="查看源码">7.3 查看源码</h2>
-<p>如果你想看到框架真正的源码。则在项目下，pom.<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=xml&amp;spm=1001.2101.3001.7020">xml</a>同级目录中执行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn dependency:resolve -Dclassifier=sources</span><br></pre></td></tr></table></figure>
-<h2 id="jdk反射问题">7.4 jdk反射问题</h2>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/note/ssm/202210082122139.png" alt="image-20221008212219767" /><figcaption aria-hidden="true">image-20221008212219767</figcaption>
-</figure>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--add-opens java.base/java.lang=ALL-UNNAMED</span><br></pre></td></tr></table></figure>
-<h1 id="git常用代码">8 git常用代码</h1>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 第一次初始化(方式1)：</span></span><br><span class="line">git init</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;first commit&#x27;</span></span><br><span class="line">git remote add origin git@github.com:帐号名/仓库名.git</span><br><span class="line">git pull origin master</span><br><span class="line">git push origin master <span class="comment"># -f 强推</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一次初始化(方式2)：</span></span><br><span class="line">git <span class="built_in">clone</span> git@github.com:git帐号名/仓库名.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># 平时工作基本操作：</span></span><br><span class="line">git checkout master <span class="comment"># 切到主分支</span></span><br><span class="line">git fetch origin  <span class="comment"># 获取最新变更</span></span><br><span class="line">git checkout -b dev origin/master <span class="comment"># 基于主分支创建dev分支</span></span><br><span class="line">git add . <span class="comment"># 添加到缓存</span></span><br><span class="line">git commit -m <span class="string">&#x27;xxx&#x27;</span> <span class="comment"># 提交到本地仓库</span></span><br><span class="line">git fetch origin <span class="comment"># 获取最新变更</span></span><br><span class="line">git rebase dev origin/master <span class="comment"># 合并到主分支</span></span><br><span class="line">git push origin dev <span class="comment"># 推送到远程分支</span></span><br><span class="line"></span><br><span class="line">git chekout master <span class="comment"># 切到主分支</span></span><br><span class="line">git merge dev <span class="comment"># 合并开发分支</span></span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> -b 远程分支 仓库地址 <span class="comment"># 本地不存在仓库 拉取远程分支代码</span></span><br><span class="line">git checkout -b 远程分支 origin/远程分支 <span class="comment"># 本地存在仓库，拉取远程分支</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将远程代码clone到本地</span></span><br><span class="line">git fetch --all <span class="comment"># 更新远程仓库的代码为最新的</span></span><br><span class="line">git reset --hard origin/master <span class="comment"># 让本地代码与origin / master完全相同</span></span><br><span class="line">git pull origin master <span class="comment"># git pull拉取远程代码</span></span><br><span class="line">git merge master <span class="comment"># git merge将暂存区代码更新到本地工作区</span></span><br></pre></td></tr></table></figure>
-<h1 id="pytorch">9 pytorch</h1>
-<h2 id="测试gpu是否可用">9.1 测试GPU是否可用</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">flag = torch.cuda.is_available()</span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;CUDA可使用&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;CUDA不可用&quot;</span>)</span><br><span class="line"></span><br><span class="line">ngpu= <span class="number">1</span></span><br><span class="line"><span class="comment"># Decide which device we want to run on</span></span><br><span class="line">device = torch.device(<span class="string">&quot;cuda:0&quot;</span> <span class="keyword">if</span> (torch.cuda.is_available() <span class="keyword">and</span> ngpu &gt; <span class="number">0</span>) <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;驱动为：&quot;</span>,device)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;GPU型号： &quot;</span>,torch.cuda.get_device_name(<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
-<h1 id="anaconda">10 anaconda</h1>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看当前存在那些虚拟环境</span></span><br><span class="line">conda <span class="built_in">env</span> list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建虚拟环境</span></span><br><span class="line">conda create -n env_name python=x.x</span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活或者切换虚拟环境</span></span><br><span class="line">conda activate env_name</span><br><span class="line"></span><br><span class="line"><span class="comment"># 退出当前的虚拟环境</span></span><br><span class="line">conda deactivate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除虚拟环境</span></span><br><span class="line">conda remove -n env_name --all</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除某个虚拟环境中的某个包</span></span><br><span class="line">conda remove -name <span class="variable">$env_name</span>  <span class="variable">$pack_name</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置镜像</span></span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复默认的镜像</span></span><br><span class="line">conda config --remove-key channels</span><br></pre></td></tr></table></figure>
-<h1 id="常用报错信息">11 常用报错信息</h1>
-<h1 id="spring-boot">11.1 Spring Boot</h1>
-<h3 id="报错web-server-failed-to-start.-port-8080-was-already-in-use.">1 报错：Web server failed to start. Port 8080 was already in use.</h3>
-<p>1 查看端口号占用情况，例如查看端口xxxx，得到对应的进程号xxxx</p>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ano | <span class="built_in">findstr</span> 端口号</span><br></pre></td></tr></table></figure>
-<p>2 菜单栏 -&gt; 右键 - &gt; 任务管理器 -&gt; 详细信息，根据PID排序找到PID为xxxx的进程，选择后点击结束任务。</p>
-<p>1 application.yml文件中输入</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8014</span></span><br></pre></td></tr></table></figure>
-<h1 id="mysql">11.2 mysql</h1>
-<p>mysql：8.0</p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/note/springcloud/202210291541717.png" alt="image-20221029154155350" /><figcaption aria-hidden="true">image-20221029154155350</figcaption>
-</figure>
-<p>mysql：5.0</p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/note/springcloud/202210291542563.png" alt="image-20221029154213245" /><figcaption aria-hidden="true">image-20221029154213245</figcaption>
-</figure>
-<h1 id="docker">12 docker</h1>
-<h2 id="卸装">卸装</h2>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-selinux \</span><br><span class="line">                  docker-engine-selinux \</span><br><span class="line">                  docker-engine \</span><br><span class="line">                  docker-ce</span><br></pre></td></tr></table></figure>
-<h2 id="安装">安装</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置docker镜像源</span></span><br><span class="line">yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line">    </span><br><span class="line">sed -i <span class="string">&#x27;s/download.docker.com/mirrors.aliyun.com\/docker-ce/g&#x27;</span> /etc/yum.repos.d/docker-ce.repo</span><br><span class="line"></span><br><span class="line">yum makecache fast</span><br><span class="line"></span><br><span class="line">yum install -y docker-ce</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭</span></span><br><span class="line">systemctl stop firewalld</span><br><span class="line"><span class="comment"># 禁止开机启动防火墙</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br><span class="line"></span><br><span class="line">systemctl start docker  <span class="comment"># 启动docker服务</span></span><br><span class="line">systemctl stop docker  <span class="comment"># 停止docker服务</span></span><br><span class="line">systemctl restart docker  <span class="comment"># 重启docker服务</span></span><br></pre></td></tr></table></figure>
-<h2 id="常用指令">常用指令</h2>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">docker pull xxx <span class="comment"># 拉取镜像</span></span><br><span class="line">docker images <span class="comment"># 查看拉取到的镜像</span></span><br><span class="line">docker save -o [保存的目标文件名称] [镜像名称]</span><br><span class="line">docker rmi nginx:latest <span class="comment"># 删除镜像</span></span><br><span class="line">docker load -i nginx.tar <span class="comment"># 加载本地文件</span></span><br><span class="line"></span><br><span class="line">docker run</span><br><span class="line">docker pause</span><br><span class="line">docker unpause</span><br><span class="line">docker stop</span><br><span class="line">docker start</span><br><span class="line">docker <span class="built_in">exec</span> <span class="comment"># 进入容器执行命令</span></span><br><span class="line">docker logs <span class="comment"># 查看容器运行日志</span></span><br><span class="line">docker ps <span class="comment"># 查看所有运行的容器及状态</span></span><br><span class="line">docker <span class="built_in">rm</span> <span class="comment"># 删除指定容器</span></span><br><span class="line"></span><br><span class="line">docker run --name containerName -p 80:80 -d nginx   <span class="comment"># 冒号左侧是宿主机端口，一般可以任意；右边端口是容器内端口，一般固定</span></span><br><span class="line">docker -d <span class="comment"># 让容器后台运行</span></span><br><span class="line">docker -p <span class="comment"># 指定端口映射</span></span><br><span class="line">docker logs -f mn <span class="comment"># 跟踪日志</span></span><br><span class="line">docker ps -a <span class="comment"># 查看所有容器</span></span><br><span class="line">docker start mn <span class="comment"># 重新启动容器</span></span><br><span class="line"></span><br><span class="line">docker <span class="built_in">exec</span> -it mn bash <span class="comment"># 进入容器</span></span><br><span class="line"><span class="built_in">cd</span> /usr/share/nginx/html <span class="comment"># 查看DockerHub网站中的nginx页面，可以知道nginx的html目录位置在`/usr/share/nginx/html`</span></span><br><span class="line"><span class="built_in">cat</span> index.html <span class="comment"># 进入首页</span></span><br><span class="line"><span class="built_in">exit</span> <span class="comment"># 退出容器</span></span><br><span class="line">docker <span class="built_in">rm</span> mn -f <span class="comment"># 强制删除运行中的容器</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">docker volume [COMMAND]</span><br><span class="line">docker volume命令是数据卷操作，根据命令后跟随的<span class="built_in">command</span>来确定下一步的操作：</span><br><span class="line">- create 创建一个volume</span><br><span class="line">- inspect 显示一个或多个volume的信息</span><br><span class="line">- <span class="built_in">ls</span> 列出所有的volume</span><br><span class="line">- prune 删除未使用的volume</span><br><span class="line">- <span class="built_in">rm</span> 删除一个或多个指定的volume</span><br><span class="line"></span><br><span class="line">docker run \</span><br><span class="line">  --name mn \</span><br><span class="line">  -v html:/root/html \</span><br><span class="line">  -p 8080:80</span><br><span class="line">  nginx \</span><br><span class="line">`-v html:/root/htm` ：把html数据卷挂载到容器内的/root/html这个目录中      </span><br><span class="line"></span><br><span class="line">docker run --name mn -p 80:80 -v html:/usr/share/nginx/html -d nginx</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-<h1 id="jupyter-notebook">13 jupyter notebook</h1>
-<h2 id="如何在jupyter-noteboook-中进行环境切换">13.1 如何在jupyter noteboook 中进行环境切换</h2>
-<p>我们的网络结构是基于 pytorch 的，因此需要使用 pytorch 环境下的内核。过程非常简单，首先关闭 Jupyter Notebook 软件和已经打开的有关界面，运行 Anaconda Prompt 进入自己的 pytorch 环境，分别运行下如下代码(注意 pt 切换成自己的环境名字)：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install ipykernel</span><br><span class="line">python -m ipykernel install  --name pt --display-name <span class="string">&quot;pytorch&quot;</span></span><br></pre></td></tr></table></figure>
-<h2 id="主题调整">13.2 主题调整</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install jupyterthemes</span><br><span class="line">pip install -- upgrade jupyterthemes</span><br><span class="line">jt -t oceans16 -f consolamono -nf robotosans -tf robotosans -N -T -cellw 60% -dfs 9 -ofs 9</span><br></pre></td></tr></table></figure>
-<h2 id="代码补全">13.3 代码补全</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line">jupyter nbextensions_configurator <span class="built_in">enable</span> --user</span><br></pre></td></tr></table></figure>
-<p>重新打开jupyter notebook，会在菜单栏中发现Nbextensions插件，不勾选disable，然后会看到Hinterland，最后把Hinterland勾选上。如果没有出现Hinterland，再运行一下下面的代码：`</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter contrib nbextension install --user --skip-running-check </span><br></pre></td></tr></table></figure>
-<h1 id="powershell">14 powershell</h1>
-<h2 id="设置anaconda启动项">14.1 设置anaconda启动项</h2>
-<p>1 进入设置 （ctrl+，）</p>
-<p>2 输入命令行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd.exe /K C:path\Scripts\activate.bat</span><br></pre></td></tr></table></figure>
-<p>3 启动目录改为： 使用父进程目录</p>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tips</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/20651907.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
-    <article id="post-使用finalshell工具配置虚拟机的ssm服务" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/f0ef2eb8.html">使用finalshell工具配置虚拟机的ssm服务</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/f0ef2eb8.html" class="archive-article-date">
-  	<time datetime="2023-04-05T04:27:57.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">333字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <h6 id="下载vmware">1 下载VMware</h6>
-<p>https://customerconnect.vmware.com/en/downloads/details?downloadGroup=WKST-PLAYER-1624&amp;productId=1039</p>
-<h6 id="下载centos镜像">2 下载CentOS镜像</h6>
-<p>http://mirrors.aliyun.com/centos/7/isos/x86_64/</p>
-<h5 id="下载finalshell">3 下载finalshell</h5>
-<p>http://www.hostbuf.com/t/988.html</p>
-<p>这个下载真是太慢了</p>
-<h5 id="记住如下ip地址和子网掩码">4 记住如下ip地址和子网掩码</h5>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051240265.png" alt="image-20221025230112905" /><figcaption aria-hidden="true">image-20221025230112905</figcaption>
-</figure>
-<p>或者在虚拟机中输入，找到ens33下的 net 和 netmask</p>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig </span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051241299.png" alt="image-20221025230240994" /><figcaption aria-hidden="true">image-20221025230240994</figcaption>
-</figure>
-<h5 id="找到-etcsyconfignetwork-scripts">5 找到 etc/syconfig/network-scripts</h5>
-<p>使用gnome界面能快速找到这个目录（毕竟不想用黑框操作）在计算机的目录下</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su vim ifcfg-ens33</span><br></pre></td></tr></table></figure>
-<p>按i 进入输入模式</p>
-<p>修改</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BOOTPROTO=static</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.120.200</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.120.2</span><br></pre></td></tr></table></figure>
-<p>按esc退出编辑模式</p>
-<p>按shift+:,再输入wq保存退出</p>
-<p>再重启服务</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
-<h5 id="进入finalshell配置">6 进入finalshell配置</h5>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051240151.png" alt="image-20221025231100823" /><figcaption aria-hidden="true">image-20221025231100823</figcaption>
-</figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051240485.png" alt="image-20221025231238445" /><figcaption aria-hidden="true">image-20221025231238445</figcaption>
-</figure>
-<h6 id="配置ipv4">7 配置ipv4</h6>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
-<p>同上数vim操作输入一行内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.ip_forward = 1</span><br></pre></td></tr></table></figure>
-<p>保存退出</p>
-<p>这一步可以帮助未来使用 docker中 的 nginx 服务</p>
-<h5 id="问题">8 问题</h5>
-<p>为什么不能直接修改上述提到的conf配置？</p>
-<p>默认gnome的用户是sudo用户，需要su用户才能进行编辑，这里就需要用到vim编辑器</p>
-<p>为什么vim编辑器不能直接输入？</p>
-<p>vim编辑器需要先敲入i，进入insert模式才能修改文件，退出的时候需要：wq，才能完成保存</p>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/f0ef2eb8.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
-    <article id="post-about-me" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/9c4101a6.html">about me</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/9c4101a6.html" class="archive-article-date">
-  	<time datetime="2023-04-05T04:23:40.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">24字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <p>本博客更新学习笔记，并且记录踩雷记录，还偶尔发些照片。</p>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">aboutme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/9c4101a6.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
-    <article id="post-建立自己的blog-基于node-js" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/3716e35d.html">建立自己的blog--基于hexo</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/3716e35d.html" class="archive-article-date">
-  	<time datetime="2023-04-05T03:22:00.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">1.5k字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">7min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <h2 id="需要准备的东西">1 需要准备的东西</h2>
-<p>1 github账号 https://github.com/</p>
-<p>2 nodejs https://nodejs.org/en</p>
-<p>3 git https://git-scm.com/</p>
-<p>4 图床账号（用于上传博客文件的图片）（可选）</p>
-<h2 id="准备工作">2 准备工作</h2>
-<p>1 首先查看是否存在 nodejs是否安装完毕</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v </span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051129793.png" alt="image-20230405112909635" /><figcaption aria-hidden="true">image-20230405112909635</figcaption>
-</figure>
-<p>2 安装CNPM，这是因为hexo模块使用默认源下载速度过慢</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-<p>3 安装 hexo 模块</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-<p>4 此时需要注意，默认的hexo没有完成真正意义上的部署成功，需要在你接下来创建博客的文件位置，进行本地部署。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  F:\study\blog</span><br><span class="line">hexo init </span><br></pre></td></tr></table></figure>
-<p>hexo init安装慢 详见：https://blog.csdn.net/f6619082/article/details/109193251 或者科学上网</p>
-<p>5 hexo的一些基础指令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo n <span class="string">&quot;我的第一篇文章&quot;</span> <span class="comment">#创建新的文章 </span></span><br><span class="line">hexo clean <span class="comment">#清理</span></span><br><span class="line">hexo g <span class="comment">#生成</span></span><br><span class="line">hexo s	<span class="comment">#启动本地博客服务</span></span><br></pre></td></tr></table></figure>
-<h2 id="部署到github上">3 部署到github上</h2>
-<p>1 新建repository，命名为 wangtongyouwen.github.io (你的用户名+.github.io)</p>
-<p>2 并且在刚刚的目录下新增git部署的插件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
-<p>3 远程部署</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br><span class="line">https://YourGithubName.github.io/  <span class="comment">#访问这个地址可以查看博客</span></span><br></pre></td></tr></table></figure>
-<h2 id="更改主题">4 更改主题</h2>
-<p>1 使用yilia主题</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> github.com:litten/hexo-theme-yilia.git</span><br></pre></td></tr></table></figure>
-<p>可以在当前目录下继续操作，或者把git clone 的内容复制到themes文件夹中</p>
-<p>2 对主题进行配置</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br></pre></td><td class="code"><pre><span class="line"># Hexo Configuration</span><br><span class="line">## Docs: http://hexo.io/docs/configuration.html</span><br><span class="line">## Source: https://github.com/hexojs/hexo/</span><br><span class="line"></span><br><span class="line"># Site</span><br><span class="line">title: Litten的博客</span><br><span class="line">subtitle: 胆小认生，不易相处</span><br><span class="line">description: 华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与前端性能。非专业视觉设计师。此为博客一枚。 </span><br><span class="line">author: Litten</span><br><span class="line">email: litten225@qq.com</span><br><span class="line">keywords: &quot;前端,js,jquery,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验&quot;</span><br><span class="line"></span><br><span class="line"># URL</span><br><span class="line">## If your site is put in a subdirectory, set url as &#x27;http://yoursite.com/child&#x27; and root as &#x27;/child/&#x27;</span><br><span class="line">url: //litten.me</span><br><span class="line">root: /</span><br><span class="line">permalink: :year/:month/:day/:title/</span><br><span class="line">tag_dir: tags</span><br><span class="line">archive_dir: archives</span><br><span class="line">category_dir: categories</span><br><span class="line">code_dir: downloads/code</span><br><span class="line">permalink_defaults:</span><br><span class="line"></span><br><span class="line"># Directory</span><br><span class="line">source_dir: source</span><br><span class="line">public_dir: public</span><br><span class="line"></span><br><span class="line"># Writing</span><br><span class="line">new_post_name: :title.md # File name of new posts</span><br><span class="line">default_layout: post</span><br><span class="line">titlecase: false # Transform title into titlecase</span><br><span class="line">external_link: true # Open external links in new tab</span><br><span class="line">filename_case: 0</span><br><span class="line">render_drafts: false</span><br><span class="line">post_asset_folder: false</span><br><span class="line">relative_link: false</span><br><span class="line">highlight:                                                                                                                                                                                                   </span><br><span class="line">  enable: true                                                                                                                                                                                               </span><br><span class="line">  auto_detect: true                                                                                                                                                                                          </span><br><span class="line">  line_number: true                                                                                                                                                                                          </span><br><span class="line">  tab_replace: &#x27;&#x27;</span><br><span class="line"></span><br><span class="line"># Category &amp; Tag</span><br><span class="line">default_category: uncategorized</span><br><span class="line">category_map:</span><br><span class="line">tag_map:</span><br><span class="line"></span><br><span class="line"># Archives</span><br><span class="line">## 2: Enable pagination</span><br><span class="line">## 1: Disable pagination</span><br><span class="line">## 0: Fully Disable</span><br><span class="line">archive: 1</span><br><span class="line">category: 1</span><br><span class="line">tag: 1</span><br><span class="line"></span><br><span class="line"># Server</span><br><span class="line">## Hexo uses Connect as a server</span><br><span class="line">## You can customize the logger format as defined in</span><br><span class="line">## http://www.senchalabs.org/connect/logger.html</span><br><span class="line">port: 4000</span><br><span class="line">server_ip: localhost</span><br><span class="line">logger: false</span><br><span class="line">logger_format: dev</span><br><span class="line"></span><br><span class="line"># Date / Time format</span><br><span class="line">## Hexo uses Moment.js to parse and display date</span><br><span class="line">## You can customize the date format as defined in</span><br><span class="line">## http://momentjs.com/docs/#/displaying/format/</span><br><span class="line">date_format: YYYY-MM-DD</span><br><span class="line">time_format: HH:mm:ss</span><br><span class="line"></span><br><span class="line"># Pagination</span><br><span class="line">## Set per_page to 0 to disable pagination</span><br><span class="line">per_page: 8</span><br><span class="line">pagination_dir: page</span><br><span class="line"></span><br><span class="line"># Disqus</span><br><span class="line">disqus_shortname:</span><br><span class="line"></span><br><span class="line"># Extensions</span><br><span class="line">## Plugins: https://github.com/hexojs/hexo/wiki/Plugins</span><br><span class="line">## Themes: https://github.com/hexojs/hexo/wiki/Themes</span><br><span class="line"># plugins:</span><br><span class="line">#  - hexo-generator-feed</span><br><span class="line">#  - hexo-generator-baidu-sitemap</span><br><span class="line">#  - hexo-generator-sitemap</span><br><span class="line"></span><br><span class="line">theme: yilia</span><br><span class="line">exclude_generator:</span><br><span class="line"></span><br><span class="line"># Deployment</span><br><span class="line">## Docs: http://hexo.io/docs/deployment.html</span><br><span class="line">#deploy:</span><br><span class="line">#  type: git</span><br><span class="line">#  repository: git@github.com:litten/litten.github.com.git</span><br><span class="line">#  branch: master</span><br><span class="line"></span><br><span class="line">deploy:</span><br><span class="line">  type: rsync</span><br><span class="line">  host: 120.24.181.238</span><br><span class="line">  user: root</span><br><span class="line">  root: /usr/local/nginx/litten.me/</span><br><span class="line">  port: 22</span><br><span class="line"></span><br><span class="line">sitemap:</span><br><span class="line">    path: sitemap.xml</span><br><span class="line">baidusitemap:</span><br><span class="line">    path: baidusitemap.xm</span><br><span class="line"></span><br><span class="line">feed:</span><br><span class="line">    type: atom</span><br><span class="line">    path: atom.xml</span><br><span class="line">    limit: 100</span><br><span class="line"></span><br><span class="line">jsonContent:</span><br><span class="line">  meta: false</span><br><span class="line">  pages: false</span><br><span class="line">  posts:</span><br><span class="line">    title: true</span><br><span class="line">    date: true</span><br><span class="line">    path: true</span><br><span class="line">    text: false</span><br><span class="line">    raw: false</span><br><span class="line">    content: false</span><br><span class="line">    slug: false</span><br><span class="line">    updated: false</span><br><span class="line">    comments: false</span><br><span class="line">    link: false</span><br><span class="line">    permalink: false</span><br><span class="line">    excerpt: false</span><br><span class="line">    categories: false</span><br><span class="line">    tags: true</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"># Header</span><br><span class="line"></span><br><span class="line">menu:</span><br><span class="line">  主页: /</span><br><span class="line">  随笔: /tags/随笔/</span><br><span class="line"></span><br><span class="line"># SubNav</span><br><span class="line">subnav:</span><br><span class="line">  github: &quot;#&quot;</span><br><span class="line">  weibo: &quot;#&quot;</span><br><span class="line">  rss: &quot;#&quot;</span><br><span class="line">  zhihu: &quot;#&quot;</span><br><span class="line">  #qq: &quot;#&quot;</span><br><span class="line">  #weixin: &quot;#&quot;</span><br><span class="line">  #jianshu: &quot;#&quot;</span><br><span class="line">  #douban: &quot;#&quot;</span><br><span class="line">  #segmentfault: &quot;#&quot;</span><br><span class="line">  #bilibili: &quot;#&quot;</span><br><span class="line">  #acfun: &quot;#&quot;</span><br><span class="line">  #mail: &quot;mailto:litten225@qq.com&quot;</span><br><span class="line">  #facebook: &quot;#&quot;</span><br><span class="line">  #google: &quot;#&quot;</span><br><span class="line">  #twitter: &quot;#&quot;</span><br><span class="line">  #linkedin: &quot;#&quot;</span><br><span class="line"></span><br><span class="line">rss: /atom.xml</span><br><span class="line"></span><br><span class="line"># 是否需要修改 root 路径</span><br><span class="line"># 如果您的网站存放在子目录中，例如 http://yoursite.com/blog，</span><br><span class="line"># 请将您的 url 设为 http://yoursite.com/blog 并把 root 设为 /blog/。</span><br><span class="line">root: </span><br><span class="line"></span><br><span class="line"># Content</span><br><span class="line"></span><br><span class="line"># 文章太长，截断按钮文字</span><br><span class="line">excerpt_link: more</span><br><span class="line"># 文章卡片右下角常驻链接，不需要请设置为false</span><br><span class="line">show_all_link: &#x27;展开全文&#x27;</span><br><span class="line"># 数学公式</span><br><span class="line">mathjax: false</span><br><span class="line"># 是否在新窗口打开链接</span><br><span class="line">open_in_new: false</span><br><span class="line"></span><br><span class="line"># 打赏</span><br><span class="line"># 打赏type设定：0-关闭打赏； 1-文章对应的md文件里有reward:true属性，才有打赏； 2-所有文章均有打赏</span><br><span class="line">reward_type: 2</span><br><span class="line"># 打赏wording</span><br><span class="line">reward_wording: &#x27;谢谢你请我吃糖果&#x27;</span><br><span class="line"># 支付宝二维码图片地址，跟你设置头像的方式一样。比如：/assets/img/alipay.jpg</span><br><span class="line">alipay: </span><br><span class="line"># 微信二维码图片地址</span><br><span class="line">weixin: </span><br><span class="line"></span><br><span class="line"># 目录</span><br><span class="line"># 目录设定：0-不显示目录； 1-文章对应的md文件里有toc:true属性，才有目录； 2-所有文章均显示目录</span><br><span class="line">toc: 1</span><br><span class="line"># 根据自己的习惯来设置，如果你的目录标题习惯有标号，置为true即可隐藏hexo重复的序号；否则置为false</span><br><span class="line">toc_hide_index: true</span><br><span class="line"># 目录为空时的提示</span><br><span class="line">toc_empty_wording: &#x27;目录，不存在的…&#x27;</span><br><span class="line"></span><br><span class="line"># 是否有快速回到顶部的按钮</span><br><span class="line">top: true</span><br><span class="line"></span><br><span class="line"># Miscellaneous</span><br><span class="line">baidu_analytics: &#x27;&#x27;</span><br><span class="line">google_analytics: &#x27;&#x27;</span><br><span class="line">favicon: /favicon.png</span><br><span class="line"></span><br><span class="line">#你的头像url</span><br><span class="line">avatar:</span><br><span class="line"></span><br><span class="line">#是否开启分享</span><br><span class="line">share_jia: true</span><br><span class="line"></span><br><span class="line">#评论：1、多说；2、网易云跟帖；3、畅言；4、Disqus；5、Gitment</span><br><span class="line">#不需要使用某项，直接设置值为false，或注释掉</span><br><span class="line">#具体请参考wiki：https://github.com/litten/hexo-theme-yilia/wiki/</span><br><span class="line"></span><br><span class="line">#1、多说</span><br><span class="line">duoshuo: false</span><br><span class="line"></span><br><span class="line">#2、网易云跟帖</span><br><span class="line">wangyiyun: false</span><br><span class="line"></span><br><span class="line">#3、畅言</span><br><span class="line">changyan_appid: false</span><br><span class="line">changyan_conf: false</span><br><span class="line"></span><br><span class="line">#4、Disqus 在hexo根目录的config里也有disqus_shortname字段，优先使用yilia的</span><br><span class="line">disqus: false</span><br><span class="line"></span><br><span class="line">#5、Gitment</span><br><span class="line">gitment_owner: false      #你的 GitHub ID</span><br><span class="line">gitment_repo: &#x27;&#x27;          #存储评论的 repo</span><br><span class="line">gitment_oauth:</span><br><span class="line">  client_id: &#x27;&#x27;           #client ID</span><br><span class="line">  client_secret: &#x27;&#x27;       #client secret</span><br><span class="line"></span><br><span class="line"># 样式定制 - 一般不需要修改，除非有很强的定制欲望…</span><br><span class="line">style:</span><br><span class="line">  # 头像上面的背景颜色</span><br><span class="line">  header: &#x27;#4d4d4d&#x27;</span><br><span class="line">  # 右滑板块背景</span><br><span class="line">  slider: &#x27;linear-gradient(200deg,#a0cfe4,#e8c37e)&#x27;</span><br><span class="line"></span><br><span class="line"># slider的设置</span><br><span class="line">slider:</span><br><span class="line">  # 是否默认展开tags板块</span><br><span class="line">  showTags: false</span><br><span class="line"></span><br><span class="line"># 智能菜单</span><br><span class="line"># 如不需要，将该对应项置为false</span><br><span class="line"># 比如</span><br><span class="line">#smart_menu:</span><br><span class="line">#  friends: false</span><br><span class="line">smart_menu:</span><br><span class="line">  innerArchive: &#x27;所有文章&#x27;</span><br><span class="line">  friends: &#x27;友链&#x27;</span><br><span class="line">  aboutme: &#x27;关于我&#x27;</span><br><span class="line"></span><br><span class="line">friends:</span><br><span class="line">  友情链接1: http://localhost:4000/</span><br><span class="line">  友情链接2: http://localhost:4000/</span><br><span class="line">  友情链接3: http://localhost:4000/</span><br><span class="line">  友情链接4: http://localhost:4000/</span><br><span class="line">  友情链接5: http://localhost:4000/</span><br><span class="line">  友情链接6: http://localhost:4000/</span><br><span class="line"></span><br><span class="line">aboutme: 很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</span><br></pre></td></tr></table></figure>
-<h2 id="可能遇到的问题">5 可能遇到的问题</h2>
-<h3 id="所有文章链接无法使用">1 所有文章链接无法使用</h3>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051218149.png" alt="image-20230405121833648" /><figcaption aria-hidden="true">image-20230405121833648</figcaption>
-</figure>
-<h3 id="数学公式无法显示">2 数学公式无法显示</h3>
-<p>1 安装pandoc</p>
-<p>https://github.com/jgm/pandoc/releases/tag/2.19.2</p>
-<p>2 安装 hexo-renderer-pandoc</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-pandoc --save</span><br></pre></td></tr></table></figure>
-<p>3 在config.yml 中找到 mathjax 设置为 true</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/3716e35d.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&lt;&lt; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+      <a class="extend prev" rel="prev" href="/page/2/">&lt;&lt; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">下一页 &gt;&gt;</a>
     </nav>
   
 
@@ -2199,11 +2202,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
+                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
+                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2216,6 +2219,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">tips</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">network</a>
               </li>
             
             <div class="clearfix"></div>

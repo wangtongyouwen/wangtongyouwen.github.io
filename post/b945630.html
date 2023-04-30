@@ -7,12 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="https://wangtongyouwen.github.io">
-  <title>pytorch基础入门12-RNN | jyh blog</title>
+  <title>用pytorch实现基础网络4-RNN | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <meta name="description" content="https:&#x2F;&#x2F;www.cs.toronto.edu&#x2F;~graves&#x2F;preprint.pdf Supervised Sequence Labelling with Recurrent Neural Networks   delay: 能看到前几帧的信息，牺牲一定的时间，预测的更加准确。  image-20230413144847329   image-2023041315023">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pytorch基础入门12-RNN">
+<meta property="og:title" content="用pytorch实现基础网络4-RNN">
 <meta property="og:url" content="https://wangtongyouwen.github.io/post/b945630.html">
 <meta property="og:site_name" content="jyh blog">
 <meta property="og:description" content="https:&#x2F;&#x2F;www.cs.toronto.edu&#x2F;~graves&#x2F;preprint.pdf Supervised Sequence Labelling with Recurrent Neural Networks   delay: 能看到前几帧的信息，牺牲一定的时间，预测的更加准确。  image-20230413144847329   image-2023041315023">
@@ -22,9 +22,10 @@
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131448069.png">
 <meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131502377.png">
 <meta property="article:published_time" content="2023-04-13T06:29:13.000Z">
-<meta property="article:modified_time" content="2023-04-13T09:31:09.288Z">
+<meta property="article:modified_time" content="2023-04-30T06:04:14.307Z">
 <meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="network">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304131437010.png">
   
@@ -287,14 +288,14 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-pytorch基础入门12-RNN" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-用pytorch实现基础网络4-RNN" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title_code_ant" itemprop="name">
-	  <a href="/post/b945630.html">pytorch基础入门12-RNN</a>
+	  <a href="/post/b945630.html">用pytorch实现基础网络4-RNN</a>
 	</h1>
   
 
@@ -475,15 +476,15 @@ H_{out} = hidden\_size
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年04月13日 17:31:09
+	2023年04月30日 14:04:14
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="https://wangtongyouwen.github.io/post/b945630.html" title="pytorch基础入门12-RNN" target="_blank">pytorch基础入门12-RNN</a> -->
+	<a href="https://wangtongyouwen.github.io/post/b945630.html" title="用pytorch实现基础网络4-RNN" target="_blank">用pytorch实现基础网络4-RNN</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="https://wangtongyouwen.github.io/post/b945630.html" title="pytorch基础入门12-RNN" target="_blank">https://wangtongyouwen.github.io/post/b945630.html</a>
+	<a href="https://wangtongyouwen.github.io/post/b945630.html" title="用pytorch实现基础网络4-RNN" target="_blank">https://wangtongyouwen.github.io/post/b945630.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -510,6 +511,10 @@ H_{out} = hidden\_size
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
         		</li>
       		
 		</ul>
@@ -589,14 +594,14 @@ H_{out} = hidden\_size
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          pytorch基础入门13-LSTM
+          用pytorch实现基础网络5-LSTM
         
       </div>
     </a>
   
   
     <a href="/post/1229d3b9.html" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">pytorch基础知识11-ViT</div>
+      <div class="article-nav-title">用pytorch实现基础网络1-卷积网络</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -822,11 +827,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
+                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
+                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -839,6 +844,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">tips</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">network</a>
               </li>
             
             <div class="clearfix"></div>
