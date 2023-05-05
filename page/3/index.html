@@ -279,6 +279,185 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-用pytorch实现基础网络6-GRU" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/f22b56ba.html">用pytorch实现基础网络6-GRU</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/f22b56ba.html" class="archive-article-date">
+  	<time datetime="2023-04-14T09:47:29.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-14</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">566字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">3min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <p>torch.nn.GRU(<strong>args<em>, </em></strong>kwargs*)</p>
+<p>https://pytorch.org/docs/stable/generated/torch.nn.GRU.html?highlight=gru#torch.nn.GRU <span class="math display">\[
+\begin{aligned}
+r_{t} &amp; =\sigma\left(W_{i r} x_{t}+b_{i r}+W_{h r} h_{(t-1)}+b_{h r}\right) \\
+z_{t} &amp; =\sigma\left(W_{i z} x_{t}+b_{i z}+W_{h z} h_{(t-1)}+b_{h z}\right) \\
+n_{t} &amp; =\tanh \left(W_{i n} x_{t}+b_{i n}+r_{t} *\left(W_{h n} h_{(t-1)}+b_{h n}\right)\right) \\
+h_{t} &amp; =\left(1-z_{t}\right) * n_{t}+z_{t} * h_{(t-1)}
+\end{aligned}
+\]</span> 同等<code>hidden size</code>的参数量，GRU是LSTM的<span class="math inline">\(\frac{3}{4}\)</span></p>
+<p>何时使用GRU，何时使用LSTM？</p>
+<p>https://arxiv.org/pdf/1412.3555.pdf</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304141848732.png" alt="image-20230414180541344" /><figcaption aria-hidden="true">image-20230414180541344</figcaption>
+</figure>
+<h2 id="api">1 API</h2>
+<h3 id="parameters">1.1 Parameters</h3>
+<ul>
+<li><strong>input_size</strong> – The number of expected features in the input x</li>
+<li><strong>hidden_size</strong> – The number of features in the hidden state h</li>
+<li><strong>num_layers</strong> – Number of recurrent layers. E.g., setting <code>num_layers=2</code> would mean stacking two GRUs together to form a stacked GRU, with the second GRU taking in outputs of the first GRU and computing the final results. Default: 1</li>
+<li><strong>bias</strong> – If <code>False</code>, then the layer does not use bias weights b_ih and b_hh. Default: <code>True</code></li>
+<li><strong>batch_first</strong> – If <code>True</code>, then the input and output tensors are provided as (batch, seq, feature) instead of (seq, batch, feature). Note that this does not apply to hidden or cell states. See the Inputs/Outputs sections below for details. Default: <code>False</code></li>
+<li><strong>dropout</strong> – If non-zero, introduces a Dropout layer on the outputs of each GRU layer except the last layer, with dropout probability equal to <code>dropout</code>. Default: 0</li>
+<li><strong>bidirectional</strong> – If <code>True</code>, becomes a bidirectional GRU. Default: <code>False</code></li>
+</ul>
+<h2 id="实现">2 实现</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gru_forward</span>(<span class="params"><span class="built_in">input</span>,initial_states,w_ih,w_hh,b_ih,b_hh</span>):</span><br><span class="line">    prev_h = initial_states</span><br><span class="line">    bs,T,i_size = <span class="built_in">input</span>.shape</span><br><span class="line">    h_size = w_ih.shape[<span class="number">0</span>] // <span class="number">3</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 对权重扩维，复制成batch_size倍</span></span><br><span class="line">    batch_w_ih = w_ih.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">    batch_w_hh = w_hh.unsqueeze(<span class="number">0</span>).tile(bs,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    output = torch.zeros(bs,T,h_size) <span class="comment"># GRU网络的输出状态序列</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">        x = <span class="built_in">input</span>[:,t,:] <span class="comment"># t时刻的GRU cell的输入特征向量 [bs,i_size]</span></span><br><span class="line">        w_time_x = torch.bmm(batch_w_ih,x.unsqueeze(-<span class="number">1</span>)) <span class="comment">#[bs,3*i_size,1]</span></span><br><span class="line">        w_time_x = w_time_x.squeeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        w_time_h_prev = torch.bmm(batch_w_hh,prev_h.unsqueeze(-<span class="number">1</span>)) <span class="comment">#[bs,3*i_size,1]</span></span><br><span class="line">        w_time_h_prev = w_time_h_prev.squeeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        r_t = torch.sigmoid(w_time_x[:,:h_size] + w_time_h_prev[:,:h_size] + b_ih[:h_size] + b_hh[:h_size]) <span class="comment"># 重置门</span></span><br><span class="line">        z_t = torch.sigmoid(w_time_x[:,h_size:<span class="number">2</span>*h_size] + w_time_h_prev[:,h_size:<span class="number">2</span>*h_size] + b_ih[h_size:<span class="number">2</span>*h_size] + b_hh[h_size:<span class="number">2</span>*h_size]) <span class="comment"># 更新门</span></span><br><span class="line">        </span><br><span class="line">        n_t = torch.tanh(w_time_x[:,<span class="number">2</span>*h_size:<span class="number">3</span>*h_size]+b_ih[<span class="number">2</span>*h_size:<span class="number">3</span>*h_size]+</span><br><span class="line">                         r_t*(w_time_h_prev[:,<span class="number">2</span>*h_size: <span class="number">3</span>*h_size]+b_hh[<span class="number">2</span>*h_size: <span class="number">3</span>*h_size]))   <span class="comment"># 候选状态</span></span><br><span class="line">        </span><br><span class="line">        prev_h = (<span class="number">1</span>-z_t)*n_t + z_t*prev_h <span class="comment"># 增量更新得到当前时刻最新隐含状态</span></span><br><span class="line">        output[:,t,:] = prev_h</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> output,prev_h</span><br><span class="line">        </span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">bs,T,i_size,h_size = <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br><span class="line"><span class="built_in">input</span> = torch.randn(bs,T,i_size)</span><br><span class="line">h0 = torch.randn(bs,h_size)</span><br><span class="line"></span><br><span class="line">gru_layer = nn.GRU(i_size,h_size,batch_first = <span class="literal">True</span>)</span><br><span class="line">output,h_final = gru_layer(<span class="built_in">input</span>,h0.unsqueeze(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">output_custom,h_final_custom = gru_forward(<span class="built_in">input</span>,h0,gru_layer.weight_ih_l0,gru_layer.weight_hh_l0,gru_layer.bias_ih_l0,gru_layer.bias_hh_l0)</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(h_final,h_final_custom))</span><br><span class="line"><span class="built_in">print</span>(torch.allclose(output,output_custom))</span><br></pre></td></tr></table></figure>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/f22b56ba.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
     <article id="post-用pytorch实现基础网络5-LTSM" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2024,199 +2203,6 @@ H_{out} = hidden\_size
 
 <!-- 文章页添加mathjax公式 -->
   
-    <article id="post-pytorch基础入门4-module详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/565d0c01.html">pytorch基础入门4-module详解</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/565d0c01.html" class="archive-article-date">
-  	<time datetime="2023-04-06T08:27:23.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-06</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">475字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">2min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <p>介绍了module类中的一些方法</p>
-<p>https://pytorch.org/docs/stable/generated/torch.nn.Module.html?highlight=module#torch.nn.Module</p>
-<p>路径位置如下：</p>
-<p>D:\0_python-packages.py</p>
-<h4 id="register_buffer">1 register_buffer</h4>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061705956.png" alt="image-20230406170548915" style="zoom:80%;" /></p>
-<p>让当前模块中添加buffer参数，通过persistent让这个buffer是否一直存在</p>
-<h4 id="register_parameter">2 register_parameter</h4>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061708295.png" alt="image-20230406170826936" style="zoom:80%;" /></p>
-<h4 id="get_parameter">3 get_parameter</h4>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061720617.png" alt="image-20230406172007173" style="zoom:80%;" /></p>
-<p>需要把嵌套层都写好，不能只写一层</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_parameter</span>(<span class="params">self, target: <span class="built_in">str</span></span>) -&gt; <span class="string">&quot;Parameter&quot;</span>:</span><br><span class="line">    module_path, _, param_name = target.rpartition(<span class="string">&quot;.&quot;</span>)</span><br><span class="line"></span><br><span class="line">    mod: torch.nn.Module = self.get_submodule(module_path)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(mod, param_name):</span><br><span class="line">        <span class="keyword">raise</span> AttributeError(mod._get_name() + <span class="string">&quot; has no attribute `&quot;</span></span><br><span class="line">                             + param_name + <span class="string">&quot;`&quot;</span>)</span><br><span class="line"></span><br><span class="line">    param: torch.nn.Parameter = <span class="built_in">getattr</span>(mod, param_name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(param, torch.nn.Parameter):</span><br><span class="line">        <span class="keyword">raise</span> AttributeError(<span class="string">&quot;`&quot;</span> + param_name + <span class="string">&quot;` is not an &quot;</span></span><br><span class="line">                             <span class="string">&quot;nn.Parameter&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> param</span><br></pre></td></tr></table></figure>
-<p>其中<code>target.rpartition</code>的作用如下：</p>
-<p>Search for the last occurrence of the word "x", and return a tuple with three elements:</p>
-<p>1 - everything before the "match" 2 - the "match" 3 - everything after the "match"</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">txt = <span class="string">&quot;I could eat bananas all day, bananas are my favorite fruit&quot;</span></span><br><span class="line"></span><br><span class="line">x = txt.rpartition(<span class="string">&quot;bananas&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(x)</span><br></pre></td></tr></table></figure>
-<p>首先判断是否在module中，如果没有这个parameter_name就抛出异常</p>
-<p>然后校验，是否这个parameter在字典中，不存在则抛出异常</p>
-<h4 id="get_buffer">4 get_buffer</h4>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20230406172527868.png" alt="image-20230406172527868" style="zoom:80%;" /></p>
-<p>同理与get_parameter相似</p>
-<h4 id="如何进行断点训练">5 如何进行断点训练</h4>
-<p>https://pytorch.org/tutorials/recipes/recipes/saving_and_loading_a_general_checkpoint.html</p>
-<p>https://pytorch.org/tutorials/beginner/basics/saveloadrun_tutorial.html</p>
-<h4 id="to">6 to</h4>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061818735.png" alt="image-20230406181821316" style="zoom:80%;" /></p>
-<p>example:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Test(torch.nn.Module):</span><br><span class="line">	def __init__(self):</span><br><span class="line">		super(Test, self).__init__()</span><br><span class="line">		self.linear1 = torch.nn.Linear(2,3)</span><br><span class="line">		self.linear2 = torch.nn.Linear(3,4)</span><br><span class="line">		self.batch_norm = torch.nn.BatchNorm2d(4)</span><br><span class="line">test_module = Test()</span><br></pre></td></tr></table></figure>
-<p>接下来测试to函数的用法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test_module.to(torch.double)</span><br><span class="line">test_module._modules[<span class="string">&#x27;linear1&#x27;</span>].weight.dtype</span><br></pre></td></tr></table></figure>
-<p>为什么能够使用_modules（表示当前模块中的所有子模块）</p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061831991.png" alt="image-20230406183151791" style="zoom:80%;" /></p>
-<p>由此发现当调用_parameters,_buffers时候，只能返回当前模块中的参数和buffers，并不能嵌套查询。</p>
-<h4 id="save_to_state_dict">7 _save_to_state_dict</h4>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061843934.png" alt="image-20230406184301390" style="zoom:80%;" /></p>
-<p>将当前module中的name，param，buff都循环保存至destination中</p>
-<h4 id="state_dict">8 state_dict</h4>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061845557.png" alt="image-20230406184514473" /><figcaption aria-hidden="true">image-20230406184514473</figcaption>
-</figure>
-<p>这个时候能够实现递归，保存当前模块，并且能够保存所有子模块。</p>
-<h4 id="named_members">9 _named_members</h4>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061923535.png" alt="image-20230406192319875" /><figcaption aria-hidden="true">image-20230406192319875</figcaption>
-</figure>
-<p>比较通用的一个查询函数：返回迭代器</p>
-<h4 id="train">10 train</h4>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061942823.png" alt="image-20230406194218024" style="zoom:80%;" /></p>
-<p>dropout batchnorm中会受到影响。</p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304061944676.png" alt="image-20230406194427357" style="zoom:80%;" /></p>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/565d0c01.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&lt;&lt; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">下一页 &gt;&gt;</a>
@@ -2343,6 +2329,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">pytorch</a>
               </li>
              
@@ -2351,15 +2341,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">diffusion model</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">project</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">aboutme</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">network</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -2367,7 +2353,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">diffusion model</a>
+                <a href="javascript:void(0)" class="js-tag color3">network</a>
               </li>
             
             <div class="clearfix"></div>
