@@ -7,16 +7,26 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="https://wangtongyouwen.github.io">
-  <title>归档 | jyh blog</title>
+  <title>pytorch进阶1-DDPM | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="jyh blog">
-<meta property="og:url" content="https://wangtongyouwen.github.io/archives/page/2/index.html">
+  <meta name="description" content="Denoising Diffusion Probabilistic Models https:&#x2F;&#x2F;proceedings.neurips.cc&#x2F;paper&#x2F;2020&#x2F;file&#x2F;4c5bcfec8584af0d967f1ab10179ca4b-Paper.pdf Deep Unsupervised Learning using Nonequilibrium Thermodynamics htt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch进阶1-DDPM">
+<meta property="og:url" content="https://wangtongyouwen.github.io/post/8c9cf490.html">
 <meta property="og:site_name" content="jyh blog">
+<meta property="og:description" content="Denoising Diffusion Probabilistic Models https:&#x2F;&#x2F;proceedings.neurips.cc&#x2F;paper&#x2F;2020&#x2F;file&#x2F;4c5bcfec8584af0d967f1ab10179ca4b-Paper.pdf Deep Unsupervised Learning using Nonequilibrium Thermodynamics htt">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305032040155.png">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305032044361.png">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305032258822.png">
+<meta property="article:published_time" content="2023-05-03T11:07:37.000Z">
+<meta property="article:modified_time" content="2023-05-04T12:28:36.844Z">
 <meta property="article:author" content="jyh">
+<meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="diffusion model">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305032040155.png">
   
   
     <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
@@ -277,381 +287,393 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-pytorch进阶1-DDPM" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title_code_ant" itemprop="name">
+	  <a href="/post/8c9cf490.html">pytorch进阶1-DDPM</a>
+	</h1>
+  
+
+        
+		
+		  <a href="/post/8c9cf490.html" class="archive-article-date">
+  	<time datetime="2023-05-03T11:07:37.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-05-03</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	<span>
+		&nbsp; &nbsp; &nbsp;
+		<span class="post-meta-item-text">阅读量:</span>
+		<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+		<span class="post-meta-item-text">次</span>
+	</span>
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+	<span>
+		&nbsp; &nbsp; &nbsp;
+		<i class="fa fa-eye" aria-hidden="true"></i>
+		&nbsp;
+		<span class="waline-pageview-count" data-path="/post/8c9cf490.html"><i class="fa fa-spinner fa-spin"></i></span>
+	</span>
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
       
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/87a49949.html" class="archive-article-date">
-  	<time datetime="2023-04-20T10:24:36.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-20</time>
 	
-	<!-- busuanzi阅读量统计
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">5.3k字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">28min</span>
+      </span>
+    </span>
 	
-	-->
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
 	
-    <!-- waline阅读量统计 -->
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <p>Denoising Diffusion Probabilistic Models</p>
+<p>https://proceedings.neurips.cc/paper/2020/file/4c5bcfec8584af0d967f1ab10179ca4b-Paper.pdf</p>
+<p>Deep Unsupervised Learning using Nonequilibrium Thermodynamics</p>
+<p>http://proceedings.mlr.press/v37/sohl-dickstein15.pdf</p>
+<h2 id="生成模型">1 生成模型</h2>
+<ul>
+<li>seq2seq</li>
+<li>gan</li>
+<li>flow（数学推理严谨）</li>
+<li>VAE</li>
+<li>diffusion model</li>
+</ul>
+<h2 id="条件概率公式与高斯分布的kl散度">2 条件概率公式与高斯分布的KL散度</h2>
+<h3 id="条件概率的一般形式">2.1 条件概率的一般形式</h3>
+<p><span class="math display">\[
+P(A,B,C)=P(C|B,A)P(B,A) = P(C|B,A)P(B|A)P(A) \\
+P(B,C|A) = P(B|A)P(C|A,B)
+\]</span></p>
+<h3 id="基于马尔科夫假设的条件概率">2.2 基于马尔科夫假设的条件概率</h3>
+<p>如果满足马尔科夫链关系 A-&gt;B-&gt;C,那么有： <span class="math display">\[
+P(A,B,C)=P(C|B,A)P(B,A)=P(C|B)P(B|A)P(A) \\
+P(B,C|A)=P(B|A)P(C|B)
+\]</span></p>
+<h3 id="高斯分布的kl散度公式">2.3 高斯分布的KL散度公式</h3>
+<p>对于两个单一变量的高斯分布p和q而言，他们的KL散度为 <span class="math display">\[
+KL(p,q) = log\frac{\sigma_2}{\sigma_1} + \frac{\sigma_1^2+(\mu_1-\mu_2)^2}{2\sigma_2^2}-\frac{1}{2}
+\]</span></p>
+<h3 id="参数重整化">2.4 参数重整化</h3>
+<p>若希望从高斯分布<span class="math inline">\(N(\mu,\sigma^2)\)</span>中采样，可以先从标准分布<span class="math inline">\(N(0,1)\)</span>采样出<span class="math inline">\(z\)</span>，再得到<span class="math inline">\(\sigma*z+\mu\)</span>。这样做的好处是将随机性转移到了<span class="math inline">\(z\)</span>这个变量上，而<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\sigma\)</span>则当做仿射变换网络的一部分</p>
+<h2 id="vae与多层vae回顾">3 VAE与多层VAE回顾</h2>
+<p>https://zhuanlan.zhihu.com/p/34998569</p>
+<h3 id="单层vae的原理公式与置信下界">3.1 单层VAE的原理公式与置信下界</h3>
+<p><span class="math display">\[
+p(x)=\int_z p_{\theta}(x|z)p(z)\\
+p(x)=\int_z q_{\phi}(z|x) \frac{p_{\theta}(x|z)p(z)}{q_{\phi}(z|x)} \\
+\log p(x)=\log \mathbb{E}_{z \sim q_{\phi}(z \mid x)}\left[\frac{p_{\theta}(x \mid z) p(z)}{q_{\phi}(z \mid x)}\right] \\
+\log p(x) \geq \mathbb{E}_{z \sim q_{\phi}(z \mid x)}\left[\log \frac{p_{\theta}(x \mid z) p(z)}{q_{\phi}(z \mid x)}\right]
+\]</span></p>
+<h3 id="多层vae的原理公式与置信下界">3.2 多层VAE的原理公式与置信下界</h3>
+<p><span class="math display">\[
+\begin{array}{c}
+p(x)=\int_{z_{1}} \int_{z_{2}} p_{\theta}\left(x, z_{1}, z_{2}\right) d z_{1}, d z_{2} \\
+p(x)=\iint q_{\phi}\left(z_{1}, z_{2} \mid x\right) \frac{p_{\theta}\left(x, z_{1}, z_{2}\right)}{q_{\phi}\left(z_{1}, z_{2} \mid x\right)} \\
+p(x)=\mathbb{E}_{z_{1}, z_{2} \sim q_{\phi}\left(z_{1}, z_{2} \mid x\right)}\left[\frac{p_{\theta}\left(x, z_{1}, z_{2}\right)}{q_{\phi}\left(z_{1}, z_{2} \mid x\right)}\right] \\
+\log p(x) \geq \mathbb{E}_{z_{1}, z_{2} \sim q_{\phi}\left(z_{1}, z_{2} \mid x\right)}\left[\log \frac{p_{\theta}\left(x, z_{1}, z_{2}\right)}{q_{\phi}\left(z_{1}, z_{2} \mid x\right)}\right] \\
+p\left(x, z_{1}, z_{2}\right)=p\left(x \mid z_{1}\right) p\left(z_{1} \mid z_{2}\right) p\left(z_{2}\right) \\
+q\left(z_{1}, z_{2} \mid x\right)=q\left(z_{1} \mid x\right) q\left(z_{2} \mid z_{1}\right) \\
+\mathcal{L}(\theta, \phi)=\mathbb{E}_{q(21,2 q \mid x)}\left[\log p\left(x \mid z_{1}\right)-\log q\left(z_{1} \mid x\right)+\log p\left(z_{1} \mid z_{2}\right)-\log q\left(z_{2} \mid z_{1}\right)+\log p\left(z_{2}\right)\right]
+\end{array}
+\]</span></p>
+<h2 id="diffusion-model">4 diffusion model</h2>
+<p>从目标分布中，希望能找到逆扩散过程的规律，然后利用这个规律将任意噪声恢复。</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305032040155.png" alt="image-20221112164034826" /><figcaption aria-hidden="true">image-20221112164034826</figcaption>
+</figure>
+<h3 id="前向过程">4.1 前向过程</h3>
+<p>不断往数据中加入噪声，最后得到了纯噪声（扩散过程）</p>
+<p>每个时刻都要添加高斯噪声，后一时刻都是有前一时刻增加噪声得到的；</p>
+<p>其实这个过程可以看作不断<strong>构建标签</strong>（噪声）的过程</p>
+<ol type="1">
+<li>给定初始数据分布<span class="math inline">\(x_0 \thicksim q(x)\)</span>,可以不断向分布中添加高斯噪声，该噪声的标准差是以固定值<span class="math inline">\(\beta_t\)</span>而确定的，均值是以固定值值<span class="math inline">\(\beta_t\)</span>和当前t时刻的数据<span class="math inline">\(x_t\)</span>决定的。这个过程是一个马尔科夫链过程。</li>
+<li>随着t的不断增大，最终数据分布<span class="math inline">\(x_T\)</span>变成了一个各向独立的高斯分布。</li>
+</ol>
+<p>Given a data point sampled from a real data distribution <span class="math inline">\(x_0 \thicksim q(x)\)</span>,let us define a forward diffusion process in which we add small amount of Gaussian noise to the sample in <span class="math inline">\(T\)</span> steps, producing a sequence of noisy samples <span class="math inline">\(x_1,\dots,x_T\)</span>. The step sizes are controlled by a variance schedule <span class="math inline">\({\beta_t \in (0,1)}^t_{t=1}\)</span></p>
+<p>给定一个从真实数据分布中采样的数据点<span class="math inline">\(x_0 \thicksim q(x)\)</span>，让我们定义一个向前扩散过程，在该过程中，我们在<span class="math inline">\(T\)</span>步中向样本添加少量的高斯噪声，产生一系列噪声样本<span class="math inline">\(x_1，\dots，x_T\)</span>。步长由方差时间表<span class="math inline">\({\beta_t \in (0,1)}^t_{t=1}\)</span>控制。 <span class="math display">\[
+q(X_t|X_{t-1})=\N(X_t;\sqrt{1-\beta_t}X_{t-1},\beta_t I) \\
+q(X_{1:T}|X_0) = \prod^T_{t=1} q(X_t|X_{t-1})
+\]</span> The data sample <span class="math inline">\(x_0\)</span> gradually loses its distinguishable features as the step <span class="math inline">\(t\)</span> becomes larger. Eventually when <span class="math inline">\(T \rightarrow \infty,X_T\)</span> is euivalent to an isotropic Gaussian distribution</p>
+<p>随着步骤<span class="math inline">\(t\)</span>变得更大，数据样本<span class="math inline">\(x_0\)</span>逐渐失去其可区分的特征。最终当<span class="math inline">\(T \rightarrow \infty\)</span>时，<span class="math inline">\(X_T\)</span>等同于各向同性的高斯分布。</p>
+<ol start="3" type="1">
+<li>任何时刻的<span class="math inline">\(q(X_t)\)</span>推导也可以完全基于<span class="math inline">\(x_0\)</span>和<span class="math inline">\(\beta _t\)</span>来计算出来，而不需要做迭代</li>
+</ol>
+<p>注意这里，两个正态分布 <span class="math inline">\(X\thicksim N(\mu_1,\sigma_1)\)</span> 和 <span class="math inline">\(Y\thicksim N(\mu_2,\sigma_2)\)</span>的叠加后的分布<span class="math inline">\(aX+bY\)</span>的均值为<span class="math inline">\(a\mu_1+b\mu_2\)</span>，方差为<span class="math inline">\(a^2\sigma_1^2+b^2\sigma_2^2\)</span>，所以<span class="math inline">\(\sqrt{\alpha_t-\alpha_t\alpha_{t-1}}z_{t-2}+\sqrt{1-\alpha_tz_{t-1}}z_{t-1}\)</span>可以参数重整化为只含有一个随机变量<span class="math inline">\(z\)</span>构成的<span class="math inline">\(\sqrt{1-\alpha_t\alpha_{t-1}}z\)</span>的形式</p>
+<h4 id="第一个公式如何得到x_t时刻的分布前向过程">第一个公式，如何得到<span class="math inline">\(X_t\)</span>时刻的分布（前向过程）？</h4>
+<p><span class="math display">\[
+\alpha _t = 1- \beta_t
+\]</span></p>
+<p>式（6）中<span class="math inline">\(\beta_t\)</span>表示图像的加入噪声的程度，随着训练的进行要逐渐增大，论文中从0.0001到0.002扩大。 <span class="math display">\[
+x_t=\sqrt{\alpha_t}x_{t-1}+\sqrt{1-\alpha_t}z_1
+\]</span> 式(7)中<span class="math inline">\(z_1\)</span>表示噪声（高斯噪声） <span class="math display">\[
+\begin{align}
+          x_t &amp; = \sqrt{\alpha _t}(\sqrt{\alpha_{t-1}}x_{t-2}+\sqrt{1-\alpha_{t-1}}z_{2})+\sqrt{1-\alpha_t}z_1 \\
+           &amp; = \sqrt{\alpha_t\alpha_{t-1}}x_{t-2}+\sqrt{1-\alpha_t\alpha_{t-1}}\bar z_2 \\
+           &amp; = \sqrt{\bar \alpha_t}x_0+\sqrt{1-\bar \alpha_t} z_t
+          \end{align}
+\]</span> 其中<span class="math inline">\(z_1和z_2\)</span>分别表示<span class="math inline">\(N(0,1-\alpha_t)和N(0,\alpha_t(1-\alpha_{t-1}))\)</span>，独立同分布可相加得到，最后的<span class="math inline">\(\bar z_2\)</span></p>
+<p>其中<span class="math inline">\(\bar \alpha_t\)</span>表示累乘<span class="math inline">\(\bar \alpha_t=\alpha_1\cdot \alpha_2 \cdot \dots \alpha_{t-1}\cdot \alpha_{t}\)</span> <span class="math display">\[
+q(X_t|X_0) = \N(X_t;\sqrt{\bar \alpha_t}X_0,(1-\bar \alpha_t)I)
+\]</span> Usually, we can afford a larger update step when the sample gets noisier, so <span class="math inline">\(\beta_1&lt;\beta_2&lt;...&lt;\beta_T\)</span> and therfore <span class="math inline">\(\bar \alpha_1 &gt; \dots \bar \alpha_T\)</span></p>
+<h3 id="逆向过程">4.2 逆向过程</h3>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305032044361.png" alt="image-20221112171756756" /><figcaption aria-hidden="true">image-20221112171756756</figcaption>
+</figure>
+<p>逆过程是从高斯噪声中恢复原始数据，我们可以假设它也是一个高斯分布，但是无法逐步地去拟合分布，所以需要构建一个参数分布来去做估计。逆扩散过程仍然是一个马尔科夫链过程。 <span class="math display">\[
+p_\theta(X_{0:T}) = p(X_T)\prod^T_{t=1}p_\theta(X_{t-1}|X_t)\\
+p_\theta(X_{t-1}|X_t) = \N (X_{t-1};\mu_{\theta}(X_t,t),\Sigma_{\theta}(x_t,t))
+\]</span> If we can reverse the above process and sample from <span class="math inline">\(q(X_{t-1}|X_t)\)</span>, we will be able to recreate the true sample from a Gaussian noise input, <span class="math inline">\(X_T \thicksim \mathcal{N}(0,I)\)</span>. Note that if <span class="math inline">\(\beta_t\)</span> is small enough, <span class="math inline">\(q(X_{t-1}|X_t)\)</span> will also be Gaussian. Unfortunately, we cannot easily estimate <span class="math inline">\(q(X_{t-1}|X_t)\)</span> because it needs to use the entire dataset adn therefore we need to learn a model <span class="math inline">\(p_\theta\)</span> to approximate these conditional probabilities in order to run reverse diffusion process.</p>
+<p>如果我们能够逆转上述过程并从<span class="math inline">\(q(X_{t-1}|X_t)\)</span>中抽样，我们将能够从高斯噪声输入<span class="math inline">\(X_T \thicksim \mathcal{N}(0,I)\)</span>中重建真实样本。请注意，如果<span class="math inline">\(\beta_t\)</span>足够小，<span class="math inline">\(q(X_{t-1}|X_t)\)</span>也将是高斯分布。不幸的是，我们无法轻易估计<span class="math inline">\(q(X_{t-1}|X_t)\)</span>，因为它需要使用整个数据集，因此我们需要学习一个模型<span class="math inline">\(p_\theta\)</span>来逼近这些条件概率，以便运行反向扩散过程。</p>
+<h3 id="后验的扩散条件概率">4.3 后验的扩散条件概率</h3>
+<p><span class="math inline">\(q(X_{t-1}|X_t,X_0)\)</span>分布式可以用公式表示的，可就是说给定<span class="math inline">\(X_t,X_0\)</span>，就能够计算出<span class="math inline">\(X_{t-1}\)</span> <span class="math display">\[
+q(X_{t-1}|X_t) = \N(X_{t-1};\bar \mu(X_t,X_0),\bar \beta_t I)
+\]</span></p>
+<p><span class="math display">\[
+q(X_{t-1}|X_t,X_0)=q(X_t|X_{t-1},X_0)\frac{q(X_{t-1}|X_0)}{q((X_t|X_0))}
+\]</span></p>
+<p><span class="math display">\[
+q(X_{t-1}|X_0)\Longrightarrow    \sqrt{\bar \alpha_{t-1}}x_0+\sqrt{1-\bar \alpha_{t-1}}z \sim N(\sqrt{\bar \alpha_{t-1}}x_0,1-\bar \alpha_{t-1})
+\]</span></p>
+<p><span class="math display">\[
+q(X_{t}|X_0)\Longrightarrow  \sqrt{\bar \alpha_{t}}x_0+\sqrt{1-\bar \alpha_{t}}z \sim N(\sqrt{\bar \alpha_{t}}x_0,1-\bar \alpha_{t})
+\]</span></p>
+<p><span class="math display">\[
+q(X_{t}|X_{t-1},X_0)\Longrightarrow  \sqrt{ \alpha_{t}}x_{t-1}+\sqrt{1- \alpha_{t}}z \sim N(\sqrt{ \alpha_{t}}x_0,1- \alpha_{t})
+\]</span></p>
+<p>将式(16~18)代入式(15)得： <span class="math display">\[
+q(X_{t-1}|X_t,X_0)\propto \exp \left(-\frac{1}{2}\left(\frac{\left(\mathbf{x}_{t}-\sqrt{\alpha_{t}} \mathbf{x}_{t-1}\right)^{2}}{\beta_{t}}+\frac{\left(\mathbf{x}_{t-1}-\sqrt{\bar{\alpha}_{t-1}} \mathbf{x}_{0}\right)^{2}}{1-\bar{\alpha}_{t-1}}-\frac{\left(\mathbf{x}_{t}-\sqrt{\bar{\alpha}_{t}} \mathbf{x}_{0}\right)^{2}}{1-\bar{\alpha}_{t}}\right)\right)
+\]</span></p>
+<p><span class="math display">\[
+\begin{array}{l}
+=\exp \left(-\frac{1}{2}\left(\frac{\mathbf{x}_{t}^{2}-2 \sqrt{\alpha_{t}} \mathbf{x}_{t} \mathbf{x}_{t-1}+\alpha_{t} \mathbf{x}_{t-1}^{2}}{\beta_{t}}+\frac{\mathbf{x}_{t-1}^{2}-2 \sqrt{\bar{\alpha}_{t-1}} \mathbf{x}_{0} \mathbf{x}_{t-1}+\bar{\alpha}_{t-1} \mathbf{x}_{0}^{2}}{1-\bar{\alpha}_{t-1}}-\frac{\left(\mathbf{x}_{t}-\sqrt{\bar{\alpha}_{t}} \mathbf{x}_{0}\right)^{2}}{1-\bar{\alpha}_{t}}\right)\right) \\
+=\exp \left(-\frac{1}{2}\left(\left(\frac{\alpha_{t}}{\beta_{t}}+\frac{1}{1-\bar{\alpha}_{t-1}}\right) \mathbf{x}_{t-1}^{2}-\left(\frac{2 \sqrt{\alpha_{t}}}{\beta_{t}} \mathbf{x}_{t}+\frac{2 \sqrt{\bar{\alpha}_{t-1}}}{1-\bar{\alpha}_{t-1}} \mathbf{x}_{0}\right) \mathbf{x}_{t-1}+C\left(\mathbf{x}_{t}, \mathbf{x}_{0}\right)\right)\right) 
+\end{array}
+\]</span></p>
+<p><span class="math display">\[
+\exp \left(-\frac{(x-\mu)^{2}}{2 \sigma^{2}}\right)=\exp \left(-\frac{1}{2}\left(\frac{1}{\sigma^{2}} x^{2}-\frac{2 \mu}{\sigma^{2}} x+\frac{\mu^{2}}{\sigma^{2}}\right)\right)
+\]</span></p>
+由式(20)可知： $$
+<span class="math display">\[\begin{cases}
+\bar \beta_t = \frac{1}{\frac{\alpha_t}{\beta_t}+\frac{1}{1-\bar \alpha_{t-1}}} = \frac{1-\bar \alpha_{t-1}}{1-\bar \alpha_t} \cdot \beta_t  \\
+\bar\mu_t(X_t,X_0)=\frac{\sqrt{\alpha_{t}}\left(1-\bar{\alpha}_{t-1}\right)}{1-\bar{\alpha}_{t}} \mathbf{x}_{t}+\frac{\sqrt{\bar{\alpha}_{t-1}} \beta_{t}}{1-\bar{\alpha}_{t}} \mathbf{x}_{0} \\
+
+\end{cases}\]</span>
+<p>$$</p>
+<p>其中: <span class="math display">\[
+x_0=\frac{1}{\sqrt{\bar\alpha_t}}(x_t-\sqrt{1-\bar \alpha_t}z_t)
+\]</span> 将<span class="math inline">\(x_0\)</span>代入式（22）最终得到<span class="math inline">\(\tilde{\mu}_{t}\)</span></p>
+<p><span class="math display">\[
+\tilde{\mu}_{t}=\frac{1}{\sqrt{a_{t}}}\left(x_{t}-\frac{\beta_{t}}{\sqrt{1-\bar{a}_{t}}} {z}_{t}\right)
+\]</span> 其中<span class="math inline">\(z_t\)</span>是什么？是估计的每个时刻的噪声，即<span class="math inline">\(X_T\)</span>时刻的噪声</p>
+<ul>
+<li>虽然无法直接求解，但是能通过训练一个模型进行计算</li>
+<li>采用Unet模型</li>
+<li>模型的输入参数为当前时刻的分布和时刻t</li>
+<li>模型的真实结果其实是由前向过程中添加的noise标签（显然是已知的）</li>
+</ul>
+<h3 id="目标数据分布的似然函数">4.4 目标数据分布的似然函数</h3>
+<p>我们可以在负对数似然函数的基础上加上一个KL散度，于是就构成了负对数似然的上界，上界越小，负对数似然自然也就越小，那么对数似然就越大了 <span class="math display">\[
+\begin{aligned}
+-\log p_{\theta}({\mathbf x}_{0})&amp; \leq-\log p_\theta(\mathbf{x}_0)+D_{\mathrm{KL}}(q(\mathbf{x}_{1:T}|\mathbf{x}_0)\|p_\theta(\mathbf{x}_{1:T}|\mathbf{x}_0))  \\
+&amp;=-\log p_\theta(\mathbf{x}_0)+\mathbb{E}_{\mathbf{x}_1:T\sim q(\mathbf{x}_1:T|\mathbf{x}_0)}\left[\log\dfrac{q(\mathbf{x}_{1:T}|\mathbf{x}_0)}{p_\theta(\mathbf{x}_{0:T})/p_\theta(\mathbf{x}_0)}\right] \\
+&amp;=-\log p_\theta\mathfrak{(x}_0)+\mathbb{E}_q\Big[\log\dfrac{q(\mathbf{x}_1:T|\mathbf{x}_0)}{p_\theta(\mathbf{x}_0:T)}+\log p_\theta(\mathbf{x}_0)\Big] \\
+&amp;=\mathbb{E}_q\Big[\log\dfrac{q(\mathbf{x}_{1:T}|\mathbf{x}_0)}{p_\theta(\mathbf{x}_{0:T})}\Big] \\
+\mathrm{Let}~L_{\mathrm{VLB}}&amp; =\mathbb{E}_{q(\mathbf{x}_0:T)}\Big[\log\dfrac{q(\mathbf{x}_{1:T}|\mathbf{x}_0)}{p_\theta(\mathbf{x}_0:T)}\Big]\geq-\mathbb{E}_{q(\mathbf{x}_0)}\log p_\theta(\mathbf{x}_0) 
+\end{aligned}
+\]</span> 进一步可以写出如上公式的交叉熵的上界，接下来，对交叉熵的上界进行化简 <span class="math display">\[
+q(X_t|X_{t-1}) =q(X_t|X_{t-1},X_0) = \frac{q(X_t,X_{t-1},X_0)}{q(X_{t-1},X_0)}=\frac{q(X_{t-1}|X_t,X_0)q(X_t|X_0)q(X_0)}{q(X_{t-1},X_0)}=\frac{q(X_{t-1}|X_t,X_0)q(X_t|X_0)}{q(X_{t-1}|X_0)}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+L_{\mathrm{VLB}}&amp; =\mathbb{E}_{q(\mathbf{x}_{0:T)}}\Big[\log\frac{q(\mathbf{x}_{1:T}|\mathbf{x}_{0})}{p_{\theta}(\mathbf{x}_{0:T})}\Big]  \\
+&amp;=\mathbb{E}_{q}\Big[\log{\frac{\prod_{t=1}^{T}q(\mathbf{x}_{t}|\mathbf{x}_{t-1})}{p_{\theta}(\mathbf{x}_{T})\prod_{t=1}^{T}p_{\theta}(\mathbf{x}_{t-1}|\mathbf{x}_{t})}}\Big] \\
+&amp;=\mathbb{E}_q\Big[-\log p_\theta(\mathbf{x}_T)+\sum_{t=1}^T\log\dfrac{q(\mathbf{x}_t|\mathbf{x}_{t-1})}{p_\theta(\mathbf{x}_{t-1}|\mathbf{x}_t)}\Big] \\
+&amp;=\mathbb{E}_q\Big[-\log p_\theta(\mathbf{x}_T)+\sum_{t=2}^T\log\dfrac{q(\mathbf{x}_t|\mathbf{x}_{t-1})}{p_\theta(\mathbf{x}_{t-1}|\mathbf{x}_t)}+\log\dfrac{q(\mathbf{x}_1|\mathbf{x}_0)}{p_\theta(\mathbf{x}_0|\mathbf{x_k})}\Big] \\
+&amp;=\mathbb{E}_q\Big[-\log p_\theta(\mathbf{x}_T)+\sum_{t=2}^T\log\Big(\dfrac{q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}_0)}{p_\theta(\mathbf{x}_{t-1}|\mathbf{x}_t)}\cdot\dfrac{q(\mathbf{x}_t|\mathbf{x}_0)}{q(\mathbf{x}_{t-1}|\mathbf{x}_0)}\Big)+\log\dfrac{q(\mathbf{x}_1|\mathbf{x}_0)}{p_\theta(\mathbf{x}_0|\mathbf{x}_1)}\Big] \\
+&amp;=\mathbb{E}_q\Big[-\log p_\theta(\mathbf{x}_T)+\sum_{t=2}^T\log\dfrac{q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}_0)}{p_\theta(\mathbf{x}_{t-1}|\mathbf{x}_t)}+\sum_{t=2}^T\log\dfrac{q(\mathbf{x}_t|\mathbf{x}_0)}{q(\mathbf{x}_{t-1}|\mathbf{x}_0)}+\log\dfrac{q(\mathbf{x}_1|\mathbf{x}_0)}{p_\theta(\mathbf{x}_0|\mathbf{x}_1)}\Big] \\
+&amp;=\mathbb{E}_q\Big[-\log p_\theta(\mathbf{x}_T)+\sum\limits_{=2}^T\log\dfrac{q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}_0)}{p_\theta(\mathbf{x}_{t-1}|\mathbf{x}_t)}+\log\dfrac{q(\mathbf{x}_T|\mathbf{x}_0)}{q(\mathbf{x}_1|\mathbf{x}_0)}+\log\dfrac{q(\mathbf{x}_1|\mathbf{x}_0)}{p_\theta(\mathbf{x}_0|\mathbf{x}_1)}\Big] \\
+&amp;=\mathbb{E}_q\Big[\log\dfrac{q(\mathbf{x}_T|\mathbf{x}_0)}{p_\theta(\mathbf{x}_T)}+\sum\limits_{t=2}^T\log\dfrac{q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}_0)}{p_\theta(\mathbf{x}_{t-1}|\mathbf{x}_t)}-\log p_\theta(\mathbf{x}_0|\mathbf{x}_1)\Big] \\
+&amp;=\mathbb{E}_q[\underbrace{D_{\mathrm{KL}}(q(\mathbf{x}_T|\mathbf{x}_0)\parallel p_\theta(\mathbf{x}_T))}_{L_T}+\sum_{t=2}^T\underbrace{D_{\mathrm{KL}}(q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}_0)\parallel p_\theta(\mathbf{x}_{t-1}|\mathbf{x}_t))}_{L_{t-1}}-\underbrace{\log p_0(\mathbf{x}_0|\mathbf{x}_1)]}_{L_0}
+\end{aligned}
+\]</span></p>
+<p>这里论文将<span class="math inline">\(p_{\theta}(X_{t-1}|X_t)\)</span>分布的方差设置为一个与<span class="math inline">\(\beta\)</span>相关的常数，因此可训练的参数值存在于其均值中</p>
+<p>对于两个单一变量的高斯分布p和q而言，他们的kl散度如式（3） <span class="math display">\[
+KL(p,q) = log\frac{\sigma_2}{\sigma_1} + \frac{\sigma_1^2+(\mu_1-\mu_2)^2}{2\sigma_2^2}-\frac{1}{2}
+\]</span></p>
+<p><span class="math display">\[
+\begin{gathered}
+L_{t-1}=\mathbb{E}_{q}\left[{\frac{1}{2\sigma_{t}^{2}}}\|{\tilde{\mu}}_{t}(\mathbf{x}_{t},\mathbf{x}_{0})-{\boldsymbol{\mu}}_{\theta}(\mathbf{x}_{t},t)\|^{2}\right]+C \\
+ r_{t-1}-C=E_{x_{0},\kappa}\left[{\frac{1}{2\sigma_{t}^{2}}}\left\|{\tilde{\mu}}_{t}\left(\mathbf{x}_{t}(\mathbf{x}_{0},\epsilon),{\frac{1}{\sqrt{\alpha t}}}(\mathbf{x}_{0},\epsilon)-{\sqrt{1-{\bar{\alpha}}_{t}}}\epsilon)\right)-\mu_{0}(\mathbf{x_t}(\mathbf{x}_{0},\epsilon),t)\right\|^{2}\right] \\
+=\mathbb{E}_{\mathbf{x}_{0},\epsilon}\left[\dfrac{1}{2\sigma_{t}^{2}}\left\|\dfrac{1}{\sqrt{\alpha_{t}}}\left(\mathbf{x}_{t}(\mathbf{x}_{0},\epsilon)-\dfrac{\beta_{t}}{\sqrt{1-\bar{\alpha}_{t}}}\epsilon\right)-\mu_{\theta}(\mathbf{x}_{t}(\mathbf{x}_{0},\epsilon),t)\right\|^{2}\right] \\
+ \mu_{\theta}(\mathbf{x}_{t},t)={\bar{\mu}}_{t}\left(\mathbf{x}_{t},{\frac{1}{\sqrt{\bar{\alpha}t}}}(\mathbf{x}_{t}-{\sqrt{1-{\bar{\alpha}}_{t}}}\epsilon_{\theta}(\mathbf{x}_{t}))\right)={\frac{1}{\sqrt{\alpha_{t}}}}\left(\mathbf{x}_{t}-{\frac{\beta_{t}}{\sqrt{1-{\bar{\alpha}}_{t}}}}\epsilon_{\theta}(\mathbf{x}_{t},t)\right) \\
+\mathbb{E}_{\mathbf{x}_{0},\epsilon}\left[\frac{\beta_{t}^{2}}{2\sigma_{t}^{2}\alpha_{t}(1-\bar{\alpha}_{t})}\left\|\epsilon-\epsilon_{\theta}(\sqrt{\bar{\alpha}_{t}}\mathbf{x}_{0}+\sqrt{1-\bar{\alpha}_{t}}\epsilon,t)\right\|^{2}\right] \\
+L_{\mathrm{simple}}(\theta):=\mathbb{E}_{t,\mathbf{x}_{0},\epsilon}\Big[\left\|\boldsymbol{\epsilon}-\boldsymbol{\epsilon}_{\theta}(\sqrt{\bar{\alpha}_{t}}\mathbf{x}_{0}+\sqrt{1-\bar{\alpha}_{t}}\boldsymbol{\epsilon},t)\right\|^{2}\Big] 
+\end{gathered}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\tilde{\mu}_{t}\)</span>是可以计算得到的，所以可以用<span class="math inline">\(\mu_{\theta}\)</span>去预测<span class="math inline">\(\tilde{\mu}_{t}\)</span>网络，进而得到 loss function</li>
+<li>预测均值的方法不太合理，预测噪声的方式更加合理。预测目标转移成了<span class="math inline">\(\varepsilon\)</span></li>
+</ul>
+<p><span class="math display">\[
+\mathbf x_t(\mathbf x_0,\varepsilon ) = \sqrt {\bar {\alpha_n} } \mathbf x_0 + \sqrt{1-\bar{\alpha_n}}\varepsilon \\ \varepsilon \sim\mathcal{N}(0,I)
+\]</span></p>
+<p>然后式（24）可以转换为： <span class="math display">\[
+{\mu}_{\theta}(\mathbf x_t,t)=\frac{1}{\sqrt{a_{t}}}\left(x_{t}-\frac{\beta_{t}}{\sqrt{1-\bar{a}_{t}}} \varepsilon_{\theta}(\mathbf x_t,t)\right)
+\]</span></p>
+<h2 id="算法代码介绍">5 算法代码介绍</h2>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305032258822.png" alt="image-20230503225817264" /><figcaption aria-hidden="true">image-20230503225817264</figcaption>
+</figure>
+<p>使用jupyter notebook 进行演示</p>
+<h3 id="选择一个数据集">5.1 选择一个数据集</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_s_curve</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">torch.manual_seed(<span class="number">42</span>)</span><br><span class="line">s_curve, _ = make_s_curve(<span class="number">10</span>**<span class="number">4</span>,noise=<span class="number">0.1</span>)</span><br><span class="line">s_curve = s_curve[:,[<span class="number">0</span>,<span class="number">2</span>]] / <span class="number">10.0</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;shape of moons:&quot;</span>,np.shape(s_curve))</span><br><span class="line"></span><br><span class="line">data = s_curve.T</span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line">ax.scatter(*data,color=<span class="string">&quot;red&quot;</span>,edgecolor=<span class="string">&quot;white&quot;</span>)</span><br><span class="line"></span><br><span class="line">ax.axis(<span class="string">&quot;off&quot;</span>)</span><br><span class="line"></span><br><span class="line">datasets = torch.Tensor(s_curve).<span class="built_in">float</span>()</span><br></pre></td></tr></table></figure>
+<h3 id="确定超参数的值">5.2 确定超参数的值</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">num_steps = <span class="number">100</span> <span class="comment"># 对于步骤，一开始可以由beta，分布的均值和标准差来共同确定</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定每一步的beta</span></span><br><span class="line">betas = torch.linspace(-<span class="number">6</span>,<span class="number">6</span>,num_steps)</span><br><span class="line">betas = torch.sigmoid(betas) * (<span class="number">0.5e-2</span> - <span class="number">1e-5</span>) + <span class="number">1e-5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算 alpha，alpha_prod,alpha_prod_previous,alpha_bar_sqrt等变量的值</span></span><br><span class="line">alphas = <span class="number">1</span> - betas</span><br><span class="line">alphas_prod = torch.cumprod(alphas,<span class="number">0</span>)</span><br><span class="line">alphas_prod_p = torch.cat([torch.tensor([<span class="number">1</span>]).<span class="built_in">float</span>(),alphas_prod[:-<span class="number">1</span>]], <span class="number">0</span>) <span class="comment"># p表示previous</span></span><br><span class="line">alphas_bar_sqrt = torch.sqrt(alphas_prod)</span><br><span class="line">one_minus_alphas_bar_log = torch.log(<span class="number">1</span> - alphas_prod)</span><br><span class="line">one_minus_alphas_bar_sqrt = torch.sqrt(<span class="number">1</span> - alphas_prod)</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> alphas.shape == alphas_prod.shape == alphas_prod_p.shape == \</span><br><span class="line">alphas_bar_sqrt.shape == one_minus_alphas_bar_log.shape == one_minus_alphas_bar_sqrt.shape</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;all the same shape:&quot;</span>,betas.shape)</span><br></pre></td></tr></table></figure>
+<h3 id="确定扩散过程任意时刻的采样值">5.3 确定扩散过程任意时刻的采样值</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 计算任意时刻的x的采样值，基于x_0和参数重整化技巧</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">q_x</span>(<span class="params">x_0,t</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;可以基于x[0]得到任意时刻t的x[t]&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    noise = torch.randn_like(x_0) <span class="comment"># noise 是从正态分布中生成的随机噪声</span></span><br><span class="line">    alphas_t = alphas_bar_sqrt[t]</span><br><span class="line">    alphas_1_m_t = one_minus_alphas_bar_sqrt[t]</span><br><span class="line">    <span class="keyword">return</span> (alphas_t * x_0 + alphas_1_m_t * noise) <span class="comment"># 在x[0]的基础上添加噪声</span></span><br></pre></td></tr></table></figure>
+<h3 id="演示原始数据分布加噪100步后的效果">5.4 演示原始数据分布加噪100步后的效果</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">num_shows = <span class="number">20</span></span><br><span class="line">fig, axs = plt.subplots(<span class="number">2</span>,<span class="number">10</span>,figsize=(<span class="number">28</span>,<span class="number">3</span>))</span><br><span class="line">plt.rc(<span class="string">&quot;text&quot;</span>,color=<span class="string">&quot;blue&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 共有10000个点，每个点包含两个坐标</span></span><br><span class="line"><span class="comment"># 生成100步以内每隔5步加噪声后的图像</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_shows):</span><br><span class="line">    j = i // <span class="number">10</span></span><br><span class="line">    k = i % <span class="number">10</span></span><br><span class="line">    q_i = q_x(datasets,torch.tensor([i*num_steps // num_shows])) <span class="comment"># 生成t时刻的采样数据</span></span><br><span class="line"></span><br><span class="line">    axs[j,k].scatter(q_i[:,<span class="number">0</span>],q_i[:,<span class="number">1</span>],color=<span class="string">&quot;red&quot;</span>,edgecolor=<span class="string">&quot;white&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    axs[j,k].set_axis_off()</span><br><span class="line">    axs[j,k].set_title(<span class="string">&quot;$q(\mathbf&#123;x&#125;_&#123;&quot;</span>+<span class="built_in">str</span>(i*num_steps//num_shows)+<span class="string">&quot;&#125;)$&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="编写拟合逆扩散过程高斯分布的模型">5.5 编写拟合逆扩散过程高斯分布的模型</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MLPDiffusion</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,n_steps,num_units=<span class="number">128</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(MLPDiffusion,self).__init__()</span><br><span class="line">        </span><br><span class="line">        self.linears = nn.ModuleList(</span><br><span class="line">        [</span><br><span class="line">            nn.Linear(<span class="number">2</span>,num_units),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(num_units,num_units),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(num_units,num_units),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(num_units,<span class="number">2</span>),</span><br><span class="line">        ])</span><br><span class="line">        </span><br><span class="line">        self.step_embeddings = nn.ModuleList([</span><br><span class="line">            nn.Embedding(n_steps,num_units),</span><br><span class="line">            nn.Embedding(n_steps,num_units),</span><br><span class="line">            nn.Embedding(n_steps,num_units),</span><br><span class="line">        ])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,x_0,t</span>):</span><br><span class="line">        x = x_0</span><br><span class="line">        <span class="keyword">for</span> idx,embedding_layer <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.step_embeddings):</span><br><span class="line">            t_embedding = embedding_layer(t)</span><br><span class="line">            x = self.linears[<span class="number">2</span>*idx](x)</span><br><span class="line">            x += t_embedding</span><br><span class="line">            x = self.linears[<span class="number">2</span>*idx+<span class="number">1</span>](x)</span><br><span class="line">            </span><br><span class="line">        x = self.linears[-<span class="number">1</span>](x)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+<h3 id="编写训练的误差函数">5.6 编写训练的误差函数</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">diffusion_loss_fn</span>(<span class="params">model,x_0,alphas_bar_sqrt,one_minus_alphas_bar_sqrt,n_steps</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;对任意时刻t进行采样计算&quot;&quot;&quot;</span></span><br><span class="line">    batch_size = x_0.shape[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 随机CIA杨一个时刻t，为了提高训练速度，这里我确保t不重复</span></span><br><span class="line">    </span><br><span class="line">    t = torch.randint(<span class="number">0</span>,n_steps,size=(batch_size//<span class="number">2</span>,))</span><br><span class="line">    t = torch.cat([t,n_steps-<span class="number">1</span>-t],dim=<span class="number">0</span>)</span><br><span class="line">    t = t.unsqueeze(-<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># x0的系数</span></span><br><span class="line">    a = alphas_bar_sqrt[t]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># eps的系数</span></span><br><span class="line">    am1 = one_minus_alphas_bar_sqrt[t]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 生成随机噪声eps</span></span><br><span class="line">    e = torch.randn_like(x_0)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 构造模型的输入</span></span><br><span class="line">    x = x_0 * a + e * am1</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 送入模型，得到t时刻的随机噪声预测值</span></span><br><span class="line">    output = model(x,t.squeeze(-<span class="number">1</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 与真实噪声一起计算误差，求平均值</span></span><br><span class="line">    <span class="keyword">return</span> (e - output).square().mean()</span><br></pre></td></tr></table></figure>
+<h3 id="编写逆扩散采样函数inference过程">5.7 编写逆扩散采样函数(inference过程)</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">p_sample_loop</span>(<span class="params">model,shape,n_steps,betas,one_minus_alphas_bar_sqrt</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;从x[T]恢复x[T-1],x[T-2],...,x[0]&quot;&quot;&quot;</span></span><br><span class="line">    cur_x = torch.randn(shape)</span><br><span class="line">    x_seq = [cur_x]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">reversed</span>(<span class="built_in">range</span>(n_steps)):</span><br><span class="line">        cur_x = p_sample(model,cur_x,i,betas,one_minus_alphas_bar_sqrt)</span><br><span class="line">        x_seq.append(cur_x)</span><br><span class="line">    <span class="keyword">return</span> x_seq</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">p_sample</span>(<span class="params">model,x,t,betas,one_minus_alphas_bar_sqrt</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;从x[T]采样t时刻的重构值&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    t = torch.tensor([t])</span><br><span class="line">    coeff = betas[t] / one_minus_alphas_bar_sqrt[t]</span><br><span class="line">    eps_theta = model(x,t)</span><br><span class="line">    mean = (<span class="number">1</span> / (<span class="number">1</span>-betas[t]).sqrt() * (x - (coeff * eps_theta)))</span><br><span class="line">    </span><br><span class="line">    z = torch.randn_like(x)</span><br><span class="line">    sigma_t = betas[t].sqrt()</span><br><span class="line">    sample = mean + sigma_t * z</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> (sample)</span><br></pre></td></tr></table></figure>
+<h3 id="开始训练模型并打印loss及中间的重构效果">5.8开始训练模型，并打印loss及中间的重构效果</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">seed = 42</span><br><span class="line">class EMA():</span><br><span class="line">    &quot;&quot;&quot;构建一个参数平滑器&quot;&quot;&quot;</span><br><span class="line">    def __init__(self,mu=0.01):</span><br><span class="line">        self.mu = mu</span><br><span class="line">        self.shadow = &#123;&#125;</span><br><span class="line">    def register(self,name,val):</span><br><span class="line">        self.shadow[name] = val.clone()</span><br><span class="line">        </span><br><span class="line">    def __cell__(self,name,x):</span><br><span class="line">        assert name in self.shadow</span><br><span class="line">        new_average = self.mu * x + (1.0 - self.mu) * self.shadow[name]</span><br><span class="line">        self.shadow[name] = new_average.clone()</span><br><span class="line">        return new_average</span><br><span class="line">    </span><br><span class="line">print(&quot;training model...&quot;)</span><br><span class="line"></span><br><span class="line">batch_size = 128</span><br><span class="line">dataloader = torch.utils.data.DataLoader(datasets,batch_size=batch_size,shuffle=True)</span><br><span class="line">dataloader = dataloader.cuda()</span><br><span class="line">num_epoch = 4000</span><br><span class="line">plt.rc(&quot;text&quot;,color=&quot;blue&quot;)</span><br><span class="line"></span><br><span class="line">model = MLPDiffusion(num_steps).cuda() # 输出维度是2，输入是x和step</span><br><span class="line">optimizer = torch.optim.Adam(model.parameters(),lr=1e-3)</span><br><span class="line"></span><br><span class="line">for t in range(num_epoch):</span><br><span class="line">    for idx,batch_x in enumerate(dataloader):</span><br><span class="line">        loss = diffusion_loss_fn(model,batch_x,alphas_bar_sqrt,one_minus_alphas_bar_sqrt,num_steps)</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        nn.utils.clip_grad_norm_(model.parameters(),1.)</span><br><span class="line">        optimizer.step()</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    # print loss</span><br><span class="line">    if (t % 100 == 0):</span><br><span class="line">        print(loss)</span><br><span class="line">        x_seq = p_sample_loop(model,datasets.shape,num_steps,betas,one_minus_alphas_bar_sqrt) #共有100个元素</span><br><span class="line">        </span><br><span class="line">        fig, axs = plt.subplots(1,10,figsize=(28,3))</span><br><span class="line">        for i in range(1,11):</span><br><span class="line">            cur_x = x_seq[i * 10].detach()</span><br><span class="line">            axs[i-1].scatter(cur_x[:,0],cur_x[:,1],color=&quot;red&quot;,edgecolor=&quot;white&quot;)</span><br><span class="line">            axs[i-1].set_axis_off()</span><br><span class="line">            axs[i-1].set_title(&quot;$q(\mathbf&#123;x&#125;_&#123;&quot;+str(i*10)+&quot;&#125;)$&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="动画演示">5.9 动画演示</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># generating the forward image sequence 生成前向过程，也就是逐步加噪声</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">imgs = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    plt.clf()</span><br><span class="line">    q_i = q_x(datasets,torch.tensor([i]))</span><br><span class="line">    plt.scatter(q_i[:,<span class="number">0</span>],q_i[:,<span class="number">1</span>],color=<span class="string">&quot;red&quot;</span>,edgecolor=<span class="string">&quot;white&quot;</span>,s=<span class="number">5</span>)</span><br><span class="line">    plt.axis(<span class="string">&quot;off&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    img_buf = io.BytesIO()</span><br><span class="line">    plt.savefig(img_buf,<span class="built_in">format</span>=<span class="string">&quot;png&quot;</span>)</span><br><span class="line">    img = Image.<span class="built_in">open</span>(img_buf)</span><br><span class="line">    imgs.append(img)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># generating the reverse diffusion sequence</span></span><br><span class="line">reverse = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    plt.clf()</span><br><span class="line">    cur_x = x_seq[i].detach() <span class="comment"># 拿到训练末尾阶段生成的x_seq</span></span><br><span class="line">    plt.scatter(q_i[:,<span class="number">0</span>],q_i[:,<span class="number">1</span>],color=<span class="string">&quot;red&quot;</span>,edgecolor=<span class="string">&quot;white&quot;</span>,s=<span class="number">5</span>)</span><br><span class="line">    plt.axis(<span class="string">&quot;off&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    img_buf = io.BytesIO()</span><br><span class="line">    plt.savefig(img_buf,<span class="built_in">format</span>=<span class="string">&quot;png&quot;</span>)</span><br><span class="line">    img = Image.<span class="built_in">open</span>(img_buf)</span><br><span class="line">    reverse.append(img)</span><br><span class="line">    </span><br><span class="line"> imgs = imgs + reverse</span><br><span class="line"> imgs[<span class="number">0</span>].save(<span class="string">&quot;diffusion.gif&quot;</span>,<span class="built_in">format</span>=<span class="string">&quot;GIF&quot;</span>,append_images=imgs,save_all=<span class="literal">True</span>,duration=<span class="number">100</span>,loop=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+		<!-- reward type 1 -->
+		
+		
+		<!-- reward type 2 -->
+		
+		  <div id="reward-container">
+		    <span class="icon-cursor" title="打赏" id="reward-button"
+			  onclick='var qr = document.getElementById("qr"); qr.style.display = (qr.style.display === "none") ? "block" : "none";'
+			  ><a style="color:#fff;">赏</a></span>
+		    <div id="reward-comment"><i class="icon icon-quo-left"></i>&nbsp;感觉不错 支持一下&nbsp;<i class="icon icon-quo-right"></i></div>
+		  
+		    <div id="qr" style="display: none;">
+			  <div style="display:inline-block">
+			    <img loading="lazy" src="/img/alipay-min.png" alt="支付宝" title="支付宝"/>
+			    <div><span class="reward-type">支付宝</span></div>
+			  </div>
+			
+			  <div style="display:inline-block">
+			    <img loading="lazy" src="/img/wechatpay-min.png" alt="微信支付" title="微信支付"/>
+			    <div><span class="reward-type">微信</span></div>
+			  </div>
+		    </div>
+	      </div>
+	    
+      
 	
+	  <!-- 添加版权声明 -->
+      
+        <!-- 添加版权声明 -->
+<!--https://blog.csdn.net/weixin_41287260/article/details/103050336-->
 
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/87a49949.html">pytorch基础入门11-Normalization</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
+<div class="declare">
+	<strong class="author">本文作者：</strong>
+	
+	  jyh
+	
+	
+	<!-- <br>
+	<strong class="create-time">发布时间：</strong>
+	2023-05-03 -->
+	
+	<br>
+	<strong class="update-time">最后更新：</strong>
+	2023年05月04日 20:28:36
+	
+	<!-- <br>
+	<strong class="article-titles">本文标题：</strong>
+	<a href="https://wangtongyouwen.github.io/post/8c9cf490.html" title="pytorch进阶1-DDPM" target="_blank">pytorch进阶1-DDPM</a> -->
+	
+	<br>
+	<strong class="article-url">本文链接：</strong>
+	<a href="https://wangtongyouwen.github.io/post/8c9cf490.html" title="pytorch进阶1-DDPM" target="_blank">https://wangtongyouwen.github.io/post/8c9cf490.html</a>
+	
+	<br>
+	<strong class="copyright">版权声明：</strong>
+	本作品采用
+	<a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+	许可协议进行许可，转载请注明出处！
+	
+	
+</div>
+<!-- 添加版权声明 -->
+      
+	  
 	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/f0f056f4.html" class="archive-article-date">
-  	<time datetime="2023-04-19T13:21:04.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-19</time>
 	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/f0f056f4.html">用pytorch实现基础网络10-MAE</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/aa153511.html" class="archive-article-date">
-  	<time datetime="2023-04-18T10:32:10.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-18</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/aa153511.html">用pytorch实现基础网络8-ConvNext</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/70a386a7.html" class="archive-article-date">
-  	<time datetime="2023-04-17T14:27:03.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-17</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/70a386a7.html">pytorch基础入门10-word embedding</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/898bb30b.html" class="archive-article-date">
-  	<time datetime="2023-04-17T11:36:18.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-17</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/898bb30b.html">pytorch实用工具2-编写技巧</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/86ae38c6.html" class="archive-article-date">
-  	<time datetime="2023-04-17T04:40:39.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-17</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/86ae38c6.html">pytorch基础入门9-seq2seq2</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/daaec8c8.html" class="archive-article-date">
-  	<time datetime="2023-04-15T14:34:26.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-15</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/daaec8c8.html">用pytorch实现基础网络7-SwinTransformer</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -661,202 +683,203 @@ var _hmt = _hmt || [];
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">diffusion model</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+	  
+	  <!-- 添加展开全文 -->
+      
+	  
+	  <!-- 添加分享 -->
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyouwen.github.io/post/8c9cf490.html" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
   </div>
 </article>
+
+
   
+<nav id="article-nav">
+  
+    <a href="/post/954ae01.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          pytorch进阶2-autoregressive diffusion model
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/94472398.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">用pytorch实现基础网络12-Unet</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
     
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/ceb60e40.html" class="archive-article-date">
-  	<time datetime="2023-04-15T11:19:44.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-15</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
+      <div class="toc-container tooltip-left">
+        <i class="icon-font icon-category"></i>
+        <div class="tooltip tooltip-east">
+          <span class="tooltip-item"></span>
+          <span class="tooltip-content">
+			<span style="font-size: 20px;font-weight: bold;">目录</span>
+            <div class="toc-article">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">1 生成模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%85%AC%E5%BC%8F%E4%B8%8E%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%E7%9A%84kl%E6%95%A3%E5%BA%A6"><span class="toc-number">2.</span> <span class="toc-text">2 条件概率公式与高斯分布的KL散度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E7%9A%84%E4%B8%80%E8%88%AC%E5%BD%A2%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 条件概率的一般形式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E5%81%87%E8%AE%BE%E7%9A%84%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 基于马尔科夫假设的条件概率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%E7%9A%84kl%E6%95%A3%E5%BA%A6%E5%85%AC%E5%BC%8F"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 高斯分布的KL散度公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E9%87%8D%E6%95%B4%E5%8C%96"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 参数重整化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vae%E4%B8%8E%E5%A4%9A%E5%B1%82vae%E5%9B%9E%E9%A1%BE"><span class="toc-number">3.</span> <span class="toc-text">3 VAE与多层VAE回顾</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E5%B1%82vae%E7%9A%84%E5%8E%9F%E7%90%86%E5%85%AC%E5%BC%8F%E4%B8%8E%E7%BD%AE%E4%BF%A1%E4%B8%8B%E7%95%8C"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 单层VAE的原理公式与置信下界</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E5%B1%82vae%E7%9A%84%E5%8E%9F%E7%90%86%E5%85%AC%E5%BC%8F%E4%B8%8E%E7%BD%AE%E4%BF%A1%E4%B8%8B%E7%95%8C"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 多层VAE的原理公式与置信下界</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#diffusion-model"><span class="toc-number">4.</span> <span class="toc-text">4 diffusion model</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E8%BF%87%E7%A8%8B"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 前向过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%85%AC%E5%BC%8F%E5%A6%82%E4%BD%95%E5%BE%97%E5%88%B0x_t%E6%97%B6%E5%88%BB%E7%9A%84%E5%88%86%E5%B8%83%E5%89%8D%E5%90%91%E8%BF%87%E7%A8%8B"><span class="toc-number">4.1.1.</span> <span class="toc-text">第一个公式，如何得到\(X_t\)时刻的分布（前向过程）？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%86%E5%90%91%E8%BF%87%E7%A8%8B"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 逆向过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E9%AA%8C%E7%9A%84%E6%89%A9%E6%95%A3%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 后验的扩散条件概率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E6%95%B0%E6%8D%AE%E5%88%86%E5%B8%83%E7%9A%84%E4%BC%BC%E7%84%B6%E5%87%BD%E6%95%B0"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 目标数据分布的似然函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E4%BB%A3%E7%A0%81%E4%BB%8B%E7%BB%8D"><span class="toc-number">5.</span> <span class="toc-text">5 算法代码介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 选择一个数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AE%E5%AE%9A%E8%B6%85%E5%8F%82%E6%95%B0%E7%9A%84%E5%80%BC"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 确定超参数的值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AE%E5%AE%9A%E6%89%A9%E6%95%A3%E8%BF%87%E7%A8%8B%E4%BB%BB%E6%84%8F%E6%97%B6%E5%88%BB%E7%9A%84%E9%87%87%E6%A0%B7%E5%80%BC"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 确定扩散过程任意时刻的采样值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%94%E7%A4%BA%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E5%88%86%E5%B8%83%E5%8A%A0%E5%99%AA100%E6%AD%A5%E5%90%8E%E7%9A%84%E6%95%88%E6%9E%9C"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 演示原始数据分布加噪100步后的效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E6%8B%9F%E5%90%88%E9%80%86%E6%89%A9%E6%95%A3%E8%BF%87%E7%A8%8B%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="toc-number">5.5.</span> <span class="toc-text">5.5 编写拟合逆扩散过程高斯分布的模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E8%AE%AD%E7%BB%83%E7%9A%84%E8%AF%AF%E5%B7%AE%E5%87%BD%E6%95%B0"><span class="toc-number">5.6.</span> <span class="toc-text">5.6 编写训练的误差函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E9%80%86%E6%89%A9%E6%95%A3%E9%87%87%E6%A0%B7%E5%87%BD%E6%95%B0inference%E8%BF%87%E7%A8%8B"><span class="toc-number">5.7.</span> <span class="toc-text">5.7 编写逆扩散采样函数(inference过程)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E5%B9%B6%E6%89%93%E5%8D%B0loss%E5%8F%8A%E4%B8%AD%E9%97%B4%E7%9A%84%E9%87%8D%E6%9E%84%E6%95%88%E6%9E%9C"><span class="toc-number">5.8.</span> <span class="toc-text">5.8开始训练模型，并打印loss及中间的重构效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA"><span class="toc-number">5.9.</span> <span class="toc-text">5.9 动画演示</span></a></li></ol></li></ol>
+            </div>
+          </span>
         </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/ceb60e40.html">pytorch项目2-基于GCN(DNN)的文本分类模型(GPU)</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">project</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+	
   </div>
-</article>
+</aside>
+
+<!-- 添加评论 -->
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/27f58942.html" class="archive-article-date">
-  	<time datetime="2023-04-15T07:04:41.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
+  <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet' />
 
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-15</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
+<div id="waline"></div>
+<script>
+	// 中文默认
+	const locale = {
+	  nick: ' 昵称: ',
+	  nickError: '昵称不能少于3个字符',
+	  mail: '邮箱: ',
+	  mailError: '请填写正确的邮件地址',
+	  link: '网址: ',
+	  placeholder: ' 客官留个言吧(◕ˇ∀ˇ◕)',
+	  sofa: '评论区空空荡荡，客官快来评论吧~',
+	  submit: '提交',
+	  reply: '回复',
+	  cancelReply: '取消回复',
+	  comment: '评论',
+	  more: '加载更多...',
+	  preview: '预览',
+	  emoji: '表情',
+	  uploadImage: '上传图片',
+	  seconds: '秒前',
+	  minutes: '分钟前',
+	  hours: '小时前',
+	  days: '天前',
+	  now: '刚刚',
+	  uploading: '正在上传',
+	  login: '登录',
+	  logout: '退出',
+	  admin: '博主',
+	  word: '字',
+	  wordHint: '评论字数应在 $0 到 $1 字之间！\n当前字数：$2',
+	};
 
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/27f58942.html">pytorch项目1-基于GCN+DNN的文本分类模型</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">project</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/f22b56ba.html" class="archive-article-date">
-  	<time datetime="2023-04-14T09:47:29.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-14</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/f22b56ba.html">用pytorch实现基础网络6-GRU</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+	Waline.init({
+	  el: '#waline',
+	  serverURL: 'your_waline_comments_url',
+	  locale,
+	  login: 'enable',
+	  lang: 'zh-CN ',
+	  dark: '',
+	  // 设置 emoji 为微博与哔哩哔哩
+	  emoji: [
+		'https://unpkg.com/@waline/emojis@1.1.0/weibo',
+		'https://unpkg.com/@waline/emojis@1.1.0/bilibili',
+	  ],
+	  wordLimit: 0,
+	  pageSize: 10,
+	  imageUploader: false,
+	  pageview: true,
+	  meta: ['nick', 'mail', 'link'],  //评论者相关属性，默认['nick', 'mail', 'link'],
+	  requiredMeta: ['nick'], //设置评论者属性必填项，默认[]（即匿名）
+	});
+</script>
   
   
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/">&lt;&lt; 上一页</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="page-number" href="/archives/page/4/">4</a><a class="extend next" rel="next" href="/archives/page/3/">下一页 &gt;&gt;</a>
-    </nav>
   
 
 
+  
 
-<!-- 主页添加mathjax公式 -->
+  
 
-  <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
+  
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+    <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
 <script>
 window.MathJax = {
   tex: {
@@ -886,8 +909,9 @@ window.MathJax = {
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
+  
 
-<!-- 主页添加mathjax公式 -->
+<!-- 文章页添加mathjax公式 -->
           </div>
         </div>
       </div>
@@ -897,8 +921,8 @@ window.MathJax = {
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

@@ -2,6 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://wangtongyouwen.github.io/post/342f7c36.html</loc>
+    
+    <lastmod>2023-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtongyouwen.github.io/post/954ae01.html</loc>
+    
+    <lastmod>2023-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtongyouwen.github.io/post/8c9cf490.html</loc>
+    
+    <lastmod>2023-05-04</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://wangtongyouwen.github.io/post/24351970.html</loc>
     
     <lastmod>2023-04-30</lastmod>
@@ -373,7 +400,7 @@
 
   <url>
     <loc>https://wangtongyouwen.github.io/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -381,42 +408,49 @@
   
   <url>
     <loc>https://wangtongyouwen.github.io/tags/pytorch/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/tags/tools/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/tags/project/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/tags/aboutme/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/tags/network/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/tags/tips/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtongyouwen.github.io/tags/diffusion-model/</loc>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -425,42 +459,49 @@
   
   <url>
     <loc>https://wangtongyouwen.github.io/categories/pytorch/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/categories/pytorch/tools/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/categories/pytorch/project/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/categories/pytorch/network/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/categories/tips/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wangtongyouwen.github.io/categories/tools/</loc>
-    <lastmod>2023-05-03</lastmod>
+    <lastmod>2023-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtongyouwen.github.io/categories/pytorch/diffusion-model/</loc>
+    <lastmod>2023-05-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

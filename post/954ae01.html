@@ -7,16 +7,30 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="https://wangtongyouwen.github.io">
-  <title>归档 | jyh blog</title>
+  <title>pytorch进阶2-autoregressive diffusion model | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="jyh blog">
-<meta property="og:url" content="https://wangtongyouwen.github.io/archives/page/2/index.html">
+  <meta name="description" content="Improved Denoising Diffusion Probabilistic Models http:&#x2F;&#x2F;proceedings.mlr.press&#x2F;v139&#x2F;nichol21a&#x2F;nichol21a.pdf Autoregressive Denoising Diffusion Models for Multivariate Probabilistic Time Series Forec">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch进阶2-autoregressive diffusion model">
+<meta property="og:url" content="https://wangtongyouwen.github.io/post/954ae01.html">
 <meta property="og:site_name" content="jyh blog">
+<meta property="og:description" content="Improved Denoising Diffusion Probabilistic Models http:&#x2F;&#x2F;proceedings.mlr.press&#x2F;v139&#x2F;nichol21a&#x2F;nichol21a.pdf Autoregressive Denoising Diffusion Models for Multivariate Probabilistic Time Series Forec">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041925965.png">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041930347.png">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041932387.png">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041943539.png">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041946113.png">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041948618.png">
+<meta property="og:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305042024133.png">
+<meta property="article:published_time" content="2023-05-04T09:59:09.000Z">
+<meta property="article:modified_time" content="2023-05-05T11:20:01.589Z">
 <meta property="article:author" content="jyh">
+<meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="diffusion model">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041925965.png">
   
   
     <link rel="alternative" href="/atom.xml" title="jyh blog" type="application/atom+xml">
@@ -277,271 +291,248 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-pytorch进阶2-improved-diffusion-model" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title_code_ant" itemprop="name">
+	  <a href="/post/954ae01.html">pytorch进阶2-autoregressive diffusion model</a>
+	</h1>
+  
+
+        
+		
+		  <a href="/post/954ae01.html" class="archive-article-date">
+  	<time datetime="2023-05-04T09:59:09.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-05-04</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	<span>
+		&nbsp; &nbsp; &nbsp;
+		<span class="post-meta-item-text">阅读量:</span>
+		<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+		<span class="post-meta-item-text">次</span>
+	</span>
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+	<span>
+		&nbsp; &nbsp; &nbsp;
+		<i class="fa fa-eye" aria-hidden="true"></i>
+		&nbsp;
+		<span class="waline-pageview-count" data-path="/post/954ae01.html"><i class="fa fa-spinner fa-spin"></i></span>
+	</span>
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
       
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/87a49949.html" class="archive-article-date">
-  	<time datetime="2023-04-20T10:24:36.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-20</time>
 	
-	<!-- busuanzi阅读量统计
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">669字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">3min</span>
+      </span>
+    </span>
 	
-	-->
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
 	
-    <!-- waline阅读量统计 -->
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <p>Improved Denoising Diffusion Probabilistic Models</p>
+<p>http://proceedings.mlr.press/v139/nichol21a/nichol21a.pdf</p>
+<p>Autoregressive Denoising Diffusion Models for Multivariate Probabilistic Time Series Forecasting</p>
+<p>http://proceedings.mlr.press/v139/rasul21a/rasul21a.pdf</p>
+<p>Denoising Diffusion Probabilistic Models</p>
+<p>https://arxiv.org/pdf/2006.11239.pdf</p>
+<h2 id="回顾">回顾</h2>
+<h3 id="如何将扩散模型与自回归模型结合">1 如何将扩散模型与自回归模型结合？</h3>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041925965.png" alt="image-20230504192539224" /><figcaption aria-hidden="true">image-20230504192539224</figcaption>
+</figure>
+<p>目标函数发生了变化： <span class="math display">\[
+\mathbb{E}_{\mathbf{x}^0_t,\epsilon,n}\left[\|\epsilon-\epsilon_\theta(\sqrt{\bar{\alpha}_n}\mathbf{x}^0_t+\sqrt{1-\bar{\alpha}_n}\epsilon,\mathbf{h}_{t-1},n)\|^2\right],
+\]</span> <img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041930347.png" alt="image-20230504192959481" /></p>
+<ul>
+<li><p>为什么使用采样？而不是按照顺序</p>
+<p>这是与随机梯度下降算法相同，目的是为了使训练更加鲁棒</p></li>
+</ul>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041932387.png" alt="image-20230504193228721" /><figcaption aria-hidden="true">image-20230504193228721</figcaption>
+</figure>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041943539.png" alt="image-20230504194302000" /><figcaption aria-hidden="true">image-20230504194302000</figcaption>
+</figure>
+<h3 id="improved-denoising-diffusion-probabilistic-models">2 Improved Denoising Diffusion Probabilistic Models</h3>
+<ul>
+<li>可学习的方差<span class="math inline">\(\sum_\theta(x_t,t)\)</span></li>
+<li>噪声方案的改进</li>
+</ul>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041946113.png" alt="image-20230504194648255" /><figcaption aria-hidden="true">image-20230504194648255</figcaption>
+</figure>
+<ul>
+<li>损失函数的改进</li>
+</ul>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305041948618.png" alt="image-20230504194753966" /> <span class="math display">\[
+L_{hybrid} = L_{simple} + \lambda L_{vlb}
+\]</span></p>
+<h3 id="思维导图">3 思维导图</h3>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202305042024133.png" alt="image-20230504202447257" /><figcaption aria-hidden="true">image-20230504202447257</figcaption>
+</figure>
+<h2 id="代码分析">代码分析</h2>
+<p>https://github.com/openai/improved-diffusion</p>
+<h3 id="image_train.py">1 image_train.py</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_argparser</span>():</span><br><span class="line">    defaults = <span class="built_in">dict</span>(</span><br><span class="line">        data_dir=<span class="string">&quot;&quot;</span>,</span><br><span class="line">        schedule_sampler=<span class="string">&quot;uniform&quot;</span>,</span><br><span class="line">        lr=<span class="number">1e-4</span>,</span><br><span class="line">        weight_decay=<span class="number">0.0</span>,</span><br><span class="line">        lr_anneal_steps=<span class="number">0</span>,</span><br><span class="line">        batch_size=<span class="number">1</span>,</span><br><span class="line">        microbatch=-<span class="number">1</span>,  <span class="comment"># -1 disables microbatches</span></span><br><span class="line">        ema_rate=<span class="string">&quot;0.9999&quot;</span>,  <span class="comment"># comma-separated list of EMA values</span></span><br><span class="line">        log_interval=<span class="number">10</span>,</span><br><span class="line">        save_interval=<span class="number">10000</span>,</span><br><span class="line">        resume_checkpoint=<span class="string">&quot;&quot;</span>,</span><br><span class="line">        use_fp16=<span class="literal">False</span>,</span><br><span class="line">        fp16_scale_growth=<span class="number">1e-3</span>,</span><br><span class="line">    )</span><br><span class="line">    defaults.update(model_and_diffusion_defaults())</span><br><span class="line">    parser = argparse.ArgumentParser()</span><br><span class="line">    add_dict_to_argparser(parser, defaults)</span><br><span class="line">    <span class="keyword">return</span> parser</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_dict_to_argparser</span>(<span class="params">parser, default_dict</span>):</span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> default_dict.items():</span><br><span class="line">        v_type = <span class="built_in">type</span>(v)</span><br><span class="line">        <span class="keyword">if</span> v <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            v_type = <span class="built_in">str</span></span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">isinstance</span>(v, <span class="built_in">bool</span>):</span><br><span class="line">            v_type = str2bool</span><br><span class="line">        parser.add_argument(<span class="string">f&quot;--<span class="subst">&#123;k&#125;</span>&quot;</span>, default=v, <span class="built_in">type</span>=v_type)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这一部分的代码可以在命令行中传参进行简化：传入一个字典自动解析。从字典中自动生成argument parser</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    args = create_argparser().parse_args()</span><br><span class="line"></span><br><span class="line">    dist_util.setup_dist()</span><br><span class="line">    logger.configure()</span><br><span class="line"></span><br><span class="line">    logger.log(<span class="string">&quot;creating model and diffusion...&quot;</span>)</span><br><span class="line">    model, diffusion = create_model_and_diffusion(</span><br><span class="line">        **args_to_dict(args, model_and_diffusion_defaults().keys())</span><br><span class="line">    )</span><br><span class="line">    model.to(dist_util.dev())</span><br><span class="line">    schedule_sampler = create_named_schedule_sampler(args.schedule_sampler, diffusion)</span><br><span class="line"></span><br><span class="line">    logger.log(<span class="string">&quot;creating data loader...&quot;</span>)</span><br><span class="line">    data = load_data(</span><br><span class="line">        data_dir=args.data_dir,</span><br><span class="line">        batch_size=args.batch_size,</span><br><span class="line">        image_size=args.image_size,</span><br><span class="line">        class_cond=args.class_cond,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    logger.log(<span class="string">&quot;training...&quot;</span>)</span><br><span class="line">    TrainLoop(</span><br><span class="line">        model=model,</span><br><span class="line">        diffusion=diffusion,</span><br><span class="line">        data=data,</span><br><span class="line">        batch_size=args.batch_size,</span><br><span class="line">        microbatch=args.microbatch,</span><br><span class="line">        lr=args.lr,</span><br><span class="line">        ema_rate=args.ema_rate,</span><br><span class="line">        log_interval=args.log_interval,</span><br><span class="line">        save_interval=args.save_interval,</span><br><span class="line">        resume_checkpoint=args.resume_checkpoint,</span><br><span class="line">        use_fp16=args.use_fp16,</span><br><span class="line">        fp16_scale_growth=args.fp16_scale_growth,</span><br><span class="line">        schedule_sampler=schedule_sampler,</span><br><span class="line">        weight_decay=args.weight_decay,</span><br><span class="line">        lr_anneal_steps=args.lr_anneal_steps,</span><br><span class="line">    ).run_loop()</span><br></pre></td></tr></table></figure>
+<p>传参-&gt;获得模型-&gt;获得数据-&gt;训练</p>
+<p>...improved-diffusion-main_diffusion_util.py</p>
+<h3 id="create_model_and_diffusion">2 create_model_and_diffusion</h3>
+<h4 id="create_gaussian_diffusion">2.1 create_gaussian_diffusion</h4>
+<ul>
+<li>生成扩散过程的模型框架</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_gaussian_diffusion</span>(<span class="params"></span></span><br><span class="line"><span class="params">    *,</span></span><br><span class="line"><span class="params">    steps=<span class="number">1000</span>,</span></span><br><span class="line"><span class="params">    learn_sigma=<span class="literal">False</span>,</span></span><br><span class="line"><span class="params">    sigma_small=<span class="literal">False</span>,</span></span><br><span class="line"><span class="params">    noise_schedule=<span class="string">&quot;linear&quot;</span>,</span></span><br><span class="line"><span class="params">    use_kl=<span class="literal">False</span>,</span></span><br><span class="line"><span class="params">    predict_xstart=<span class="literal">False</span>,</span></span><br><span class="line"><span class="params">    rescale_timesteps=<span class="literal">False</span>,</span></span><br><span class="line"><span class="params">    rescale_learned_sigmas=<span class="literal">False</span>,</span></span><br><span class="line"><span class="params">    timestep_respacing=<span class="string">&quot;&quot;</span>,</span></span><br><span class="line"><span class="params"></span>):</span><br><span class="line">    betas = gd.get_named_beta_schedule(noise_schedule, steps)</span><br><span class="line">    <span class="keyword">if</span> use_kl:</span><br><span class="line">        loss_type = gd.LossType.RESCALED_KL</span><br><span class="line">    <span class="keyword">elif</span> rescale_learned_sigmas:</span><br><span class="line">        loss_type = gd.LossType.RESCALED_MSE</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        loss_type = gd.LossType.MSE</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> timestep_respacing:</span><br><span class="line">        timestep_respacing = [steps]</span><br><span class="line">    <span class="keyword">return</span> SpacedDiffusion(</span><br><span class="line">        use_timesteps=space_timesteps(steps, timestep_respacing),</span><br><span class="line">        betas=betas,</span><br><span class="line">        model_mean_type=(</span><br><span class="line">            gd.ModelMeanType.EPSILON <span class="keyword">if</span> <span class="keyword">not</span> predict_xstart <span class="keyword">else</span> gd.ModelMeanType.START_X</span><br><span class="line">        ),</span><br><span class="line">        model_var_type=(</span><br><span class="line">            (</span><br><span class="line">                gd.ModelVarType.FIXED_LARGE</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> sigma_small</span><br><span class="line">                <span class="keyword">else</span> gd.ModelVarType.FIXED_SMALL</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> learn_sigma</span><br><span class="line">            <span class="keyword">else</span> gd.ModelVarType.LEARNED_RANGE</span><br><span class="line">        ),</span><br><span class="line">        loss_type=loss_type,</span><br><span class="line">        rescale_timesteps=rescale_timesteps,</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<ol type="1">
+<li>get_named_beta_schedule 生成betas的策略 linear increasing/cosine</li>
+<li>class SpacedDiffusion(GaussianDiffusion)</li>
+<li>GaussianDiffusion</li>
+</ol>
+<p>:param betas: a 1-D numpy array of betas for each diffusion timestep,starting at T and going to 1. :param model_mean_type: a ModelMeanType determining what the model outputs. :param model_var_type: a ModelVarType determining how variance is output. :param loss_type: a LossType determining the loss function to use. :param rescale_timesteps: if True, pass floating point timesteps into the model so that they are always scaled like in the original paper (0 to 1000).</p>
+<ol start="4" type="1">
+<li>p_mean_variance</li>
+<li>_vb_terms_bpd</li>
+<li>training_losses</li>
+</ol>
+<h4 id="unet">2.2 Unet</h4>
+<p>详见Unet(笔记)</p>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+		<!-- reward type 1 -->
+		
+		
+		<!-- reward type 2 -->
+		
+		  <div id="reward-container">
+		    <span class="icon-cursor" title="打赏" id="reward-button"
+			  onclick='var qr = document.getElementById("qr"); qr.style.display = (qr.style.display === "none") ? "block" : "none";'
+			  ><a style="color:#fff;">赏</a></span>
+		    <div id="reward-comment"><i class="icon icon-quo-left"></i>&nbsp;感觉不错 支持一下&nbsp;<i class="icon icon-quo-right"></i></div>
+		  
+		    <div id="qr" style="display: none;">
+			  <div style="display:inline-block">
+			    <img loading="lazy" src="/img/alipay-min.png" alt="支付宝" title="支付宝"/>
+			    <div><span class="reward-type">支付宝</span></div>
+			  </div>
+			
+			  <div style="display:inline-block">
+			    <img loading="lazy" src="/img/wechatpay-min.png" alt="微信支付" title="微信支付"/>
+			    <div><span class="reward-type">微信</span></div>
+			  </div>
+		    </div>
+	      </div>
+	    
+      
 	
+	  <!-- 添加版权声明 -->
+      
+        <!-- 添加版权声明 -->
+<!--https://blog.csdn.net/weixin_41287260/article/details/103050336-->
 
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/87a49949.html">pytorch基础入门11-Normalization</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
+<div class="declare">
+	<strong class="author">本文作者：</strong>
+	
+	  jyh
+	
+	
+	<!-- <br>
+	<strong class="create-time">发布时间：</strong>
+	2023-05-04 -->
+	
+	<br>
+	<strong class="update-time">最后更新：</strong>
+	2023年05月05日 19:20:01
+	
+	<!-- <br>
+	<strong class="article-titles">本文标题：</strong>
+	<a href="https://wangtongyouwen.github.io/post/954ae01.html" title="pytorch进阶2-autoregressive diffusion model" target="_blank">pytorch进阶2-autoregressive diffusion model</a> -->
+	
+	<br>
+	<strong class="article-url">本文链接：</strong>
+	<a href="https://wangtongyouwen.github.io/post/954ae01.html" title="pytorch进阶2-autoregressive diffusion model" target="_blank">https://wangtongyouwen.github.io/post/954ae01.html</a>
+	
+	<br>
+	<strong class="copyright">版权声明：</strong>
+	本作品采用
+	<a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+	许可协议进行许可，转载请注明出处！
+	
+	
+</div>
+<!-- 添加版权声明 -->
+      
+	  
 	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/f0f056f4.html" class="archive-article-date">
-  	<time datetime="2023-04-19T13:21:04.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-19</time>
 	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/f0f056f4.html">用pytorch实现基础网络10-MAE</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/aa153511.html" class="archive-article-date">
-  	<time datetime="2023-04-18T10:32:10.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-18</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/aa153511.html">用pytorch实现基础网络8-ConvNext</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/70a386a7.html" class="archive-article-date">
-  	<time datetime="2023-04-17T14:27:03.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-17</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/70a386a7.html">pytorch基础入门10-word embedding</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/898bb30b.html" class="archive-article-date">
-  	<time datetime="2023-04-17T11:36:18.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-17</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/898bb30b.html">pytorch实用工具2-编写技巧</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -551,312 +542,203 @@ var _hmt = _hmt || [];
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">diffusion model</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+	  
+	  <!-- 添加展开全文 -->
+      
+	  
+	  <!-- 添加分享 -->
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyouwen.github.io/post/954ae01.html" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
   </div>
 </article>
+
+
   
+<nav id="article-nav">
+  
+    <a href="/post/342f7c36.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          pytorch项目5-CLIP搭建相似图像检索系统
+        
+      </div>
+    </a>
+  
+  
+    <a href="/post/8c9cf490.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">pytorch进阶1-DDPM</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
     
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/86ae38c6.html" class="archive-article-date">
-  	<time datetime="2023-04-17T04:40:39.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-17</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
+      <div class="toc-container tooltip-left">
+        <i class="icon-font icon-category"></i>
+        <div class="tooltip tooltip-east">
+          <span class="tooltip-item"></span>
+          <span class="tooltip-content">
+			<span style="font-size: 20px;font-weight: bold;">目录</span>
+            <div class="toc-article">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E9%A1%BE"><span class="toc-number">1.</span> <span class="toc-text">回顾</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%B0%86%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E4%B8%8E%E8%87%AA%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%E7%BB%93%E5%90%88"><span class="toc-number">1.1.</span> <span class="toc-text">1 如何将扩散模型与自回归模型结合？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#improved-denoising-diffusion-probabilistic-models"><span class="toc-number">1.2.</span> <span class="toc-text">2 Improved Denoising Diffusion Probabilistic Models</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE"><span class="toc-number">1.3.</span> <span class="toc-text">3 思维导图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">代码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#image_train.py"><span class="toc-number">2.1.</span> <span class="toc-text">1 image_train.py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#create_model_and_diffusion"><span class="toc-number">2.2.</span> <span class="toc-text">2 create_model_and_diffusion</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#create_gaussian_diffusion"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.1 create_gaussian_diffusion</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#unet"><span class="toc-number">2.2.2.</span> <span class="toc-text">2.2 Unet</span></a></li></ol></li></ol></li></ol>
+            </div>
+          </span>
         </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/86ae38c6.html">pytorch基础入门9-seq2seq2</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+	
   </div>
-</article>
+</aside>
+
+<!-- 添加评论 -->
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/daaec8c8.html" class="archive-article-date">
-  	<time datetime="2023-04-15T14:34:26.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
+  <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet' />
 
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-15</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
+<div id="waline"></div>
+<script>
+	// 中文默认
+	const locale = {
+	  nick: ' 昵称: ',
+	  nickError: '昵称不能少于3个字符',
+	  mail: '邮箱: ',
+	  mailError: '请填写正确的邮件地址',
+	  link: '网址: ',
+	  placeholder: ' 客官留个言吧(◕ˇ∀ˇ◕)',
+	  sofa: '评论区空空荡荡，客官快来评论吧~',
+	  submit: '提交',
+	  reply: '回复',
+	  cancelReply: '取消回复',
+	  comment: '评论',
+	  more: '加载更多...',
+	  preview: '预览',
+	  emoji: '表情',
+	  uploadImage: '上传图片',
+	  seconds: '秒前',
+	  minutes: '分钟前',
+	  hours: '小时前',
+	  days: '天前',
+	  now: '刚刚',
+	  uploading: '正在上传',
+	  login: '登录',
+	  logout: '退出',
+	  admin: '博主',
+	  word: '字',
+	  wordHint: '评论字数应在 $0 到 $1 字之间！\n当前字数：$2',
+	};
 
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/daaec8c8.html">用pytorch实现基础网络7-SwinTransformer</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/ceb60e40.html" class="archive-article-date">
-  	<time datetime="2023-04-15T11:19:44.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-15</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/ceb60e40.html">pytorch项目2-基于GCN(DNN)的文本分类模型(GPU)</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">project</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/27f58942.html" class="archive-article-date">
-  	<time datetime="2023-04-15T07:04:41.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-15</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/27f58942.html">pytorch项目1-基于GCN+DNN的文本分类模型</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">project</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/post/f22b56ba.html" class="archive-article-date">
-  	<time datetime="2023-04-14T09:47:29.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-14</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        </div>
-    	 
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/post/f22b56ba.html">用pytorch实现基础网络6-GRU</a>
-    </h2>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+	Waline.init({
+	  el: '#waline',
+	  serverURL: 'your_waline_comments_url',
+	  locale,
+	  login: 'enable',
+	  lang: 'zh-CN ',
+	  dark: '',
+	  // 设置 emoji 为微博与哔哩哔哩
+	  emoji: [
+		'https://unpkg.com/@waline/emojis@1.1.0/weibo',
+		'https://unpkg.com/@waline/emojis@1.1.0/bilibili',
+	  ],
+	  wordLimit: 0,
+	  pageSize: 10,
+	  imageUploader: false,
+	  pageview: true,
+	  meta: ['nick', 'mail', 'link'],  //评论者相关属性，默认['nick', 'mail', 'link'],
+	  requiredMeta: ['nick'], //设置评论者属性必填项，默认[]（即匿名）
+	});
+</script>
   
   
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/">&lt;&lt; 上一页</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="page-number" href="/archives/page/4/">4</a><a class="extend next" rel="next" href="/archives/page/3/">下一页 &gt;&gt;</a>
-    </nav>
   
 
 
+  
 
-<!-- 主页添加mathjax公式 -->
+  
 
-  <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
+  
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+    <!-- mathjax http://docs.mathjax.org/en/latest/web/start.html -->
 <script>
 window.MathJax = {
   tex: {
@@ -886,8 +768,9 @@ window.MathJax = {
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
+  
 
-<!-- 主页添加mathjax公式 -->
+<!-- 文章页添加mathjax公式 -->
           </div>
         </div>
       </div>
@@ -897,8 +780,8 @@ window.MathJax = {
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
