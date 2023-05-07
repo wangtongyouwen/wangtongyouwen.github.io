@@ -7,21 +7,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta http-equiv="Content-Language" content="zh-cn">
   <link rel="dns-prefetch" href="https://wangtongyouwen.github.io">
-  <title>pytorch项目5-CLIP搭建相似图像检索系统 | jyh blog</title>
+  <title>用pytorch实现基础网络13-Glow | jyh blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta name="description" content="1 准备工作 1.1 clip模型的调用 https:&#x2F;&#x2F;github.com&#x2F;openai&#x2F;CLIP 123$ conda install --yes -c pytorch pytorch&#x3D;1.7.1 torchvision cudatoolkit&#x3D;11.0$ pip install ftfy regex tqdm$ pip install git+https:&#x2F;&#x2F;github.com&#x2F;o">
+  <meta name="description" content="Glow: Generative Flow with Invertible 11 Convolutions https:&#x2F;&#x2F;proceedings.neurips.cc&#x2F;paper&#x2F;2018&#x2F;file&#x2F;d139db6a236200b21cc7f752979132d0-Paper.pdf 在这篇论文中，作者提出了一种名为Glow的流式生成模型。流式生成模型（Flow-based generati">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pytorch项目5-CLIP搭建相似图像检索系统">
-<meta property="og:url" content="https://wangtongyouwen.github.io/post/342f7c36.html">
+<meta property="og:title" content="用pytorch实现基础网络13-Glow">
+<meta property="og:url" content="https://wangtongyouwen.github.io/post/c5690277.html">
 <meta property="og:site_name" content="jyh blog">
-<meta property="og:description" content="1 准备工作 1.1 clip模型的调用 https:&#x2F;&#x2F;github.com&#x2F;openai&#x2F;CLIP 123$ conda install --yes -c pytorch pytorch&#x3D;1.7.1 torchvision cudatoolkit&#x3D;11.0$ pip install ftfy regex tqdm$ pip install git+https:&#x2F;&#x2F;github.com&#x2F;o">
+<meta property="og:description" content="Glow: Generative Flow with Invertible 11 Convolutions https:&#x2F;&#x2F;proceedings.neurips.cc&#x2F;paper&#x2F;2018&#x2F;file&#x2F;d139db6a236200b21cc7f752979132d0-Paper.pdf 在这篇论文中，作者提出了一种名为Glow的流式生成模型。流式生成模型（Flow-based generati">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-05-05T11:22:46.000Z">
-<meta property="article:modified_time" content="2023-05-06T07:13:23.481Z">
+<meta property="article:published_time" content="2023-05-06T10:56:32.000Z">
+<meta property="article:modified_time" content="2023-05-06T13:57:55.170Z">
 <meta property="article:author" content="jyh">
 <meta property="article:tag" content="pytorch">
-<meta property="article:tag" content="project">
+<meta property="article:tag" content="network">
 <meta name="twitter:card" content="summary">
   
   
@@ -283,26 +283,26 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-pytorch项目5-CLIP搭建相似图像检索系统" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-用pytorch实现基础网络13-Glow(待完善)" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title_code_ant" itemprop="name">
-	  <a href="/post/342f7c36.html">pytorch项目5-CLIP搭建相似图像检索系统</a>
+	  <a href="/post/c5690277.html">用pytorch实现基础网络13-Glow</a>
 	</h1>
   
 
         
 		
-		  <a href="/post/342f7c36.html" class="archive-article-date">
-  	<time datetime="2023-05-05T11:22:46.000Z" itemprop="datePublished">
+		  <a href="/post/c5690277.html" class="archive-article-date">
+  	<time datetime="2023-05-06T10:56:32.000Z" itemprop="datePublished">
 	<!-- <i class="icon-calendar icon"></i> -->
 
 	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
 	&nbsp;
-	2023-05-05</time>
+	2023-05-06</time>
 	
 	<!-- busuanzi阅读量统计
 	
@@ -321,7 +321,7 @@ var _hmt = _hmt || [];
 		&nbsp; &nbsp; &nbsp;
 		<i class="fa fa-eye" aria-hidden="true"></i>
 		&nbsp;
-		<span class="waline-pageview-count" data-path="/post/342f7c36.html"><i class="fa fa-spinner fa-spin"></i></span>
+		<span class="waline-pageview-count" data-path="/post/c5690277.html"><i class="fa fa-spinner fa-spin"></i></span>
 	</span>
 	
 
@@ -351,7 +351,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">1.4k字</span>
+        <span class="post-count">266字</span>
       </span>
     </span>
 
@@ -360,7 +360,7 @@ var _hmt = _hmt || [];
       <span class="post-meta-item-icon">
 	    <i class="fa fa-pagelines" aria-hidden="true"></i>
         <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">7min</span>
+        <span class="post-count">1min</span>
       </span>
     </span>
 	
@@ -375,47 +375,15 @@ var _hmt = _hmt || [];
 	  <!-- 添加分类与标签 -->
 	  
 		  
-		  <h2 id="准备工作">1 准备工作</h2>
-<h3 id="clip模型的调用">1.1 clip模型的调用</h3>
-<p>https://github.com/openai/CLIP</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">conda install --<span class="built_in">yes</span> -c pytorch pytorch=1.7.1 torchvision cudatoolkit=11.0</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">pip install ftfy regex tqdm</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">pip install git+https://github.com/openai/CLIP.git</span></span><br></pre></td></tr></table></figure>
-<p><code>clip.available_models()</code> Returns the names of the available CLIP models.</p>
-<h3 id="准备数据集">1.2 准备数据集</h3>
-<p>与项目三中使用相同的数据集，这个数据集的划分代码略 <a href="https://wangtongyouwen.github.io/post/4627104a.html">[pytorch项目3-基于ResNet的水果蔬菜分类](https://wangtongyouwen.github.io/post/4627104a.html)</a></p>
-<h2 id="train.py">2 train.py</h2>
-<h3 id="get_args_parser">2.1 get_args_parser()</h3>
-<p>这部分是为了能够接收从命令行中读取的参数，其中最关键的是几个数据的路径：训练样本，测试样本，输出的结果照片以及推断出的模型feature_dict</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_args_parser</span>():</span><br><span class="line">    parser = argparse.ArgumentParser(<span class="string">&#x27;image search task&#x27;</span>, add_help=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># Model parameters</span></span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--input_size&#x27;</span>, default=<span class="number">128</span>, <span class="built_in">type</span>=<span class="built_in">int</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;images input size&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--dateset_dir&#x27;</span>, default=<span class="string">&#x27;./dataset_fruit_veg/train&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;path where to load images &#x27;</span>)</span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--test_image_dir&#x27;</span>, default=<span class="string">&#x27;./dataset_fruit_veg/val_images&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;images to test, split by comma &quot;,&quot;&#x27;</span>)  <span class="comment"># split from the test dataset, there is no Crossover</span></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--save_dir&#x27;</span>, default=<span class="string">&#x27;./output_di&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;path where to save, empty for no saving&#x27;</span>) <span class="comment"># 相似照片</span></span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--model_name&#x27;</span>,default=<span class="string">&#x27;resnet50&#x27;</span>, <span class="comment"># resnet50,resnet152,clip</span></span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;model name&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--feature_dict_file&#x27;</span>,default=<span class="string">&#x27;corpus_feature_dict,npy&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;filename where to save image representations&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--topk&#x27;</span>,default=<span class="number">7</span>,<span class="built_in">type</span>=<span class="built_in">int</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;k most similar image representations&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--mode&#x27;</span>,default=<span class="string">&#x27;extract&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;extract or predict, for extracting features or predicting similar images from corpus&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> parser</span><br></pre></td></tr></table></figure>
-<h3 id="main">2.2 main</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    model_names = timm.list_models(pretrained=<span class="literal">True</span>)</span><br><span class="line">    args = get_args_parser()</span><br><span class="line">    args = args.parse_args()</span><br><span class="line"></span><br><span class="line">    model = <span class="literal">None</span></span><br><span class="line">    preprocess = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> args.model_name != <span class="string">&quot;clip&quot;</span>:</span><br><span class="line">        model = timm.create_model(args.model_name, pretrained=<span class="literal">True</span>)  <span class="comment"># resnet50 resnet152</span></span><br><span class="line">        n_parameters = <span class="built_in">sum</span>(p.numel() <span class="keyword">for</span> p <span class="keyword">in</span> model.parameters() <span class="keyword">if</span> p.requires_grad)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;number of trainable params (M): %.2f&quot;</span> % (n_parameters / <span class="number">1.e6</span>))</span><br><span class="line">        model.<span class="built_in">eval</span>()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        model, preprocess = clip.load(<span class="string">&quot;ViT-B/32&quot;</span>, device=device)  <span class="comment"># preprocess就是已经归一化后的结果，无需再进行归一化操作</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> args.mode == <span class="string">&quot;extract&quot;</span>:</span><br><span class="line">        <span class="comment"># 第一阶段：图像表征提取</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;use pretrained model <span class="subst">&#123;args.model_name&#125;</span> to extract features&quot;</span>)</span><br><span class="line">        allVectors = extract_features(args, model, image_path=args.dataset_dir, preprocess=preprocess)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 第二阶段：图像检索</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;use pretrained model <span class="subst">&#123;args.model_name&#125;</span> to search <span class="subst">&#123;args.topk&#125;</span> similar images from corpus&quot;</span>)</span><br><span class="line"></span><br><span class="line">        test_images = glob.glob(os.path.join(args.test_image_dir, <span class="string">&quot;*.png&quot;</span>))</span><br><span class="line">        test_images += glob.glob(os.path.join(args.test_image_dir, <span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line">        test_images += glob.glob(os.path.join(args.test_image_dir, <span class="string">&quot;*.jpeg&quot;</span>))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># loading image representation dictionary</span></span><br><span class="line">        allVectors = np.load(<span class="string">f&quot;<span class="subst">&#123;args.save_dir&#125;</span>/<span class="subst">&#123;args.model_name&#125;</span>/<span class="subst">&#123;args.feature_dict_file&#125;</span>&quot;</span>, allow_pickle=<span class="literal">True</span>)  <span class="comment"># 导入字典</span></span><br><span class="line">        allVectors = allVectors.item()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># reading test images</span></span><br><span class="line">        <span class="keyword">for</span> image_file <span class="keyword">in</span> tqdm.tqdm(test_images):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;reading <span class="subst">&#123;image_file&#125;</span>...&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> args.model_name == <span class="string">&quot;clip&quot;</span>:</span><br><span class="line">                <span class="comment"># CLIP model</span></span><br><span class="line">                allVectors[image_file] = extract_feature_by_CLIP(model, preprocess, image_file)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># resnet50, resnet152</span></span><br><span class="line">                allVectors[image_file] = extract_feature_single(args, model, image_file)</span><br><span class="line"></span><br><span class="line">        sim, keys = getSimilarityMatrix(allVectors)</span><br><span class="line">        <span class="built_in">print</span>(keys)</span><br><span class="line">        result = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> image_file <span class="keyword">in</span> tqdm.tqdm(test_images):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;sorting most similar images as <span class="subst">&#123;image_file&#125;</span>...&quot;</span>)</span><br><span class="line">            index = keys.index(image_file)</span><br><span class="line">            sim_vec = sim[index]</span><br><span class="line"></span><br><span class="line">            indexs = np.argsort(sim_vec)[::-<span class="number">1</span>][<span class="number">1</span>:args.topk]  <span class="comment"># 排序：从小到大的索引</span></span><br><span class="line">            simImages, simScores = [], []</span><br><span class="line">            <span class="keyword">for</span> ind <span class="keyword">in</span> indexs:</span><br><span class="line">                simImages.append(keys[ind])</span><br><span class="line">                simScores.append(sim_vec[ind])</span><br><span class="line">            result[image_file] = (simImages, simScores)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;starting to show similar images...&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> image_file <span class="keyword">in</span> test_images:</span><br><span class="line">            plotSimilarImages(args, image_file, result[image_file][<span class="number">0</span>], result[image_file][<span class="number">1</span>], numRow=<span class="number">1</span>,</span><br><span class="line">                              numCol=args.topk)</span><br></pre></td></tr></table></figure>
+		  <h1 id="glow-generative-flow-with-invertible-11-convolutions">Glow: Generative Flow with Invertible 11 Convolutions</h1>
+<p>https://proceedings.neurips.cc/paper/2018/file/d139db6a236200b21cc7f752979132d0-Paper.pdf</p>
+<p>在这篇论文中，作者提出了一种名为Glow的流式生成模型。流式生成模型（Flow-based generative models）在计算精确对数似然（log-likelihood）、进行精确的潜在变量推断以及并行化训练和合成方面具有概念上的吸引力。Glow模型采用了一种可逆的 1×1 卷积操作，该方法相对简单。</p>
+<p>通过使用Glow模型，作者在标准基准测试中实现了对数似然的显著改进。更令人瞩目的是，作者证明了优化纯对数似然目标的基于流的生成模型能够高效地生成和操作大型图像，且生成的图像具有逼真的外观。这表明，Glow这种类型的流式生成模型在生成逼真图像方面具有很大的潜力。</p>
 <ul>
-<li>判断模型是resnet50，resnet152 or clip</li>
-<li>判断模式是否是 extract or predict</li>
+<li>显式表示目标分布</li>
+<li>可逆</li>
 </ul>
-<p>predict: 部分代码的步骤：</p>
-<ol type="1">
-<li>读取图片，判断模型类型，读取特征字典</li>
-<li>将目标图片与特征图片中的所有值做余弦相似度比较，得到的结果矩阵：allvector</li>
-<li>排序，取出前n个目标</li>
-<li>把图片地址和图片计算得到的score储存，最后进行输出</li>
-</ol>
-<h2 id="extract">3 extract</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">extract_feature_single</span>(<span class="params">args, model, file</span>):</span><br><span class="line">    img_rgb = Image.<span class="built_in">open</span>(file).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">    image = img_rgb.resize((args.input_size, args.input_size), Image.LANCZOS)</span><br><span class="line">    image = torchvision.transforms.ToTensor()(image)</span><br><span class="line"></span><br><span class="line">    trainset_mean = [<span class="number">0.4729932</span>, <span class="number">0.43474569</span>, <span class="number">0.3264319</span>]</span><br><span class="line">    trainset_std = [<span class="number">0.37707761</span>, <span class="number">0.36121109</span>, <span class="number">0.34872371</span>]</span><br><span class="line"></span><br><span class="line">    image = torchvision.transforms.Normalize(mean=trainset_mean, std=trainset_std)(image).unsqueeze(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        features = model.forward_features(image)</span><br><span class="line">        vec = model.global_pool(features)</span><br><span class="line">        vec = vec.squeeze().numpy()</span><br><span class="line"></span><br><span class="line">    img_rgb.close()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> vec</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>这部分代码将先对图像进行归一化，然后在模型的forward_features层输出特征，在进入池化层最后得到代表图片的字典信息。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">extract_feature_by_CLIP</span>(<span class="params">model, preprocess, file</span>):</span><br><span class="line">    image = preprocess(Image.<span class="built_in">open</span>(file)).unsqueeze(<span class="number">0</span>).to(device)</span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        vec = model.encode_image(image)</span><br><span class="line">        vec = vec.squeeze().cpu().numpy()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> vec</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用CLIP中的encode_image输出特征信息</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">extract_features</span>(<span class="params">args, model, image_path=<span class="string">&quot;&quot;</span>, preprocess=<span class="literal">None</span></span>):</span><br><span class="line">    allVectors = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> image_file <span class="keyword">in</span> tqdm.tqdm(glob.glob(os.path.join(image_path, <span class="string">&quot;*&quot;</span>, <span class="string">&quot;*.jpg&quot;</span>))):  <span class="comment"># image_path:train # tqdm:进度条</span></span><br><span class="line">        <span class="keyword">if</span> args.model_name == <span class="string">&quot;clip&quot;</span>:</span><br><span class="line">            allVectors[image_file] = extract_feature_by_CLIP(model, preprocess, image_file)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            allVectors[image_file] = extract_feature_single(args, model, image_file)</span><br><span class="line"></span><br><span class="line">    os.makedirs(<span class="string">f&quot;<span class="subst">&#123;args.save_dir&#125;</span>/<span class="subst">&#123;args.model_name&#125;</span>&quot;</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    np.save(<span class="string">f&quot;<span class="subst">&#123;args.save_dir&#125;</span>/<span class="subst">&#123;args.model_name&#125;</span>/<span class="subst">&#123;args.feature_dict_file&#125;</span>&quot;</span>, allVectors)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> allVectors</span><br></pre></td></tr></table></figure>
-<h2 id="计算余弦相似度">4 计算余弦相似度</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 计算余弦相似度</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getSimilarityMatrix</span>(<span class="params">vectors_dict</span>):</span><br><span class="line">    v = np.array(<span class="built_in">list</span>(vectors_dict.values()))  <span class="comment"># [NUM,H]</span></span><br><span class="line">    numerator = np.matmul(v, v.T)  <span class="comment"># [NUM,NUM]</span></span><br><span class="line">    denominator = np.matmul(np.linalg.norm(v, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>),</span><br><span class="line">                            np.linalg.norm(v, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>).T)  <span class="comment"># [NUM,NUM]</span></span><br><span class="line"></span><br><span class="line">    sim = numerator / denominator</span><br><span class="line">    keys = <span class="built_in">list</span>(vectors_dict.keys())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sim, keys</span><br></pre></td></tr></table></figure>
-<h2 id="绘制结果">5 绘制结果</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">setAxes</span>(<span class="params">ax, image, query=<span class="literal">False</span>, **kwargs</span>):</span><br><span class="line">    value = kwargs.get(<span class="string">&quot;value&quot;</span>, <span class="literal">None</span>)</span><br><span class="line">    <span class="keyword">if</span> query:</span><br><span class="line">        ax.set_xlabel(<span class="string">&quot;Query Image\n&#123;0&#125;&quot;</span>.<span class="built_in">format</span>(image), fontsize=<span class="number">12</span>)</span><br><span class="line">        ax.xaxis.label.set_color(<span class="string">&quot;red&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        ax.set_xlabel(<span class="string">&quot;score=&#123;1:1.3f&#125;\n&#123;0&#125;&quot;</span>.<span class="built_in">format</span>(image, value), fontsize=<span class="number">12</span>)</span><br><span class="line">        ax.xaxis.label.set_color(<span class="string">&quot;blue&quot;</span>)</span><br><span class="line">    ax.set_xticks([])</span><br><span class="line">    ax.set_yticks([])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">plotSimilarImages</span>(<span class="params">args, image, simImages, simValues, numRow=<span class="number">1</span>, numCol=<span class="number">4</span></span>):</span><br><span class="line">    fig = plt.figure()</span><br><span class="line">    <span class="comment"># set width and height in inches</span></span><br><span class="line"></span><br><span class="line">    fig.set_size_inches(<span class="number">18.5</span>, <span class="number">10.5</span>)</span><br><span class="line">    fig.suptitle(<span class="string">f&quot;use engine model: <span class="subst">&#123;args.model_name&#125;</span>&quot;</span>, fontsize=<span class="number">35</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, numCol * numRow):</span><br><span class="line">        ax = []</span><br><span class="line">        <span class="keyword">if</span> j == <span class="number">0</span>:</span><br><span class="line">            img = Image.<span class="built_in">open</span>(image)</span><br><span class="line">            ax = fig.add_subplot(numRow, numCol, <span class="number">1</span>)</span><br><span class="line">            setAxes(ax, image.split(os.sep)[-<span class="number">1</span>], query=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            img = Image.<span class="built_in">open</span>(simImages[j - <span class="number">1</span>])</span><br><span class="line">            ax.append(fig.add_subplot(numRow,numCol,j+<span class="number">1</span>))</span><br><span class="line">            setAxes(ax[-<span class="number">1</span>],<span class="string">&quot;_&quot;</span>.join(simImages[j-<span class="number">1</span>].split(os.sep)[-<span class="number">2</span>:]),value=simValues[j-<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># truncated_filename = &quot;&quot;.join(simImages[j - 1].split(os.sep)[-2:])</span></span><br><span class="line">            <span class="comment"># truncated_filename = truncated_filename[:15]  # 只显示前 15 个字符</span></span><br><span class="line">            <span class="comment"># setAxes(ax[-1], truncated_filename, value=simValues[j - 1])</span></span><br><span class="line">        img = img.convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">        plt.imshow(img)</span><br><span class="line">        img.close()</span><br><span class="line">    fig.savefig(<span class="string">f&quot;<span class="subst">&#123;args.save_dir&#125;</span>/<span class="subst">&#123;args.model_name&#125;</span>_search_top_<span class="subst">&#123;args.topk-<span class="number">1</span>&#125;</span>_<span class="subst">&#123;image.split(os.sep)[-<span class="number">1</span>].split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]&#125;</span>.png&quot;</span>)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
-<ul>
-<li>这部分展示代码具有参考性，可以用来动态显示结果。</li>
-</ul>
+<p>数据的分布：得到对应的似然(给定模型下，数据的似然)</p>
 
 				  
 	  
@@ -461,19 +429,19 @@ var _hmt = _hmt || [];
 	
 	<!-- <br>
 	<strong class="create-time">发布时间：</strong>
-	2023-05-05 -->
+	2023-05-06 -->
 	
 	<br>
 	<strong class="update-time">最后更新：</strong>
-	2023年05月06日 15:13:23
+	2023年05月06日 21:57:55
 	
 	<!-- <br>
 	<strong class="article-titles">本文标题：</strong>
-	<a href="https://wangtongyouwen.github.io/post/342f7c36.html" title="pytorch项目5-CLIP搭建相似图像检索系统" target="_blank">pytorch项目5-CLIP搭建相似图像检索系统</a> -->
+	<a href="https://wangtongyouwen.github.io/post/c5690277.html" title="用pytorch实现基础网络13-Glow" target="_blank">用pytorch实现基础网络13-Glow</a> -->
 	
 	<br>
 	<strong class="article-url">本文链接：</strong>
-	<a href="https://wangtongyouwen.github.io/post/342f7c36.html" title="pytorch项目5-CLIP搭建相似图像检索系统" target="_blank">https://wangtongyouwen.github.io/post/342f7c36.html</a>
+	<a href="https://wangtongyouwen.github.io/post/c5690277.html" title="用pytorch实现基础网络13-Glow" target="_blank">https://wangtongyouwen.github.io/post/c5690277.html</a>
 	
 	<br>
 	<strong class="copyright">版权声明：</strong>
@@ -503,7 +471,7 @@ var _hmt = _hmt || [];
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">project</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
         		</li>
       		
 		</ul>
@@ -562,7 +530,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyouwen.github.io/post/342f7c36.html" alt="微信分享二维码">
+	  <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wangtongyouwen.github.io/post/c5690277.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -579,18 +547,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/post/c5690277.html" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/post/2b566acf.html" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          用pytorch实现基础网络13-Glow
+          pytorch项目6-语音合成
         
       </div>
     </a>
   
   
-    <a href="/post/954ae01.html" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">pytorch进阶2-autoregressive diffusion model</div>
+    <a href="/post/342f7c36.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">pytorch项目5-CLIP搭建相似图像检索系统</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -616,7 +584,7 @@ var _hmt = _hmt || [];
           <span class="tooltip-content">
 			<span style="font-size: 20px;font-weight: bold;">目录</span>
             <div class="toc-article">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">1 准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#clip%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%B0%83%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 clip模型的调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 准备数据集</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#train.py"><span class="toc-number">2.</span> <span class="toc-text">2 train.py</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#get_args_parser"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 get_args_parser()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#main"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 main</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extract"><span class="toc-number">3.</span> <span class="toc-text">3 extract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E4%BD%99%E5%BC%A6%E7%9B%B8%E4%BC%BC%E5%BA%A6"><span class="toc-number">4.</span> <span class="toc-text">4 计算余弦相似度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E7%BB%93%E6%9E%9C"><span class="toc-number">5.</span> <span class="toc-text">5 绘制结果</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#glow-generative-flow-with-invertible-11-convolutions"><span class="toc-number">1.</span> <span class="toc-text">Glow: Generative Flow with Invertible 11 Convolutions</span></a></li></ol>
             </div>
           </span>
         </div>

@@ -279,6 +279,543 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-pytorch项目6-语音合成" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/2b566acf.html">pytorch项目6-语音合成</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/2b566acf.html" class="archive-article-date">
+  	<time datetime="2023-05-06T11:09:28.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-05-06</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">4.9k字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">19min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h1 id="conditional-variational-autoencoder-with-adversarial-learning-for-end-to-end-text-to-speech">Conditional Variational Autoencoder with Adversarial Learning for End-to-End Text-to-Speech</h1>
+<p>http://proceedings.mlr.press/v139/kim21f/kim21f.pdf</p>
+<h2 id="论文概述">1 论文概述</h2>
+<p>在这项工作中，作者提出了一种并行的<strong>端到端文本到语音</strong>（TTS）方法，其生成的音频比当前的两阶段TTS系统更自然。这种方法采用了增强正规化流的变分推断和对抗训练过程，从而提高了生成建模的表达能力。此外，作者还提出了一种随机持续时间预测器，用于从输入文本合成具有多样节奏的语音。</p>
+<p>通过对潜在变量的不确定性建模和随机持续时间预测器，该方法表达了自然的一对多关系，即输入文本可以以不同的音高和节奏以多种方式发音。在LJ语音（单一发音者数据集）上进行的主观人类评估（平均意见分数，MOS）表明，该方法优于目前最好的公开可用TTS系统，并实现了与基准真实数据相当的MOS。</p>
+<p>总之，作者提出了一种端到端的TTS方法，采用<strong>变分推断</strong>、<strong>正规化流</strong>和<strong>对抗训练</strong>过程，生成更自然的音频。通过<strong>随机持续时间预测器</strong>和隐变量的不确定性建模，该方法能够实现文本到语音的<strong>自然一对多关系</strong>。实验结果表明，该方法在性能上优于现有的TTS系统，并在主观评估中取得了令人满意的成绩。</p>
+<ul>
+<li>过去研究：文本-&gt;频谱-&gt;波形</li>
+<li>现在：文本-&gt;波形</li>
+</ul>
+<p>提出的方法主要在前三个小节中描述：条件变分自编码器（VAE）的公式化；从变分推断中得出的对齐估计；用于提高合成质量的对抗性训练。</p>
+<ol type="1">
+<li><strong>条件变分自编码器</strong>（Conditional VAE）公式化：VITS模型采用了条件变分自编码器作为基本框架，通过引入潜在变量来捕捉输入文本的多样性，并进行端到端训练。</li>
+<li><strong>变分推断中的对齐估计</strong>（Alignment Estimation）：VITS模型利用变分推断方法推导出与语音特征对齐的潜在变量表示，这有助于在生成过程中更好地捕捉文本与语音之间的对应关系。</li>
+<li><strong>改进合成质量的对抗训练</strong>（Adversarial Training）：为了提高合成语音的质量，VITS模型采用了对抗训练方法，在生成过程中对抗性地优化生成器和判别器。</li>
+</ol>
+<p>整体架构包括文本编码器、持续时间预测器、潜在变量推断器、语音解码器和对抗性判别器等组件。通过联合训练这些组件，<strong>VITS</strong>模型可以在端到端的设置下实现高质量的文本到语音合成。</p>
+<h2 id="method">2 method</h2>
+<h3 id="conditional-vae">2.1 conditional VAE</h3>
+<p><span class="math display">\[
+\log p_\theta(x|c)\ge\mathbb{E}_{q_\phi(z|x)}\Big[\log p_\theta(x|z)-\log\frac{q_\phi(z|x)}{p_\theta(z|c)}\Big]
+\]</span></p>
+<p>左边：需要最大化的目标似然 x:目标(语音波形)，c:条件(text，说话人的音色)</p>
+<p>右边：elbo(evidence lower bound) 如果是纯flow是能够得到解析式的 【重构器-KL散度:后验分布/先验分布】</p>
+<p>最大化elbo：1. 解码器(重构器)在给定隐变量z的情况下，x对应的最大似然</p>
+<ol start="2" type="1">
+<li>最小化KL散度：后验与先验之间的距离，<span class="math inline">\(\phi\)</span>模型在给定目标的条件下的分布与<span class="math inline">\(\theta\)</span>模型在给定条件下的分布越接近越好</li>
+</ol>
+<h4 id="一般的vae目标函数推导">一般的VAE目标函数推导</h4>
+<ol type="1">
+<li><span class="math inline">\(P(X)=\int_{z} P(X|z)\times P(z)\)</span> <span class="math inline">\(X\)</span>为目标函数，<span class="math inline">\(Z\)</span>为隐变量，此处为对联合分布进行积分得到边缘分布</li>
+<li>对于大部分<span class="math inline">\(z\)</span>,我们计算出来的<span class="math inline">\(P(X|z)\)</span>为0，因此需要缩小<span class="math inline">\(z\)</span>的样本空间，此处借用另外一个分布<span class="math inline">\(Q(z|X)\)</span>来缩小<span class="math inline">\(z\)</span>的样本空间(或者说增大<span class="math inline">\(z\)</span>产生<span class="math inline">\(X\)</span>的可能性)，并且当<span class="math inline">\(z\)</span>服从分布<span class="math inline">\(Q(z|X)\)</span>时，再计算<span class="math inline">\(P(X|z)\)</span>的期望值比较简单</li>
+<li>那么，当<span class="math inline">\(z\)</span>服从分布<span class="math inline">\(Q(z|X)\)</span>时，<span class="math inline">\(P(X|z)\)</span>的期望值与目标数据的分布<span class="math inline">\(P(X)\)</span>之间是什么关系呢？可以用一个KL散度公式算起：<span class="math inline">\(D[Q(z|X)||P(z|X)]\)</span></li>
+</ol>
+<p><span class="math display">\[
+D[Q(z|X)||P(z|X)] = \mathbb{E}_{z\sim Q(z|X)}[\log Q(z|X)-\log P(z|X)]
+\]</span></p>
+<ol start="4" type="1">
+<li>为了引出<span class="math inline">\(P(X)\)</span>，可以基于贝叶斯公式来改写<span class="math inline">\(P(z|X)\)</span></li>
+</ol>
+<p><span class="math display">\[
+p(z|X)=\frac{P(z,X)}{P(X)}=\frac{P(X|z)\times P(z)}{P(X)}
+\]</span></p>
+<ol start="5" type="1">
+<li>这时KL散度可以重新写成:</li>
+</ol>
+<p><span class="math display">\[
+D[Q(z|X)||P(z|X)]=\mathbb{E}_{z\sim Q(z|X)}[\log Q(z|X)-\log P(X|z) -\log P(z)+\log P(X)]
+\]</span></p>
+<ol start="6" type="1">
+<li><p>因为其中的<span class="math inline">\(P(X)\)</span>与<span class="math inline">\(z\sim Q(z|X)\)</span>无关，因此可以移到期望公式外面;同时，由于: <span class="math display">\[
+D[Q(z|X)||P(z)]=\mathbb{E}_{z\sim Q(z|X)}[\log Q(z|X)-\log P(z)]
+\]</span></p>
+<ol start="7" type="1">
+<li>KL散度进一步改写成</li>
+</ol></li>
+</ol>
+<p><span class="math display">\[
+D[Q(z|X)||P(z|X)]=-\mathbb{E}_{z\sim Q(z|X)}[\log P(X|z)] + D[Q(z|X)||P(z)]+\log P(X)
+\]</span></p>
+<ol start="8" type="1">
+<li>因此</li>
+</ol>
+<p><span class="math display">\[
+\log P(X)-\textcolor{red}{D[Q(z|X)||P(z|X)]} =\mathbb{E}_{z\sim Q(z|X)}[\log P(X|z)] - D[Q(z|X)||P(z)]
+\]</span></p>
+<ol start="9" type="1">
+<li>红色部分恒大于0，故</li>
+</ol>
+<p><span class="math display">\[
+\log P(X) \ge \mathbb{E}_{z\sim Q(z|X)}[\log P(X|z)] - D[Q(z|X)||P(z)]
+\]</span></p>
+<p>​ 当且仅当<span class="math inline">\(Q(z|X)\)</span>可以逼近<span class="math inline">\(P(z|X)\)</span>等式成立</p>
+<ol start="10" type="1">
+<li><p>目标数据的对数似然公式下界如式(8)所示，并且右边第一项是解码器，第二项是先验分布<span class="math inline">\(P(z)\)</span>与后验分布<span class="math inline">\(Q(z|X)\)</span>之间的距离</p></li>
+<li><p>如果希望<span class="math inline">\(\log P(X)\)</span>越大越好，也就是相当于希望解码器基于<span class="math inline">\(z\)</span>分布预测<span class="math inline">\(X\)</span>的概率越大越好，同时先验分布<span class="math inline">\(P(z)\)</span>与后验分布<span class="math inline">\(Q(z|X)\)</span>之间的距离越小越好</p></li>
+</ol>
+<h4 id="vits中的条件vae目标函数推导">VITS中的条件VAE目标函数推导</h4>
+<ol type="1">
+<li>在本文中，我们可以从KL散度公式算起</li>
+</ol>
+<p><span class="math display">\[
+D[Q(z|X)||P(z|X,c)] = \mathbb{E}_{z\sim Q(z|X)}[\log Q(z|X) - log P(z|X,c)]
+\]</span></p>
+<ol start="2" type="1">
+<li>类似的，我们可以yoga贝叶斯公式来改写$ P(z|X,c)$</li>
+</ol>
+<p><span class="math display">\[
+P(z|X,c) = \frac{P(z,X|c)}{P(X|c)}=\frac{P(X|z)\times P(z|c)}{P(X|c)}
+\]</span></p>
+<ol start="3" type="1">
+<li>于是KL散度可以重新写成:</li>
+</ol>
+<p><span class="math display">\[
+D[Q(z|X)||P(z|X,c)] = \mathbb{E}_{z\sim Q(z|X)}[\log Q(z|X) - log P(X|z)-\log P(z|c)] + \log P(X|c)
+\]</span></p>
+<p>​ 因为<span class="math inline">\(P(X|c)\)</span>与<span class="math inline">\(z\sim Q(z|X)\)</span>无关，因此可以移到期望公式之外</p>
+<ol start="4" type="1">
+<li>同时，由于：</li>
+</ol>
+<p><span class="math display">\[
+D[Q(z|X)||P(z|c)] = \mathbb{E}_{z\sim Q(z|X)}[\log Q(z|X) -\log P(z|c)]
+\]</span></p>
+<p>​ KL散度式(9)可以进一步化解为： <span class="math display">\[
+D[Q(z|X)||P(z|X,c)] = -\mathbb{E}_{z\sim Q(z|X)}[log P(X|z)] + D[Q(z|X)||P(z|c)] + \log P(X|c)
+\]</span></p>
+<ol start="5" type="1">
+<li>因此</li>
+</ol>
+<p><span class="math display">\[
+\log P(X|c) -\textcolor{red}{D[Q(z|X)||P(z|X,c)]} = \mathbb{E}_{z\sim Q(z|X)}[log P(X|z)] -D[Q(z|X)||P(z|c)]
+\]</span></p>
+<p>红色部分是恒大于0，所以得到: <span class="math display">\[
+\log P(X|c)  \ge \mathbb{E}_{z\sim Q(z|X)}[log P(X|z)] -D[Q(z|X)||P(z|c)]
+\]</span> 当且仅当<span class="math inline">\(Q(z|X)\)</span>可以逼近<span class="math inline">\(P(z|X,c)\)</span>时，等式成立</p>
+<ol start="6" type="1">
+<li>VITS的目标数据的对数似然公式下界中：</li>
+</ol>
+<ul>
+<li><span class="math inline">\(X\)</span>表示音频的梅尔频谱</li>
+<li><span class="math inline">\(c\)</span>表示<strong>文本信息和对其信息</strong>，<span class="math inline">\(z\)</span>表示隐含变量。其中，对齐信息是一个<span style="color:olive">硬对齐矩阵，形状为[|text|,|z|]</span><span class="math inline">\(\textcolor{olive}{}\)</span></li>
+<li>文中提到，发现在<span class="math inline">\(P(z|c)\)</span>表示成简单的高斯分布之后再加一个flow变换，音质效果更好</li>
+</ul>
+<h4 id="重构loss右边等式第一项">重构loss(右边等式第一项)</h4>
+<p>在重构损失中，作者使用了梅尔频谱图（mel-spectrogram）作为目标数据点，而不是原始波形。梅尔频谱图用<span class="math inline">\(X_{mel}\)</span>表示</p>
+<p>这里的关键点是：</p>
+<ol type="1">
+<li>使用梅尔频谱图作为目标数据点，而不是原始波形。</li>
+<li>将潜在变量<span class="math inline">\(z\)</span>上采样到波形域<span class="math inline">\(\hat y\)</span>。</li>
+<li>将波形域<span class="math inline">\(\hat y\)</span>转换为梅尔频谱图域<span class="math inline">\(\hat X_{mel}\)</span>。</li>
+<li>使用预测和目标梅尔频谱图之间的<span class="math inline">\(L1\)</span>损失作为重构损失。</li>
+</ol>
+<p><span class="math display">\[
+L_{\text{recon}} = ||X_{mel}-\hat X_{mel}||
+\]</span></p>
+<p>这可以看作是在假设数据分布为拉普拉斯分布的情况下进行的<strong>最大似然估计</strong>，同时忽略了常数项。通过使用近似于人类听觉系统响应的<strong>梅尔刻度</strong>，将<strong>重构损失定义在梅尔频谱图域以提高感知质量</strong>。注意，从原<strong>始波形估计梅尔频谱图不需要可训练参数</strong>，因为它只使用STFT和线性投影到梅尔刻度。此外，估计仅在训练期间使用，而不是在推理期间使用。在实践中，我们不会对整个潜在变量<span class="math inline">\(z\)</span>进行上采样，而是将部分序列用作解码器的输入，这是用于高效端到端训练的窗口生成器训练。</p>
+<p>这段话的关键点包括：</p>
+<ol type="1">
+<li>重构损失可以看作是在假设拉普拉斯分布的情况下进行的最大似然估计。</li>
+<li>在梅尔频谱图域定义重构损失，以提高感知质量。</li>
+<li>从原始波形估计梅尔频谱图不需要可训练参数。</li>
+<li>在实践中，仅将部分潜在变量序列用作解码器的输入，以实现高效的端到端训练。</li>
+</ol>
+<h4 id="kl散度右边等式第二项">KL散度(右边等式第二项)</h4>
+<ol type="1">
+<li>先验编码器的输入条件<span class="math inline">\(c\)</span>由音素<span class="math inline">\(c_{text}\)</span>和音素与潜在变量之间的对齐<span class="math inline">\(A\)</span>组成。(因为文本和音素之间不可能是一一对应的，单个文本可能存在多个音素)</li>
+<li>对齐是一个硬单调注意力矩阵，表示每个输入音素扩展的长度以便与目标语音进行时间对齐。</li>
+<li>在训练迭代中需要估计对齐。</li>
+<li>为了提供更高分辨率的信息，使用线性刻度频谱图<span class="math inline">\(X_{lin}\)</span>作为输入，而不是<strong>梅尔频谱图</strong>。修改后的输入并不违反变分推断的属性。</li>
+</ol>
+<p><span class="math display">\[
+L_{kl}=\log q_{\phi} (z|X_{lin}) - \log p_{\theta} (z|c_{text},A) \\
+z \sim q_{\phi}(z|X_{lin}) = N (z;\mu_{\phi}(X_{lin}),\sigma_{\phi}(X_{lin}))
+\]</span></p>
+<p><span class="math inline">\(z\)</span>是从后验分布中采样得到的，这是一个高斯分布。</p>
+<p><span class="math inline">\(X\)</span>没有用波形频谱(复杂)，也没有用梅尔谱(相对简单)，而是采用了线性刻度频谱</p>
+<p>我们使用因子化正态分布来参数化先验和后验编码器。我们发现增加先验分布的表达能力对于生成逼真的样本很重要。因此，我们在因子化正态先验分布的基础上应用<strong>归一化流</strong>，它允许将一个简单分布通过可逆变换转换成一个更复杂的分布，遵循变量变换规则： <span class="math display">\[
+p_\theta(z|c)=N(f_\theta(z);\mu_{\theta}(c))\left|\text{det}\frac{\partial f_\theta(z)}{\partial z}\right| \\
+c=[c_{text},A]
+\]</span></p>
+<h3 id="alignment-estimation">2.2 Alignment Estimation</h3>
+<h5 id="mas">MAS</h5>
+<p>为了在输入文本和目标语音之间估计对齐关系A，我们采用了<strong>单调对齐搜索</strong>(Monotonic Alignment Search，MAS)，这是一种通过正则化流参数化的数据似然最大化来搜索对齐关系的方法。 <span class="math display">\[
+\begin{aligned}
+A &amp; =\underset{\hat{A}}{\arg \max } \log p\left(X \mid c_{\text {text }}, \hat{A}\right) \\
+&amp; =\underset{\hat{A}}{\arg \max } \log N\left(f(x) ; \mu\left(c_{\text {text }}, \hat{A}\right), \sigma\left(c_{\text {text }}, \hat{A}\right)\right)
+\end{aligned}
+\]</span> MAS利用了单调性假设，即输入文本中的字符和目标语音中的帧之间的对齐关系是单调的。这使得搜索过程更加高效，因为只需要在单调增加的路径上搜索。</p>
+<ul>
+<li>monotonic(单调)</li>
+<li>non-skipping</li>
+</ul>
+<p>在我们的设置中直接应用MAS是困难的，因为我们的目标是ELBO（变分下界），而不是精确的对数似然。因此，我们重新定义MAS，使其寻找最大化ELBO的对齐关系，这可以简化为寻找最大化潜变量对数似然的对齐关系。</p>
+<p>为了实现这一目标，我们可以在训练过程中根据<strong>当前模型参数来迭代更新对齐关系</strong>。在每次迭代过程中，我们通过最大化ELBO来调整对齐关系，并相应地更新模型参数。</p>
+<p>这种方法允许我们在优化变分下界的同时，学习输入文本与目标语音之间的对齐关系。通过这种方式，我们可以在训练过程中逐渐改进模型的性能，并在推理阶段生成更自然的语音样本。</p>
+<p><span class="math display">\[
+\begin{array}{l}
+\underset{\hat{A}}{\arg \max } \log p_{\theta}\left(X_{\text {mel }} \mid z\right)-\log \frac{q_{\phi}\left(z \mid x_{\text {lin }}\right)}{p_{\theta}\left(z \mid c_{\text {text }}, \hat{A}\right)} 
+=\underset{\hat{A}}{\arg \max } \log p_{\theta}\left(z \mid c_{\text {text }}, \hat{A}\right)=\log N\left(f_{\theta}(z) ; \mu_{\theta}\left(c_{\text {text }}, \hat{A}\right), \sigma_{\theta}\left(c_{\text {text }}, \hat{A}\right)\right)
+\end{array}
+\]</span></p>
+<h5 id="duration-prediction-from-text--时长模型">DURATION PREDICTION FROM TEXT--时长模型</h5>
+<p>我们可以通过对估计对齐矩阵 <span class="math inline">\(A\)</span> 的每一行中的所有列求和来计算每个输入令牌的持续时间 <span class="math inline">\(d_i\)</span>：<span class="math inline">\(\sum_j A_{i,j}\)</span>. 该持续时间可以用来训练一个确定性的持续时间预测器，如之前的工作所提出的（Kim et al., 2020），但它不能表达一个人每次以不同语速发音的方式。为了生成类似于人类的语音节奏，我们设计了一个随机持续时间预测器，使其样本遵循给定条件变分自编码器在对抗学习环境下进行端到端文本转语音的音素持续时间分布。随机持续时间预测器是一个基于流的生成模型，通常通过最大似然估计进行训练。然而，直接应用最大似然估计是困难的，因为每个输入音素的持续时间是1）一个离散的整数，需要进行去量化以使用连续的归一化流，以及2）一个标量，由于可逆性限制了高维变换。我们应用变分去量化（Flow++）和变分数据增强（VFlow）来解决这些问题。</p>
+<p>具体来说，我们引入了两个随机变量 <span class="math inline">\(u\)</span> 和 <span class="math inline">\(\nu\)</span>，它们具有与持续时间序列 d 相同的时间分辨率和维度，用于变分去量化和变分数据增强。我们将 <span class="math inline">\(u\)</span> 的支持限制在 [0, 1) 之间，以使差值 d−u 变成一组正实数，并将 <span class="math inline">\(\nu\)</span> 和 d 逐通道地连接，以形成更高维的潜在表示。我们通过近似后验分布 <span class="math inline">\(q_{\phi}(u,\nu|d,c_{text})\)</span> 对这两个变量进行采样。所得到的目标是音素持续时间对数似然的变分下界： <span class="math display">\[
+\begin{gathered}
+\log p_{\theta}(d|c_{t e x t})\ge 
+\mathbb{E}_{q_{\phi}(u,\nu|d,c_{t e x t})}\Big[\operatorname{log}\frac{p_{\theta}(d-u,\nu|c_{t e x t})}{q_{\phi}(u,\nu|d,c_{t e x t})}\Big] 
+\end{gathered}
+\]</span> 持续时间训练损失 <span class="math inline">\(L_{dur}\)</span> 是负变分下界。我们将停止梯度运算符应用于输入条件，以防止将输入的梯度反向传播，从而使持续时间预测器的训练不影响其他模块的训练。</p>
+<p>采样过程相对简单；通过随机噪声经过随机持续时间预测器的逆变换，对音素持续时间进行采样，然后将其转换为整数。</p>
+<h3 id="adversarial-training">2.3 Adversarial Training</h3>
+<p>为了在我们的学习系统中采用对抗性训练，我们添加了一个鉴别器<span class="math inline">\(D\)</span>，用于区分生成器<span class="math inline">\(G\)</span>生成的输出和真实波形<span class="math inline">\(y\)</span>。在这项工作中，我们使用了两种在语音合成中成功应用的损失类型；用于对抗性训练的最小平方损失函数，以及用于训练生成器的额外特征匹配损失：</p>
+<p><span class="math display">\[
+\begin{gathered}
+L_{adv}(D) =\mathbb{E}_{(y,z)}\Big[(D(y)-1)^{2}+(D(G(z)))^{2}\Big],  \\
+L_{adv}(G) =\mathbb{E}_z\Big[(D(G(z))-1)^2\Big],  \\
+L_{fm}(G) =\mathbb{E}_{(y,z)}\Big[\sum\limits_{l=1}^T\frac{1}{N_l}\|D^l(y)-D^l(G(z))\|_1\Big]
+\end{gathered}
+\]</span></p>
+<h3 id="final-loss">2.4 final loss</h3>
+<p><span class="math display">\[
+L_{vae} = L_{recon} +L_{kl} +L_{dur} +L_{adv}(G) +L_{fm}(G)
+\]</span></p>
+<h2 id="architecture">3 architecture</h2>
+<p>整个建议模型的架构包括后验编码器、先验编码器、解码器、鉴别器和随机持续时间预测器。后验编码器和鉴别器仅用于训练，而不是用于推理。</p>
+<h3 id="后验编码器">3.1 后验编码器</h3>
+<p>对于后验编码器，使用 WaveGlow 和 Glow-TTS 中使用的非因果 WaveNet 残差块。</p>
+<p>WaveNet 残差块由带有门控激活单元和跳过连接的膨胀卷积层组成。块上方的线性投影层产生正态后验分布的均值和方差。对于多说话者情况，我们在残差块中使用全局条件化添加说话者嵌入。</p>
+<h3 id="先验编码器">3.2 先验编码器</h3>
+<p>先验编码器由处理输入音素 <span class="math inline">\(c_{text}\)</span> 的文本编码器和改善先验分布灵活性的归一化流 <span class="math inline">\(f_\theta\)</span> 组成。文本编码器是一个变压器编码器，它使用相对位置表示而不是绝对位置编码。我们可以通过文本编码器从 <span class="math inline">\(c_{text}\)</span> 获取隐藏表示 <span class="math inline">\(h_{text}\)</span>，并通过文本编码器上方的线性投影层产生用于构造先验分布的均值和方差。归一化流是由 WaveNet 残差块堆叠组成的仿射耦合层的堆叠)。为简化起见，我们设计归一化流为具有雅可比行列式为一的体积保持变换。对于多说话者设置，我们通过全局调节将说话者嵌入添加到归一化流中的残差块。</p>
+<h3 id="解码器">3.3 解码器</h3>
+<p>解码器本质上是 HiFi-GAN V1 生成器。它由一堆转置卷积组成，每个转置卷积后面都跟着一个多感受野融合模块（MRF）。MRF 的输出是具有不同接收字段大小的残差块输出的和。对于多说话者设置，我们添加一个线性层，将说话者嵌入转换并将其添加到输入潜变量<span class="math inline">\(z\)</span>。</p>
+<h3 id="判别器">3.4 判别器</h3>
+<p>我们遵循 HiFi-GAN 提出的<strong>多周期鉴别器的鉴别器架构</strong>。多周期鉴别器是一种马尔可夫窗口为基础的子鉴别器的混合，每一个子鉴别器都在不同周期模式的输入波形上操作。</p>
+<h3 id="随机时长预测器">3.5 随机时长预测器</h3>
+<p>随机持续时间预测器根据条件输入 <span class="math inline">\(h_{text}\)</span> 估计<strong>音素持续时间</strong>的分布。为了有效地参数化随机持续时间预测器，我们堆叠具有<strong>膨胀和深度可分离卷积层</strong>的残差块。我们还将神经样条流应用于耦合层，这些神经样条流采用单调有理二次样条实现可逆非线性变换。与常用的仿射耦合层相比，神经样条流在参数数量相似的情况下提高了变换的表达能力。对于多说话者设置，我们添加一个线性层，将说话者嵌入转换并将其添加到输入 <span class="math inline">\(h_{text}\)</span> 中。</p>
+<h2 id="code">4 code</h2>
+<p>https://github.com/jaywalnut310/vits</p>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">project</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/2b566acf.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
+    <article id="post-用pytorch实现基础网络13-Glow(待完善)" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/c5690277.html">用pytorch实现基础网络13-Glow</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/c5690277.html" class="archive-article-date">
+  	<time datetime="2023-05-06T10:56:32.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-05-06</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">266字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">1min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h1 id="glow-generative-flow-with-invertible-11-convolutions">Glow: Generative Flow with Invertible 11 Convolutions</h1>
+<p>https://proceedings.neurips.cc/paper/2018/file/d139db6a236200b21cc7f752979132d0-Paper.pdf</p>
+<p>在这篇论文中，作者提出了一种名为Glow的流式生成模型。流式生成模型（Flow-based generative models）在计算精确对数似然（log-likelihood）、进行精确的潜在变量推断以及并行化训练和合成方面具有概念上的吸引力。Glow模型采用了一种可逆的 1×1 卷积操作，该方法相对简单。</p>
+<p>通过使用Glow模型，作者在标准基准测试中实现了对数似然的显著改进。更令人瞩目的是，作者证明了优化纯对数似然目标的基于流的生成模型能够高效地生成和操作大型图像，且生成的图像具有逼真的外观。这表明，Glow这种类型的流式生成模型在生成逼真图像方面具有很大的潜力。</p>
+<ul>
+<li>显式表示目标分布</li>
+<li>可逆</li>
+</ul>
+<p>数据的分布：得到对应的似然(给定模型下，数据的似然)</p>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/c5690277.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
     <article id="post-pytorch项目5-CLIP搭建相似图像检索系统" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -333,7 +870,7 @@ var _hmt = _hmt || [];
 	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
         <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
         <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">87字</span>
+        <span class="post-count">1.4k字</span>
       </span>
     </span>
 
@@ -342,7 +879,7 @@ var _hmt = _hmt || [];
       <span class="post-meta-item-icon">
 	    <i class="fa fa-pagelines" aria-hidden="true"></i>
         <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
+        <span class="post-count">7min</span>
       </span>
     </span>
 	
@@ -363,7 +900,41 @@ var _hmt = _hmt || [];
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">conda install --<span class="built_in">yes</span> -c pytorch pytorch=1.7.1 torchvision cudatoolkit=11.0</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">pip install ftfy regex tqdm</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">pip install git+https://github.com/openai/CLIP.git</span></span><br></pre></td></tr></table></figure>
 <p><code>clip.available_models()</code> Returns the names of the available CLIP models.</p>
 <h3 id="准备数据集">1.2 准备数据集</h3>
-<p>与项目三中使用相同的数据集，这个数据集的划分代码略</p>
+<p>与项目三中使用相同的数据集，这个数据集的划分代码略 <a href="https://wangtongyouwen.github.io/post/4627104a.html">[pytorch项目3-基于ResNet的水果蔬菜分类](https://wangtongyouwen.github.io/post/4627104a.html)</a></p>
+<h2 id="train.py">2 train.py</h2>
+<h3 id="get_args_parser">2.1 get_args_parser()</h3>
+<p>这部分是为了能够接收从命令行中读取的参数，其中最关键的是几个数据的路径：训练样本，测试样本，输出的结果照片以及推断出的模型feature_dict</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_args_parser</span>():</span><br><span class="line">    parser = argparse.ArgumentParser(<span class="string">&#x27;image search task&#x27;</span>, add_help=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># Model parameters</span></span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--input_size&#x27;</span>, default=<span class="number">128</span>, <span class="built_in">type</span>=<span class="built_in">int</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;images input size&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--dateset_dir&#x27;</span>, default=<span class="string">&#x27;./dataset_fruit_veg/train&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;path where to load images &#x27;</span>)</span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--test_image_dir&#x27;</span>, default=<span class="string">&#x27;./dataset_fruit_veg/val_images&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;images to test, split by comma &quot;,&quot;&#x27;</span>)  <span class="comment"># split from the test dataset, there is no Crossover</span></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--save_dir&#x27;</span>, default=<span class="string">&#x27;./output_di&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;path where to save, empty for no saving&#x27;</span>) <span class="comment"># 相似照片</span></span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--model_name&#x27;</span>,default=<span class="string">&#x27;resnet50&#x27;</span>, <span class="comment"># resnet50,resnet152,clip</span></span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;model name&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--feature_dict_file&#x27;</span>,default=<span class="string">&#x27;corpus_feature_dict,npy&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;filename where to save image representations&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--topk&#x27;</span>,default=<span class="number">7</span>,<span class="built_in">type</span>=<span class="built_in">int</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;k most similar image representations&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--mode&#x27;</span>,default=<span class="string">&#x27;extract&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;extract or predict, for extracting features or predicting similar images from corpus&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> parser</span><br></pre></td></tr></table></figure>
+<h3 id="main">2.2 main</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    model_names = timm.list_models(pretrained=<span class="literal">True</span>)</span><br><span class="line">    args = get_args_parser()</span><br><span class="line">    args = args.parse_args()</span><br><span class="line"></span><br><span class="line">    model = <span class="literal">None</span></span><br><span class="line">    preprocess = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> args.model_name != <span class="string">&quot;clip&quot;</span>:</span><br><span class="line">        model = timm.create_model(args.model_name, pretrained=<span class="literal">True</span>)  <span class="comment"># resnet50 resnet152</span></span><br><span class="line">        n_parameters = <span class="built_in">sum</span>(p.numel() <span class="keyword">for</span> p <span class="keyword">in</span> model.parameters() <span class="keyword">if</span> p.requires_grad)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;number of trainable params (M): %.2f&quot;</span> % (n_parameters / <span class="number">1.e6</span>))</span><br><span class="line">        model.<span class="built_in">eval</span>()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        model, preprocess = clip.load(<span class="string">&quot;ViT-B/32&quot;</span>, device=device)  <span class="comment"># preprocess就是已经归一化后的结果，无需再进行归一化操作</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> args.mode == <span class="string">&quot;extract&quot;</span>:</span><br><span class="line">        <span class="comment"># 第一阶段：图像表征提取</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;use pretrained model <span class="subst">&#123;args.model_name&#125;</span> to extract features&quot;</span>)</span><br><span class="line">        allVectors = extract_features(args, model, image_path=args.dataset_dir, preprocess=preprocess)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 第二阶段：图像检索</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;use pretrained model <span class="subst">&#123;args.model_name&#125;</span> to search <span class="subst">&#123;args.topk&#125;</span> similar images from corpus&quot;</span>)</span><br><span class="line"></span><br><span class="line">        test_images = glob.glob(os.path.join(args.test_image_dir, <span class="string">&quot;*.png&quot;</span>))</span><br><span class="line">        test_images += glob.glob(os.path.join(args.test_image_dir, <span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line">        test_images += glob.glob(os.path.join(args.test_image_dir, <span class="string">&quot;*.jpeg&quot;</span>))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># loading image representation dictionary</span></span><br><span class="line">        allVectors = np.load(<span class="string">f&quot;<span class="subst">&#123;args.save_dir&#125;</span>/<span class="subst">&#123;args.model_name&#125;</span>/<span class="subst">&#123;args.feature_dict_file&#125;</span>&quot;</span>, allow_pickle=<span class="literal">True</span>)  <span class="comment"># 导入字典</span></span><br><span class="line">        allVectors = allVectors.item()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># reading test images</span></span><br><span class="line">        <span class="keyword">for</span> image_file <span class="keyword">in</span> tqdm.tqdm(test_images):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;reading <span class="subst">&#123;image_file&#125;</span>...&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> args.model_name == <span class="string">&quot;clip&quot;</span>:</span><br><span class="line">                <span class="comment"># CLIP model</span></span><br><span class="line">                allVectors[image_file] = extract_feature_by_CLIP(model, preprocess, image_file)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># resnet50, resnet152</span></span><br><span class="line">                allVectors[image_file] = extract_feature_single(args, model, image_file)</span><br><span class="line"></span><br><span class="line">        sim, keys = getSimilarityMatrix(allVectors)</span><br><span class="line">        <span class="built_in">print</span>(keys)</span><br><span class="line">        result = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> image_file <span class="keyword">in</span> tqdm.tqdm(test_images):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;sorting most similar images as <span class="subst">&#123;image_file&#125;</span>...&quot;</span>)</span><br><span class="line">            index = keys.index(image_file)</span><br><span class="line">            sim_vec = sim[index]</span><br><span class="line"></span><br><span class="line">            indexs = np.argsort(sim_vec)[::-<span class="number">1</span>][<span class="number">1</span>:args.topk]  <span class="comment"># 排序：从小到大的索引</span></span><br><span class="line">            simImages, simScores = [], []</span><br><span class="line">            <span class="keyword">for</span> ind <span class="keyword">in</span> indexs:</span><br><span class="line">                simImages.append(keys[ind])</span><br><span class="line">                simScores.append(sim_vec[ind])</span><br><span class="line">            result[image_file] = (simImages, simScores)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;starting to show similar images...&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> image_file <span class="keyword">in</span> test_images:</span><br><span class="line">            plotSimilarImages(args, image_file, result[image_file][<span class="number">0</span>], result[image_file][<span class="number">1</span>], numRow=<span class="number">1</span>,</span><br><span class="line">                              numCol=args.topk)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>判断模型是resnet50，resnet152 or clip</li>
+<li>判断模式是否是 extract or predict</li>
+</ul>
+<p>predict: 部分代码的步骤：</p>
+<ol type="1">
+<li>读取图片，判断模型类型，读取特征字典</li>
+<li>将目标图片与特征图片中的所有值做余弦相似度比较，得到的结果矩阵：allvector</li>
+<li>排序，取出前n个目标</li>
+<li>把图片地址和图片计算得到的score储存，最后进行输出</li>
+</ol>
+<h2 id="extract">3 extract</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">extract_feature_single</span>(<span class="params">args, model, file</span>):</span><br><span class="line">    img_rgb = Image.<span class="built_in">open</span>(file).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">    image = img_rgb.resize((args.input_size, args.input_size), Image.LANCZOS)</span><br><span class="line">    image = torchvision.transforms.ToTensor()(image)</span><br><span class="line"></span><br><span class="line">    trainset_mean = [<span class="number">0.4729932</span>, <span class="number">0.43474569</span>, <span class="number">0.3264319</span>]</span><br><span class="line">    trainset_std = [<span class="number">0.37707761</span>, <span class="number">0.36121109</span>, <span class="number">0.34872371</span>]</span><br><span class="line"></span><br><span class="line">    image = torchvision.transforms.Normalize(mean=trainset_mean, std=trainset_std)(image).unsqueeze(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        features = model.forward_features(image)</span><br><span class="line">        vec = model.global_pool(features)</span><br><span class="line">        vec = vec.squeeze().numpy()</span><br><span class="line"></span><br><span class="line">    img_rgb.close()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> vec</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>这部分代码将先对图像进行归一化，然后在模型的forward_features层输出特征，在进入池化层最后得到代表图片的字典信息。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">extract_feature_by_CLIP</span>(<span class="params">model, preprocess, file</span>):</span><br><span class="line">    image = preprocess(Image.<span class="built_in">open</span>(file)).unsqueeze(<span class="number">0</span>).to(device)</span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        vec = model.encode_image(image)</span><br><span class="line">        vec = vec.squeeze().cpu().numpy()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> vec</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用CLIP中的encode_image输出特征信息</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">extract_features</span>(<span class="params">args, model, image_path=<span class="string">&quot;&quot;</span>, preprocess=<span class="literal">None</span></span>):</span><br><span class="line">    allVectors = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> image_file <span class="keyword">in</span> tqdm.tqdm(glob.glob(os.path.join(image_path, <span class="string">&quot;*&quot;</span>, <span class="string">&quot;*.jpg&quot;</span>))):  <span class="comment"># image_path:train # tqdm:进度条</span></span><br><span class="line">        <span class="keyword">if</span> args.model_name == <span class="string">&quot;clip&quot;</span>:</span><br><span class="line">            allVectors[image_file] = extract_feature_by_CLIP(model, preprocess, image_file)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            allVectors[image_file] = extract_feature_single(args, model, image_file)</span><br><span class="line"></span><br><span class="line">    os.makedirs(<span class="string">f&quot;<span class="subst">&#123;args.save_dir&#125;</span>/<span class="subst">&#123;args.model_name&#125;</span>&quot;</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    np.save(<span class="string">f&quot;<span class="subst">&#123;args.save_dir&#125;</span>/<span class="subst">&#123;args.model_name&#125;</span>/<span class="subst">&#123;args.feature_dict_file&#125;</span>&quot;</span>, allVectors)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> allVectors</span><br></pre></td></tr></table></figure>
+<h2 id="计算余弦相似度">4 计算余弦相似度</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 计算余弦相似度</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getSimilarityMatrix</span>(<span class="params">vectors_dict</span>):</span><br><span class="line">    v = np.array(<span class="built_in">list</span>(vectors_dict.values()))  <span class="comment"># [NUM,H]</span></span><br><span class="line">    numerator = np.matmul(v, v.T)  <span class="comment"># [NUM,NUM]</span></span><br><span class="line">    denominator = np.matmul(np.linalg.norm(v, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>),</span><br><span class="line">                            np.linalg.norm(v, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>).T)  <span class="comment"># [NUM,NUM]</span></span><br><span class="line"></span><br><span class="line">    sim = numerator / denominator</span><br><span class="line">    keys = <span class="built_in">list</span>(vectors_dict.keys())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sim, keys</span><br></pre></td></tr></table></figure>
+<h2 id="绘制结果">5 绘制结果</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">setAxes</span>(<span class="params">ax, image, query=<span class="literal">False</span>, **kwargs</span>):</span><br><span class="line">    value = kwargs.get(<span class="string">&quot;value&quot;</span>, <span class="literal">None</span>)</span><br><span class="line">    <span class="keyword">if</span> query:</span><br><span class="line">        ax.set_xlabel(<span class="string">&quot;Query Image\n&#123;0&#125;&quot;</span>.<span class="built_in">format</span>(image), fontsize=<span class="number">12</span>)</span><br><span class="line">        ax.xaxis.label.set_color(<span class="string">&quot;red&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        ax.set_xlabel(<span class="string">&quot;score=&#123;1:1.3f&#125;\n&#123;0&#125;&quot;</span>.<span class="built_in">format</span>(image, value), fontsize=<span class="number">12</span>)</span><br><span class="line">        ax.xaxis.label.set_color(<span class="string">&quot;blue&quot;</span>)</span><br><span class="line">    ax.set_xticks([])</span><br><span class="line">    ax.set_yticks([])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">plotSimilarImages</span>(<span class="params">args, image, simImages, simValues, numRow=<span class="number">1</span>, numCol=<span class="number">4</span></span>):</span><br><span class="line">    fig = plt.figure()</span><br><span class="line">    <span class="comment"># set width and height in inches</span></span><br><span class="line"></span><br><span class="line">    fig.set_size_inches(<span class="number">18.5</span>, <span class="number">10.5</span>)</span><br><span class="line">    fig.suptitle(<span class="string">f&quot;use engine model: <span class="subst">&#123;args.model_name&#125;</span>&quot;</span>, fontsize=<span class="number">35</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, numCol * numRow):</span><br><span class="line">        ax = []</span><br><span class="line">        <span class="keyword">if</span> j == <span class="number">0</span>:</span><br><span class="line">            img = Image.<span class="built_in">open</span>(image)</span><br><span class="line">            ax = fig.add_subplot(numRow, numCol, <span class="number">1</span>)</span><br><span class="line">            setAxes(ax, image.split(os.sep)[-<span class="number">1</span>], query=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            img = Image.<span class="built_in">open</span>(simImages[j - <span class="number">1</span>])</span><br><span class="line">            ax.append(fig.add_subplot(numRow,numCol,j+<span class="number">1</span>))</span><br><span class="line">            setAxes(ax[-<span class="number">1</span>],<span class="string">&quot;_&quot;</span>.join(simImages[j-<span class="number">1</span>].split(os.sep)[-<span class="number">2</span>:]),value=simValues[j-<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># truncated_filename = &quot;&quot;.join(simImages[j - 1].split(os.sep)[-2:])</span></span><br><span class="line">            <span class="comment"># truncated_filename = truncated_filename[:15]  # 只显示前 15 个字符</span></span><br><span class="line">            <span class="comment"># setAxes(ax[-1], truncated_filename, value=simValues[j - 1])</span></span><br><span class="line">        img = img.convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">        plt.imshow(img)</span><br><span class="line">        img.close()</span><br><span class="line">    fig.savefig(<span class="string">f&quot;<span class="subst">&#123;args.save_dir&#125;</span>/<span class="subst">&#123;args.model_name&#125;</span>_search_top_<span class="subst">&#123;args.topk-<span class="number">1</span>&#125;</span>_<span class="subst">&#123;image.split(os.sep)[-<span class="number">1</span>].split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]&#125;</span>.png&quot;</span>)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这部分展示代码具有参考性，可以用来动态显示结果。</li>
+</ul>
 
 				  
 	  
@@ -1939,7 +2510,7 @@ So the final transformation matrix M is:
 <p>https://aistudio.baidu.com/aistudio/datasetdetail/119023</p>
 <p>其中的图片有36各类，不同类别在不同的文件夹中，其中文件后缀有"jpg,png,JPG"</p>
 <h2 id="数据集预处理">2 数据集预处理</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">Pre_Data</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot; 对所有图片进行RGB转换，并且统一调整到一致大小，但不让图片发生变形或扭曲,划分训练集和测试集&quot;&quot;&quot;</span></span><br><span class="line">    test_split_ratio = <span class="number">0.05</span></span><br><span class="line">    desired_size =<span class="number">128</span> <span class="comment"># 图片缩放后的同一大小</span></span><br><span class="line">    raw_path = <span class="string">&quot;./raw&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># class files in the raw data</span></span><br><span class="line">    dirs = glob.glob(os.path.join(raw_path,<span class="string">&quot;*&quot;</span>))</span><br><span class="line">    dirs = [d <span class="keyword">for</span> d <span class="keyword">in</span> dirs <span class="keyword">if</span> os.path.isdir(d)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># print(dirs)</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;totally <span class="subst">&#123;<span class="built_in">len</span>(dirs)&#125;</span> classes: <span class="subst">&#123;dirs&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> path <span class="keyword">in</span> dirs:</span><br><span class="line">        <span class="comment"># 对每个类别单独处理</span></span><br><span class="line">        path = path.split(<span class="string">&quot;\\&quot;</span>)[-<span class="number">1</span>] <span class="comment"># classes</span></span><br><span class="line">        <span class="comment"># print(path)</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">f&quot;train/<span class="subst">&#123;path&#125;</span>&quot;</span>):</span><br><span class="line">            os.makedirs(<span class="string">f&quot;train/<span class="subst">&#123;path&#125;</span>&quot;</span>,exist_ok=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">f&quot;test/<span class="subst">&#123;path&#125;</span>&quot;</span>):</span><br><span class="line">            os.makedirs(<span class="string">f&quot;test/<span class="subst">&#123;path&#125;</span>&quot;</span>,exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        files = glob.glob(os.path.join(raw_path,path,<span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line">        files += glob.glob(os.path.join(raw_path,path,<span class="string">&quot;*.JPG&quot;</span>))</span><br><span class="line">        files += glob.glob(os.path.join(raw_path,path,<span class="string">&quot;*.png&quot;</span>))</span><br><span class="line">        <span class="comment"># print(files)</span></span><br><span class="line">        random.shuffle(files)</span><br><span class="line"></span><br><span class="line">        boundary = <span class="built_in">int</span>(<span class="built_in">len</span>(files)*test_split_ratio) <span class="comment"># 测试集和训练集的边界</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i,file <span class="keyword">in</span> <span class="built_in">enumerate</span>(files):</span><br><span class="line">            img = Image.<span class="built_in">open</span>(file).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">            <span class="comment"># print(img)</span></span><br><span class="line">            old_size = img.size <span class="comment"># old_size[0] is in (width,height) format</span></span><br><span class="line">            <span class="comment"># print(old_size)</span></span><br><span class="line"></span><br><span class="line">            ratio = <span class="built_in">float</span>(desired_size)/<span class="built_in">max</span>(old_size)</span><br><span class="line"></span><br><span class="line">            new_size = <span class="built_in">tuple</span>([<span class="built_in">int</span>(x*ratio) <span class="keyword">for</span> x <span class="keyword">in</span> old_size])</span><br><span class="line"></span><br><span class="line">            im = img.resize(new_size,Image.LANCZOS) <span class="comment"># 无模糊</span></span><br><span class="line"></span><br><span class="line">            new_im = Image.new(<span class="string">&quot;RGB&quot;</span>,(desired_size,desired_size))</span><br><span class="line">            new_im.paste(im,((desired_size-new_size[<span class="number">0</span>])//<span class="number">2</span>,</span><br><span class="line">                             (desired_size-new_size[<span class="number">1</span>])//<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">assert</span> new_im.mode == <span class="string">&quot;RGB&quot;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> i &lt;= boundary:</span><br><span class="line">                new_im.save(os.path.join(<span class="string">f&quot;test/<span class="subst">&#123;path&#125;</span>&quot;</span>,file.split(<span class="string">&quot;\\&quot;</span>)[-<span class="number">1</span>].split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]+ <span class="string">&quot;.jpg&quot;</span>))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                new_im.save(os.path.join(<span class="string">f&quot;train/<span class="subst">&#123;path&#125;</span>&quot;</span>,file.split(<span class="string">&quot;\\&quot;</span>)[-<span class="number">1</span>].split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]+ <span class="string">&quot;.jpg&quot;</span>))</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;classes <span class="subst">&#123;path&#125;</span> is done !&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    test_files = glob.glob(os.path.join(<span class="string">&quot;test&quot;</span>,<span class="string">&quot;*&quot;</span>,<span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line">    train_files = glob.glob(os.path.join(<span class="string">&quot;train&quot;</span>,<span class="string">&quot;*&quot;</span>,<span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;totally <span class="subst">&#123;<span class="built_in">len</span>(test_files)&#125;</span> files for testing&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;totally <span class="subst">&#123;<span class="built_in">len</span>(train_files)&#125;</span> files for training&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cal_mean_std</span>():</span><br><span class="line">    train_files = glob.glob(os.path.join(<span class="string">&quot;train&quot;</span>,<span class="string">&quot;*&quot;</span>,<span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;totally <span class="subst">&#123;<span class="built_in">len</span>(train_files)&#125;</span> files for training&quot;</span>)</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> train_files:</span><br><span class="line">        img = Image.<span class="built_in">open</span>(file).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">        img = np.array(img).astype(np.uint8)</span><br><span class="line">        img = img / <span class="number">255</span></span><br><span class="line">        result.append(img)</span><br><span class="line">    <span class="built_in">print</span>(np.shape(result)) <span class="comment"># [bs,H,W,C]</span></span><br><span class="line">    mean = np.mean(result,axis=(<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">    std = np.std(result,axis=(<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">    <span class="built_in">print</span>(mean,std</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">Pre_Data</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot; 对所有图片进行RGB转换，并且统一调整到一致大小，但不让图片发生变形或扭曲,划分训练集和测试集&quot;&quot;&quot;</span></span><br><span class="line">    test_split_ratio = <span class="number">0.05</span></span><br><span class="line">    desired_size =<span class="number">128</span> <span class="comment"># 图片缩放后的同一大小</span></span><br><span class="line">    raw_path = <span class="string">&quot;./raw&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># class files in the raw data</span></span><br><span class="line">    dirs = glob.glob(os.path.join(raw_path,<span class="string">&quot;*&quot;</span>))</span><br><span class="line">    dirs = [d <span class="keyword">for</span> d <span class="keyword">in</span> dirs <span class="keyword">if</span> os.path.isdir(d)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># print(dirs)</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;totally <span class="subst">&#123;<span class="built_in">len</span>(dirs)&#125;</span> classes: <span class="subst">&#123;dirs&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> path <span class="keyword">in</span> dirs:</span><br><span class="line">        <span class="comment"># 对每个类别单独处理</span></span><br><span class="line">        path = path.split(<span class="string">&quot;\\&quot;</span>)[-<span class="number">1</span>] <span class="comment"># classes</span></span><br><span class="line">        <span class="comment"># print(path)</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">f&quot;train/<span class="subst">&#123;path&#125;</span>&quot;</span>):</span><br><span class="line">            os.makedirs(<span class="string">f&quot;train/<span class="subst">&#123;path&#125;</span>&quot;</span>,exist_ok=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">f&quot;test/<span class="subst">&#123;path&#125;</span>&quot;</span>):</span><br><span class="line">            os.makedirs(<span class="string">f&quot;test/<span class="subst">&#123;path&#125;</span>&quot;</span>,exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        files = glob.glob(os.path.join(raw_path,path,<span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line">        files += glob.glob(os.path.join(raw_path,path,<span class="string">&quot;*.JPG&quot;</span>))</span><br><span class="line">        files += glob.glob(os.path.join(raw_path,path,<span class="string">&quot;*.png&quot;</span>))</span><br><span class="line">        <span class="comment"># print(files)</span></span><br><span class="line">        random.shuffle(files)</span><br><span class="line"></span><br><span class="line">        boundary = <span class="built_in">int</span>(<span class="built_in">len</span>(files)*test_split_ratio) <span class="comment"># 测试集和训练集的边界</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i,file <span class="keyword">in</span> <span class="built_in">enumerate</span>(files):</span><br><span class="line">            img = Image.<span class="built_in">open</span>(file).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">            <span class="comment"># print(img)</span></span><br><span class="line">            old_size = img.size <span class="comment"># old_size[0] is in (width,height) format</span></span><br><span class="line">            <span class="comment"># print(old_size)</span></span><br><span class="line"></span><br><span class="line">            ratio = <span class="built_in">float</span>(desired_size)/<span class="built_in">max</span>(old_size)</span><br><span class="line"></span><br><span class="line">            new_size = <span class="built_in">tuple</span>([<span class="built_in">int</span>(x*ratio) <span class="keyword">for</span> x <span class="keyword">in</span> old_size])</span><br><span class="line"></span><br><span class="line">            im = img.resize(new_size,Image.LANCZOS) <span class="comment"># 无模糊</span></span><br><span class="line"></span><br><span class="line">            new_im = Image.new(<span class="string">&quot;RGB&quot;</span>,(desired_size,desired_size))</span><br><span class="line">            new_im.paste(im,((desired_size-new_size[<span class="number">0</span>])//<span class="number">2</span>,</span><br><span class="line">                             (desired_size-new_size[<span class="number">1</span>])//<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">assert</span> new_im.mode == <span class="string">&quot;RGB&quot;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> i &lt;= boundary:</span><br><span class="line">                new_im.save(os.path.join(<span class="string">f&quot;test/<span class="subst">&#123;path&#125;</span>&quot;</span>,file.split(<span class="string">&quot;\\&quot;</span>)[-<span class="number">1</span>].split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]+ <span class="string">&quot;.jpg&quot;</span>))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">str</span>(get_filename(file)+<span class="string">&quot;.jpg&quot;</span>) <span class="keyword">not</span> <span class="keyword">in</span> os.listdir(os.path.join(<span class="string">f&quot;test/<span class="subst">&#123;path&#125;</span>&quot;</span>)):</span><br><span class="line">                    new_im.save(os.path.join(<span class="string">f&quot;train/<span class="subst">&#123;path&#125;</span>&quot;</span>,file.split(<span class="string">&quot;\\&quot;</span>)[-<span class="number">1</span>].split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]+ <span class="string">&quot;.jpg&quot;</span>))</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;classes <span class="subst">&#123;path&#125;</span> is done !&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    test_files = glob.glob(os.path.join(<span class="string">&quot;test&quot;</span>,<span class="string">&quot;*&quot;</span>,<span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line">    train_files = glob.glob(os.path.join(<span class="string">&quot;train&quot;</span>,<span class="string">&quot;*&quot;</span>,<span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;totally <span class="subst">&#123;<span class="built_in">len</span>(test_files)&#125;</span> files for testing&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;totally <span class="subst">&#123;<span class="built_in">len</span>(train_files)&#125;</span> files for training&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cal_mean_std</span>():</span><br><span class="line">    train_files = glob.glob(os.path.join(<span class="string">&quot;train&quot;</span>,<span class="string">&quot;*&quot;</span>,<span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;totally <span class="subst">&#123;<span class="built_in">len</span>(train_files)&#125;</span> files for training&quot;</span>)</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> train_files:</span><br><span class="line">        img = Image.<span class="built_in">open</span>(file).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">        img = np.array(img).astype(np.uint8)</span><br><span class="line">        img = img / <span class="number">255</span></span><br><span class="line">        result.append(img)</span><br><span class="line">    <span class="built_in">print</span>(np.shape(result)) <span class="comment"># [bs,H,W,C]</span></span><br><span class="line">    mean = np.mean(result,axis=(<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">    std = np.std(result,axis=(<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">    <span class="built_in">print</span>(mean,std</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="eval">3 eval</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@torch.no_grad()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate</span>(<span class="params">data_loader, model, device</span>):</span><br><span class="line">    criterion = nn.CrossEntropyLoss()</span><br><span class="line"></span><br><span class="line">    metric_logger = misc.MetricLogger(delimiter=<span class="string">&quot; &quot;</span>)</span><br><span class="line">    header = <span class="string">&quot;test:&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># switch to evaluation mode</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> metric_logger.log_every(data_loader, <span class="number">10</span>, header):</span><br><span class="line">        <span class="comment"># print(batch)</span></span><br><span class="line">        images = batch[<span class="number">0</span>]</span><br><span class="line">        target = batch[-<span class="number">1</span>]</span><br><span class="line">        images = images.to(device, non_blocking=<span class="literal">True</span>)</span><br><span class="line">        target = target.to(device, non_blocking=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># compute output</span></span><br><span class="line">        output = model(images)</span><br><span class="line">        loss = criterion(output, target)</span><br><span class="line"></span><br><span class="line">        output = F.softmax(output, dim=-<span class="number">1</span>)</span><br><span class="line">        acc1, acc5 = accuracy(output, target, topk=(<span class="number">1</span>, <span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">        batch_size = images.shape[<span class="number">0</span>]</span><br><span class="line">        metric_logger.update(loss=loss.item())</span><br><span class="line">        metric_logger.meters[<span class="string">&#x27;acc1&#x27;</span>].update(acc1.item(), n=batch_size)</span><br><span class="line">        metric_logger.meters[<span class="string">&#x27;acc5&#x27;</span>].update(acc5.item(), n=batch_size)</span><br><span class="line">    <span class="comment"># gather the stats from all processes</span></span><br><span class="line">    metric_logger.synchronize_between_processes()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;* Acc@1 &#123;top1.global_avg:.3f&#125; Acc@5 &#123;top5.global_avg:.3f&#125; loss &#123;losses.global_avg:.3f&#125;&#x27;</span>.<span class="built_in">format</span>(</span><br><span class="line">        top1=metric_logger.acc1, top5=metric_logger.acc5, losses=metric_logger.loss))</span><br><span class="line">    <span class="keyword">return</span> &#123;k: meter.global_avg <span class="keyword">for</span> k, meter <span class="keyword">in</span> metric_logger.meters.items()&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="train">4 train</h2>
@@ -2037,388 +2608,9 @@ So the final transformation matrix M is:
 
 <!-- 文章页添加mathjax公式 -->
   
-    <article id="post-用pytorch实现基础网络11-GAN" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/cad0a038.html">用pytorch实现基础网络11-GAN</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/cad0a038.html" class="archive-article-date">
-  	<time datetime="2023-04-24T11:36:29.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-24</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-        <span class="article-type" style="
-          color: white;
-          font-size: 14px;
-          background: #0088CC;
-          padding: 0 5px 1px 5px;
-          margin-right: 5px;
-          border-radius: 2px;">原创</span>
-		  &nbsp; 
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">2k字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">8min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <h1 id="generative-adversarial-nets">Generative Adversarial Nets</h1>
-<p>https://arxiv.org/pdf/1406.2661.pdf</p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304241952572.png" alt="image-20230424195239653" /><figcaption aria-hidden="true">image-20230424195239653</figcaption>
-</figure>
-<p>Pearson散度和Jensen-Shannon散度都是衡量两个概率分布之间差异的方法，但它们具有不同的计算方式和特点。</p>
-<ol type="1">
-<li>Pearson散度（Pearson Divergence）： Pearson散度是衡量两个概率分布之间的差异的一种方法，主要基于卡方统计量（Chi-Square statistic）。对于两个概率分布P和Q，Pearson散度的计算公式如下：</li>
-</ol>
-<p>D_Pearson(P, Q) = Σ[(P(x) - Q(x))^2 / Q(x)]</p>
-<p>其中，x表示数据空间中的元素，P(x)和Q(x)分别表示概率分布P和Q在x处的概率密度。</p>
-<p>Pearson散度的值越大，表示两个概率分布之间的差异越大。需要注意的是，Pearson散度不是一种距离度量，因为它不满足三角不等式。</p>
-<ol type="1">
-<li>Jensen-Shannon散度（Jensen-Shannon Divergence）： Jensen-Shannon散度是一种对称的、有界的散度度量方法，用于衡量两个概率分布之间的差异。它是基于Kullback-Leibler散度（KL散度）的改进版本。对于两个概率分布P和Q，Jensen-Shannon散度的计算公式如下：</li>
-</ol>
-<p>D_JS(P, Q) = (1/2) * D_KL(P, M) + (1/2) * D_KL(Q, M)</p>
-<p>其中，M = (1/2) * (P + Q)，D_KL(P, M)和D_KL(Q, M)分别表示P和Q相对于M的Kullback-Leibler散度。</p>
-<p>Jensen-Shannon散度的值在0到1之间，值越大表示两个概率分布之间的差异越大。当两个分布完全相同时，Jensen-Shannon散度为0；当两个分布完全不相交时，Jensen-Shannon散度接近1。可以通过计算Jensen-Shannon散度的平方根得到Jensen-Shannon距离，它满足距离度量的性质。</p>
-<p>总结一下，Pearson散度和Jensen-Shannon散度都是衡量两个概率分布之间差异的方法，但它们的计算方式和特点不同。Pearson散度基于卡方统计量，而Jensen-Shannon散度基于Kullback-Leibler散度。Jensen-Shannon散度是对称的、有界的，可以通过计算其平方根得到满足距离度量性质的Jensen-Shannon距离。</p>
-<h1 id="code">code</h1>
-<h2 id="generator">1 Generator</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">import</span> torch.utils.data.dataloader</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;基于 MNist 实现对抗生成网络(GAN)&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Generator</span>(nn.Module):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(Generator, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.model = nn.Sequential(</span><br><span class="line">            nn.Linear(latent_dim, <span class="number">256</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">            nn.Linear(<span class="number">256</span>, <span class="number">512</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">1024</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">            nn.Linear(<span class="number">1024</span>, np.prod(image_size)),</span><br><span class="line">            nn.Tanh()</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, z</span>):</span><br><span class="line">        output = self.model(z)</span><br><span class="line">        image = torch.reshape(output, (z.shape[<span class="number">0</span>], *image_size))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> image</span><br></pre></td></tr></table></figure>
-<h2 id="discriminator">2 Discriminator</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Discriminator</span>(nn.Module):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(Discriminator, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.model = nn.Sequential(</span><br><span class="line">            nn.Linear(np.prod(image_size), <span class="number">1024</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">            nn.Linear(<span class="number">1024</span>, <span class="number">512</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">            nn.Linear(<span class="number">512</span>, <span class="number">256</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">            nn.Linear(<span class="number">256</span>, <span class="number">1</span>),</span><br><span class="line">            nn.Sigmoid()</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, image</span>):</span><br><span class="line">        prob = self.model(torch.reshape(image, (image.shape[<span class="number">0</span>], -<span class="number">1</span>)))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> prob</span><br></pre></td></tr></table></figure>
-<h2 id="training">3 training</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Training</span></span><br><span class="line">image_size = (<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>)</span><br><span class="line">batch_size = <span class="number">32</span></span><br><span class="line">latent_dim = <span class="number">100</span></span><br><span class="line">num_epoch = <span class="number">100</span></span><br><span class="line"></span><br><span class="line">dataset = torchvision.datasets.MNIST(<span class="string">&quot;mnist_data&quot;</span>, train=<span class="literal">True</span>, download=<span class="literal">True</span>,</span><br><span class="line">                                     transform=torchvision.transforms.Compose([</span><br><span class="line">                                         torchvision.transforms.Resize(<span class="number">28</span>),</span><br><span class="line">                                         torchvision.transforms.ToTensor(),</span><br><span class="line">                                         torchvision.transforms.Normalize(mean=[<span class="number">0.5</span>], std=[<span class="number">0.5</span>])</span><br><span class="line">                                     ]))</span><br><span class="line"></span><br><span class="line">DataLoader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">generator = Generator().cuda()</span><br><span class="line">discriminator = Discriminator().cuda()</span><br><span class="line"></span><br><span class="line">g_optimizer = torch.optim.Adam(params=generator.parameters(), lr=<span class="number">0.0002</span>, betas=(<span class="number">0.5</span>, <span class="number">0.999</span>))</span><br><span class="line">d_optimizer = torch.optim.Adam(params=discriminator.parameters(), lr=<span class="number">0.0002</span>, betas=(<span class="number">0.5</span>, <span class="number">0.999</span>))</span><br><span class="line"></span><br><span class="line">loss_fn = nn.BCELoss()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">raw = os.path.abspath(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">output_dir = os.path.join(raw, <span class="string">&quot;mnist_data/MNIST/result&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(output_dir):</span><br><span class="line">    os.makedirs(output_dir)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查是否存在预训练的权重文件</span></span><br><span class="line">generator_weights_path = os.path.join(output_dir, <span class="string">&#x27;generator.pth&#x27;</span>)</span><br><span class="line">discriminator_weights_path = os.path.join(output_dir, <span class="string">&#x27;discriminator.pth&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> os.path.exists(generator_weights_path) <span class="keyword">and</span> os.path.exists(discriminator_weights_path):</span><br><span class="line">    generator.load_state_dict(torch.load(generator_weights_path))</span><br><span class="line">    discriminator.load_state_dict(torch.load(discriminator_weights_path))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epoch):</span><br><span class="line">    <span class="keyword">for</span> i, mini_batch <span class="keyword">in</span> <span class="built_in">enumerate</span>(DataLoader):</span><br><span class="line">        gt_images, _ = mini_batch</span><br><span class="line">        gt_images = gt_images.cuda()</span><br><span class="line">        z = torch.randn(batch_size, latent_dim)</span><br><span class="line">        z = z.cuda()</span><br><span class="line">        pred_images = generator(z)</span><br><span class="line">        pred_images = pred_images.cuda()</span><br><span class="line">        g_optimizer.zero_grad()</span><br><span class="line"></span><br><span class="line">        target_ones = torch.ones(batch_size, <span class="number">1</span>)</span><br><span class="line">        target_ones = target_ones.cuda()</span><br><span class="line">        target_zeros = torch.zeros(batch_size, <span class="number">1</span>)</span><br><span class="line">        target_zeros = target_zeros.cuda()</span><br><span class="line">        g_loss = loss_fn(discriminator(pred_images), target_ones)  <span class="comment"># 生成器</span></span><br><span class="line">        g_loss.backward()</span><br><span class="line">        g_optimizer.step()</span><br><span class="line"></span><br><span class="line">        d_optimizer.zero_grad()</span><br><span class="line">        d_loss = loss_fn(discriminator(gt_images), target_ones) + loss_fn(discriminator(pred_images.detach()), target_zeros)  <span class="comment"># 判别器</span></span><br><span class="line">        d_loss.backward()</span><br><span class="line">        d_optimizer.step()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">1000</span> == <span class="number">0</span>:</span><br><span class="line">            raw = os.path.abspath(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">            output_dir = os.path.join(raw, <span class="string">&quot;mnist_data/MNIST/result&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(output_dir):</span><br><span class="line">                os.makedirs(output_dir)</span><br><span class="line"></span><br><span class="line">            torchvision.utils.save_image(pred_images, os.path.join(output_dir, <span class="string">f&quot;image_<span class="subst">&#123;epoch&#125;</span>_<span class="subst">&#123;i // <span class="number">1000</span>&#125;</span>.png&quot;</span>))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">2000</span> == <span class="number">0</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&#x27;Epoch: <span class="subst">&#123;epoch&#125;</span>, Batch: <span class="subst">&#123;i&#125;</span>, Generator Loss: <span class="subst">&#123;g_loss.item()&#125;</span>, Discriminator Loss: <span class="subst">&#123;d_loss.item()&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 保存模型权重</span></span><br><span class="line">    torch.save(generator.state_dict(), generator_weights_path)</span><br><span class="line">    torch.save(discriminator.state_dict(), discriminator_weights_path)</span><br></pre></td></tr></table></figure>
-<h1 id="cgan">CGAN</h1>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304262015876.png" alt="image-20230426201511591" /><figcaption aria-hidden="true">image-20230426201511591</figcaption>
-</figure>
-<p>CGAN（条件生成对抗网络，Conditional GAN）是在GAN的基础上引入条件信息的一种变体。与普通GAN相比，CGAN的生成器和判别器都接收额外的条件信息（如类别标签、文本描述等），并根据这些条件信息生成特定类别的数据。这使得CGAN能够有更好的控制生成数据的特征。</p>
-<p>CGAN的特点如下：</p>
-<ol type="1">
-<li>控制生成数据特征：CGAN可以根据输入的条件信息，生成具有特定特征的数据。这使得CGAN在生成数据时具有更高的可控性。</li>
-<li>引入条件信息：CGAN的生成器和判别器都接收额外的条件信息，使得网络可以在训练过程中学习如何利用这些条件信息来生成和识别数据。</li>
-<li>更好的生成性能：由于条件信息的引入，CGAN可以在生成数据时更好地捕捉数据的特征和结构，从而提高生成数据的质量。</li>
-</ol>
-<p>总之，与普通GAN相比，CGAN通过引入条件信息，实现了对生成数据特征的控制，使得生成数据更具有可控性和更高的质量。在很多应用场景中，如图像生成、文本生成等，CGAN已经表现出很好的性能。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Generator</span>(nn.Module):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,latent_dim</span>):</span><br><span class="line">        <span class="built_in">super</span>(Generator, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.embedding = nn.Embedding(<span class="number">10</span>,label_emb_dim)</span><br><span class="line">       ...</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, z,labels</span>):</span><br><span class="line">        <span class="comment"># shape of z: [batchsize,latent_dim]</span></span><br><span class="line">        label_embedding = self.embedding(labels)</span><br><span class="line">        z = torch.cat([z,label_embedding], axis=-<span class="number">1</span>)</span><br><span class="line">        ...</span><br><span class="line">        </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Discriminator</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(Discriminator, self).__init__()</span><br><span class="line">        self.embedding = nn.Embedding(<span class="number">10</span>,label_emb_dim)</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, image,labels</span>):</span><br><span class="line">        <span class="comment"># shape of image [batchsize,1,28,28]</span></span><br><span class="line">        label_embedding = self.embedding(labels)</span><br><span class="line">        prob = self.model(torch.cat([torch.reshape(image, (image.shape[<span class="number">0</span>], -<span class="number">1</span>)),label_embedding],axis=-<span class="number">1</span>))</span><br><span class="line">        <span class="keyword">return</span> prob</span><br><span class="line">        </span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在训练过程中需要对generator和discriminator的调用中引入参数label</span></span><br><span class="line">gt_images, labels = mini_batch</span><br></pre></td></tr></table></figure>
-<h1 id="least-squares-gan">least-squares-GAN</h1>
-<p>Least Squares Generative Adversarial Networks（LSGAN）是一种生成对抗网络（GAN）的变体，它主要针对传统GAN在训练过程中容易出现的不稳定性和梯度消失问题进行了改进。LSGAN的核心思想是将判别器（Discriminator）的损失函数从交叉熵损失（Cross-Entropy Loss）替换为最小二乘损失（Least Squares Loss），从而提高训练的稳定性和生成数据的质量。</p>
-<p>LSGAN的主要特点如下：</p>
-<ol type="1">
-<li>稳定性：与传统GAN相比，LSGAN在训练过程中表现出更高的稳定性。这主要归功于最小二乘损失函数的平滑性，它能够减少梯度消失问题的发生，使得生成器（Generator）和判别器（Discriminator）在训练过程中保持更好的平衡。</li>
-<li>生成质量：LSGAN生成的数据质量通常优于传统GAN。最小二乘损失有助于判别器更好地区分真实数据和生成数据，从而为生成器提供更有效的梯度指导，使得生成器能够生成更高质量的数据。</li>
-<li>更低的梯度消失风险：在传统GAN中，由于交叉熵损失在判别器接近最优时可能导致梯度消失问题，这使得生成器的训练变得困难。然而，在LSGAN中，最小二乘损失能够减轻梯度消失问题，使得生成器在整个训练过程中都能够收到有效的梯度信息。</li>
-<li>容易实现：LSGAN的实现非常简单，只需将传统GAN的损失函数替换为最小二乘损失即可。这意味着在现有的GAN架构中，很容易将其升级为LSGAN。</li>
-</ol>
-<p>总之，LSGAN通过使用最小二乘损失改进了传统GAN的训练稳定性和生成数据质量。这使得LSGAN在各种生成任务中，如图像生成、文本生成等，都能取得更好的性能。</p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304262051780.png" alt="image-20230426205146063" /><figcaption aria-hidden="true">image-20230426205146063</figcaption>
-</figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">logits = torch.linspace(-<span class="number">10</span>,<span class="number">10</span>,<span class="number">2000</span>)</span><br><span class="line">loss = []</span><br><span class="line">loss_fn = nn.BCELoss()</span><br><span class="line"><span class="keyword">for</span> lgs <span class="keyword">in</span> logits:</span><br><span class="line">    loss.append(loss_fn(torch.sigmoid(lgs),torch.ones_like(lgs)))</span><br><span class="line"></span><br><span class="line">plt.plot(logits,loss)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304262107840.png" alt="image-20230426210738626" /><figcaption aria-hidden="true">image-20230426210738626</figcaption>
-</figure>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/cad0a038.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
-    <article id="post-pytorch基础入门12-位置编码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/f94e9029.html">pytorch基础入门12-位置编码</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/f94e9029.html" class="archive-article-date">
-  	<time datetime="2023-04-24T08:26:35.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-24</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-        <span class="article-type" style="
-          color: white;
-          font-size: 14px;
-          background: #0088CC;
-          padding: 0 5px 1px 5px;
-          margin-right: 5px;
-          border-radius: 2px;">原创</span>
-		  &nbsp; 
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">308字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304241635006.png" alt="image-20230424163501351" /><figcaption aria-hidden="true">image-20230424163501351</figcaption>
-</figure>
-<h1 id="transformer">1 transformer</h1>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304241637416.png" alt="image-20230424163709530" /><figcaption aria-hidden="true">image-20230424163709530</figcaption>
-</figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.1d absolute sincos constant embedding</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_1d_absolute_sincos_embeddings</span>(<span class="params">n_pos_vec,dim</span>):</span><br><span class="line">    <span class="comment"># pos_vec: torch.arrange(n_pos)</span></span><br><span class="line">    <span class="keyword">assert</span> dim % <span class="number">2</span> ==<span class="number">0</span>,<span class="string">&quot;wrong dimension&quot;</span></span><br><span class="line">    position_embedding = torch.zeros(n_pos_vec.numel(),dim,dtype=torch.<span class="built_in">float</span>)</span><br><span class="line"></span><br><span class="line">    omega = torch.arange(dim//<span class="number">2</span>,dtype=torch.<span class="built_in">float</span>)</span><br><span class="line">    omega /= dim / <span class="number">2.</span></span><br><span class="line">    omega = <span class="number">1.</span> / (<span class="number">10000</span> ** omega)</span><br><span class="line"></span><br><span class="line">    out = n_pos_vec[:,<span class="literal">None</span>] @ omega[<span class="literal">None</span>,:] <span class="comment"># [n_pos_vec,1]*[1,dim//2]</span></span><br><span class="line"></span><br><span class="line">    emb_sin = torch.sin(out)</span><br><span class="line">    emb_cos = torch.cos(out)</span><br><span class="line"></span><br><span class="line">    position_embedding[:,<span class="number">0</span>::<span class="number">2</span>] = emb_sin</span><br><span class="line">    position_embedding[:,<span class="number">1</span>::<span class="number">2</span>] = emb_cos</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>  position_embedding</span><br></pre></td></tr></table></figure>
-<h1 id="swin-transformer">2 Swin transformer</h1>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304241914252.png" alt="image-20230424191316681" /><figcaption aria-hidden="true">image-20230424191316681</figcaption>
-</figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 3.2d relative bias trainable embedding</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_2d_relative_bias_trainable_embeddings</span>(<span class="params">n_head,height,width</span>):</span><br><span class="line">    <span class="comment"># width:5   bias=[-width+1, width-1]  2*width-1</span></span><br><span class="line">    <span class="comment"># height:5                            2*height-1</span></span><br><span class="line">    position_embedding = nn.Embedding((<span class="number">2</span>*width-<span class="number">1</span>)*(<span class="number">2</span>*height-<span class="number">1</span>),n_head)</span><br><span class="line">    nn.init.constant_(position_embedding,<span class="number">0.</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_relative_position_index</span>(<span class="params">height,width</span>):</span><br><span class="line">        cords = torch.stack(torch.meshgrid(torch.arange(height),torch.arange(width))) <span class="comment">#[2,height,width]</span></span><br><span class="line">        cords_flatten = torch.flatten(cords,<span class="number">1</span>) <span class="comment"># [2,height*width]</span></span><br><span class="line">        relative_cords_bias = cords_flatten[:,:,<span class="literal">None</span>] - cords_flatten[:,<span class="literal">None</span>,:] <span class="comment">#[2,height*width,height*width]</span></span><br><span class="line"></span><br><span class="line">        relative_cords_bias[<span class="number">0</span>,:,:] += height - <span class="number">1</span></span><br><span class="line">        relative_cords_bias[<span class="number">1</span>,:,:] += width - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># A:2d,B:1d B[i*cols+j] = a[i,j]</span></span><br><span class="line"></span><br><span class="line">        relative_cords_bias[<span class="number">0</span>,:,:] *= relative_cords_bias[<span class="number">1</span>,:,:].<span class="built_in">max</span>() + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span>  relative_cords_bias.<span class="built_in">sum</span>(<span class="number">0</span>) <span class="comment"># [height*width,height*width]</span></span><br><span class="line">    relative_position_bias = get_relative_position_index(height,width)</span><br><span class="line">    bias_embedding = position_embedding(torch.flatten(relative_position_bias)).reshape(height*width,height*width,n_head) <span class="comment"># [height*width,height*width,n_head]</span></span><br><span class="line"></span><br><span class="line">    bias_embedding.permute(<span class="number">2</span>,<span class="number">0</span>,<span class="number">1</span>).unsqueeze(<span class="number">0</span>) <span class="comment"># [1,n_head,height*width,height*width]</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> bias_embedding</span><br></pre></td></tr></table></figure>
-<h1 id="masked-ae">3 Masked AE</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 4.2d absolute constant sincos embedding</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_2d_absolute_sincos_embeddings</span>(<span class="params">height,width,dim</span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">assert</span> dim % <span class="number">4</span> == <span class="number">0</span>, <span class="string">&quot;wrong dimension&quot;</span></span><br><span class="line">    position_embedding = torch.zeros(height*width,dim)</span><br><span class="line">    cords = torch.stack(torch.meshgrid(torch.arange(height,dtype=torch.<span class="built_in">float</span>), torch.arange(width,dtype=torch.<span class="built_in">float</span>)))  <span class="comment"># [2,height,width]</span></span><br><span class="line">    height_embedding = create_1d_absolute_sincos_embeddings(torch.flatten(cords[<span class="number">0</span>]),dim//<span class="number">2</span>) <span class="comment"># [height*width,dim//2]</span></span><br><span class="line">    width_embedding = create_1d_absolute_sincos_embeddings(torch.flatten(cords[<span class="number">1</span>]),dim//<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    position_embedding[:,:dim//<span class="number">2</span>] = height_embedding</span><br><span class="line">    position_embedding[:,dim//<span class="number">2</span>:] = width_embedding</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> position_embedding</span><br></pre></td></tr></table></figure>
-<h1 id="section"></h1>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/f94e9029.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">下一页 &gt;&gt;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">下一页 &gt;&gt;</a>
     </nav>
   
 

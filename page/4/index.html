@@ -279,6 +279,353 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-pytorch基础入门6-autograd" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/40d10b1c.html">pytorch基础入门6-autograd</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/40d10b1c.html" class="archive-article-date">
+  	<time datetime="2023-04-06T12:25:44.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-06</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">596字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">2min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <p>训练神经网络如何使用pytorch中的自动微分</p>
+<p>https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062036309.png" alt="image-20230406203624607" /><figcaption aria-hidden="true">image-20230406203624607</figcaption>
+</figure>
+<h4 id="得到计算图">1 得到计算图</h4>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062042317.png" alt="image-20230406204239318" style="zoom:67%;" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">x = torch.ones(<span class="number">5</span>)  <span class="comment"># input tensor</span></span><br><span class="line">y = torch.zeros(<span class="number">3</span>)  <span class="comment"># expected output</span></span><br><span class="line">w = torch.randn(<span class="number">5</span>, <span class="number">3</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">b = torch.randn(<span class="number">3</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">z = torch.matmul(x, w)+b</span><br><span class="line">loss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)</span><br></pre></td></tr></table></figure>
+<p>通过对参数进行单个源操作，得到计算图，然后进一步进行反向梯度回传计算</p>
+<h4 id="计算">2 计算</h4>
+<p>我们对其中设置grad为true 的变量进行梯度回传计算。使用backward函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">loss.backward()</span><br><span class="line"><span class="built_in">print</span>(w.grad)</span><br><span class="line"><span class="built_in">print</span>(b.grad)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>我们只能对计算图中requires_grad为true的进行梯度回传计算，比如dropout，batchnorm等都不行</li>
+<li>由于我们只能在回传计算时生成一个图，如果我们需要对一个静态图进行多次梯度回传，我们需要把 retain_graph=True</li>
+</ul>
+<h4 id="将某些计算节点取消梯度回传">3 将某些计算节点取消梯度回传</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">z = torch.matmul(x, w)+b</span><br><span class="line"><span class="built_in">print</span>(z.requires_grad)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    z = torch.matmul(x, w)+b</span><br><span class="line"><span class="built_in">print</span>(z.requires_grad)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">z = torch.matmul(x, w)+b</span><br><span class="line">z_det = z.detach()</span><br><span class="line"><span class="built_in">print</span>(z_det.requires_grad)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>某些 frozen parameters</li>
+<li>加速运算</li>
+</ul>
+<h4 id="grad.zero_">4 grad.zero_()</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">inp = torch.eye(<span class="number">4</span>, <span class="number">5</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">out = (inp+<span class="number">1</span>).<span class="built_in">pow</span>(<span class="number">2</span>).t()</span><br><span class="line">out.backward(torch.ones_like(out), retain_graph=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;First call\n<span class="subst">&#123;inp.grad&#125;</span>&quot;</span>)</span><br><span class="line">out.backward(torch.ones_like(out), retain_graph=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;\nSecond call\n<span class="subst">&#123;inp.grad&#125;</span>&quot;</span>)</span><br><span class="line">inp.grad.zero_()</span><br><span class="line">out.backward(torch.ones_like(out), retain_graph=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;\nCall after zeroing gradients\n<span class="subst">&#123;inp.grad&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>由于梯度在每次调用的时候都会累加(<strong>Jacobian Product</strong>),我们需要使用grad.zero_()这样的梯度才是正确的。</p>
+<h4 id="jacobian在pytorch中的实现">5 jacobian在pytorch中的实现</h4>
+<p>torch.autograd.functional.jacobian(<em>func</em>, <em>inputs</em>, <em>create_graph=False</em>, <em>strict=False</em>, <em>vectorize=False</em>, <em>strategy='reverse-mode'</em>)</p>
+<p>https://pytorch.org/docs/stable/_modules/torch/autograd/functional.html#jacobian</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062118841.png" alt="image-20230406211810400" /><figcaption aria-hidden="true">image-20230406211810400</figcaption>
+</figure>
+<p>这个求偏导表示：生成的sum第一个数与原张量的第二行没有关系，所以求偏导也是0</p>
+<h4 id="向量对向量的微分">6 向量对向量的微分</h4>
+<p>首先当其中一个向量是列向量时候：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = torch.randn(<span class="number">3</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> a + x</span><br><span class="line">x = torch.randn(<span class="number">3</span>)</span><br><span class="line">torch.autograd.functional.jacobian(func,x)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tensor([[1., 0., 0.],</span><br><span class="line">        [0., 1., 0.],</span><br><span class="line">        [0., 0., 1.]])</span><br></pre></td></tr></table></figure>
+<p>显然这里的结果表示，f = a + x 中 ，f1,2,3 只与 x1,2,3 有关，所以是个对角阵</p>
+<p>向量对向量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a = torch.randn(<span class="number">3</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> a + x</span><br><span class="line">x = torch.randn(<span class="number">3</span>,requires_grad = <span class="literal">True</span>)</span><br><span class="line">torch.autograd.functional.jacobian(func,x)</span><br><span class="line">y = func(x)</span><br><span class="line">y.backward(torch.ones_like(y))</span><br><span class="line">x.grad</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.ones_like(y) @ torch.autograd.functional.jacobian(func,x)</span><br></pre></td></tr></table></figure>
+<h4 id="矩阵对矩阵的偏导">7 矩阵对矩阵的偏导</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = torch.randn(<span class="number">2</span>,<span class="number">3</span>,requires_grad = <span class="literal">True</span>)</span><br><span class="line">b = torch.randn(<span class="number">3</span>,<span class="number">2</span>,requires_grad = <span class="literal">True</span>)</span><br><span class="line">y = a @ b</span><br></pre></td></tr></table></figure>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/40d10b1c.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
+    <article id="post-pytorch基础入门5-container详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/f208623b.html">pytorch基础入门5-container详解</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/f208623b.html" class="archive-article-date">
+  	<time datetime="2023-04-06T11:55:57.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-06</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">149字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">1min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h5 id="torch.nn.sequentialargs-module">1 torch.nn.Sequential(args: <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module">Module</a>)</h5>
+<p>https://pytorch.org/docs/stable/_modules/torch/nn/modules/container.html#Sequential</p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062008133.png" alt="image-20230406200820589" style="zoom:80%;" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, <span class="built_in">input</span></span>):</span><br><span class="line">    <span class="keyword">for</span> module <span class="keyword">in</span> self:</span><br><span class="line">        <span class="built_in">input</span> = module(<span class="built_in">input</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">input</span></span><br></pre></td></tr></table></figure>
+<h5 id="torch.nn.modulelistmodulesnone">2 torch.nn.ModuleList(modules=None)</h5>
+<p>(https://pytorch.org/docs/stable/_modules/torch/nn/modules/container.html#ModuleList)</p>
+<p>Holds submodules in a list.</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304062017290.png" alt="image-20230406201713167" /><figcaption aria-hidden="true">image-20230406201713167</figcaption>
+</figure>
+<h5 id="torch.nn.moduledictmodulesnone">3 torch.nn.ModuleDict(modules=None)</h5>
+<p>https://pytorch.org/docs/stable/_modules/torch/nn/modules/container.html#ModuleDict</p>
+<p>Holds submodules in a dictionary.</p>
+<h5 id="torch.nn.parameterlistvaluesnone">4 torch.nn.ParameterList(values=None)</h5>
+<p>https://pytorch.org/docs/stable/_modules/torch/nn/modules/container.html#ParameterList</p>
+<p>Holds submodules in a list.</p>
+<h5 id="torch.nn.parameterdictparametersnone">5 torch.nn.ParameterDict(<em>parameters=None</em>)</h5>
+<p>https://pytorch.org/docs/stable/_modules/torch/nn/modules/container.html#ParameterDict</p>
+<p>Holds parameters in a dictionary.</p>
+<p>其中sequential能使用forward，其他容器不能，所以一般都使用sequential这个容器</p>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/f208623b.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
     <article id="post-pytorch基础入门4-module详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1886,199 +2233,9 @@ var _hmt = _hmt || [];
 
 <!-- 文章页添加mathjax公式 -->
   
-    <article id="post-建立自己的blog-基于node-js" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/3716e35d.html">建立自己的blog--基于hexo</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/3716e35d.html" class="archive-article-date">
-  	<time datetime="2023-04-05T03:22:00.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">1.6k字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">7min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <h2 id="需要准备的东西">1 需要准备的东西</h2>
-<p>1 github账号 https://github.com/</p>
-<p>2 nodejs https://nodejs.org/en</p>
-<p>3 git https://git-scm.com/</p>
-<p>4 图床账号（用于上传博客文件的图片）（可选）</p>
-<h2 id="准备工作">2 准备工作</h2>
-<p>1 首先查看是否存在 nodejs是否安装完毕</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v </span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051129793.png" alt="image-20230405112909635" /><figcaption aria-hidden="true">image-20230405112909635</figcaption>
-</figure>
-<p>2 安装CNPM，这是因为hexo模块使用默认源下载速度过慢</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-<p>3 安装 hexo 模块</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-<p>4 此时需要注意，默认的hexo没有完成真正意义上的部署成功，需要在你接下来创建博客的文件位置，进行本地部署。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  F:\study\blog</span><br><span class="line">hexo init </span><br></pre></td></tr></table></figure>
-<p>hexo init安装慢 详见：https://blog.csdn.net/f6619082/article/details/109193251 或者科学上网</p>
-<p>5 hexo的一些基础指令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo n <span class="string">&quot;我的第一篇文章&quot;</span> <span class="comment">#创建新的文章 </span></span><br><span class="line">hexo clean <span class="comment">#清理</span></span><br><span class="line">hexo g <span class="comment">#生成</span></span><br><span class="line">hexo s	<span class="comment">#启动本地博客服务</span></span><br></pre></td></tr></table></figure>
-<h2 id="部署到github上">3 部署到github上</h2>
-<p>1 新建repository，命名为 wangtongyouwen.github.io (你的用户名+.github.io)</p>
-<p>2 并且在刚刚的目录下新增git部署的插件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
-<p>3 远程部署</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br><span class="line">https://YourGithubName.github.io/  <span class="comment">#访问这个地址可以查看博客</span></span><br></pre></td></tr></table></figure>
-<h2 id="更改主题">4 更改主题</h2>
-<p>1 使用yilia主题</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> github.com:litten/hexo-theme-yilia.git</span><br></pre></td></tr></table></figure>
-<p>可以在当前目录下继续操作，或者把git clone 的内容复制到themes文件夹中</p>
-<p>2 对主题进行配置</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br></pre></td><td class="code"><pre><span class="line"># Hexo Configuration</span><br><span class="line">## Docs: http://hexo.io/docs/configuration.html</span><br><span class="line">## Source: https://github.com/hexojs/hexo/</span><br><span class="line"></span><br><span class="line"># Site</span><br><span class="line">title: Litten的博客</span><br><span class="line">subtitle: 胆小认生，不易相处</span><br><span class="line">description: 华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与前端性能。非专业视觉设计师。此为博客一枚。 </span><br><span class="line">author: Litten</span><br><span class="line">email: litten225@qq.com</span><br><span class="line">keywords: &quot;前端,js,jquery,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验&quot;</span><br><span class="line"></span><br><span class="line"># URL</span><br><span class="line">## If your site is put in a subdirectory, set url as &#x27;http://yoursite.com/child&#x27; and root as &#x27;/child/&#x27;</span><br><span class="line">url: //litten.me</span><br><span class="line">root: /</span><br><span class="line">permalink: :year/:month/:day/:title/</span><br><span class="line">tag_dir: tags</span><br><span class="line">archive_dir: archives</span><br><span class="line">category_dir: categories</span><br><span class="line">code_dir: downloads/code</span><br><span class="line">permalink_defaults:</span><br><span class="line"></span><br><span class="line"># Directory</span><br><span class="line">source_dir: source</span><br><span class="line">public_dir: public</span><br><span class="line"></span><br><span class="line"># Writing</span><br><span class="line">new_post_name: :title.md # File name of new posts</span><br><span class="line">default_layout: post</span><br><span class="line">titlecase: false # Transform title into titlecase</span><br><span class="line">external_link: true # Open external links in new tab</span><br><span class="line">filename_case: 0</span><br><span class="line">render_drafts: false</span><br><span class="line">post_asset_folder: false</span><br><span class="line">relative_link: false</span><br><span class="line">highlight:                                                                                                                                                                                                   </span><br><span class="line">  enable: true                                                                                                                                                                                               </span><br><span class="line">  auto_detect: true                                                                                                                                                                                          </span><br><span class="line">  line_number: true                                                                                                                                                                                          </span><br><span class="line">  tab_replace: &#x27;&#x27;</span><br><span class="line"></span><br><span class="line"># Category &amp; Tag</span><br><span class="line">default_category: uncategorized</span><br><span class="line">category_map:</span><br><span class="line">tag_map:</span><br><span class="line"></span><br><span class="line"># Archives</span><br><span class="line">## 2: Enable pagination</span><br><span class="line">## 1: Disable pagination</span><br><span class="line">## 0: Fully Disable</span><br><span class="line">archive: 1</span><br><span class="line">category: 1</span><br><span class="line">tag: 1</span><br><span class="line"></span><br><span class="line"># Server</span><br><span class="line">## Hexo uses Connect as a server</span><br><span class="line">## You can customize the logger format as defined in</span><br><span class="line">## http://www.senchalabs.org/connect/logger.html</span><br><span class="line">port: 4000</span><br><span class="line">server_ip: localhost</span><br><span class="line">logger: false</span><br><span class="line">logger_format: dev</span><br><span class="line"></span><br><span class="line"># Date / Time format</span><br><span class="line">## Hexo uses Moment.js to parse and display date</span><br><span class="line">## You can customize the date format as defined in</span><br><span class="line">## http://momentjs.com/docs/#/displaying/format/</span><br><span class="line">date_format: YYYY-MM-DD</span><br><span class="line">time_format: HH:mm:ss</span><br><span class="line"></span><br><span class="line"># Pagination</span><br><span class="line">## Set per_page to 0 to disable pagination</span><br><span class="line">per_page: 8</span><br><span class="line">pagination_dir: page</span><br><span class="line"></span><br><span class="line"># Disqus</span><br><span class="line">disqus_shortname:</span><br><span class="line"></span><br><span class="line"># Extensions</span><br><span class="line">## Plugins: https://github.com/hexojs/hexo/wiki/Plugins</span><br><span class="line">## Themes: https://github.com/hexojs/hexo/wiki/Themes</span><br><span class="line"># plugins:</span><br><span class="line">#  - hexo-generator-feed</span><br><span class="line">#  - hexo-generator-baidu-sitemap</span><br><span class="line">#  - hexo-generator-sitemap</span><br><span class="line"></span><br><span class="line">theme: yilia</span><br><span class="line">exclude_generator:</span><br><span class="line"></span><br><span class="line"># Deployment</span><br><span class="line">## Docs: http://hexo.io/docs/deployment.html</span><br><span class="line">#deploy:</span><br><span class="line">#  type: git</span><br><span class="line">#  repository: git@github.com:litten/litten.github.com.git</span><br><span class="line">#  branch: master</span><br><span class="line"></span><br><span class="line">deploy:</span><br><span class="line">  type: rsync</span><br><span class="line">  host: 120.24.181.238</span><br><span class="line">  user: root</span><br><span class="line">  root: /usr/local/nginx/litten.me/</span><br><span class="line">  port: 22</span><br><span class="line"></span><br><span class="line">sitemap:</span><br><span class="line">    path: sitemap.xml</span><br><span class="line">baidusitemap:</span><br><span class="line">    path: baidusitemap.xm</span><br><span class="line"></span><br><span class="line">feed:</span><br><span class="line">    type: atom</span><br><span class="line">    path: atom.xml</span><br><span class="line">    limit: 100</span><br><span class="line"></span><br><span class="line">jsonContent:</span><br><span class="line">  meta: false</span><br><span class="line">  pages: false</span><br><span class="line">  posts:</span><br><span class="line">    title: true</span><br><span class="line">    date: true</span><br><span class="line">    path: true</span><br><span class="line">    text: false</span><br><span class="line">    raw: false</span><br><span class="line">    content: false</span><br><span class="line">    slug: false</span><br><span class="line">    updated: false</span><br><span class="line">    comments: false</span><br><span class="line">    link: false</span><br><span class="line">    permalink: false</span><br><span class="line">    excerpt: false</span><br><span class="line">    categories: false</span><br><span class="line">    tags: true</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"># Header</span><br><span class="line"></span><br><span class="line">menu:</span><br><span class="line">  主页: /</span><br><span class="line">  随笔: /tags/随笔/</span><br><span class="line"></span><br><span class="line"># SubNav</span><br><span class="line">subnav:</span><br><span class="line">  github: &quot;#&quot;</span><br><span class="line">  weibo: &quot;#&quot;</span><br><span class="line">  rss: &quot;#&quot;</span><br><span class="line">  zhihu: &quot;#&quot;</span><br><span class="line">  #qq: &quot;#&quot;</span><br><span class="line">  #weixin: &quot;#&quot;</span><br><span class="line">  #jianshu: &quot;#&quot;</span><br><span class="line">  #douban: &quot;#&quot;</span><br><span class="line">  #segmentfault: &quot;#&quot;</span><br><span class="line">  #bilibili: &quot;#&quot;</span><br><span class="line">  #acfun: &quot;#&quot;</span><br><span class="line">  #mail: &quot;mailto:litten225@qq.com&quot;</span><br><span class="line">  #facebook: &quot;#&quot;</span><br><span class="line">  #google: &quot;#&quot;</span><br><span class="line">  #twitter: &quot;#&quot;</span><br><span class="line">  #linkedin: &quot;#&quot;</span><br><span class="line"></span><br><span class="line">rss: /atom.xml</span><br><span class="line"></span><br><span class="line"># 是否需要修改 root 路径</span><br><span class="line"># 如果您的网站存放在子目录中，例如 http://yoursite.com/blog，</span><br><span class="line"># 请将您的 url 设为 http://yoursite.com/blog 并把 root 设为 /blog/。</span><br><span class="line">root: </span><br><span class="line"></span><br><span class="line"># Content</span><br><span class="line"></span><br><span class="line"># 文章太长，截断按钮文字</span><br><span class="line">excerpt_link: more</span><br><span class="line"># 文章卡片右下角常驻链接，不需要请设置为false</span><br><span class="line">show_all_link: &#x27;展开全文&#x27;</span><br><span class="line"># 数学公式</span><br><span class="line">mathjax: false</span><br><span class="line"># 是否在新窗口打开链接</span><br><span class="line">open_in_new: false</span><br><span class="line"></span><br><span class="line"># 打赏</span><br><span class="line"># 打赏type设定：0-关闭打赏； 1-文章对应的md文件里有reward:true属性，才有打赏； 2-所有文章均有打赏</span><br><span class="line">reward_type: 2</span><br><span class="line"># 打赏wording</span><br><span class="line">reward_wording: &#x27;谢谢你请我吃糖果&#x27;</span><br><span class="line"># 支付宝二维码图片地址，跟你设置头像的方式一样。比如：/assets/img/alipay.jpg</span><br><span class="line">alipay: </span><br><span class="line"># 微信二维码图片地址</span><br><span class="line">weixin: </span><br><span class="line"></span><br><span class="line"># 目录</span><br><span class="line"># 目录设定：0-不显示目录； 1-文章对应的md文件里有toc:true属性，才有目录； 2-所有文章均显示目录</span><br><span class="line">toc: 1</span><br><span class="line"># 根据自己的习惯来设置，如果你的目录标题习惯有标号，置为true即可隐藏hexo重复的序号；否则置为false</span><br><span class="line">toc_hide_index: true</span><br><span class="line"># 目录为空时的提示</span><br><span class="line">toc_empty_wording: &#x27;目录，不存在的…&#x27;</span><br><span class="line"></span><br><span class="line"># 是否有快速回到顶部的按钮</span><br><span class="line">top: true</span><br><span class="line"></span><br><span class="line"># Miscellaneous</span><br><span class="line">baidu_analytics: &#x27;&#x27;</span><br><span class="line">google_analytics: &#x27;&#x27;</span><br><span class="line">favicon: /favicon.png</span><br><span class="line"></span><br><span class="line">#你的头像url</span><br><span class="line">avatar:</span><br><span class="line"></span><br><span class="line">#是否开启分享</span><br><span class="line">share_jia: true</span><br><span class="line"></span><br><span class="line">#评论：1、多说；2、网易云跟帖；3、畅言；4、Disqus；5、Gitment</span><br><span class="line">#不需要使用某项，直接设置值为false，或注释掉</span><br><span class="line">#具体请参考wiki：https://github.com/litten/hexo-theme-yilia/wiki/</span><br><span class="line"></span><br><span class="line">#1、多说</span><br><span class="line">duoshuo: false</span><br><span class="line"></span><br><span class="line">#2、网易云跟帖</span><br><span class="line">wangyiyun: false</span><br><span class="line"></span><br><span class="line">#3、畅言</span><br><span class="line">changyan_appid: false</span><br><span class="line">changyan_conf: false</span><br><span class="line"></span><br><span class="line">#4、Disqus 在hexo根目录的config里也有disqus_shortname字段，优先使用yilia的</span><br><span class="line">disqus: false</span><br><span class="line"></span><br><span class="line">#5、Gitment</span><br><span class="line">gitment_owner: false      #你的 GitHub ID</span><br><span class="line">gitment_repo: &#x27;&#x27;          #存储评论的 repo</span><br><span class="line">gitment_oauth:</span><br><span class="line">  client_id: &#x27;&#x27;           #client ID</span><br><span class="line">  client_secret: &#x27;&#x27;       #client secret</span><br><span class="line"></span><br><span class="line"># 样式定制 - 一般不需要修改，除非有很强的定制欲望…</span><br><span class="line">style:</span><br><span class="line">  # 头像上面的背景颜色</span><br><span class="line">  header: &#x27;#4d4d4d&#x27;</span><br><span class="line">  # 右滑板块背景</span><br><span class="line">  slider: &#x27;linear-gradient(200deg,#a0cfe4,#e8c37e)&#x27;</span><br><span class="line"></span><br><span class="line"># slider的设置</span><br><span class="line">slider:</span><br><span class="line">  # 是否默认展开tags板块</span><br><span class="line">  showTags: false</span><br><span class="line"></span><br><span class="line"># 智能菜单</span><br><span class="line"># 如不需要，将该对应项置为false</span><br><span class="line"># 比如</span><br><span class="line">#smart_menu:</span><br><span class="line">#  friends: false</span><br><span class="line">smart_menu:</span><br><span class="line">  innerArchive: &#x27;所有文章&#x27;</span><br><span class="line">  friends: &#x27;友链&#x27;</span><br><span class="line">  aboutme: &#x27;关于我&#x27;</span><br><span class="line"></span><br><span class="line">friends:</span><br><span class="line">  友情链接1: http://localhost:4000/</span><br><span class="line">  友情链接2: http://localhost:4000/</span><br><span class="line">  友情链接3: http://localhost:4000/</span><br><span class="line">  友情链接4: http://localhost:4000/</span><br><span class="line">  友情链接5: http://localhost:4000/</span><br><span class="line">  友情链接6: http://localhost:4000/</span><br><span class="line"></span><br><span class="line">aboutme: 很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</span><br></pre></td></tr></table></figure>
-<h2 id="可能遇到的问题">5 可能遇到的问题</h2>
-<h3 id="所有文章链接无法使用">1 所有文章链接无法使用</h3>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051218149.png" alt="image-20230405121833648" /><figcaption aria-hidden="true">image-20230405121833648</figcaption>
-</figure>
-<h3 id="数学公式无法显示">2 数学公式无法显示</h3>
-<p>1 安装pandoc</p>
-<p>https://github.com/jgm/pandoc/releases/tag/2.19.2</p>
-<p>2 安装 hexo-renderer-pandoc</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-pandoc --save</span><br></pre></td></tr></table></figure>
-<p>3 在config.yml 中找到 mathjax 设置为 true</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-<h3 id="git-ssh-无权限">3 git ssh 无权限</h3>
-<p>在git bash 终端中输入</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> <span class="string">&quot;<span class="subst">$(ssh-agent -s)</span>&quot;</span></span><br><span class="line">ssh-add</span><br><span class="line">ssh-add -l -E md5</span><br></pre></td></tr></table></figure>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/3716e35d.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/3/">&lt;&lt; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+      <a class="extend prev" rel="prev" href="/page/3/">&lt;&lt; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">下一页 &gt;&gt;</a>
     </nav>
   
 
