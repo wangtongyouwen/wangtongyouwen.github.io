@@ -279,6 +279,169 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-tips-github自动fork" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/3627c7a8.html">tips:github自动fork</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/3627c7a8.html" class="archive-article-date">
+  	<time datetime="2023-05-21T04:30:16.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-05-21</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">108字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">1min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <ol type="1">
+<li>在fork后的项目中新建：</li>
+</ol>
+<p>.github/workflows/main.yml</p>
+<ol start="2" type="1">
+<li>在main.yml中输入：</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Upstream</span> <span class="string">Sync</span></span><br><span class="line"></span><br><span class="line"><span class="attr">permissions:</span></span><br><span class="line">  <span class="attr">contents:</span> <span class="string">write</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">schedule:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">cron:</span> <span class="string">&quot;0 */12 * * *&quot;</span> <span class="comment"># every 12 hours</span></span><br><span class="line">  <span class="attr">workflow_dispatch:</span> <span class="comment"># manual sync</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">sync:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span> <span class="string">repo</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">ref:</span> <span class="string">master</span> <span class="comment"># [branch name]</span></span><br><span class="line">        <span class="attr">fetch-depth:</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Configure</span> <span class="string">Git</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">        git config user.name &quot;GitHub Actions Bot&quot;</span></span><br><span class="line"><span class="string">        git config user.email &quot;email@xxx.com&quot;  # send email to you </span></span><br><span class="line"><span class="string"></span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Sync</span> <span class="string">with</span> <span class="string">upstream</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">        git remote add upstream https://github.com/[https locations]</span></span><br><span class="line"><span class="string">        git fetch upstream</span></span><br><span class="line"><span class="string">        git merge upstream/master --no-edit</span></span><br><span class="line"><span class="string">        git push</span></span><br></pre></td></tr></table></figure>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tips</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">github</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/3627c7a8.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
     <article id="post-pytorch项目6-语音合成" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2428,186 +2591,6 @@ So the final transformation matrix M is:
 
 <!-- 文章页添加mathjax公式 -->
   
-    <article id="post-pytorch项目3-基于ResNet的水果蔬菜分类" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/4627104a.html">pytorch项目3-基于ResNet的水果蔬菜分类</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/4627104a.html" class="archive-article-date">
-  	<time datetime="2023-04-26T13:21:35.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-26</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-        <span class="article-type" style="
-          color: white;
-          font-size: 14px;
-          background: #0088CC;
-          padding: 0 5px 1px 5px;
-          margin-right: 5px;
-          border-radius: 2px;">原创</span>
-		  &nbsp; 
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">2.1k字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">12min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <h2 id="数据集介绍">1 数据集介绍</h2>
-<p>https://aistudio.baidu.com/aistudio/datasetdetail/119023</p>
-<p>其中的图片有36各类，不同类别在不同的文件夹中，其中文件后缀有"jpg,png,JPG"</p>
-<h2 id="数据集预处理">2 数据集预处理</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">Pre_Data</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot; 对所有图片进行RGB转换，并且统一调整到一致大小，但不让图片发生变形或扭曲,划分训练集和测试集&quot;&quot;&quot;</span></span><br><span class="line">    test_split_ratio = <span class="number">0.05</span></span><br><span class="line">    desired_size =<span class="number">128</span> <span class="comment"># 图片缩放后的同一大小</span></span><br><span class="line">    raw_path = <span class="string">&quot;./raw&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># class files in the raw data</span></span><br><span class="line">    dirs = glob.glob(os.path.join(raw_path,<span class="string">&quot;*&quot;</span>))</span><br><span class="line">    dirs = [d <span class="keyword">for</span> d <span class="keyword">in</span> dirs <span class="keyword">if</span> os.path.isdir(d)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># print(dirs)</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;totally <span class="subst">&#123;<span class="built_in">len</span>(dirs)&#125;</span> classes: <span class="subst">&#123;dirs&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> path <span class="keyword">in</span> dirs:</span><br><span class="line">        <span class="comment"># 对每个类别单独处理</span></span><br><span class="line">        path = path.split(<span class="string">&quot;\\&quot;</span>)[-<span class="number">1</span>] <span class="comment"># classes</span></span><br><span class="line">        <span class="comment"># print(path)</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">f&quot;train/<span class="subst">&#123;path&#125;</span>&quot;</span>):</span><br><span class="line">            os.makedirs(<span class="string">f&quot;train/<span class="subst">&#123;path&#125;</span>&quot;</span>,exist_ok=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">f&quot;test/<span class="subst">&#123;path&#125;</span>&quot;</span>):</span><br><span class="line">            os.makedirs(<span class="string">f&quot;test/<span class="subst">&#123;path&#125;</span>&quot;</span>,exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        files = glob.glob(os.path.join(raw_path,path,<span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line">        files += glob.glob(os.path.join(raw_path,path,<span class="string">&quot;*.JPG&quot;</span>))</span><br><span class="line">        files += glob.glob(os.path.join(raw_path,path,<span class="string">&quot;*.png&quot;</span>))</span><br><span class="line">        <span class="comment"># print(files)</span></span><br><span class="line">        random.shuffle(files)</span><br><span class="line"></span><br><span class="line">        boundary = <span class="built_in">int</span>(<span class="built_in">len</span>(files)*test_split_ratio) <span class="comment"># 测试集和训练集的边界</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i,file <span class="keyword">in</span> <span class="built_in">enumerate</span>(files):</span><br><span class="line">            img = Image.<span class="built_in">open</span>(file).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">            <span class="comment"># print(img)</span></span><br><span class="line">            old_size = img.size <span class="comment"># old_size[0] is in (width,height) format</span></span><br><span class="line">            <span class="comment"># print(old_size)</span></span><br><span class="line"></span><br><span class="line">            ratio = <span class="built_in">float</span>(desired_size)/<span class="built_in">max</span>(old_size)</span><br><span class="line"></span><br><span class="line">            new_size = <span class="built_in">tuple</span>([<span class="built_in">int</span>(x*ratio) <span class="keyword">for</span> x <span class="keyword">in</span> old_size])</span><br><span class="line"></span><br><span class="line">            im = img.resize(new_size,Image.LANCZOS) <span class="comment"># 无模糊</span></span><br><span class="line"></span><br><span class="line">            new_im = Image.new(<span class="string">&quot;RGB&quot;</span>,(desired_size,desired_size))</span><br><span class="line">            new_im.paste(im,((desired_size-new_size[<span class="number">0</span>])//<span class="number">2</span>,</span><br><span class="line">                             (desired_size-new_size[<span class="number">1</span>])//<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">assert</span> new_im.mode == <span class="string">&quot;RGB&quot;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> i &lt;= boundary:</span><br><span class="line">                new_im.save(os.path.join(<span class="string">f&quot;test/<span class="subst">&#123;path&#125;</span>&quot;</span>,file.split(<span class="string">&quot;\\&quot;</span>)[-<span class="number">1</span>].split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]+ <span class="string">&quot;.jpg&quot;</span>))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">str</span>(get_filename(file)+<span class="string">&quot;.jpg&quot;</span>) <span class="keyword">not</span> <span class="keyword">in</span> os.listdir(os.path.join(<span class="string">f&quot;test/<span class="subst">&#123;path&#125;</span>&quot;</span>)):</span><br><span class="line">                    new_im.save(os.path.join(<span class="string">f&quot;train/<span class="subst">&#123;path&#125;</span>&quot;</span>,file.split(<span class="string">&quot;\\&quot;</span>)[-<span class="number">1</span>].split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]+ <span class="string">&quot;.jpg&quot;</span>))</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;classes <span class="subst">&#123;path&#125;</span> is done !&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    test_files = glob.glob(os.path.join(<span class="string">&quot;test&quot;</span>,<span class="string">&quot;*&quot;</span>,<span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line">    train_files = glob.glob(os.path.join(<span class="string">&quot;train&quot;</span>,<span class="string">&quot;*&quot;</span>,<span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;totally <span class="subst">&#123;<span class="built_in">len</span>(test_files)&#125;</span> files for testing&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;totally <span class="subst">&#123;<span class="built_in">len</span>(train_files)&#125;</span> files for training&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cal_mean_std</span>():</span><br><span class="line">    train_files = glob.glob(os.path.join(<span class="string">&quot;train&quot;</span>,<span class="string">&quot;*&quot;</span>,<span class="string">&quot;*.jpg&quot;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;totally <span class="subst">&#123;<span class="built_in">len</span>(train_files)&#125;</span> files for training&quot;</span>)</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> train_files:</span><br><span class="line">        img = Image.<span class="built_in">open</span>(file).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">        img = np.array(img).astype(np.uint8)</span><br><span class="line">        img = img / <span class="number">255</span></span><br><span class="line">        result.append(img)</span><br><span class="line">    <span class="built_in">print</span>(np.shape(result)) <span class="comment"># [bs,H,W,C]</span></span><br><span class="line">    mean = np.mean(result,axis=(<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">    std = np.std(result,axis=(<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">    <span class="built_in">print</span>(mean,std</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="eval">3 eval</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@torch.no_grad()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate</span>(<span class="params">data_loader, model, device</span>):</span><br><span class="line">    criterion = nn.CrossEntropyLoss()</span><br><span class="line"></span><br><span class="line">    metric_logger = misc.MetricLogger(delimiter=<span class="string">&quot; &quot;</span>)</span><br><span class="line">    header = <span class="string">&quot;test:&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># switch to evaluation mode</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> metric_logger.log_every(data_loader, <span class="number">10</span>, header):</span><br><span class="line">        <span class="comment"># print(batch)</span></span><br><span class="line">        images = batch[<span class="number">0</span>]</span><br><span class="line">        target = batch[-<span class="number">1</span>]</span><br><span class="line">        images = images.to(device, non_blocking=<span class="literal">True</span>)</span><br><span class="line">        target = target.to(device, non_blocking=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># compute output</span></span><br><span class="line">        output = model(images)</span><br><span class="line">        loss = criterion(output, target)</span><br><span class="line"></span><br><span class="line">        output = F.softmax(output, dim=-<span class="number">1</span>)</span><br><span class="line">        acc1, acc5 = accuracy(output, target, topk=(<span class="number">1</span>, <span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">        batch_size = images.shape[<span class="number">0</span>]</span><br><span class="line">        metric_logger.update(loss=loss.item())</span><br><span class="line">        metric_logger.meters[<span class="string">&#x27;acc1&#x27;</span>].update(acc1.item(), n=batch_size)</span><br><span class="line">        metric_logger.meters[<span class="string">&#x27;acc5&#x27;</span>].update(acc5.item(), n=batch_size)</span><br><span class="line">    <span class="comment"># gather the stats from all processes</span></span><br><span class="line">    metric_logger.synchronize_between_processes()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;* Acc@1 &#123;top1.global_avg:.3f&#125; Acc@5 &#123;top5.global_avg:.3f&#125; loss &#123;losses.global_avg:.3f&#125;&#x27;</span>.<span class="built_in">format</span>(</span><br><span class="line">        top1=metric_logger.acc1, top5=metric_logger.acc5, losses=metric_logger.loss))</span><br><span class="line">    <span class="keyword">return</span> &#123;k: meter.global_avg <span class="keyword">for</span> k, meter <span class="keyword">in</span> metric_logger.meters.items()&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="train">4 train</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train_one_epoch</span>(<span class="params">model: nn.Module, criterion: nn.Module, data_loader: Iterable, optimizer: torch.optim.Optimizer,</span></span><br><span class="line"><span class="params">                    device: torch.device, epoch: <span class="built_in">int</span>, loss_scaler, max_norm: <span class="built_in">float</span> = <span class="number">0</span>, log_writer=<span class="literal">None</span>, args=<span class="literal">None</span></span>):</span><br><span class="line">    model.train(<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    accum_iter = args.accum_iter</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> log_writer <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;log_dir:&#123;&#125;&quot;</span>.<span class="built_in">format</span>(log_writer.log_dir))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> data_iter_step, (samples, targets) <span class="keyword">in</span> <span class="built_in">enumerate</span>(data_loader):</span><br><span class="line">        samples = samples.to(device, non_blocking=<span class="literal">True</span>)</span><br><span class="line">        targets = targets.to(device, non_blocking=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        outputs = model(samples)</span><br><span class="line"></span><br><span class="line">        warmup_lr = args.lr</span><br><span class="line">        optimizer.param_groups[<span class="number">0</span>][<span class="string">&quot;lr&quot;</span>] = warmup_lr</span><br><span class="line"></span><br><span class="line">        loss = criterion(outputs, targets)</span><br><span class="line">        loss /= accum_iter</span><br><span class="line"></span><br><span class="line">        loss_scaler(loss, optimizer, clip_grad=max_norm,</span><br><span class="line">                    parameters=model.parameters(), create_graph=<span class="literal">False</span>,</span><br><span class="line">                    update_grad=(data_iter_step + <span class="number">1</span>) % accum_iter == <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">        loss_value = loss.item()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (data_iter_step + <span class="number">1</span>) % accum_iter == <span class="number">0</span>:</span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> math.isfinite(loss_value):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Loss is &#123;&#125;, stopping training&quot;</span>.<span class="built_in">format</span>(loss_value))</span><br><span class="line">            sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> log_writer <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> (data_iter_step + <span class="number">1</span>) % accum_iter == <span class="number">0</span>:</span><br><span class="line">            <span class="string">&quot;&quot;&quot; We use epoch_1000x as the x-axis in tensorboard.</span></span><br><span class="line"><span class="string">            This calibrates different curves when batch size changes.</span></span><br><span class="line"><span class="string">            &quot;&quot;&quot;</span></span><br><span class="line">            epoch_1000x = <span class="built_in">int</span>((data_iter_step / <span class="built_in">len</span>(data_loader) + epoch) * <span class="number">1000</span>)</span><br><span class="line">            log_writer.add_scalar(<span class="string">&#x27;loss&#x27;</span>, loss_value, epoch_1000x)</span><br><span class="line">            log_writer.add_scalar(<span class="string">&#x27;lr&#x27;</span>, warmup_lr, epoch_1000x)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Epoch:<span class="subst">&#123;epoch&#125;</span>,Step: <span class="subst">&#123;data_iter_step&#125;</span>,loss: <span class="subst">&#123;loss&#125;</span>,lr: <span class="subst">&#123;warmup_lr&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="dataset">5 dataset</h2>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">def build_transform(is_train, args):</span><br><span class="line">    if is_train:</span><br><span class="line">        # this should always dispatch to transforms_imagenet_train</span><br><span class="line">        print(&quot;train transform&quot;)</span><br><span class="line">        return torchvision.transforms.Compose([</span><br><span class="line">            torchvision.transforms.Resize((args.input_size, args.input_size)),</span><br><span class="line">            torchvision.transforms.RandomHorizontalFlip(),</span><br><span class="line">            torchvision.transforms.RandomVerticalFlip(),</span><br><span class="line">            torchvision.transforms.RandomPerspective(distortion_scale=0.6, p=1.0),</span><br><span class="line">            torchvision.transforms.GaussianBlur(kernel_size=(5, 9), sigma=(0.1, 5)),</span><br><span class="line">            torchvision.transforms.ToTensor(),</span><br><span class="line">        ])</span><br><span class="line">    # eval transform</span><br><span class="line">    print(&quot;eval transform&quot;)</span><br><span class="line">    return torchvision.transforms.Compose([</span><br><span class="line">        torchvision.transforms.Resize((args.input_size, args.input_size)),</span><br><span class="line">        torchvision.transforms.ToTensor(),</span><br><span class="line">    ])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def build_dataset(is_train, args):</span><br><span class="line">    transform = build_transform(is_train, args)</span><br><span class="line">    path = os.path.join(args.root_path, &quot;train&quot; if is_train else &quot;test&quot;)</span><br><span class="line">    dataset = torchvision.datasets.ImageFolder(path, transform=transform)</span><br><span class="line">    info = dataset.find_classes(path)</span><br><span class="line">    print(f&quot;finding classes from &#123;path&#125;:\t &#123;info[0]&#125;&quot;)</span><br><span class="line">    print(f&quot;mapping classes from &#123;path&#125; to indexes:\t &#123;info[1]&#125;&quot;)</span><br><span class="line"></span><br><span class="line">    return dataset</span><br></pre></td></tr></table></figure>
-<h2 id="argparse">6 argparse</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_args_parser</span>():</span><br><span class="line">    parser = argparse.ArgumentParser(<span class="string">&#x27;MAE pre-training&#x27;</span>, add_help=<span class="literal">False</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--batch_size&#x27;</span>, default=<span class="number">72</span>, <span class="built_in">type</span>=<span class="built_in">int</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;Batch size per GPU (effective batch size is batch_size * accum_iter * # gpus&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--epochs&#x27;</span>, default=<span class="number">400</span>, <span class="built_in">type</span>=<span class="built_in">int</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--accum_iter&#x27;</span>, default=<span class="number">1</span>, <span class="built_in">type</span>=<span class="built_in">int</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;Accumulate gradient iterations (for increasing the effective batch size under memory constraints)&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Model parameters</span></span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--input_size&#x27;</span>, default=<span class="number">128</span>, <span class="built_in">type</span>=<span class="built_in">int</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;images input size&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Optimizer parameters</span></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--weight_decay&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">float</span>, default=<span class="number">0.0001</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;weight decay (default: 0.0001)&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--lr&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">float</span>, default=<span class="number">0.0001</span>, metavar=<span class="string">&#x27;LR&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;learning rate (absolute lr)&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Dataset parameters</span></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--root-path&#x27;</span>, default=<span class="string">&#x27;./dataset_fruit_veg/&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;path where the train test pic is &#x27;</span>)</span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--output_dir&#x27;</span>, default=<span class="string">&#x27;./output_dir_pretrained&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;path where to save, empty for no saving&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--log_dir&#x27;</span>, default=<span class="string">&#x27;./output_dir_pretrained&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;path where to tensorboard log&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--resume&#x27;</span>, default=<span class="string">&#x27;&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;resume from checkpoint&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--start_epoch&#x27;</span>, default=<span class="number">0</span>, <span class="built_in">type</span>=<span class="built_in">int</span>, metavar=<span class="string">&#x27;N&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;start epoch&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--num_workers&#x27;</span>, default=<span class="number">5</span>, <span class="built_in">type</span>=<span class="built_in">int</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--pin_mem&#x27;</span>, action=<span class="string">&#x27;store_true&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;Pin CPU memory in DataLoader for more efficient (sometimes) transfer to GPU.&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--no_pin_mem&#x27;</span>, action=<span class="string">&#x27;store_false&#x27;</span>, dest=<span class="string">&#x27;pin_mem&#x27;</span>)</span><br><span class="line">    parser.set_defaults(pin_mem=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># distributed training parameters</span></span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--world_size&#x27;</span>, default=<span class="number">1</span>, <span class="built_in">type</span>=<span class="built_in">int</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;number of distributed processes&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--local_rank&#x27;</span>, default=-<span class="number">1</span>, <span class="built_in">type</span>=<span class="built_in">int</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--dist_on_itp&#x27;</span>, action=<span class="string">&#x27;store_true&#x27;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&#x27;--dist_url&#x27;</span>, default=<span class="string">&#x27;env://&#x27;</span>,</span><br><span class="line">                        <span class="built_in">help</span>=<span class="string">&#x27;url used to set up distributed training&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> parser</span><br></pre></td></tr></table></figure>
-<h2 id="主要代码">7 主要代码</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>(<span class="params">args, mode=<span class="string">&quot;train&quot;</span>, test_image_path=<span class="string">&quot;&quot;</span></span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;mode&#125;</span> mode...&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> mode == <span class="string">&quot;train&quot;</span>:</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 构建数据批次</span></span><br><span class="line">        dataset_train = build_dataset(is_train=<span class="literal">True</span>, args=args)</span><br><span class="line">        dataset_val = build_dataset(is_train=<span class="literal">False</span>, args=args)</span><br><span class="line"></span><br><span class="line">        sampler_train = torch.utils.data.RandomSampler(dataset_train)</span><br><span class="line">        sampler_val = torch.utils.data.SequentialSampler(dataset_val)</span><br><span class="line"></span><br><span class="line">        data_loader_train = torch.utils.data.DataLoader(</span><br><span class="line">            dataset_train, sampler=sampler_train,</span><br><span class="line">            batch_size=args.batch_size,</span><br><span class="line">            num_workers=args.num_workers,</span><br><span class="line">            pin_memory=args.pin_mem,</span><br><span class="line">            drop_last=<span class="literal">True</span>,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        data_loader_val = torch.utils.data.DataLoader(</span><br><span class="line">            dataset_val, sampler=sampler_val,</span><br><span class="line">            batch_size=args.batch_size,</span><br><span class="line">            <span class="comment"># batch_size = 1</span></span><br><span class="line">            num_workers=args.num_workers,</span><br><span class="line">            pin_memory=args.pin_mem,</span><br><span class="line">            drop_last=<span class="literal">False</span>,</span><br><span class="line">        )</span><br><span class="line">        <span class="comment"># 构建模型</span></span><br><span class="line">        model = timm.create_model(<span class="string">&quot;resnet18&quot;</span>, pretrained=<span class="literal">True</span>, num_classes=<span class="number">36</span>, drop_rate=<span class="number">0.1</span>, drop_path_rate=<span class="number">0.1</span>).to(device)</span><br><span class="line"></span><br><span class="line">        n_parameters = <span class="built_in">sum</span>(p.numel() <span class="keyword">for</span> p <span class="keyword">in</span> model.parameters() <span class="keyword">if</span> p.requires_grad)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;number of trainable params (M):%.2f&#x27;</span> % (n_parameters / <span class="number">1.e6</span>))</span><br><span class="line"></span><br><span class="line">        criterion = nn.CrossEntropyLoss()</span><br><span class="line">        optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># log dir</span></span><br><span class="line">        os.makedirs(args.log_dir, exist_ok=<span class="literal">True</span>)</span><br><span class="line">        log_writer = SummaryWriter(log_dir=args.log_dir)</span><br><span class="line">        loss_scaler = NativeScaler()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 读入已有的模型</span></span><br><span class="line">        misc.load_model(args=args, model_without_ddp=model, optimizer=optimizer, loss_scaler=loss_scaler)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(args.start_epoch, args.epochs):</span><br><span class="line"></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Epoch<span class="subst">&#123;epoch&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;length of data_loader_train is <span class="subst">&#123;<span class="built_in">len</span>(data_loader_train)&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> epoch % <span class="number">1</span> == <span class="number">0</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;Evaluating...&quot;</span>)</span><br><span class="line">                model.<span class="built_in">eval</span>()</span><br><span class="line">                test_stats = evaluate(data_loader_val, model, device)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;Accuracy of the network on the <span class="subst">&#123;<span class="built_in">len</span>(dataset_val)&#125;</span> test images: <span class="subst">&#123;test_stats[<span class="string">&#x27;acc1&#x27;</span>]:<span class="number">.1</span>f&#125;</span>%&quot;</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> log_writer <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    log_writer.add_scalar(<span class="string">&quot;perf/test_acc1&quot;</span>, test_stats[<span class="string">&quot;acc1&quot;</span>], epoch)</span><br><span class="line">                    log_writer.add_scalar(<span class="string">&quot;perf/test_acc5&quot;</span>, test_stats[<span class="string">&quot;acc5&quot;</span>], epoch)</span><br><span class="line">                    log_writer.add_scalar(<span class="string">&quot;perf/test_loss&quot;</span>, test_stats[<span class="string">&quot;loss&quot;</span>], epoch)</span><br><span class="line">                model.train()</span><br><span class="line"></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;training...&quot;</span>)</span><br><span class="line">            train_stats = train_one_epoch(</span><br><span class="line">                model, criterion, data_loader_train,</span><br><span class="line">                optimizer, device, epoch + <span class="number">1</span>, loss_scaler, <span class="literal">None</span>, log_writer=log_writer, args=args</span><br><span class="line">            )</span><br><span class="line">            <span class="built_in">print</span>(train_stats)</span><br><span class="line">            <span class="keyword">if</span> args.output_dir:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;saving checkpoint...&quot;</span>)</span><br><span class="line">                misc.save_model(</span><br><span class="line">                    args=args,model=model,model_without_ddp=model,optimizer=optimizer,</span><br><span class="line">                    loss_scaler=loss_scaler,epoch=epoch</span><br><span class="line">                )</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        model = timm.create_model(<span class="string">&quot;resnet18&quot;</span>, pretrained=<span class="literal">True</span>, num_classes=<span class="number">36</span>, drop_rate=<span class="number">0.1</span>, drop_path_rate=<span class="number">0.1</span>).to(device)</span><br><span class="line"></span><br><span class="line">        class_dict = &#123;<span class="string">&#x27;apple&#x27;</span>: <span class="number">0</span>, <span class="string">&#x27;banana&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;beetroot&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;bell pepper&#x27;</span>: <span class="number">3</span>, <span class="string">&#x27;cabbage&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;capsicum&#x27;</span>: <span class="number">5</span>,</span><br><span class="line">                      <span class="string">&#x27;carrot&#x27;</span>: <span class="number">6</span>, <span class="string">&#x27;cauliflower&#x27;</span>: <span class="number">7</span>, <span class="string">&#x27;chilli pepper&#x27;</span>: <span class="number">8</span>, <span class="string">&#x27;corn&#x27;</span>: <span class="number">9</span>, <span class="string">&#x27;cucumber&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;eggplant&#x27;</span>: <span class="number">11</span>,</span><br><span class="line">                      <span class="string">&#x27;garlic&#x27;</span>: <span class="number">12</span>, <span class="string">&#x27;ginger&#x27;</span>: <span class="number">13</span>, <span class="string">&#x27;grapes&#x27;</span>: <span class="number">14</span>, <span class="string">&#x27;jalepeno&#x27;</span>: <span class="number">15</span>, <span class="string">&#x27;kiwi&#x27;</span>: <span class="number">16</span>, <span class="string">&#x27;lemon&#x27;</span>: <span class="number">17</span>, <span class="string">&#x27;lettuce&#x27;</span>: <span class="number">18</span>,</span><br><span class="line">                      <span class="string">&#x27;mango&#x27;</span>: <span class="number">19</span>, <span class="string">&#x27;onion&#x27;</span>: <span class="number">20</span>, <span class="string">&#x27;orange&#x27;</span>: <span class="number">21</span>, <span class="string">&#x27;paprika&#x27;</span>: <span class="number">22</span>, <span class="string">&#x27;pear&#x27;</span>: <span class="number">23</span>, <span class="string">&#x27;peas&#x27;</span>: <span class="number">24</span>, <span class="string">&#x27;pineapple&#x27;</span>: <span class="number">25</span>,</span><br><span class="line">                      <span class="string">&#x27;pomegranate&#x27;</span>: <span class="number">26</span>, <span class="string">&#x27;potato&#x27;</span>: <span class="number">27</span>, <span class="string">&#x27;raddish&#x27;</span>: <span class="number">28</span>, <span class="string">&#x27;soy beans&#x27;</span>: <span class="number">29</span>, <span class="string">&#x27;spinach&#x27;</span>: <span class="number">30</span>, <span class="string">&#x27;sweetcorn&#x27;</span>: <span class="number">31</span>,</span><br><span class="line">                      <span class="string">&#x27;sweetpotato&#x27;</span>: <span class="number">32</span>, <span class="string">&#x27;tomato&#x27;</span>: <span class="number">33</span>, <span class="string">&#x27;turnip&#x27;</span>: <span class="number">34</span>, <span class="string">&#x27;watermelon&#x27;</span>: <span class="number">35</span>&#125;</span><br><span class="line"></span><br><span class="line">        n_parameters = <span class="built_in">sum</span>(p.numel() <span class="keyword">for</span> p <span class="keyword">in</span> model.parameters() <span class="keyword">if</span> p.requires_grad)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;number of trainable params (M):%.2f&#x27;</span> % (n_parameters / <span class="number">1.e6</span>))</span><br><span class="line"></span><br><span class="line">        optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)</span><br><span class="line">        os.makedirs(args.log_dir, exist_ok=<span class="literal">True</span>)</span><br><span class="line">        loss_scaler = NativeScaler()</span><br><span class="line"></span><br><span class="line">        misc.load_model(args=args, model_without_ddp=model, optimizer=optimizer, loss_scaler=loss_scaler)</span><br><span class="line">        model.<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line">        image = Image.<span class="built_in">open</span>(test_image_path).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">        image = image.resize((args.input_size, args.input_size), Image.ANTIALIAS)</span><br><span class="line">        image = torchvision.transforms.ToTensor()(image).unsqueeze(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            output = model(image)</span><br><span class="line"></span><br><span class="line">        output = F.softmax(output, dim=-<span class="number">1</span>)</span><br><span class="line">        class_idx = torch.argmax(output, dim=<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">        score = torch.<span class="built_in">max</span>(output, dim=<span class="number">1</span>)[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;image path is <span class="subst">&#123;test_image_path&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(</span><br><span class="line">            <span class="string">f&quot;score is <span class="subst">&#123;score.item()&#125;</span>, class id is <span class="subst">&#123;class_idx.item()&#125;</span>,  &quot;</span></span><br><span class="line">            <span class="string">f&quot;class name is <span class="subst">&#123;<span class="built_in">list</span>(class_dict.keys())[<span class="built_in">list</span>(class_dict.values()).index(class_idx)]&#125;</span>&quot;</span>)</span><br><span class="line">        time.sleep(<span class="number">0.5</span>)</span><br></pre></td></tr></table></figure>
-<p>分为两大部分：</p>
-<ul>
-<li>首先进行eval</li>
-<li>然后进行训练</li>
-</ul>
-<h2 id="infer">8 infer</h2>
-<ul>
-<li>修改resume</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">parser.add_argument(&#x27;--resume&#x27;, default=&#x27;./output_dir_pretrained/checkpoint-24.pth&#x27;,help=&#x27;resume from checkpoint&#x27;)</span><br></pre></td></tr></table></figure>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">project</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/4627104a.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">下一页 &gt;&gt;</a>
@@ -2755,6 +2738,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">tips</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">github</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -279,6 +279,198 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-pytorch基础入门1-自动微分" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/42120d73.html">pytorch基础知识1-自动微分</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/42120d73.html" class="archive-article-date">
+  	<time datetime="2023-04-07T06:57:37.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-07</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">385字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">1min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <p>https://arxiv.org/pdf/1502.05767.pdf</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071556707.png" alt="image-20230407155605114" /><figcaption aria-hidden="true">image-20230407155605114</figcaption>
+</figure>
+<p>几种的常见微分方式：</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071601783.png" alt="image-20230407160104716" /><figcaption aria-hidden="true">image-20230407160104716</figcaption>
+</figure>
+<ul>
+<li>符号微分：求导</li>
+<li>数值微分：不稳定，并且不准确</li>
+<li>自动微分：这个例子是一个前向过程，通过预设dv = 1，然后根据每一步的dv表达式求出当前，v和dv的值</li>
+</ul>
+<h3 id="forward-mode-ad">1 forward mode AD</h3>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304071629866.png" alt="image-20230407162927134" /><figcaption aria-hidden="true">image-20230407162927134</figcaption>
+</figure>
+<p>分为三个部分：输入节点，隐藏节点，输出节点。其中隐藏节点也可以为称为元操作</p>
+<p>首先设置初值为2,5，初始倒数x1为1，x2为0.</p>
+<p>使用前向微分的特点：</p>
+<ul>
+<li>能够在前向运算的同时，计算前向微分的值，能够计算出每个元操作的输入节点的偏导数值</li>
+<li>但是一次只能计算一个输入节点的偏导数</li>
+</ul>
+<p>或者能够采用对偶数的计算方法：</p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072114545.png" alt="image-20230407211449434" style="zoom:80%;" /> <span class="math display">\[
+\left.\frac{d f(x)}{d x}\right|_{x=v}=\operatorname{epsilon-coefficient}(\text { dual-version }(f)(v+1 \epsilon)) \text {. }
+\]</span></p>
+<h3 id="reverse-mode-ad">2 reverse mode AD</h3>
+<p>链式法则：</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072123618.png" alt="image-20230407212309766" /><figcaption aria-hidden="true">image-20230407212309766</figcaption>
+</figure>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072113372.png" alt="image-20230407211303243" /><figcaption aria-hidden="true">image-20230407211303243</figcaption>
+</figure>
+<p>v0的倒数在这个例子中进行了梯度累加。</p>
+<p>假设 a=f(x),b=g(a).y=h(b) <span class="math display">\[
+\frac{d_y}{d_x} = \frac{d_h}{d_b} *\frac{d_b}{d_a}* \frac{d_a}{d_x}
+\]</span> 雅克比矩阵的维度为：|y|*|b|,|b|*|a|,|a|*|x|</p>
+<p>分别统计计算量：</p>
+<ul>
+<li><p>forward mode AD：|y|*|b|*(|b|*|a|,|a|*|x|) = bax + ybx</p></li>
+<li><p>reverse mode AD: |y|*|b|*|b|*|a|*|a|*|x| = yba + yax</p></li>
+</ul>
+<p>假设 a = b 比较 x 和 y 的大小：</p>
+<ul>
+<li>当x&gt;y，输入特征大于输出特征，reverse mode 计算量小</li>
+<li>当x&lt;y，输入特征大小于输出特征，forward mode 计算量小</li>
+</ul>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/42120d73.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
     <article id="post-pytorch基础入门6-autograd" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2090,149 +2282,6 @@ var _hmt = _hmt || [];
 
 <!-- 文章页添加mathjax公式 -->
   
-    <article id="post-about-me" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/9c4101a6.html">about me</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/9c4101a6.html" class="archive-article-date">
-  	<time datetime="2023-04-05T04:23:40.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">24字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <p>本博客更新学习笔记，并且记录踩雷记录，还偶尔发些照片。</p>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">aboutme</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/9c4101a6.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/3/">&lt;&lt; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">下一页 &gt;&gt;</a>
@@ -2380,6 +2429,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">tips</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">github</a>
               </li>
              
               <li class="article-tag-list-item">
