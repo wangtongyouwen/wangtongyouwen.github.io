@@ -279,6 +279,171 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-pytorch基础入门7-dropout" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/6ae9c33a.html">pytorch基础入门7-dropout</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/6ae9c33a.html" class="archive-article-date">
+  	<time datetime="2023-04-07T14:34:02.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-07</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">315字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">1min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h2 id="dropout">1 dropout</h2>
+<ul>
+<li>dropout class实现</li>
+</ul>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072236280.png" alt="image-20230407223601601" style="zoom:80%;" /></p>
+<ul>
+<li>dropout函数实现</li>
+</ul>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072237668.png" alt="image-20230407223740635" style="zoom:80%;" /></p>
+<p>training = self.training</p>
+<p>Dropout: A Simple Way to Prevent Neural Networks from Overfitting</p>
+<p>https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf?utm_content=buffer79b43&amp;utm_medium=social&amp;utm_source=twitter.com&amp;utm_campaign=buffer,</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081429465.png" alt="image-20230408142934611" /><figcaption aria-hidden="true">image-20230408142934611</figcaption>
+</figure>
+<p>https://zhuanlan.zhihu.com/p/38200980</p>
+<h3 id="在-numpy-中实现-dropout">在 numpy 中实现 dropout：</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># implement dropout in numpy codes</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">rate,x,w1,w2,b1,b2</span>):</span><br><span class="line">    <span class="comment"># suppose two layers</span></span><br><span class="line">    layer1 = np.maximum(<span class="number">0</span>,np.dot(w1,x) + b1)  <span class="comment"># relu linear layer</span></span><br><span class="line">    mask1 = np.random.binomial(<span class="number">1</span>,<span class="number">1</span> - rate,layer1.shape)   <span class="comment"># p: 为1 的概率</span></span><br><span class="line">    layer1 = mask1 * layer1</span><br><span class="line">    </span><br><span class="line">    layer2 = np.maximum(<span class="number">0</span>,np.dot(w2,layer1) + b2)  <span class="comment"># relu linear layer</span></span><br><span class="line">    mask2 = np.random.binomial(<span class="number">1</span>,<span class="number">1</span> - rate,layer2.shape)   <span class="comment"># p: 为1 的概率</span></span><br><span class="line">    layer2 = mask2 * layer2</span><br><span class="line">    <span class="keyword">return</span> layer2</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">rate,x,w1,b1,w2,b2</span>):</span><br><span class="line">    layer1 = np.maximum(<span class="number">0</span>,np.dot(w1,x) + b1)  <span class="comment"># relu linear layer</span></span><br><span class="line">    layer1 = layer1 * (<span class="number">1</span> - rate)</span><br><span class="line">    layer2 = np.maximum(<span class="number">0</span>,np.dot(w2,layer1) + b2)  <span class="comment"># relu linear layer</span></span><br><span class="line">    layer2 = layer2 * (<span class="number">1</span> - rate)</span><br><span class="line">    <span class="keyword">return</span> layer2</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test scale in the train</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">another_train</span>(<span class="params">rate,x,w1,w2,b1,b2</span>):</span><br><span class="line">    <span class="comment"># suppose two layers</span></span><br><span class="line">    layer1 = np.maximum(<span class="number">0</span>,np.dot(w1,x) + b1)  <span class="comment"># relu linear layer</span></span><br><span class="line">    mask1 = np.random.binomial(<span class="number">1</span>,<span class="number">1</span> - rate,layer1.shape)   <span class="comment"># p: 为1 的概率</span></span><br><span class="line">    layer1 = mask1 * layer1</span><br><span class="line">    layer1 = layer1 / (<span class="number">1</span> - rate)</span><br><span class="line">    </span><br><span class="line">    layer2 = np.maximum(<span class="number">0</span>,np.dot(w2,layer1) + b2)  <span class="comment"># relu linear layer</span></span><br><span class="line">    mask2 = np.random.binomial(<span class="number">1</span>,<span class="number">1</span> - rate,layer2.shape)   <span class="comment"># p: 为1 的概率</span></span><br><span class="line">    layer2 = mask2 * layer2</span><br><span class="line">    layer2 = layer2 / (<span class="number">1</span> - rate)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> layer2</span><br><span class="line"></span><br><span class="line"><span class="comment"># without the scale</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">another_test</span>(<span class="params">x,w1,b1,w2,b2</span>):</span><br><span class="line">    layer1 = np.maximum(<span class="number">0</span>,np.dot(w1,x) + b1)  <span class="comment"># relu linear layer</span></span><br><span class="line">    layer2 = np.maximum(<span class="number">0</span>,np.dot(w2,layer1) + b2)  <span class="comment"># relu linear layer</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> layer2</span><br></pre></td></tr></table></figure>
+<h2 id="r-dropout">2 r dropout</h2>
+<p>https://proceedings.neurips.cc/paper/2021/file/5a66b9200f29ac3fa0ae244cc2a51b39-Paper.pdf</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20230408151201702.png" alt="image-20230408151201702" style="zoom:67%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081515075.png" alt="image-20230408151505168" style="zoom:80%;" /></p>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/6ae9c33a.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
     <article id="post-pytorch基础入门1-自动微分" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2059,192 +2224,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/post/20651907.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
-    <article id="post-使用finalshell工具配置虚拟机的ssm服务" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/f0ef2eb8.html">使用finalshell工具配置虚拟机的ssm服务</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/f0ef2eb8.html" class="archive-article-date">
-  	<time datetime="2023-04-05T04:27:57.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-05</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">333字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <h6 id="下载vmware">1 下载VMware</h6>
-<p>https://customerconnect.vmware.com/en/downloads/details?downloadGroup=WKST-PLAYER-1624&amp;productId=1039</p>
-<h6 id="下载centos镜像">2 下载CentOS镜像</h6>
-<p>http://mirrors.aliyun.com/centos/7/isos/x86_64/</p>
-<h5 id="下载finalshell">3 下载finalshell</h5>
-<p>http://www.hostbuf.com/t/988.html</p>
-<p>这个下载真是太慢了</p>
-<h5 id="记住如下ip地址和子网掩码">4 记住如下ip地址和子网掩码</h5>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051240265.png" alt="image-20221025230112905" /><figcaption aria-hidden="true">image-20221025230112905</figcaption>
-</figure>
-<p>或者在虚拟机中输入，找到ens33下的 net 和 netmask</p>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig </span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051241299.png" alt="image-20221025230240994" /><figcaption aria-hidden="true">image-20221025230240994</figcaption>
-</figure>
-<h5 id="找到-etcsyconfignetwork-scripts">5 找到 etc/syconfig/network-scripts</h5>
-<p>使用gnome界面能快速找到这个目录（毕竟不想用黑框操作）在计算机的目录下</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su vim ifcfg-ens33</span><br></pre></td></tr></table></figure>
-<p>按i 进入输入模式</p>
-<p>修改</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BOOTPROTO=static</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.120.200</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.120.2</span><br></pre></td></tr></table></figure>
-<p>按esc退出编辑模式</p>
-<p>按shift+:,再输入wq保存退出</p>
-<p>再重启服务</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
-<h5 id="进入finalshell配置">6 进入finalshell配置</h5>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051240151.png" alt="image-20221025231100823" /><figcaption aria-hidden="true">image-20221025231100823</figcaption>
-</figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304051240485.png" alt="image-20221025231238445" /><figcaption aria-hidden="true">image-20221025231238445</figcaption>
-</figure>
-<h6 id="配置ipv4">7 配置ipv4</h6>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
-<p>同上数vim操作输入一行内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.ip_forward = 1</span><br></pre></td></tr></table></figure>
-<p>保存退出</p>
-<p>这一步可以帮助未来使用 docker中 的 nginx 服务</p>
-<h5 id="问题">8 问题</h5>
-<p>为什么不能直接修改上述提到的conf配置？</p>
-<p>默认gnome的用户是sudo用户，需要su用户才能进行编辑，这里就需要用到vim编辑器</p>
-<p>为什么vim编辑器不能直接输入？</p>
-<p>vim编辑器需要先敲入i，进入insert模式才能修改文件，退出的时候需要：wq，才能完成保存</p>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/f0ef2eb8.html">展开全文 >></a>
         </p>
       
 	  

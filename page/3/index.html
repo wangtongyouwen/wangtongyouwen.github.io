@@ -279,6 +279,223 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-pytorch基础入门9-seq2seq2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/86ae38c6.html">pytorch基础入门9-seq2seq2</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/86ae38c6.html" class="archive-article-date">
+  	<time datetime="2023-04-17T04:40:39.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-04-17</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">1.3k字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">7min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h1 id="neural-machine-translation-by-jointly-learning-to-align-and-translate">1 NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</h1>
+<p>https://arxiv.org/pdf/1409.0473.pdf?utm_source=ColumnsChannel</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171444845.png" alt="image-20230417144427318" /><figcaption aria-hidden="true">image-20230417144427318</figcaption>
+</figure>
+<h1 id="effective-approaches-to-attention-based-neural-machine-translation">2 Effective Approaches to Attention-based Neural Machine Translation</h1>
+<p>https://arxiv.org/pdf/1508.04025)</p>
+<h2 id="global-attention">2.1 global attention</h2>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171447590.png" alt="image-20230417144755015" /><figcaption aria-hidden="true">image-20230417144755015</figcaption>
+</figure>
+<p>The idea of a global attentional model is to consider all the hidden states of the encoder when deriving the <strong>context vector</strong> <span class="math inline">\(c_t\)</span> . In this model type, a <strong>variable-length alignment vector</strong> <span class="math inline">\(a_t\)</span> , whose size equals the number of time steps on the source side, is derived by comparing the current target hidden state ht with each <strong>source hidden state</strong> <span class="math inline">\(\bar h _s\)</span>: <span class="math display">\[
+\begin{aligned}
+\boldsymbol{a}_{t}(s) &amp; =\operatorname{align}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s}\right) \\
+&amp; =\frac{\exp \left(\operatorname{score}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s}\right)\right)}{\sum_{s^{\prime}} \exp \left(\operatorname{score}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s^{\prime}}\right)\right)}
+\end{aligned}
+\]</span> score is referred as a <strong>content-based function</strong> for which we consider three different alternatives <span class="math display">\[
+\operatorname{score}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s}\right)=\left\{\begin{array}{ll}
+\boldsymbol{h}_{t}^{\top} \overline{\boldsymbol{h}}_{s} &amp; \text { dot } \\
+\boldsymbol{h}_{t}^{\top} \boldsymbol{W}_{\boldsymbol{a}} \overline{\boldsymbol{h}}_{s} &amp; \text { general } \\
+\boldsymbol{v}_{a}^{\top} \tanh \left(\boldsymbol{W}_{\boldsymbol{a}}\left[\boldsymbol{h}_{t} ; \overline{\boldsymbol{h}}_{s}\right]\right) &amp; \text { concat }
+\end{array}\right.
+\]</span> dot: transformer Q K V 并行计算</p>
+<p>general: 乘法注意力机制</p>
+<p>concat: 加法注意力机制</p>
+<p>基于位置的: location-based function in which the <strong>alignment scores</strong> are computed from solely the target hidden state <span class="math inline">\(h_t\)</span> <span class="math display">\[
+a_t = softmax(W_ah_t)  \     \ location
+\]</span></p>
+<p>全局注意力计算量大，有些任务也不需要进行全局注意力计算。</p>
+<h2 id="local-attention">2.2 local attention</h2>
+<p>This model takes inspiration from the tradeoff between the <strong>soft and hard</strong> attentional models</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171454431.png" alt="image-20230417145444733" /><figcaption aria-hidden="true">image-20230417145444733</figcaption>
+</figure>
+<ul>
+<li>generate an aligned position <span class="math inline">\(p_t\)</span> for each target word at time <span class="math inline">\(t\)</span></li>
+<li>the context vector <span class="math inline">\(c_t\)</span> is then derived as a weighted average over the set of source hidden states within the window <span class="math inline">\([p_t-D,p_t+D]\)</span> <span class="math inline">\(D\)</span> is empirically selected</li>
+<li><span class="math inline">\(a_t\)</span> is fixed-dimensional, i.e. <span class="math inline">\(\in \R^{2D+1}\)</span></li>
+<li>Monotonic alignment (<strong>local-m</strong>) <span class="math inline">\(p_t = t\)</span> assuming that source and target sequences are roughly monotonically aligned 编码器的中心位置是经验性的，不是训练出来的。hard 方法</li>
+<li>Predictive alignment (<strong>local-p</strong>) 模型能够计算出编码器的中心位置，这是训练得到的 soft 方法</li>
+</ul>
+<p><span class="math display">\[
+p_{t}=S \cdot \operatorname{sigmoid}\left(\boldsymbol{v}_{p}^{\top} \tanh \left(\boldsymbol{W}_{\boldsymbol{p}} \boldsymbol{h}_{t}\right)\right)
+\]</span></p>
+<ul>
+<li><ul>
+<li><span class="math inline">\(W_p,v_p\)</span>: the model parameters which will be learned to predict positions</li>
+<li><span class="math inline">\(S\)</span>: the source sentence length</li>
+</ul></li>
+<li>alignment weights -&gt; Gaussian distribution</li>
+</ul>
+<p><span class="math display">\[
+\boldsymbol{a}_{t}(s)=\operatorname{align}\left(\boldsymbol{h}_{t}, \overline{\boldsymbol{h}}_{s}\right) \exp \left(-\frac{\left(s-p_{t}\right)^{2}}{2 \sigma^{2}}\right)  where \ \sigma = \frac{D}{2}
+\]</span></p>
+<h1 id="代码实现">3 代码实现</h1>
+<h2 id="encoder">3.1 encoder</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&quot;&quot;&quot;以离散符号(索引的符号)的分类任务为例，实现基于注意力机制的seq2seq模型&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Seq2SeqEncoder(nn.Module):</span><br><span class="line">    &quot;&quot;&quot;实现基于LSTM的编码器，也可以是其他类型的，如CNN，TransformerEncoder&quot;&quot;&quot;</span><br><span class="line">    &quot;&quot;&quot;对原序列进行上下文相关的表征&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, embedding_dim, hidden_size, source_vocab_size):</span><br><span class="line">        super(Seq2SeqEncoder, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.lstm_layer = nn.LSTM(input_size=embedding_dim, hidden_size=hidden_size, batch_first=True)</span><br><span class="line">        # num_embeddings (int): size of the dictionary of embeddings</span><br><span class="line">        # embedding_dim (int): the size of each embedding vector</span><br><span class="line">        self.embedding_table = nn.Embedding(source_vocab_size, embedding_dim)  # 将token转换成 token_embedding # 可训练</span><br><span class="line"></span><br><span class="line">    def forward(self, input_ids):</span><br><span class="line">        # 原序列不是流式的，所以能够一次性拿到全部序列</span><br><span class="line">        input_sequence = self.embedding_table(input_ids)  # [bs,source_length,embedding_dim]</span><br><span class="line">        output_states, (final_h, final_c) = self.lstm_layer(input_sequence)</span><br><span class="line"></span><br><span class="line">        return output_states, final_h</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="attentionmechanism">3.2 AttentionMechanism</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class Seq2SeqAttentionMechanism(nn.Module):</span><br><span class="line">    &quot;&quot;&quot;实现dot-product的attention&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self):</span><br><span class="line">        super(Seq2SeqAttentionMechanism, self).__init__()</span><br><span class="line"></span><br><span class="line">    def forward(self, decoder_state_t, encoder_states):</span><br><span class="line">        # encoder_states: 完整的编码序列</span><br><span class="line">        # decoder_State_t: t 时刻的decoder序列</span><br><span class="line">        bs, source_length, hidden_size = encoder_states.shape</span><br><span class="line"></span><br><span class="line">        decoder_state_t = decoder_state_t.unsqueeze(1)  # [bs,1,hidden_size]</span><br><span class="line">        decoder_state_t = torch.tile(decoder_state_t, dims=(1, source_length, 1))  # 复制为 [bs,source_length,hidden_size]</span><br><span class="line"></span><br><span class="line">        score = torch.sum(decoder_state_t * encoder_states, dim=-1)  # [bs,source_length]</span><br><span class="line"></span><br><span class="line">        attn_prob = F.softmax(score, dim=-1)  # 得到序列中每个具体索引在整个序列中的权重值,总和为1 [bs,source_length]</span><br><span class="line"></span><br><span class="line">        # 加权求和</span><br><span class="line">        # 使用了广播机制 attn_prob: [bs,source_length], decoder_state_t: [bs,source_length,hidden_size]</span><br><span class="line">        context = torch.sum(attn_prob.unsqueeze(-1) * encoder_states,1) # [bs,hidden_size] -&gt; 第t时刻解码器需要的上下文向量</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        return attn_prob, context</span><br></pre></td></tr></table></figure>
+<h2 id="decoder">3.3 Decoder</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">class Seq2SeqDecoder(nn.Module):</span><br><span class="line"></span><br><span class="line">    def __init__(self, embedding_dim, hidden_size, num_classes, target_vocab_size, start_id, end_id):</span><br><span class="line">        super(Seq2SeqDecoder, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.lstm_cell = nn.LSTMCell(embedding_dim, hidden_size) # cell 是单步完成，[bs,embedding_dim]</span><br><span class="line">        self.proj_layer = nn.Linear(hidden_size * 2, num_classes) # [context_vector+decode_state_t,num_classes]</span><br><span class="line">        self.attention_mechanism = Seq2SeqAttentionMechanism()</span><br><span class="line">        self.num_classes = num_classes</span><br><span class="line">        self.embedding_table = nn.Embedding(target_vocab_size, embedding_dim)</span><br><span class="line">        self.start_id = start_id # 会传入一个真实的target作为输入，可以进行第一个位置的预测</span><br><span class="line">        self.end_id = end_id # 能够判断序列的截止位置</span><br><span class="line"></span><br><span class="line">    def forward(self, shifted_target_ids, encoder_states):</span><br><span class="line">        # 训练阶段调用，teacher-force mode</span><br><span class="line">        # shifted_target_ids 真实的序列id</span><br><span class="line">        shifted_target = self.embedding_table(shifted_target_ids)</span><br><span class="line"></span><br><span class="line">        bs, target_length, embedding_dim = shifted_target.shape</span><br><span class="line">        bs, source_length, hidden_size = encoder_states.shape</span><br><span class="line"></span><br><span class="line">        logits = torch.zeros(bs, target_length, self.num_classes)</span><br><span class="line">        probs = torch.zeros(bs, target_length, source_length)</span><br><span class="line"></span><br><span class="line">        for t in range(target_length):</span><br><span class="line">            decoder_input_t = shifted_target[:, t, :]  # [bs,embedding_dim]</span><br><span class="line">            if t == 0:</span><br><span class="line">                h_t, c_t = self.lstm_cell(decoder_input_t)</span><br><span class="line">            else:</span><br><span class="line">                h_t, c_t = self.lstm_cell(decoder_input_t, (h_t, c_t))</span><br><span class="line"></span><br><span class="line">            attn_prob, context = self.attention_mechanism(h_t, encoder_states) # [decoder_state_t, encoder_states]</span><br><span class="line">            # context: [bs,hidden_size] h_t: [bs,hidden_size]</span><br><span class="line">            decoder_output = torch.cat((context, h_t), -1)</span><br><span class="line">            logits[:, t, :] = self.proj_layer(decoder_output)</span><br><span class="line">            probs[:, t, :] = attn_prob # [bs,source_length]</span><br><span class="line"></span><br><span class="line">        return probs, logits</span><br><span class="line"></span><br><span class="line">    def inference(self, encoder_states):</span><br><span class="line">        # 推理阶段使用</span><br><span class="line">        target_id = self.start_id</span><br><span class="line">        h_t = None</span><br><span class="line">        result = []</span><br><span class="line"></span><br><span class="line">        while True:</span><br><span class="line">            decoder_input_t = self.embedding_table(target_id)</span><br><span class="line">            if h_t is None:</span><br><span class="line">                h_t, c_t = self.lstm_cell(decoder_input_t)</span><br><span class="line">            else:</span><br><span class="line">                h_t, c_t = self.lstm_cell(decoder_input_t, (h_t, c_t))</span><br><span class="line"></span><br><span class="line">            attn_prob, context = self.attention_mechanism(h_t, encoder_states)</span><br><span class="line"></span><br><span class="line">            decoder_output = torch.cat((context, h_t), -1)</span><br><span class="line">            logits = self.proj_layer(decoder_output)</span><br><span class="line"></span><br><span class="line">            target_id = torch.argmax(logits, -1)</span><br><span class="line">            result.append(target_id)</span><br><span class="line"></span><br><span class="line">            if torch.any(target_id == self.end_id): # 解码终止条件,在构造训练数据的时候需要在每个句子后面添加一个字符用做end id</span><br><span class="line">                print(&quot;start coding!&quot;)</span><br><span class="line">                break</span><br><span class="line">        predict_ids = torch.stack(result, dim=0)</span><br><span class="line"></span><br><span class="line">        return predict_ids</span><br></pre></td></tr></table></figure>
+<h2 id="model">3.4 Model</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Model</span>(nn.Module):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, embedding_dim, hidden_size, num_classes, source_vocab_size, target_vocab_size, start_id, end_id</span>):</span><br><span class="line">        <span class="built_in">super</span>(Model, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.encoder = Seq2SeqEncoder(embedding_dim, hidden_size, source_vocab_size)</span><br><span class="line">        self.decoder = Seq2SeqDecoder(embedding_dim, hidden_size, num_classes, target_vocab_size, start_id, end_id)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, input_sequence_ids, shifted_target_ids</span>):</span><br><span class="line">        <span class="comment"># 训练阶段</span></span><br><span class="line">        encoder_states, final_h = self.encoder(input_sequence_ids)</span><br><span class="line">        probs, logits = self.decoder(shifted_target_ids, encoder_states)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> probs, logits</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inference</span>(<span class="params">self,predict_ids,input_sequence_ids</span>):</span><br><span class="line">        <span class="comment"># 推理阶段</span></span><br><span class="line">        encoder_states, final_h = self.encoder(input_sequence_ids)</span><br><span class="line">        probs, logits = self.decoder(predict_ids, encoder_states)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> probs, logits</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304171935294.png" alt="seq2seq代码编写技巧" /><figcaption aria-hidden="true">seq2seq代码编写技巧</figcaption>
+</figure>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/86ae38c6.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
     <article id="post-用pytorch实现基础网络7-SwinTransformer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2155,171 +2372,6 @@ H_{out} = hidden\_size
       
         <p class="article-more-link">
           <a class="article-more-a" href="/post/2d27b0da.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
-    <article id="post-pytorch基础入门7-dropout" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/6ae9c33a.html">pytorch基础入门7-dropout</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/6ae9c33a.html" class="archive-article-date">
-  	<time datetime="2023-04-07T14:34:02.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-07</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">315字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <h2 id="dropout">1 dropout</h2>
-<ul>
-<li>dropout class实现</li>
-</ul>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072236280.png" alt="image-20230407223601601" style="zoom:80%;" /></p>
-<ul>
-<li>dropout函数实现</li>
-</ul>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304072237668.png" alt="image-20230407223740635" style="zoom:80%;" /></p>
-<p>training = self.training</p>
-<p>Dropout: A Simple Way to Prevent Neural Networks from Overfitting</p>
-<p>https://www.jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf?utm_content=buffer79b43&amp;utm_medium=social&amp;utm_source=twitter.com&amp;utm_campaign=buffer,</p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081429465.png" alt="image-20230408142934611" /><figcaption aria-hidden="true">image-20230408142934611</figcaption>
-</figure>
-<p>https://zhuanlan.zhihu.com/p/38200980</p>
-<h3 id="在-numpy-中实现-dropout">在 numpy 中实现 dropout：</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># implement dropout in numpy codes</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">rate,x,w1,w2,b1,b2</span>):</span><br><span class="line">    <span class="comment"># suppose two layers</span></span><br><span class="line">    layer1 = np.maximum(<span class="number">0</span>,np.dot(w1,x) + b1)  <span class="comment"># relu linear layer</span></span><br><span class="line">    mask1 = np.random.binomial(<span class="number">1</span>,<span class="number">1</span> - rate,layer1.shape)   <span class="comment"># p: 为1 的概率</span></span><br><span class="line">    layer1 = mask1 * layer1</span><br><span class="line">    </span><br><span class="line">    layer2 = np.maximum(<span class="number">0</span>,np.dot(w2,layer1) + b2)  <span class="comment"># relu linear layer</span></span><br><span class="line">    mask2 = np.random.binomial(<span class="number">1</span>,<span class="number">1</span> - rate,layer2.shape)   <span class="comment"># p: 为1 的概率</span></span><br><span class="line">    layer2 = mask2 * layer2</span><br><span class="line">    <span class="keyword">return</span> layer2</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">rate,x,w1,b1,w2,b2</span>):</span><br><span class="line">    layer1 = np.maximum(<span class="number">0</span>,np.dot(w1,x) + b1)  <span class="comment"># relu linear layer</span></span><br><span class="line">    layer1 = layer1 * (<span class="number">1</span> - rate)</span><br><span class="line">    layer2 = np.maximum(<span class="number">0</span>,np.dot(w2,layer1) + b2)  <span class="comment"># relu linear layer</span></span><br><span class="line">    layer2 = layer2 * (<span class="number">1</span> - rate)</span><br><span class="line">    <span class="keyword">return</span> layer2</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test scale in the train</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">another_train</span>(<span class="params">rate,x,w1,w2,b1,b2</span>):</span><br><span class="line">    <span class="comment"># suppose two layers</span></span><br><span class="line">    layer1 = np.maximum(<span class="number">0</span>,np.dot(w1,x) + b1)  <span class="comment"># relu linear layer</span></span><br><span class="line">    mask1 = np.random.binomial(<span class="number">1</span>,<span class="number">1</span> - rate,layer1.shape)   <span class="comment"># p: 为1 的概率</span></span><br><span class="line">    layer1 = mask1 * layer1</span><br><span class="line">    layer1 = layer1 / (<span class="number">1</span> - rate)</span><br><span class="line">    </span><br><span class="line">    layer2 = np.maximum(<span class="number">0</span>,np.dot(w2,layer1) + b2)  <span class="comment"># relu linear layer</span></span><br><span class="line">    mask2 = np.random.binomial(<span class="number">1</span>,<span class="number">1</span> - rate,layer2.shape)   <span class="comment"># p: 为1 的概率</span></span><br><span class="line">    layer2 = mask2 * layer2</span><br><span class="line">    layer2 = layer2 / (<span class="number">1</span> - rate)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> layer2</span><br><span class="line"></span><br><span class="line"><span class="comment"># without the scale</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">another_test</span>(<span class="params">x,w1,b1,w2,b2</span>):</span><br><span class="line">    layer1 = np.maximum(<span class="number">0</span>,np.dot(w1,x) + b1)  <span class="comment"># relu linear layer</span></span><br><span class="line">    layer2 = np.maximum(<span class="number">0</span>,np.dot(w2,layer1) + b2)  <span class="comment"># relu linear layer</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> layer2</span><br></pre></td></tr></table></figure>
-<h2 id="r-dropout">2 r dropout</h2>
-<p>https://proceedings.neurips.cc/paper/2021/file/5a66b9200f29ac3fa0ae244cc2a51b39-Paper.pdf</p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20230408151201702.png" alt="image-20230408151201702" style="zoom:67%;" /></p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304081515075.png" alt="image-20230408151505168" style="zoom:80%;" /></p>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/6ae9c33a.html">展开全文 >></a>
         </p>
       
 	  

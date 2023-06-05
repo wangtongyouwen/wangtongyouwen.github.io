@@ -279,6 +279,259 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-优雅的使用rss打破信息茧房" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/3e9dbae2.html">优雅的使用rss打破信息茧房</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/3e9dbae2.html" class="archive-article-date">
+  	<time datetime="2023-06-05T01:54:30.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-06-05</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">1.2k字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">4min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h1 id="前言">前言</h1>
+<p>当今世界信息错综复杂，获取信息的渠道也很多。我曾是一个忠实的b站用户，但是不得不说现在的b站变了味，似乎可能会出现下一个全新的信息源。打破信息茧房的最好方式，并不是找到一个单独的平台，而是找到那些独立的信息提供方，也就是说，我们需要一个跨平台，无广告，无推荐算法的全新方式获取更有广度，更有深度的信息。</p>
+<p>最近看到了一个老但是又重新鲜活起来的新技术——RSS，详细的技术细节，可以自行百度。重点是这项技术能够实现以下几点：</p>
+<ul>
+<li>多平台信息源：各种信息源(微信公众号,b站,Twitter,blogs)</li>
+<li>跨平台：windows,linux,os,etc</li>
+<li>方便易用可拓展</li>
+<li>能够充分利用碎片化时间</li>
+</ul>
+<p>你可以帮这项技术当做一个记事本，这个记事本能够定时刷新最新资讯：</p>
+<ol type="1">
+<li>这个资讯不是推荐算法给你的，而是你自己订阅的</li>
+<li>不局限于单个平台</li>
+</ol>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-caf461e861957f5f2ecf6b654d989752_720w.webp" alt="img" /><figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h1 id="前置准备">前置准备</h1>
+<ol type="1">
+<li><p>需要亿点点科学上网：知名在线 RSS 服务 Feedly（2018.11）、Inoreader（2020.4） 先后被墙，打着万物皆可RSS大旗的 RssHub 官方域名也被墙了（2020.3）</p></li>
+<li><p>一个github账号(vercel搭建服务)</p></li>
+<li><p>Google play 用于安装移动端软件</p></li>
+<li><p>vercel 用于配置 RssHub 服务(后文详解)</p></li>
+</ol>
+<h1 id="基础玩法">基础玩法</h1>
+<ol type="1">
+<li>找到RSS源</li>
+</ol>
+<p>https://github.com/weekend-project-space/top-rss-list</p>
+<p>https://github.com/ChanceYu/front-end-rss</p>
+<p>公共的RSS源很多，但是大部分都很老旧，国内的源质量不够，国外的源检索和阅读有一定障碍。</p>
+<ol start="2" type="1">
+<li>找到一个合适的RSS阅读器</li>
+</ol>
+<p>https://www.inoreader.com/ 推荐</p>
+<p>https://feedly.com/</p>
+<h1 id="进阶玩法">进阶玩法</h1>
+<h2 id="前置准备-1">1 前置准备</h2>
+<p>1 RssHub生成源服务器配置 https://github.com/DIYgod/RSSHub</p>
+<p>2 vercel 账号(github)可以直接登陆</p>
+<p>3 RssHub-Radar 嗅取网页中存在的rss订阅 https://github.com/DIYgod/RSSHub-Radar</p>
+<p>4 RSSAid 安卓端嗅取rss订阅 https://github.com/LeetaoGoooo/RSSAid</p>
+<h2 id="rsshub">2 RssHub</h2>
+<p>RSSHub 是一个开源、简单易用、易于扩展的 RSS 生成器，可以给任何奇奇怪怪的内容生成 RSS 订阅源。RSSHub 借助于开源社区的力量快速发展中，目前已适配数百家网站的上千项内容</p>
+<p>可以配合浏览器扩展 <a target="_blank" rel="noopener" href="https://github.com/DIYgod/RSSHub-Radar">RSSHub Radar</a> 和 移动端辅助 App <a target="_blank" rel="noopener" href="https://github.com/Cay-Zhang/RSSBud">RSSBud</a> (iOS) 与 <a target="_blank" rel="noopener" href="https://github.com/LeetaoGoooo/RSSAid">RSSAid</a> (Android) 食用</p>
+<p>首先介绍一下为什么需要自己部署RssHub服务？</p>
+<p>Rss这种服务打击商业行为，所以许多网页会将其原本的域名直接屏蔽(本质也是一种爬虫)，所以只有使用自己的服务才不会被屏蔽，而且自己搭建的数据更加安全</p>
+<ul>
+<li>如何部署？</li>
+</ul>
+<p>https://docs.rsshub.app/install/</p>
+<ul>
+<li>如何使用vercel部署？(想象成一个云服务器，能够直接部署github上面的任何项目)</li>
+</ul>
+<ol type="1">
+<li>点击下面链接</li>
+</ol>
+<p>https://vercel.com/import/project?template=https://github.com/DIYgod/RSSHub</p>
+<ol start="2" type="1">
+<li>完成一系列的注册后，一键部署(fork到自己的github仓库即可)</li>
+<li>想要自动更新？</li>
+</ol>
+<p>https://github.com/apps/pull</p>
+<ul>
+<li>不会自己部署？提供下面的域名</li>
+</ul>
+<p><code>服务器1</code> ：<a href="https://sspai.com/link?target=https%3A%2F%2Frsshub.rssforever.com%2F">https://rsshub.rssforever.com</a> <code>服务器2</code> ：<a href="https://sspai.com/link?target=https%3A%2F%2Frss.qiuyuair.com%2F">https://rss.qiuyuair.com</a> <code>服务器3</code> ：<a href="https://sspai.com/link?target=https%3A%2F%2Frss.injahow.cn%2F">https://rss.injahow.cn</a> <code>服务器4</code> ：<a href="https://sspai.com/link?target=https%3A%2F%2Frss.feiyuyu.net%2F">https://rss.feiyuyu.net</a> <code>服务器5</code> ：<a href="https://sspai.com/link?target=https%3A%2F%2Frss.shab.fun%2F">https://rss.shab.fun</a> <code>服务器6</code> ：<a href="https://sspai.com/link?target=https%3A%2F%2Frss.itggg.cn%2F">https://rss.itggg.cn</a> <code>服务器7</code> ：<a href="https://sspai.com/link?target=https%3A%2F%2Frsshub.uneasy.win%2F">https://rsshub.uneasy.win</a> <code>服务器8</code> ：<a href="https://sspai.com/link?target=https%3A%2F%2Frss.injahow.cn%2F">https://rss.injahow.cn</a> <code>服务器9</code> ：<a href="https://sspai.com/link?target=https%3A%2F%2Frsshub.anyant.xyz%2F">https://rsshub.anyant.xyz</a></p>
+<h2 id="rsshub-radar">3 RssHub-Radar</h2>
+<ul>
+<li>为什么需要构建RssHub服务器？</li>
+</ul>
+<p>配合Radar浏览器插件能够直接嗅探任何存在的RSS订阅(真的应有尽有)：RssHub提供路由，这个域名就由你自己搭建的服务来提供咯！</p>
+<ul>
+<li>如何使用Radar？</li>
+</ul>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202306051249350.png" alt="image-20230605124920895" /><figcaption aria-hidden="true">image-20230605124920895</figcaption>
+</figure>
+<blockquote>
+<p>注意这里只需要填入域名即可！</p>
+</blockquote>
+<p>以b站为例：</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202306051316754.png" alt="image-20230605125151705" /><figcaption aria-hidden="true">image-20230605125151705</figcaption>
+</figure>
+<p>你可以选择复制这个链接，或者直接subscribe, 注意这个subscribe必须要先登陆(在设置中找到目标网站，登陆后即可)</p>
+<h2 id="feeddd订阅微信公众号">4 Feeddd订阅微信公众号</h2>
+<p>由于微信自建生态，所以其中的信息比较难以获取rss订阅，但是通过<a target="_blank" rel="noopener" href="https://hamibot.com/">Hamibot</a>能够动态获取推文(人工采集)</p>
+<p>https://github.com/feeddd/feeds</p>
+<figure>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202306051316326.png" alt="image-20230605130927842" /><figcaption aria-hidden="true">image-20230605130927842</figcaption>
+</figure>
+<p>其实还有大量的公众号没有动态更新，所以单单微信这个生态而言，使用RSS是不方便的。</p>
+<h1 id="end">end</h1>
+<p>如果觉得RSS方便的话，一定要去star一下以上提到的所有项目，因为这是反商业化的，也是互联网精神的所在。</p>
+<blockquote>
+<p>rss才是真正的互联网精神的产物，正如开源一样，如何破除现有的信息茧房？并不是找到更多获取信息的渠道，而是打通blogger与user之间的通道！</p>
+<p>less is more...</p>
+</blockquote>
+<p>more links:</p>
+<p>https://sspai.com/post/75340</p>
+<p>https://zhuanlan.zhihu.com/p/349349861</p>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tools</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/3e9dbae2.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
     <article id="post-tips-github自动fork" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2396,164 +2649,6 @@ So the final transformation matrix M is:
       
         <p class="article-more-link">
           <a class="article-more-a" href="/post/2fee727b.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
-    <article id="post-pytorch项目4-读取Excel-csv文件格式为PyTorch张量" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/9358f042.html">pytorch项目4-读取Excel/csv文件格式为PyTorch张量</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/9358f042.html" class="archive-article-date">
-  	<time datetime="2023-04-27T08:33:55.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-27</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-        <span class="article-type" style="
-          color: white;
-          font-size: 14px;
-          background: #0088CC;
-          padding: 0 5px 1px 5px;
-          margin-right: 5px;
-          border-radius: 2px;">原创</span>
-		  &nbsp; 
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">299字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">1min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ExcelDataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, filepath=<span class="string">&quot;train.xlsx&quot;</span>, sheet_name=<span class="number">0</span></span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;reading <span class="subst">&#123;filepath&#125;</span>, sheet=<span class="subst">&#123;sheet_name&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, filepath=<span class="string">&quot;train.xlsx&quot;</span>, sheet_name=<span class="number">0</span></span>):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;reading <span class="subst">&#123;filepath&#125;</span>, sheet=<span class="subst">&#123;sheet_name&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">            df = pandas.read_excel(</span><br><span class="line">                <span class="comment"># filepath,header=0,index_col=0,</span></span><br><span class="line">                filepath, header=<span class="number">0</span>,</span><br><span class="line">                names=[<span class="string">&#x27;admit&#x27;</span>, <span class="string">&#x27;gre&#x27;</span>, <span class="string">&#x27;gpa&#x27;</span>, <span class="string">&#x27;prestige&#x27;</span>],</span><br><span class="line">                sheet_name=sheet_name,</span><br><span class="line">                dtype=&#123;<span class="string">&quot;gre&quot;</span>: np.float32, <span class="string">&quot;gpa&quot;</span>: np.float32, <span class="string">&quot;admit&quot;</span>: np.int8, <span class="string">&quot;prestige&quot;</span>: np.string_&#125;</span><br><span class="line">            )</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;the shape of dataframe is <span class="subst">&#123;df.shape&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">            feat = df.iloc[:, <span class="number">1</span>:<span class="number">3</span>].values</span><br><span class="line">            label = df.iloc[:, <span class="number">0</span>].values</span><br><span class="line">            self.x = torch.from_numpy(feat)</span><br><span class="line">            self.y = torch.from_numpy(label)</span><br><span class="line">            <span class="comment"># print(feat,label)</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">len</span>(self.y)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, index</span>):</span><br><span class="line">            <span class="keyword">return</span> self.x[index], self.y[index]</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Csv2Dataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, filepath=<span class="string">&quot;train.csv&quot;</span></span>):</span><br><span class="line">        <span class="comment"># there is no sheet name definition in csv format file</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;reading <span class="subst">&#123;filepath&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(file=filepath,encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            lines = f.readlines()</span><br><span class="line">        feat = []</span><br><span class="line">        label = []</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lines[<span class="number">1</span>:]:</span><br><span class="line">            values = line.strip().split(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">            row_feat = [<span class="built_in">float</span>(v) <span class="keyword">if</span> v <span class="keyword">is</span> <span class="keyword">not</span>  <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> v <span class="keyword">in</span> values[<span class="number">1</span>:<span class="number">2</span>]]</span><br><span class="line">            row_label = <span class="built_in">int</span>(values[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">            feat.append(row_feat)</span><br><span class="line">            label.append(row_label)</span><br><span class="line">        feat = np.array(feat,dtype=np.float32)</span><br><span class="line">        label = np.array(label,dtype=np.int8)</span><br><span class="line"></span><br><span class="line">        self.x = torch.from_numpy(feat)</span><br><span class="line">        self.y = torch.from_numpy(label)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.y)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, index</span>):</span><br><span class="line">        <span class="keyword">return</span> self.x[index], self.y[index]</span><br></pre></td></tr></table></figure>
-<p>其中对缺省值进行处理，可以使用平均数来代替这个缺省值。</p>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">project</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/9358f042.html">展开全文 >></a>
         </p>
       
 	  
