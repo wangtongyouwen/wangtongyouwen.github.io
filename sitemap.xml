@@ -425,7 +425,7 @@
   </url>
   
   <url>
-    <loc>https://wangtongyouwen.github.io/photos/index.html</loc>
+    <loc>https://wangtongyouwen.github.io/photos/data.json</loc>
     
     <lastmod>2023-04-12</lastmod>
     
@@ -434,7 +434,7 @@
   </url>
   
   <url>
-    <loc>https://wangtongyouwen.github.io/photos/data.json</loc>
+    <loc>https://wangtongyouwen.github.io/photos/index.html</loc>
     
     <lastmod>2023-04-12</lastmod>
     
@@ -519,7 +519,14 @@
   </url>
   
   <url>
-    <loc>https://wangtongyouwen.github.io/tags/network/</loc>
+    <loc>https://wangtongyouwen.github.io/tags/yolo/</loc>
+    <lastmod>2023-12-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtongyouwen.github.io/tags/summary/</loc>
     <lastmod>2023-12-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -540,14 +547,7 @@
   </url>
   
   <url>
-    <loc>https://wangtongyouwen.github.io/tags/yolo/</loc>
-    <lastmod>2023-12-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtongyouwen.github.io/tags/summary/</loc>
+    <loc>https://wangtongyouwen.github.io/tags/network/</loc>
     <lastmod>2023-12-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -591,7 +591,21 @@
   </url>
   
   <url>
+    <loc>https://wangtongyouwen.github.io/categories/yolo/</loc>
+    <lastmod>2023-12-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://wangtongyouwen.github.io/categories/tools/</loc>
+    <lastmod>2023-12-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtongyouwen.github.io/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2023-12-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -612,7 +626,7 @@
   </url>
   
   <url>
-    <loc>https://wangtongyouwen.github.io/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://wangtongyouwen.github.io/categories/yolo/summary/</loc>
     <lastmod>2023-12-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -620,20 +634,6 @@
   
   <url>
     <loc>https://wangtongyouwen.github.io/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2023-12-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtongyouwen.github.io/categories/yolo/</loc>
-    <lastmod>2023-12-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtongyouwen.github.io/categories/yolo/summary/</loc>
     <lastmod>2023-12-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
