@@ -279,6 +279,785 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-yolo简介" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/6a09e8f8.html">yolo简介</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/6a09e8f8.html" class="archive-article-date">
+  	<time datetime="2023-12-13T08:51:42.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-12-13</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">17k字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">73min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h1 id="a-comprehensive-review-of-yolo-from-yolov1-to-yolov8-and-beyond">A COMPREHENSIVE REVIEW OF YOLO: FROM YOLOV1 TO YOLOV8 AND BEYOND</h1>
+<p>https://arxiv.org/pdf/2304.00501v1.pdf</p>
+<h2 id="abstract">abstract</h2>
+<p>YOLO已成为机器人、无人驾驶汽车和视频监控应用的核心实时目标检测系统。我们对YOLO的发展进行了全面的分析，研究了从最初的YOLO到YOLOv8的每次迭代中的创新和贡献。我们首先描述标准指标和后处理;然后，我们讨论了网络架构的主要变化和每个模型的训练技巧。最后，我们总结了YOLO发展的重要经验教训，并对其未来发展进行了展望，强调了增强实时目标检测系统的潜在研究方向。</p>
+<h2 id="introduction">1 Introduction</h2>
+<p>实时目标检测已成为众多应用中的关键组成部分，涵盖自动驾驶汽车、机器人、视频监控和增强现实等各个领域。在各种目标检测算法中，YOLO (You Only Look Once)框架以其出色的速度和精度平衡而脱颖而出，能够快速可靠地识别图像中的目标。自成立以来，YOLO家族经历了多次迭代，每次迭代都建立在以前的版本之上，以解决局限性并提高性能(见图1)。本文旨在全面回顾YOLO框架的发展，从最初的YOLOv1到最新的YOLOv8，阐明每个版本的关键创新、差异和改进。</p>
+<p>本文首先探讨了原始YOLO模型的基本概念和体系结构，为YOLO家族的后续发展奠定了基础。接下来，我们将深入研究从YOLOv2到YOLOv8的每个版本中引入的改进和增强。这些改进包括网络设计、损失函数修改、anchor修改和输入分辨率缩放等各个方面。通过研究这些发展，我们的目标是全面了解YOLO框架的发展及其对目标检测的影响。</p>
+<p>除了讨论每个YOLO版本的具体进步之外，本文还强调了在整个框架开发过程中出现的速度和准确性之间的权衡。这强调了在选择最合适的YOLO模型时考虑特定应用程序的上下文和需求的重要性。</p>
+<p>最后，我们展望了YOLO框架的未来方向，触及了进一步研究和开发的潜在途径，这将影响实时目标检测系统的持续进展。</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231213175522050.png" alt="image-20231213175522050" style="zoom:50%;" /></p>
+<h2 id="yolo在不同领域的应用">2 YOLO在不同领域的应用</h2>
+<p>YOLO的实时目标检测能力在自动驾驶车辆系统中非常宝贵，可以快速识别和跟踪各种物体，如车辆、行人<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>、自行车和其他障碍物<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>。</p>
+<p>这些能力已经应用于许多领域，包括用于监控的视频序列中的动作识别<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>、运动分析<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>和人机交互<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>。</p>
+<p>YOLO模型已在农业中用于农作物<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a><a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>、病虫害<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>的检测和分类，协助实现精准农业技术和农业流程自动化。它们也适用于生物识别、安全和面部识别系统中的面部检测任务<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a><a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>。</p>
+<p>在医学领域，YOLO已被用于癌症检测<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a><a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a>、皮肤分割<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a>、药丸识别<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a>，提高了诊断的准确性，提高了治疗的效率。在遥感领域，它已被用于卫星和航空图像中的目标检测和分类，有助于土地利用制图、城市规划和环境监<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a><a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a><a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a><a href="#fn23" class="footnote-ref" id="fnref23" role="doc-noteref"><sup>23</sup></a>。</p>
+<p>安防系统集成了YOLO模型，用于实时监控和分析视频馈送，从而可以快速发现可疑活动<a href="#fn24" class="footnote-ref" id="fnref24" role="doc-noteref"><sup>24</sup></a>、保持社交距离和检测口罩<a href="#fn25" class="footnote-ref" id="fnref25" role="doc-noteref"><sup>25</sup></a>。这些模型还被应用于表面检测，以检测缺陷和异常，加强制造和生产过程中的质量控制<a href="#fn26" class="footnote-ref" id="fnref26" role="doc-noteref"><sup>26</sup></a><a href="#fn27" class="footnote-ref" id="fnref27" role="doc-noteref"><sup>27</sup></a><a href="#fn28" class="footnote-ref" id="fnref28" role="doc-noteref"><sup>28</sup></a>。</p>
+<p>在交通应用中，YOLO模型已被用于车牌检测<a href="#fn29" class="footnote-ref" id="fnref29" role="doc-noteref"><sup>29</sup></a>和交通标志识别<a href="#fn30" class="footnote-ref" id="fnref30" role="doc-noteref"><sup>30</sup></a>等任务，有助于智能交通系统和交通管理解决方案的发展。它们已被用于野生动物检测和监测，以识别濒危物种，用于生物多样性保护和生态系统管理<a href="#fn31" class="footnote-ref" id="fnref31" role="doc-noteref"><sup>31</sup></a>。最后，YOLO已广泛应用于机器人应用<a href="#fn32" class="footnote-ref" id="fnref32" role="doc-noteref"><sup>32</sup></a><a href="#fn33" class="footnote-ref" id="fnref33" role="doc-noteref"><sup>33</sup></a>和无人机目标检测<a href="#fn34" class="footnote-ref" id="fnref34" role="doc-noteref"><sup>34</sup></a><a href="#fn35" class="footnote-ref" id="fnref35" role="doc-noteref"><sup>35</sup></a>。</p>
+<h2 id="目标检测衡量指标和非最大抑制nms">3 目标检测衡量指标和非最大抑制(NMS)</h2>
+<h3 id="ap定义">3.1 AP定义</h3>
+<p>平均精度(AP)，传统上称为平均平均精度(mAP)，是评估目标检测模型性能的常用度量。它测量所有类别的平均精度，提供一个单一的值来比较不同的模型。COCO数据集没有区分AP和mAP。在本文的其余部分，我们将把这个度量称为AP。</p>
+<p>在YOLOv1和YOLOv2中，用于训练和基准测试的数据集是PASCAL VOC 2007和VOC 2012<a href="#fn36" class="footnote-ref" id="fnref36" role="doc-noteref"><sup>36</sup></a>。然而，从YOLOv3开始，使用的数据集是Microsoft COCO (Common Objects in Context)<a href="#fn37" class="footnote-ref" id="fnref37" role="doc-noteref"><sup>37</sup></a>。对于这些数据集，AP的计算方法不同。下面几节将讨论AP背后的基本原理，并解释如何计算AP。</p>
+<p><strong>精确度和召回率</strong>:<span class="math inline">\(\text{precision} = \frac{\text{TP}}{\text{TP}+\text{FP}}\)</span>,<span class="math inline">\(\text{recall}=\frac{\text{TP}}{\text{TP}+\text{FN}}\)</span> <span class="math display">\[
+F = \frac{(\alpha^2+1)P*R}{\alpha^2(P+R)}
+\]</span> 例如，增加检测到的对象的数量(更高的召回率)可能导致更多的误报(更低的精度)。为了考虑这种权衡，AP指标结合了精确率-召回率曲线，该曲线绘制了不同置信度阈值下的精确率和召回率。该指标通过考虑准确度-召回曲线下的面积，提供了对精度和召回率的平衡评估</p>
+<p><strong>处理多个目标类别</strong>:目标检测模型必须识别和定位图像中的多个目标类别。AP度量通过分别计算每个类别的平均精度(AP)，然后在所有类别中取这些AP的平均值来解决这个问题(这就是为什么它也称为平均平均精度)。这种方法确保对每个类别单独评估模型的性能，为模型的整体性能提供更全面的评估。</p>
+<p><strong>交并比</strong>：目标检测的目的是通过预测边界框来准确定位图像中的目标。AP度量结合了(IoU)交叉度量来评估预测边界框的质量。IoU是预测边界框与地面真值边界框的交集面积与并集面积之比(见图2)。IoU衡量的是地面真值边界框与预测边界框的重叠程度。COCO基准考虑多个IoU阈值来评估模型在不同定位精度水平下的性能。</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214090616347.png" alt="image-20231214090616347" style="zoom:50%;" /></p>
+<h3 id="计算ap">3.2 计算AP</h3>
+<h4 id="voc-dataset">VOC Dataset</h4>
+<p>该数据集包括<strong>20</strong>个对象类别。为了计算VOC中的AP，我们遵循以下步骤:</p>
+<pre><code>1. 对于每个类别，通过改变模型预测的置信阈值来计算精确召回曲线。</code></pre>
+<ol start="2" type="1">
+<li><p>使用在精度-召回率曲线的11点插值抽样计算每个类别的平均精度(AP)。</p></li>
+<li><p>通过取所有20个类别中AP的平均值来计算最终的平均精度(AP)。</p></li>
+</ol>
+<h4 id="microsoft-coco-dataset">Microsoft COCO Dataset</h4>
+<p>该数据集包括80个对象类别，并使用更复杂的方法来计算AP。它不使用11点插值，而是使用101点插值，也就是说，它计算101个召回阈值的精度，从0到1，增量为0.01。此外，AP是通过对多个IoU值(而不仅仅是一个)进行平均来获得的，除了一个称为AP50的通用AP度量，它是单个IoU阈值0.5的AP。在COCO中计算AP的步骤如下:</p>
+<ol type="1">
+<li><p>对于每个类别，通过改变模型预测的置信阈值来计算精确召回曲线。</p></li>
+<li><p>使用101点插值计算每个类别的平均精度(AP)。</p></li>
+<li><p>计算不同交汇交汇(IoU)阈值的AP，通常从0.5到0.95，步长为0.05。更高的IoU阈值需要更准确的预测才能被认为是真正的阳性。</p></li>
+<li><p>对于每个IoU阈值，取所有80个类别的ap的平均值。</p></li>
+<li><p>最后，通过平均每个IoU阈值计算的AP值来计算总体AP。</p></li>
+</ol>
+<h3 id="非极大值抑制nms">3.3 非极大值抑制(NMS)</h3>
+<p>非最大抑制(NMS)是一种用于目标检测算法的后处理技术，目的是减少重叠边界框的数量，提高整体检测质量。目标检测算法通常会在同一目标周围生成多个具有不同置信度分数的边界框。NMS过滤掉冗余和不相关的边界框，只保留最准确的边界框。算法1描述了这个过程。图3显示了包含多个重叠边界框的对象检测模型的典型输出和NMS后的输出。</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214095103611.png" alt="image-20231214095103611" style="zoom:50%;" /></p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214095200651.png" alt="image-20231214095200651" style="zoom:50%;" /></p>
+<h2 id="yolo-you-only-look-once">4 YOLO: You Only Look Once</h2>
+<p>Joseph Redmon等人的YOLO发表于CVPR 2016<a href="#fn38" class="footnote-ref" id="fnref38" role="doc-noteref"><sup>38</sup></a>。它首次提出了一种实时的端到端目标检测方法。YOLO这个名字代表“你只看一次”，这是指它是一个能够通过网络的单次传递完成检测任务，而不是以前的方法，要么使用滑动窗口，然后使用分类器，需要在每张图像上运行数百或数千次，要么使用更高级的方法，将任务分为两步，其中第一步检测具有对象或区域建议的可能区域，第二步在建议上运行分类器。此外，YOLO使用更直接的基于回归的输出来预测检测输出，而Fast R-CNN<a href="#fn39" class="footnote-ref" id="fnref39" role="doc-noteref"><sup>39</sup></a>$使用两个单独的输出，概率分类和框坐标回归。</p>
+<h3 id="yolov1-简介">4.1 YOLOv1 简介</h3>
+<p>YOLOv1统一了目标检测步骤，同时检测所有的边界框。为了实现这一点，YOLO将输入图像划分为S × S网格，并预测同一类的B个边界框，以及每个网格元素对C个不同类的置信度。每个边界框预测由五个值组成:Pc, bx, by, bh, bw，其中Pc是框的置信度得分，反映模型对框中包含对象的置信度以及框的准确性。bx和by坐标是相对于网格单元格的框的中心，bh和bw是相对于完整图像的框的高度和宽度。YOLO的输出是S × S × (B × 5 + C)张量，可选地跟随非最大抑制(NMS)来去除重复检测。</p>
+<p>在最初的YOLO论文中，作者使用了包含20个类(C = 20)的PASCAL VOC数据集[36];一个7 × 7的网格(S = 7)，每个网格元素最多2个类(B = 2)，给出7 × 7 × 30的输出预测。</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214095504303.png" alt="image-20231214095504303" style="zoom:50%;" /></p>
+<p>图4显示了一个简化的输出向量，考虑了一个3乘3的网格、3个类，每个网格一个类代表8个值。在这个简化的情况下，YOLO的输出将是3 × 3 × 8。</p>
+<p>YOLOv1在PASCAL VOC2007数据集上的平均精度(AP)为63.4。</p>
+<h3 id="yolov1-框架">4.2 YOLOv1 框架</h3>
+<p>YOLOv1架构包括24个卷积层，然后是两个完全连接的层，用于预测边界框坐标和概率。除最后一层使用线性激活函数外，所有层都使用漏整流线性单元激活<a href="#fn40" class="footnote-ref" id="fnref40" role="doc-noteref"><sup>40</sup></a>。受GoogLeNet<a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a>和Network in Network<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a>的启发，YOLO使用1 × 1卷积层来减少特征映射的数量，并保持相对较低的参数数量。作为激活层，表1描述了YOLOv1体系结构。作者还介绍了一个更轻的模型，称为Fast YOLO，由9个卷积层组成。</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214095738606.png" alt="image-20231214095738606" style="zoom:50%;" /></p>
+<h3 id="yolov1-训练">4.3 YOLOv1 训练</h3>
+<p>作者使用ImageNet数据集以224 × 224的分辨率预训练了YOLO的前20层<a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a>。然后，他们添加了随机初始化权重的最后四层，并使用PASCAL VOC 2007和VOC 2012数据集<a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a>以448 × 448的分辨率对模型进行了精细调整，以增加细节，从而更准确地检测目标。</p>
+<p>对于增强，作者使用最多20%输入图像大小的随机缩放和平移，以及随机曝光和饱和度，在HSV色彩空间中，上限因子为1.5。</p>
+<p>YOLOv1使用了一个由多个和平方误差组成的损失函数，如图5所示。在损失函数中，<span class="math inline">\(\lambda_{\text{coord}} = 5\)</span>是给予边界框预测更多重要性的比例因子，<span class="math inline">\(λ_{\text{noobj}} = 0.5\)</span>是降低不包含对象的框的重要性的比例因子。</p>
+<p>损失的前两项表示局部化损失;它计算预测的边界框位置<span class="math inline">\((x, y)\)</span>和大小<span class="math inline">\((w, h)\)</span>中的误差。请注意，这些误差仅在包含对象的框中计算(由<span class="math inline">\(\mathbb 1^{\text{obj}}_\text{ij}\)</span>表示)，只有在该网格单元中存在对象时才会受到惩罚。第三和第四个损失项表示信心损失;第三项测量在盒子中检测到对象时的置信误差(<span class="math inline">\(\mathbb 1^{\text{obj}}_\text{ij}\)</span>)，第四项测量在盒子中未检测到对象时的置信误差(<span class="math inline">\(\mathbb 1^{\text{noobj}}_\text{ij}\)</span>)。由于大多数盒子是空的，这个损失被<span class="math inline">\(\lambda_{\text{noobj}}\)</span>项加权。最后一个损失分量是分类损失，它仅在对象出现在单元格(<span class="math inline">\(\mathbb 1^{\text{obj}}_\text{ij}\)</span>)中时测量每个类别的类别条件概率的平方误差。</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214100445282.png" alt="image-20231214100445282" style="zoom: 80%;" /></p>
+<h3 id="yolov1-优点和不足">4.4 YOLOv1 优点和不足</h3>
+<p>YOLO的简单架构，以及其新颖的全图像单次回归，使其比现有的目标检测器更快，从而实现实时性能。</p>
+<p>然而，尽管YOLO的执行速度比任何目标检测器都快，但与Fast R-CNN等最先进的方法相比，定位误差更大<a href="#fn45" class="footnote-ref" id="fnref45" role="doc-noteref"><sup>45</sup></a>。造成这种限制的主要原因有三个:</p>
+<ol type="1">
+<li><p>它最多只能检测到网格单元中两个同类的物体，这限制了它预测附近物体的能力。</p></li>
+<li><p>它很难预测训练数据中没有出现的长宽比物体。</p></li>
+<li><p>由于下采样层，它从粗糙的目标特征中学习。</p></li>
+</ol>
+<h2 id="yolov2-better-faster-and-stronger">5 YOLOv2: Better, Faster, and Stronger</h2>
+<p>YOLOv2由Joseph Redmon和Ali Farhadi在CVPR 2017上发表<a href="#fn46" class="footnote-ref" id="fnref46" role="doc-noteref"><sup>46</sup></a>。它对原来的YOLO进行了一些改进，使其更好，保持相同的速度，也更强大-能够检测9000个类别!改进如下:</p>
+<ol type="1">
+<li><p><strong>batch normalization</strong> 所有卷积层的批处理归一化提高了收敛性，并作为正则化器减少过拟合。</p></li>
+<li><p><strong>高分辨率的分类器</strong>。与YOLOv1一样，他们使用ImageNet在224 × 224的分辨率下对模型进行预训练。然而，这一次，他们在ImageNet上finetuned了10个epoch的模型，分辨率为448 × 448，提高了网络在更高分辨率输入下的性能。</p></li>
+<li><p><strong>完全卷积</strong>。他们去掉了密集的层，使用了一个完全卷积的架构。</p></li>
+<li><p><strong>使用anchor boxes来预测边界框</strong>。它们使用一组先验框或锚框，锚框是具有预定义形状的框，用于匹配对象的原型形状，如图6所示。为每个网格单元定义多个锚框，系统预测每个锚框的坐标和类。网络输出的大小与每个网格单元的锚盒数量成正比。</p></li>
+</ol>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214104432020.png" alt="image-20231214104432020" style="zoom:50%;" /></p>
+<ol start="5" type="1">
+<li><p><strong>聚类中心</strong>。选择好的先验框有助于网络学习预测更准确的边界框。作者在训练边界盒上运行k-means聚类来找到好的先验。他们选择了五个先前的盒子，在召回率和模型复杂性之间进行了很好的权衡。</p></li>
+<li><p><strong>直接位置预测</strong>。与其他预测偏移量的方法<span class="math inline">\(^{[45]}\)</span>不同，YOLOv2遵循相同的原理，预测相对于网格单元的位置坐标。网络为每个单元格预测5个边界框，每个边界框有5个值tx、ty、tw、th和to，其中to相当于YOLOv1中的P c，最终得到边界框坐标，如图7所示。</p></li>
+</ol>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214104903836.png" alt="image-20231214104903836" style="zoom:50%;" /></p>
+<ol start="7" type="1">
+<li><strong>细粒度特性</strong>。与YOLOv1相比，YOLOv2去掉一个池化层，得到416 × 416输入图像的13 × 13输出特征图或网格。YOLOv2还使用了一个直通层，该层采用26 × 26 × 512的特征映射，并通过将相邻的特征堆叠到不同的通道中来重新组织而不是通过空间子采样丢失它们。这将生成13 × 13 × 2048个通道维度的特征图，并与低分辨率的13 × 13 × 1024个特征图进行连接，得到13 × 13 × 3072个特征图。</li>
+<li><strong>多尺度的训练</strong>。由于YOLOv2不使用全连接层，因此输入可以是不同的大小。为了使YOLOv2对不同的输入大小具有鲁棒性，作者随机训练模型，每10批次改变输入大小——从320 × 320到608 × 608。</li>
+</ol>
+<p>通过所有这些改进，YOLOv2在PASCAL VOC2007数据集上的平均精度(AP)达到78.6%，而YOLOv1的平均精度为63.4%。</p>
+<h3 id="yolov2-框架">5.1 YOLOv2 框架</h3>
+<p>YOLOv2使用的骨干架构称为Darknet-19，包含19个卷积层和5个maxpooling层。与YOLOv1的架构类似，它的灵感来自于Network in Network<a href="#fn47" class="footnote-ref" id="fnref47" role="doc-noteref"><sup>47</sup></a>，在3 × 3之间使用1 × 1的卷积来减少参数的数量。此外，如上所述，他们使用批归一化来正则化和帮助收敛。</p>
+<p>表2显示了带有目标检测头的整个Darknet-19主干。使用PASCAL VOC数据集时，YOLOv2预测5个边界框，每个边界框有5个值和20个类。</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214105332256.png" alt="image-20231214105332256" style="zoom:80%;" /></p>
+<p>分类头将最后四个卷积层替换为一个包含1000个过滤器的单个卷积层，然后是一个全局平均池化层和一个Softmax。</p>
+<h3 id="yolo9000-is-a-stronger-yolov2">5.2 YOLO9000 is a stronger YOLOv2</h3>
+<p>作者在同一篇文章中介绍了一种训练联合分类和检测的方法。它使用COCO<a href="#fn48" class="footnote-ref" id="fnref48" role="doc-noteref"><sup>48</sup></a>中的检测标记数据学习边界框坐标和ImageNet中的分类数据，以增加可检测的类别数量。在训练过程中，他们将两个数据集结合起来，这样当使用检测训练图像时，它会反向传播检测网络，当使用分类训练图像时，它会反向传播体系结构的分类部分。结果是一个能够检测超过9000个类别的YOLO模型，因此名称为YOLO9000。</p>
+<h2 id="yolov3">6 YOLOv3</h2>
+<p>YOLOv3<a href="#fn49" class="footnote-ref" id="fnref49" role="doc-noteref"><sup>49</sup></a>由Joseph Redmon和Ali Farhadi于2018年在ArXiv上发表。它包括重大变化和更大的架构，以与最先进的技术相媲美，同时保持实时性能。在下文中，我们描述了与YOLOv2相关的更改。</p>
+<ol type="1">
+<li><p><strong>边界框预测</strong>。与YOLOv2一样，该网络为每个边界框tx、ty、tw和th预测四个坐标;然而，这一次，YOLOv3使用逻辑回归预测每个边界框的对象得分。与ground truth重叠度最高的锚框得分为1，其余锚框得分为0。与Faster R-CNN<span class="math inline">\(^{[45]}\)</span>不同，YOLOv3只为每个ground truth对象分配一个锚框。同样，如果没有给对象分配锚盒，只会造成分类损失，不会造成定位损失和置信度损失。</p></li>
+<li><p><strong>类的预测</strong>。他们没有使用softmax进行分类，而是使用二元交叉熵来训练独立的逻辑分类器，并将问题作为多标签分类。这种变化允许为同一个框分配多个标签，这可能发生在一些具有重叠标签的复杂数据集<a href="#fn50" class="footnote-ref" id="fnref50" role="doc-noteref"><sup>50</sup></a>上。例如，同一个对象可以是Person和Man。</p></li>
+<li><p><strong>新的主干</strong>。YOLOv3具有更大的特征提取器，由53个带有残差连接的卷积层组成。第6.1节更详细地描述了该体系结构。</p></li>
+<li><p><strong>空间金字塔池化</strong>(SPP)虽然在论文中没有提到，但作者还在主干中添加了一个修改的SPP块<a href="#fn51" class="footnote-ref" id="fnref51" role="doc-noteref"><sup>51</sup></a>，该块连接多个最大池化输出而不进行子采样(stride = 1)，每个块具有不同的内核大小k × k，其中k = 1,5,9,13允许更大的感受野。这个版本被称为YOLOv3-spp，是性能最好的版本，AP50提高了2.7%。</p></li>
+<li><p><strong>多尺度预测</strong>。与特征金字塔网络<a href="#fn52" class="footnote-ref" id="fnref52" role="doc-noteref"><sup>52</sup></a>类似，YOLOv3在三个不同的尺度上预测三个盒子。第6.2节详细描述了多尺度预测机制。</p></li>
+<li><p><strong>边界框先验</strong>。与YOLOv2一样，作者也使用k-means来确定锚框的边界框先验。不同之处在于，在YOLOv2中，他们为每个单元格总共使用了五个先验框，而在YOLOv3中，他们为三个不同的尺度使用了三个先验框。</p></li>
+</ol>
+<h3 id="yolov3-架构">6.1 YOLOv3 架构</h3>
+<p>YOLOv3中呈现的架构主干称为Darknet-53。它用跨行卷积替换了所有的最大池化层，并添加了残差连接。总的来说，它包含53个卷积层。图8显示了体系结构的细节。</p>
+<p>Darknet-53骨干网获得与ResNet-152相当的Top-1和Top-5精度，但几乎快了2倍。</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214110812922.png" alt="image-20231214110812922" style="zoom:80%;" /></p>
+<h3 id="yolov3-多尺度预测">6.2 YOLOv3 多尺度预测</h3>
+<p>除了更大的架构外，YOLOv3的一个基本特征是多尺度预测，即在多个网格大小下进行预测。这有助于获得更精细的细节框，并显着提高了对小物体的预测，这是以前版本的YOLO的主要弱点之一。</p>
+<p>图9所示的多尺度检测架构的工作原理如下:标记为y1的第一个输出相当于YOLOv2的输出，其中一个13 × 13的网格定义了输出。第二个输出y2是将Darknet-53的(Res × 4)之后的输出与(Res × 8)之后的输出拼接而成。feature map的大小不同，分别是13 × 13和26 × 26，所以在拼接之前需要进行上采样操作。最后，使用上采样操作，第三个输出y3将26 × 26特征映射与52 × 52特征映射连接起来。</p>
+<p>对于具有80个类别的COCO数据集，每个尺度提供一个形状为N × N ×[3x(4+1+80)]的输出张量，其中N ×N为特征图(或网格单元)的大小，3表示每个单元的框数，4+1包括四个坐标和对象得分。</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214112806628.png" alt="image-20231214112806628" style="zoom:80%;" /></p>
+<h3 id="yolov3-结果">6.3 YOLOv3 结果</h3>
+<p>当YOLOv3发布时，目标检测的基准已经从PASCAL VOC改为Microsoft COCO<a href="#fn53" class="footnote-ref" id="fnref53" role="doc-noteref"><sup>53</sup></a>。因此，从这里开始，所有的yolo都在MS COCO数据集中进行评估。在20 FPS下，YOLOv3-spp的平均精度AP为36.2%，AP50为60.6%，达到了当时最先进的水平，速度提高了2倍。</p>
+<h2 id="backbone-neck-and-head">7 Backbone Neck and Head</h2>
+<p>此时，目标探测器的结构开始被描述为三个部分:Backbone、Neck和Head。图10显示了一个高级的Backbone、Neck和Head。</p>
+<p>主干负责从输入图像中提取有用的特征。它通常是在大规模图像分类任务上训练的卷积神经网络(CNN)，例如ImageNet。主干捕获不同尺度的分层特征，较低级的特征(如边缘和纹理)在较早的层中提取，较高级的特征(如对象部分和语义信息)在较深的层中提取。</p>
+<p>颈部是连接主干和头部的中间部分。它对主干提取的特征进行聚合和细化，往往侧重于增强不同尺度的空间和语义信息。</p>
+<p>颈部可能包括额外的卷积层、特征金字塔网络(FPN)<a href="#fn54" class="footnote-ref" id="fnref54" role="doc-noteref"><sup>54</sup></a>或其他机制来改善特征的表示。</p>
+<p>头部是物体检测器的最终组成部分;它负责根据脊柱和颈部提供的特征做出预测。它通常由一个或多个特定于任务的子网组成，这些子网执行分类、定位以及最近的实例分割和姿态估计。头部处理颈部提供的特征，为每个候选对象生成预测。最后，一个后处理步骤，如非最大抑制(NMS)，过滤掉重叠的预测，只保留最可靠的检测。</p>
+<p>在YOLO模型的其余部分中，我们将使用Backbone、Neck和Head来描述架构。</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214113148856.png" alt="image-20231214113148856" style="zoom:50%;" /></p>
+<h2 id="yolov4">8 YOLOv4</h2>
+<p>两年过去了，并没有新的YOLO版本。直到2020年4月，Alexey Bochkovskiy, Chien-Y ao Wang, Hong-Y yuan Mark Liao在ArXiv发表了YOLOv4的论文<a href="#fn55" class="footnote-ref" id="fnref55" role="doc-noteref"><sup>55</sup></a>。起初，不同的作者提出了一个新的“官方”版本的YOLO，这让人感到奇怪;然而，yolo4保持了相同的YOLO理念——实时、开源、单镜头和DarkNet框架——并且改进是如此令人满意，社区迅速接受了这个版本作为官方的yolo4。</p>
+<p>YOLOv4试图找到最佳的平衡，尝试了许多被归类为bag-of-freebies和bag-of-specials的变化。Bag-of-freebies是指只改变训练策略，增加训练成本，但不增加推理时间的方法，最常见的是数据增强。另一方面，bag-of-specials是稍微增加推理成本但显著提高准确率的方法。这些方法的例子包括扩大感受野<a href="#fn56" class="footnote-ref" id="fnref56" role="doc-noteref"><sup>56</sup></a><a href="#fn57" class="footnote-ref" id="fnref57" role="doc-noteref"><sup>57</sup></a><a href="#fn58" class="footnote-ref" id="fnref58" role="doc-noteref"><sup>58</sup></a>，结合特征<a href="#fn59" class="footnote-ref" id="fnref59" role="doc-noteref"><sup>59</sup></a><a href="#fn60" class="footnote-ref" id="fnref60" role="doc-noteref"><sup>60</sup></a><a href="#fn61" class="footnote-ref" id="fnref61" role="doc-noteref"><sup>61</sup></a><a href="#fn62" class="footnote-ref" id="fnref62" role="doc-noteref"><sup>62</sup></a>和后处理<a href="#fn63" class="footnote-ref" id="fnref63" role="doc-noteref"><sup>63</sup></a><a href="#fn64" class="footnote-ref" id="fnref64" role="doc-noteref"><sup>64</sup></a><a href="#fn65" class="footnote-ref" id="fnref65" role="doc-noteref"><sup>65</sup></a><a href="#fn66" class="footnote-ref" id="fnref66" role="doc-noteref"><sup>66</sup></a>等。</p>
+<p>我们将YOLOv4的主要变化总结为以下几点:</p>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214113550393.png" alt="image-20231214113550393" style="zoom:80%;" /></p>
+<ol type="1">
+<li><p>具有(BoS)集成的增强架构。作者尝试了多种骨干网架构，如ResNeXt50<a href="#fn67" class="footnote-ref" id="fnref67" role="doc-noteref"><sup>67</sup></a>、EfficientNet-B3<a href="#fn68" class="footnote-ref" id="fnref68" role="doc-noteref"><sup>68</sup></a>和Darknet-53。性能最好的架构是对Darknet-53的修改，采用跨级部分连接(CSPNet)<span class="math inline">\(^{[61]}\)</span>，以Mish激活函数<a href="#fn69" class="footnote-ref" id="fnref69" role="doc-noteref"><sup>69</sup></a>作为主干(见图11)。对于颈部，他们使用了来自YOLOv3- SPP的修改版本的空间金字塔池(SPP)<a href="#fn70" class="footnote-ref" id="fnref70" role="doc-noteref"><sup>70</sup></a>和与YOLOv3一样的多尺度预测，但使用了修改版本的路径聚合网络(PANet)<a href="#fn71" class="footnote-ref" id="fnref71" role="doc-noteref"><sup>71</sup></a>$而不是FPN以及修改的空间注意模块(SAM)<a href="#fn72" class="footnote-ref" id="fnref72" role="doc-noteref"><sup>72</sup></a>。最后，对于探测头，他们使用YOLOv3中的anchor。因此，将模型命名为CSPDarknet53-PANet-SPP。添加到Darknet-53中的跨级部分连接(CSP)有助于减少模型的计算量，同时保持相同的精度。在YOLOv3-spp中，SPP块在不影响推理速度的情况下增加了接受野。PANet的修改版本将这些特性连接起来，而不是像在PANet的原始文件中那样添加它们。</p></li>
+<li><p>整合(BoF)的高级培训方法。除了常规的增强，如随机亮度、对比度、缩放、裁剪、翻转和旋转，作者还实现了马赛克增强，将四张图像合并为一张图像，允许检测其通常上下文之外的对象，并减少了批量规范化对大型mini-batch大小的需求。对于正则化，他们使用DropBlock<a href="#fn73" class="footnote-ref" id="fnref73" role="doc-noteref"><sup>73</sup></a>作为Dropout<a href="#fn74" class="footnote-ref" id="fnref74" role="doc-noteref"><sup>74</sup></a>的替代品，但用于卷积神经网络以及类标签平滑<a href="#fn75" class="footnote-ref" id="fnref75" role="doc-noteref"><sup>75</sup></a><a href="#fn76" class="footnote-ref" id="fnref76" role="doc-noteref"><sup>76</sup></a>。对于检测器，他们增加了CIoU损耗<a href="#fn77" class="footnote-ref" id="fnref77" role="doc-noteref"><sup>77</sup></a>和Cross mini-bath normalization (CmBN)，以便从整个批次收集统计数据，而不是像常规批次归一化那样从单个小批次收集统计数据<a href="#fn78" class="footnote-ref" id="fnref78" role="doc-noteref"><sup>78</sup></a>。</p></li>
+<li><p>自我对抗训练(SAT)。为了使模型对扰动更具鲁棒性，对输入图像执行对抗性攻击，以创建一个欺骗，即ground truth对象不在图像中，但保持原始标签以检测正确的对象。</p></li>
+<li><p>遗传算法的超参数优化。为了找到用于训练的最优超参数，他们在前10%的周期中使用遗传算法，并使用余弦退火调度器<a href="#fn79" class="footnote-ref" id="fnref79" role="doc-noteref"><sup>79</sup></a>来改变训练期间的学习率。它开始缓慢地降低学习率，然后在训练过程中快速降低，最后略有降低。</p></li>
+</ol>
+<figure>
+<img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214160738192.png" alt="image-20231214160738192" /><figcaption aria-hidden="true">image-20231214160738192</figcaption>
+</figure>
+<p>在MS COCO数据集测试开发2017上进行评估，YOLOv4在NVIDIA V100上以超过50 FPS的速度实现了43.5%的AP和65.7%的AP50。</p>
+<h2 id="yolov5">9 YOLOv5</h2>
+<p>YOLOv5<a href="#fn80" class="footnote-ref" id="fnref80" role="doc-noteref"><sup>80</sup></a>于2020年由Glenn Jocher在YOLOv4发布几个月后发布。在撰写本文时，还没有关于YOLOv5的科学论文，但从代码中，我们知道它使用了YOLOv4部分中描述的许多改进，主要区别在于它是在Pytorch而不是Darknet中开发的。</p>
+<p>YOLOv5是开源的，由Ultralytics积极维护，有250多个贡献者，并且经常有新的改进。YOLOv5易于使用、训练和部署。Ultralytics提供iOS和Android的移动版本，以及许多标签、培训和部署的集成。</p>
+<p>YOLOv5提供5个缩放版本:YOLOv5n (nano)、YOLOv5s (small)、YOLOv5m (medium)、YOLOv5l (large)、YOLOv5x (extra large)。</p>
+<p>撰写本文时发布的YOLOv5版本是v7.0，其中包括能够分类和实例分割的YOLOv5版本。</p>
+<p>在MS COCO数据集test-dev 2017上进行评估，YOLOv5x在图像尺寸为640像素时实现了50.7%的AP。</p>
+<p>使用batchsize=32，它可以在NVIDIA V100上实现200 FPS的速度。使用1536像素的更大输入尺寸，YOLOv5实现了55.8%的AP。</p>
+<h2 id="scaled-yolov4">10 Scaled-YOLOv4</h2>
+<p>在YOLOv4发布一年后，同一作者在CVPR 2021上提出了Scaled-YOLOv4<a href="#fn81" class="footnote-ref" id="fnref81" role="doc-noteref"><sup>81</sup></a>。与YOLOv4不同的是，Scaled YOLOv4是在Pytorch而不是Darknet中开发的。主要的新颖之处是引入了按比例放大和按比例缩小的技术。扩大规模意味着以较低的速度为代价来提高准确性;另一方面，按比例缩小需要生成一个以牺牲准确性为代价提高速度的模型。此外，按比例缩小的模型需要更少的计算能力，并且可以在嵌入式系统上运行。</p>
+<p>这个按比例缩小的架构被称为YOLOv4-tiny;它是为低端gpu设计的，可以在Jetson TX2上运行46 FPS或在RTX2080Ti上运行440 FPS，在MS COCO上实现22%的AP。</p>
+<p>按比例扩大的模型体系结构称为YOLOv4-large，其中包括三种不同的尺寸P5、P6和P7。该架构是为云GPU设计的，并实现了最先进的性能，超过了所有以前的模型<a href="#fn82" class="footnote-ref" id="fnref82" role="doc-noteref"><sup>82</sup></a><a href="#fn83" class="footnote-ref" id="fnref83" role="doc-noteref"><sup>83</sup></a><a href="#fn84" class="footnote-ref" id="fnref84" role="doc-noteref"><sup>84</sup></a>，在MS COCO上具有56%的AP。</p>
+<h2 id="yolor">11 YOLOR</h2>
+<p>YOLOR<a href="#fn85" class="footnote-ref" id="fnref85" role="doc-noteref"><sup>85</sup></a>由YOLOv4的同一个研究小组于2021年5月在ArXiv上发表。它代表You Only Learn One Representation。在本文中，作者采用了一种不同的方法;他们开发了一种多任务学习方法，旨在通过学习一般表示和使用子网络创建任务特定表示来为各种任务(例如，分类，检测，姿态估计)创建单个模型。鉴于传统的联合学习方法通常会导致次优特征生成，YOLOR旨在通过对神经网络的隐式知识进行编码以应用于多个任务来克服这一问题，类似于人类如何利用过去的经验来解决新问题。结果表明，在神经网络中引入隐式知识对所有任务都有好处。</p>
+<p>在MS COCO数据集测试开发2017上进行评估，在NVIDIA V100上30 FPS下，YOLOR的AP为55.4%，AP50为73.3%。</p>
+<h2 id="yolox">12 YOLOX</h2>
+<p>YOLOX<a href="#fn86" class="footnote-ref" id="fnref86" role="doc-noteref"><sup>86</sup></a>由旷视科技的研究团队于2021年7月在ArXiv上发表。在Pytorch中开发并使用来自Ultralytics的YOLOV3作为起点，它有五个主要的变化:无锚点架构，多个阳性，解耦头部，高级标签分配和强增强。它在2021年时中取得了最先进的成绩，在速度和精度之间取得了最佳平衡，在Tesla V100上，AP为50.1%，FPS为68.9%。下面，我们将介绍YOLOX相对于YOLOv3的五个主要变化:</p>
+<ol type="1">
+<li><p>Anchor-free。自YOLOv2以来，所有后续的YOLO版本都是基于锚点的检测器。YOLOX受无锚点最先进的目标探测器(如CornerNet<a href="#fn87" class="footnote-ref" id="fnref87" role="doc-noteref"><sup>87</sup></a>、CenterNet<a href="#fn88" class="footnote-ref" id="fnref88" role="doc-noteref"><sup>88</sup></a>和FCOS<a href="#fn89" class="footnote-ref" id="fnref89" role="doc-noteref"><sup>89</sup></a>)的启发，回归到无锚点架构，简化了训练和解码过程。与YOLOv3基线相比，无锚点使AP增加了0.9个点。</p></li>
+<li><p>多积极的方面。为了弥补锚点缺失造成的巨大不平衡，作者使用中心抽样<a href="#fn90" class="footnote-ref" id="fnref90" role="doc-noteref"><sup>90</sup></a>，他们将中心3 × 3的区域指定为正区域。这种方法使AP提高了2.1分。</p></li>
+<li><p>解耦。文献<a href="#fn91" class="footnote-ref" id="fnref91" role="doc-noteref"><sup>91</sup></a><a href="#fn92" class="footnote-ref" id="fnref92" role="doc-noteref"><sup>92</sup></a>表明，分类置信度与定位精度之间可能存在不一致。因此，YOLOX将两者分为两个头(如图12所示)，一个用于分类任务，另一个用于回归任务，将AP提高了1.1点，加快了模型收敛速度。</p></li>
+<li><p>高级标签分配。文献<a href="#fn93" class="footnote-ref" id="fnref93" role="doc-noteref"><sup>93</sup></a>表明，当多个物体的盒子重叠时，ground truth标签分配可能存在歧义，并将分配过程表述为最优传输(Optimal Transport, OT)问题。YOLOX受到这项工作的启发，提出了一个简化的版本，叫做simOTA。这个改动使AP增加了2.3点。</p></li>
+<li><p>强大的扩增。YOLOX使用MixUP<a href="#fn94" class="footnote-ref" id="fnref94" role="doc-noteref"><sup>94</sup></a>和Mosaic增强。作者发现，使用这些增强后，ImageNet预训练不再有益。强大的增强使AP增加2.4点。</p></li>
+</ol>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214205859709.png" alt="image-20231214205859709" style="zoom:80%;" /></p>
+<h2 id="yolov6">13 YOLOv6</h2>
+<p>YOLOv6<a href="#fn95" class="footnote-ref" id="fnref95" role="doc-noteref"><sup>95</sup></a>由美团视觉AI部门于2022年9月在ArXiv上发表。与YOLOv4和YOLOv5类似，它为工业应用提供了不同尺寸的各种型号。遵循achor-free的方法<a href="#fn96" class="footnote-ref" id="fnref96" role="doc-noteref"><sup>96</sup></a><a href="#fn97" class="footnote-ref" id="fnref97" role="doc-noteref"><sup>97</sup></a>的趋势，YOLOv6采用了无锚点检测器。该模型的主要新颖之处总结如下:</p>
+<ol type="1">
+<li><p>一种基于RepVGG<a href="#fn98" class="footnote-ref" id="fnref98" role="doc-noteref"><sup>98</sup></a>的新型骨干网，称为EfficientRep，它比以前的YOLO骨干网使用更高的并行性。对于颈部，他们使用了PAN<a href="#fn99" class="footnote-ref" id="fnref99" role="doc-noteref"><sup>99</sup></a>，对于较大的模型，他们使用了RepBlocks<a href="#fn100" class="footnote-ref" id="fnref100" role="doc-noteref"><sup>100</sup></a>或CSPStackRep<a href="#fn101" class="footnote-ref" id="fnref101" role="doc-noteref"><sup>101</sup></a> block。受YOLOX的启发，他们开发了一个高效的分离头。</p></li>
+<li><p>使用TOOD<a href="#fn102" class="footnote-ref" id="fnref102" role="doc-noteref"><sup>102</sup></a>中引入的任务对齐学习方法进行标签分配。</p></li>
+<li><p>新的分类和回归损失。他们使用了变焦损失分类<a href="#fn103" class="footnote-ref" id="fnref103" role="doc-noteref"><sup>103</sup></a>和SIoU <a href="#fn104" class="footnote-ref" id="fnref104" role="doc-noteref"><sup>104</sup></a>/GIoU<a href="#fn105" class="footnote-ref" id="fnref105" role="doc-noteref"><sup>105</sup></a>回归损失。</p></li>
+<li><p>回归和分类任务的自蒸馏策略。</p></li>
+<li><p>一种使用RepOptimizer<a href="#fn106" class="footnote-ref" id="fnref106" role="doc-noteref"><sup>106</sup></a>和通道式蒸馏<a href="#fn107" class="footnote-ref" id="fnref107" role="doc-noteref"><sup>107</sup></a>的检测量化方案，有助于实现更快的检测器。</p></li>
+</ol>
+<p>在MS COCO数据集测试开发2017上进行评估，YOLOv6-L在NVIDIA Tesla T4上以50 FPS左右的速度实现了52.5%的AP和70%的AP50。</p>
+<h2 id="yolov7">14 YOLOv7</h2>
+<p>YOLOv7<a href="#fn108" class="footnote-ref" id="fnref108" role="doc-noteref"><sup>108</sup></a>于2022年7月由YOLOv4和YOLOR的同一作者发表在ArXiv上。当时，它在速度和精度上超过了所有已知的物体探测器，在5 FPS到160 FPS的范围内。与YOLOv4一样，它只使用MS COCO数据集进行训练，没有预先训练主干。YOLOv7提出了几个架构变化和一系列bag-of-freebies，在不影响推理速度的情况下提高了准确性，只影响了训练时间。</p>
+<p>The architecture changes of YOLOv7 are:</p>
+<ol type="1">
+<li><strong>扩展高效层聚合网络(E-ELAN)</strong>。ELAN<a href="#fn109" class="footnote-ref" id="fnref109" role="doc-noteref"><sup>109</sup></a>是一种策略，通过控制最短最长的梯度路径，允许深度模型更有效地学习和收敛。YOLOv7提出的E-ELAN适用于具有无限堆叠计算块的模型。E-ELAN通过洗牌和合并基数来结合不同群体的特征，在不破坏原有梯度路径的情况下增强网络的学习能力。</li>
+<li><strong>基于连接的模型的模型缩放</strong>。缩放通过调整模型的某些属性来生成不同大小的模型。YOLOv7的体系结构是基于串联的体系结构，其中标准缩放技术(如深度缩放)会导致过渡层的输入通道和输出通道之间的比率变化，从而导致模型的硬件使用减少。YOLOv7提出了一种新的基于串联的模型缩放策略，该策略将块的深度和宽度以相同的因子进行缩放，以保持模型的最优结构。</li>
+</ol>
+<p>The bag-of-freebies used in YOLOv7 include:</p>
+<ol type="1">
+<li><p><strong>计算后的重新参数化卷积</strong>。与YOLOv6一样，YOLOv7的架构也受到了重参数化卷积(RepConv)的启发<a href="#fn110" class="footnote-ref" id="fnref110" role="doc-noteref"><sup>110</sup></a>。然而，他们发现RepConv中的身份连接破坏了ResNet<a href="#fn111" class="footnote-ref" id="fnref111" role="doc-noteref"><sup>111</sup></a>中的残差和DenseNet<a href="#fn112" class="footnote-ref" id="fnref112" role="doc-noteref"><sup>112</sup></a>中的连接。出于这个原因，他们删除了身份连接并将其称为RepConvN。</p></li>
+<li><p><strong>粗标签分配辅助head和细标签分配主head</strong>。lead head负责最终产出，auxiliary head协助训练。</p></li>
+<li><p><strong>批量规范化的conv-bn-activation</strong>。这将批归一化的均值和方差集成到推理阶段卷积层的偏差和权重中。</p></li>
+<li><p>在YOLOR中启发的隐性知识<a href="#fn113" class="footnote-ref" id="fnref113" role="doc-noteref"><sup>113</sup></a>。</p></li>
+<li><p>指数移动平均作为最终的推理模型。</p></li>
+</ol>
+<p>YOLOv7与由同一作者开发的以前的YOLO模型相比的增强。</p>
+<p>与YOLOv4相比，YOLOv7的参数减少了75%，计算量减少了36%，同时平均精度(AP)提高了1.5%。</p>
+<p>与YOLOv4-tiny相比，YOLOv7-tiny在保持相同AP的情况下，分别减少了39%和49%的参数和计算量。</p>
+<p>最后，与YOLOR相比，YOLOv7分别减少了43%和15%的参数数量和计算量，同时AP略有增加0.4%</p>
+<p>在MS COCO数据集test-dev 2017上进行评估，YOLOv7-E6在NVIDIA V100上以50 FPS的速度，以1280像素的输入大小实现了55.9%的AP和73.5%的AP50。</p>
+<h2 id="damo-yolo">15 DAMO-YOLO</h2>
+<p>DAMO-YOLO<a href="#fn114" class="footnote-ref" id="fnref114" role="doc-noteref"><sup>114</sup></a>由阿里巴巴集团于2022年11月在ArXiv发表。DAMO-YOLO受到当前技术的启发，包括以下内容:</p>
+<ol type="1">
+<li><p>神经结构搜索(NAS)。他们使用阿里巴巴开发的MAE-NAS<a href="#fn115" class="footnote-ref" id="fnref115" role="doc-noteref"><sup>115</sup></a>方法自动寻找高效架构。</p></li>
+<li><p>large neck。受GiraffeDet<a href="#fn116" class="footnote-ref" id="fnref116" role="doc-noteref"><sup>116</sup></a>、CSPNet<a href="#fn117" class="footnote-ref" id="fnref117" role="doc-noteref"><sup>117</sup></a>和ELAN<a href="#fn118" class="footnote-ref" id="fnref118" role="doc-noteref"><sup>118</sup></a>的启发，作者设计了一种可以实时工作的颈部，称为Efficient-RepGFPN。</p></li>
+<li><p>samll head。作者发现，大颈和小颈的性能更好，他们只留下一个线性层用于分类，一个用于回归。他们称这种方法为ZeroHead。</p></li>
+<li><p>AlignedOTA 标签分配。动态标签分配方法，如OTA<a href="#fn119" class="footnote-ref" id="fnref119" role="doc-noteref"><sup>119</sup></a>和TOOD<a href="#fn120" class="footnote-ref" id="fnref120" role="doc-noteref"><sup>120</sup></a>，由于其相对于静态方法的显著改进而受到欢迎。然而，分类和回归之间的不一致仍然是一个问题，部分原因是分类和回归损失之间的不平衡。为了解决这一问题，他们的AlignOTA方法将焦损失<a href="#fn121" class="footnote-ref" id="fnref121" role="doc-noteref"><sup>121</sup></a>引入到分类成本中，并使用预测和ground truth box的IoU作为软标签，可以为每个目标选择对齐的样本，从全局角度解决问题。</p></li>
+<li><p>知识蒸馏。他们提出的策略包括两个阶段:第一阶段是教师指导学生，第二阶段是学生自主微调。此外，他们在蒸馏方法中加入了两个增强功能:Align模块，它使学生的特征与教师的特征具有相同的分辨率，以及Channel-wise Dynamic Temperature，它使教师和学生的特征标准化，以减少实际值差异的影响。</p></li>
+</ol>
+<p>作者生成了名为DAMO-YOLO-Tiny/Small/Medium的缩放模型，最佳模型在NVIDIA V100上以233 FPS的速度实现了50.0%的AP</p>
+<h2 id="yolov8">16 YOLOv8</h2>
+<p>YOLOv8<a href="#fn122" class="footnote-ref" id="fnref122" role="doc-noteref"><sup>122</sup></a>于2023年1月由开发YOLOv5的公司Ultralytics发布。因为在撰写本文时，还没有关于YOLOv8的论文，所以我们需要深入了解与其他YOLO版本相比的架构决策。按照目前的趋势，YOLOv8是无锚的，减少了框预测的数量，加快了非最大印象(NMS)。此外，YOLOv8在训练过程中使用马赛克增强;然而，因为已经发现，如果在整个训练过程中使用这种增强可能是有害的，所以在最后十个时代禁用它。</p>
+<p>YOLOv8可以从命令行界面(CLI)运行，也可以作为PIP包安装。此外，它还具有用于标记、培训和部署的多个集成。</p>
+<p>YOLOv8提供了5个缩放版本:YOLOv8n(nano)、YOLOv8s(small)、YOLOv8m(medium)、YOLOv8l(large)和YOLOv8x(extra large)。</p>
+<p>在MS COCO数据集测试开发2017上进行评估，YOLOv8x在图像尺寸为640像素时实现了53.9%的AP(相比之下，在相同输入尺寸下，YOLOv5的AP为50.7%)，在NVIDIA A100和TensorRT上的速度为280 FPS。</p>
+<h2 id="pp-yolo-pp-yolov2和pp-yoloe">17 PP-YOLO, PP-YOLOv2和PP-YOLOE</h2>
+<p>PP-YOLO模型已经与我们描述的YOLO模型并行发展。但是，我们决定将它们分组在一个部分中，因为它们从YOLOv3开始，并且在以前的PP-YOLO版本的基础上逐渐改进。尽管如此，这些模型对YOLO的演变产生了影响。PP-YOLO<a href="#fn123" class="footnote-ref" id="fnref123" role="doc-noteref"><sup>123</sup></a>与YOLOv4和YOLOv5类似，是基于YOLOv3的。该研究于2020年7月由百度公司的研究人员发表在ArXiv上。</p>
+<p>作者使用了PaddlePaddle<a href="#fn124" class="footnote-ref" id="fnref124" role="doc-noteref"><sup>124</sup></a>深度学习平台，因此其名称为PP。遵循我们从YOLOv4开始看到的趋势，PP-YOLO增加了十个现有的技巧来提高探测器的准确性，保持速度不变。根据作者的说法，本文并不是要介绍一种新的目标检测器，而是要展示如何一步一步地构建一个更好的检测器。PP-YOLO使用的大多数技巧与yolo4中使用的技巧不同，重叠的技巧使用不同的实现。PP-YOLO对YOLOv3的变化如下:</p>
+<ol type="1">
+<li><p>ResNet50-vd骨干网络在最后阶段用一个增强了可变形卷积的架构取代DarkNet-53骨干网<a href="#fn125" class="footnote-ref" id="fnref125" role="doc-noteref"><sup>125</sup></a>，以及一个蒸馏的预训练模型，该模型在ImageNet上具有更高的分类精度。这个架构被称为ResNet5-vd-dcn。</p></li>
+<li><p>更大的批处理规模以提高训练的稳定性，它们从64增加到192，同时更新了训练计划和学习率。</p></li>
+<li><p>维护训练参数的移动平均线，并使用它们代替最终训练值。</p></li>
+<li><p>DropBlock只应用于FPN。</p></li>
+<li><p>在另一个分支中，将IoU损失与边界盒回归的l1损失一起添加。</p></li>
+<li><p>添加了IoU预测分支来测量定位精度以及IoU感知损失。在推理过程中，YOLOv3将分类概率和客观评分相乘计算最终检测结果，PP-YOLO还将预测IoU相乘考虑定位精度。</p></li>
+<li><p>采用类似于YOLOv4的网格敏感方法改进网格边界的边界框中心预测。</p></li>
+<li><p>采用矩阵式NMS<a href="#fn126" class="footnote-ref" id="fnref126" role="doc-noteref"><sup>126</sup></a>，可以并行运行，比传统NMS运行速度更快。</p></li>
+<li><p>CoordConv<a href="#fn127" class="footnote-ref" id="fnref127" role="doc-noteref"><sup>127</sup></a>用于FPN的1 × 1卷积，在检测头的第一个卷积层上。CoordConv允许网络学习平移不变性，提高检测定位。</p></li>
+<li><p>空间金字塔池化仅在顶部特征图上使用，以增加主干的接受野。</p></li>
+</ol>
+<h3 id="pp-yolo-数据增强和预处理">17.1 PP-YOLO 数据增强和预处理</h3>
+<p>PP-YOLO采用了以下增强和预处理:</p>
+<ol type="1">
+<li><p>混合训练<a href="#fn128" class="footnote-ref" id="fnref128" role="doc-noteref"><sup>128</sup></a>，从<span class="math inline">\(Beta(\alpha,\beta)\)</span>分布中抽样权值，其中α = 1.5， β = 1.5。</p></li>
+<li><p>随机颜色失真。</p></li>
+<li><p>随机的扩大。</p></li>
+<li><p>随机裁剪和随机翻转的概率为0.5。</p></li>
+<li><p>RGB通道z-score归一化，均值为[0.485,0.456,0.406]，标准差为[0.229,0.224,0.225]。</p></li>
+<li><p>从[320,352,384,416,448,480,512,544,576,608]中均匀绘制多个图像大小。</p></li>
+</ol>
+<h3 id="results">17.2 results</h3>
+<p>在MS COCO数据集测试开发2017上进行评估，PP-YOLO在NVIDIA V100上以73 FPS的速度实现了45.9%的AP和65.2%的AP50。</p>
+<h3 id="pp-yolov2">17.3 PP-YOLOv2</h3>
+<p>PP-YOLOv2<a href="#fn129" class="footnote-ref" id="fnref129" role="doc-noteref"><sup>129</sup></a>于2021年4月在ArXiv上发表，并对PP-YOLO进行了四项改进，将NVIDIA V100上69 FPS的AP性能从45.9%提高到49.5%。PP-YOLOv2对PP-YOLO的修改如下:</p>
+<ol type="1">
+<li><p>骨干网从ResNet50修改为ResNet101。</p></li>
+<li><p>PAN (Path aggregation network)，替代类似于YOLOv4的FPN。</p></li>
+<li><p>Mish激活函数。与YOLOv4和YOLOv5不同的是，它们仅在检测颈部应用了mish激活功能，使主干与ReLU保持不变。</p></li>
+<li><p>较大的输入尺寸有助于提高小对象的性能。他们将最大的输入大小从608扩展到768，并将每个GPU的批处理大小从24张减少到12张。输入大小从[320,352,384,416,448,480,512,544,576,608,640,672,704,736,768]中均匀抽取。</p></li>
+<li><p>修改后的IoU感知分支。他们修改了IoU感知损失计算的计算，使用软标签格式代替软权重格式。</p></li>
+</ol>
+<h3 id="pp-yoloe">17.4 PP-YOLOE</h3>
+<p>PP-YOLOE<a href="#fn130" class="footnote-ref" id="fnref130" role="doc-noteref"><sup>130</sup></a>于2022年3月在ArXiv上发表。它对PP-YOLOv2进行了改进，在NVIDIA V100上以78.1 FPS实现了51.4% AP的性能。PP-YOLOE对PP-YOLOv2的主要变化有:</p>
+<ol type="1">
+<li><p>Anchor-free。PP-YOLOE遵循<a href="#fn131" class="footnote-ref" id="fnref131" role="doc-noteref"><sup>131</sup></a><a href="#fn132" class="footnote-ref" id="fnref132" role="doc-noteref"><sup>132</sup></a><a href="#fn133" class="footnote-ref" id="fnref133" role="doc-noteref"><sup>133</sup></a><a href="#fn134" class="footnote-ref" id="fnref134" role="doc-noteref"><sup>134</sup></a>作品所引领的时代潮流，采用无锚式架构。</p></li>
+<li><p>新的 backbone 和 neck。受TreeNet<a href="#fn135" class="footnote-ref" id="fnref135" role="doc-noteref"><sup>135</sup></a>的启发，作者使用结合残差和密集连接的RepResBlocks修改了脊柱和颈部的结构。</p></li>
+<li><p>任务一致性学习(TAL)。YOLOX首先提出了任务错位问题，即分类置信度和定位精度在所有情况下都不一致。为了减少这个问题，PP-YOLOE实现了TOOD<a href="#fn136" class="footnote-ref" id="fnref136" role="doc-noteref"><sup>136</sup></a>中提出的TAL，其中包括动态标签分配和任务对齐损失。</p></li>
+<li><p>高效任务对齐头(ET-head)。与YOLOX的分类和定位磁头分离不同，PP-YOLOE使用基于ood的单个磁头来提高速度和准确性。</p></li>
+<li><p>变焦(VFL)和分布焦损失(DFL)。VFL<a href="#fn137" class="footnote-ref" id="fnref137" role="doc-noteref"><sup>137</sup></a>使用目标分数对阳性样本进行权重损失，对IoU高的样本给予更高的权重。这在训练期间优先考虑高质量的样本。同样，两者都使用IACS作为目标，允许对分类和定位质量进行联合学习，从而实现训练和推理的一致性。另一方面，DFL<a href="#fn138" class="footnote-ref" id="fnref138" role="doc-noteref"><sup>138</sup></a>将Focal Loss从离散标签扩展到连续标签，从而成功地优化了结合质量估计和类别预测的改进表示。这允许在实际数据中准确地描述灵活的分布，从而消除不一致的风险。</p></li>
+</ol>
+<p>与之前的YOLO版本一样，作者通过改变脊柱和颈部的宽度和深度来生成多个缩放模型。这些型号分别为PP-YOLOE-s(小型)、PP-YOLOE-m(中型)、PP-YOLOE-l(大型)和PP-YOLOE-x(超大型)。</p>
+<h2 id="discussion">18 discussion</h2>
+<p>本文检查了15个YOLO版本，从最初的YOLO模型到最新的YOLOv8。表4提供了所讨论的YOLO版本的概述。从这个表中，我们可以识别出几个关键模式:</p>
+<ul>
+<li><p>锚点:最初的YOLO模型相对简单，没有使用锚点，而目前的状态依赖于带锚点的两级探测器。YOLOv2加入了锚点，从而提高了边界框预测的准确性。这种趋势持续了5年，直到YOLOX推出了一种无锚的方法，取得了最先进的效果。从那时起，后续的YOLO版本已经放弃了锚的使用。</p></li>
+<li><p>框架:最初，YOLO是使用Darknet框架开发的，随后的版本也紧随其后。然而，当Ultralytics将YOLOv3移植到PyTorch时，剩余的YOLO版本是使用PyTorch开发的，从而导致增强的激增。另一种使用的深度学习语言是PaddlePaddle，这是一个最初由百度开发的开源框架。</p></li>
+<li><p>骨干:随着时间的推移，YOLO模型的骨干架构发生了重大变化。从包含简单卷积层和最大池化层的Darknet架构开始，后来的模型在YOLOv4中加入了跨阶段部分连接(CSP)，在YOLOv6和YOLOv7中加入了重新参数化，在DAMO-YOLO中加入了神经结构搜索。</p></li>
+<li><p>性能:虽然YOLO模型的性能随着时间的推移有所提高，但值得注意的是，它们通常优先考虑速度和准确性的平衡，而不是仅仅关注准确性。这种权衡是YOLO框架的一个重要方面，它允许跨各种应用程序进行实时对象检测。</p></li>
+</ul>
+<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214214908034.png" alt="image-20231214214908034" style="zoom:80%;" /></p>
+<h3 id="在速度和准确性之间进行权衡">18.1 在速度和准确性之间进行权衡</h3>
+<p>YOLO系列目标检测模型一直专注于平衡速度和准确性，旨在提供实时性能而不牺牲检测结果的质量。随着YOLO框架在各种迭代中不断发展，这种权衡一直是一个反复出现的主题，每个版本都以不同的方式寻求优化这些相互竞争的目标。在最初的YOLO模型中，主要关注的是实现高速目标检测。该模型利用单个卷积神经网络(CNN)直接从输入图像中预测物体的位置和类别，从而实现实时处理。然而，这种对速度的强调导致了准确性的妥协，主要是在处理小对象或具有重叠边界框的对象时。</p>
+<p>随后的YOLO版本引入了改进和增强，以解决这些限制，同时保持框架的实时功能。例如，YOLOv2 (YOLO9000)引入锚盒和穿透层来改善物体的定位，从而提高精度。此外，YOLOv3通过采用多尺度特征提取架构增强了模型的性能，从而可以在各种尺度上更好地检测目标。</p>
+<p>随着YOLO框架的发展，速度和准确性之间的权衡变得更加微妙。像YOLOv4和YOLOv5这样的模型引入了创新，比如新的网络主干网、改进的数据增强技术和优化的训练策略。这些发展在不显著影响模型实时性能的情况下显著提高了精度。</p>
+<p>从缩放yolo4开始，所有官方YOLO模型都对速度和精度之间的权衡进行了微调，提供不同的模型尺度以适应特定的应用和硬件要求。例如，这些版本通常提供针对边缘设备优化的轻量级模型，以准确性换取降低的计算复杂性和更快的处理时间。</p>
+<h2 id="yolo-未来">19 YOLO 未来</h2>
+<p>随着YOLO框架的不断发展，我们预计以下趋势和可能性将影响未来的发展:</p>
+<ol type="1">
+<li><p>研究人员和开发人员将利用深度学习、数据增强和训练技术方面的最新方法，继续完善YOLO架构。这个持续的创新过程可能会提高模型的性能、健壮性和效率。</p></li>
+<li><p>基准进化。目前用于评估目标检测模型的基准，COCO 2017，最终可能会被一个更先进、更具挑战性的基准所取代。这反映了前两个YOLO版本中使用的VOC 2007基准的转变，反映了随着模型变得更加复杂和准确，对更高要求的基准的需求。</p></li>
+<li><p>YOLO模型及其应用的扩展。随着YOLO框架的发展，我们预计每年发布的YOLO模型数量将会增加，应用范围也会相应扩大。随着该框架变得更加通用和强大，它可能会被应用于更广泛的领域，从家用电器设备到自动驾驶汽车。</p></li>
+<li><p>扩展到新的领域。YOLO模型有潜力将其功能扩展到物体检测和分割之外，扩展到视频中的物体跟踪和3D关键点估计等领域。随着这些模型的发展，它们可能成为解决更广泛的计算机视觉任务的新解决方案的基础。</p></li>
+<li><p>对各种硬件的适应性。YOLO模型将进一步跨越硬件平台，从物联网设备到高性能计算集群。这种适应性将支持在各种上下文中部署YOLO模型，具体取决于应用程序的需求和约束。此外，通过定制模型以适应不同的硬件规格，YOLO可以为更多的用户和行业提供访问和有效的服务。</p></li>
+</ol>
+<h2 id="reference">reference</h2>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>W. Lan, J. Dang, Y . Wang, and S. Wang, “Pedestrian detection based on yolo network model,” in 2018 IEEE international conference on mechatronics and automation (ICMA), pp. 1547–1551, IEEE, 2018.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>W.-Y . Hsu and W.-Y . Lin, “Adaptive fusion of multi-scale yolo for pedestrian detection,” IEEE Access, vol. 9, pp. 110063–110073, 2021.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>A. Benjumea, I. Teeti, F. Cuzzolin, and A. Bradley, “Y olo-z: Improving small object detection in yolov5 for autonomous vehicles,” arXiv preprint arXiv:2112.11798, 2021.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>N. M. A. A. Dazlee, S. A. Khalil, S. Abdul-Rahman, and S. Mutalib, “Object detection for autonomous vehicles with sensor-based technology using yolo,” International Journal of Intelligent Systems and Applications in Engineering, vol. 10, no. 1, pp. 129–134, 2022.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5" role="doc-endnote"><p>S. Liang, H. Wu, L. Zhen, Q. Hua, S. Garg, G. Kaddoum, M. M. Hassan, and K. Y u, “Edge yolo: Real-time intelligent object detection system based on edge-cloud cooperation in autonomous vehicles,” IEEE Transactions on Intelligent Transportation Systems, vol. 23, no. 12, pp. 25345–25360, 2022.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6" role="doc-endnote"><p>Q. Li, X. Ding, X. Wang, L. Chen, J. Son, and J.-Y . Song, “Detection and identification of moving objects at busy traffic road based on yolo v4,” The Journal of the Institute of Internet, Broadcasting and Communication, vol. 21, no. 1, pp. 141–148, 2021.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7" role="doc-endnote"><p>S. Shinde, A. Kothari, and V . Gupta, “Y olo based human action recognition and localization,” Procedia computer science, vol. 133, pp. 831–838, 2018.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8" role="doc-endnote"><p>A. H. Ashraf, M. Imran, A. M. Qahtani, A. Alsufyani, O. Almutiry, A. Mahmood, M. Attique, and M. Habib, “Weapons detection for security and video surveillance using cnn and yolo-v5s,” CMC-Comput. Mater . Contin, vol. 70, pp. 2761–2775, 2022.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9" role="doc-endnote"><p>Y . Zheng and H. Zhang, “Video analysis in sports by lightweight object detection network under the background of sports industry development,” Computational Intelligence and Neuroscience, vol. 2022, 2022.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10" role="doc-endnote"><p>H. Ma, T. Celik, and H. Li, “Fer-yolo: Detection and classification based on facial expressions,” in Image and Graphics: 11th International Conference, ICIG 2021, Haikou, China, August 6–8, 2021, Proceedings, Part I 11, pp. 28–39, Springer, 2021.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11" role="doc-endnote"><p>Y . Tian, G. Yang, Z. Wang, H. Wang, E. Li, and Z. Liang, “Apple detection during different growth stages in orchards using the improved yolo-v3 model,” Computers and electronics in agriculture, vol. 157, pp. 417–426, 2019.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12" role="doc-endnote"><p>D. Wu, S. Lv, M. Jiang, and H. Song, “Using channel pruning-based yolo v4 deep learning algorithm for the real-time and accurate detection of apple flowers in natural environments,” Computers and Electronics in Agriculture, vol. 178, p. 105742, 2020.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13" role="doc-endnote"><p>M. Lippi, N. Bonucci, R. F. Carpio, M. Contarini, S. Speranza, and A. Gasparri, “A yolo-based pest detection system for precision agriculture,” in 2021 29th Mediterranean Conference on Control and Automation (MED), pp. 342–347, IEEE, 2021.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14" role="doc-endnote"><p>W. Y ang and Z. Jiachun, “Real-time face detection based on yolo,” in 2018 1st IEEE international conference on knowledge innovation and invention (ICKII), pp. 221–224, IEEE, 2018.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15" role="doc-endnote"><p>W. Chen, H. Huang, S. Peng, C. Zhou, and C. Zhang, “Y olo-face: a real-time face detector,” The Visual Computer, vol. 37, pp. 805–813, 2021.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16" role="doc-endnote"><p>M. A. Al-Masni, M. A. Al-Antari, J.-M. Park, G. Gi, T.-Y . Kim, P . Rivera, E. V alarezo, M.-T. Choi, S.-M. Han, and T.-S. Kim, “Simultaneous detection and classification of breast masses in digital mammograms via a deep learning yolo-based cad system,” Computer methods and programs in biomedicine, vol. 157, pp. 85–94, 2018.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17" role="doc-endnote"><p>Y . Nie, P . Sommella, M. O’Nils, C. Liguori, and J. Lundgren, “Automatic detection of melanoma with yolo deep convolutional neural networks,” in 2019 E-Health and Bioengineering Conference (EHB), pp. 1–4, IEEE, 2019.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18" role="doc-endnote"><p>H. M. Ünver and E. Ayan, “Skin lesion segmentation in dermoscopic images with combination of yolo and grabcut algorithm,” Diagnostics, vol. 9, no. 3, p. 72, 2019.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19" role="doc-endnote"><p>L. Tan, T. Huangfu, L. Wu, and W. Chen, “Comparison of retinanet, ssd, and yolo v3 for real-time pill identification,” BMC medical informatics and decision making, vol. 21, pp. 1–11, 2021.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20" role="doc-endnote"><p>L. Cheng, J. Li, P . Duan, and M. Wang, “A small attentional yolo model for landslide detection from satellite remote sensing images,” Landslides, vol. 18, no. 8, pp. 2751–2765, 2021.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21" role="doc-endnote"><p>M.-T. Pham, L. Courtrai, C. Friguet, S. Lefèvre, and A. Baussard, “Y olo-fine: One-stage detector of small objects under various backgrounds in remote sensing images,” Remote Sensing, vol. 12, no. 15, p. 2501, 2020.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22" role="doc-endnote"><p>Y . Qing, W. Liu, L. Feng, and W. Gao, “Improved yolo network for free-angle remote sensing target detection,” Remote Sensing, vol. 13, no. 11, p. 2171, 2021.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn23" role="doc-endnote"><p>Z. Zakria, J. Deng, R. Kumar, M. S. Khokhar, J. Cai, and J. Kumar, “Multiscale and direction target detecting in remote sensing images via modified yolo-v4,” IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing, vol. 15, pp. 1039–1048, 2022.<a href="#fnref23" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn24" role="doc-endnote"><p>P . Kumar, S. Narasimha Swamy, P . Kumar, G. Purohit, and K. S. Raju, “Real-time, yolo-based intelligent surveillance and monitoring system using jetson tx2,” in Data Analytics and Management: Proceedings of ICDAM, pp. 461–471, Springer, 2021.<a href="#fnref24" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn25" role="doc-endnote"><p>K. Bhambani, T. Jain, and K. A. Sultanpure, “Real-time face mask and social distancing violation detection system using yolo,” in 2020 IEEE Bangalore humanitarian technology conference (B-HTC), pp. 1–6, IEEE, 2020.<a href="#fnref25" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn26" role="doc-endnote"><p>J. Li, Z. Su, J. Geng, and Y . Yin, “Real-time detection of steel strip surface defects based on improved yolo detection network,” IF AC-PapersOnLine, vol. 51, no. 21, pp. 76–81, 2018.<a href="#fnref26" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn27" role="doc-endnote"><p>E. N. Ukhwah, E. M. Y uniarno, and Y . K. Suprapto, “Asphalt pavement pothole detection using deep learning method based on yolo neural network,” in 2019 International Seminar on Intelligent Technology and Its Applications (ISITIA), pp. 35–40, IEEE, 2019.<a href="#fnref27" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn28" role="doc-endnote"><p>Y . Du, N. Pan, Z. Xu, F. Deng, Y . Shen, and H. Kang, “Pavement distress detection and classification based on yolo network,” International Journal of Pavement Engineering, vol. 22, no. 13, pp. 1659–1672, 2021.<a href="#fnref28" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn29" role="doc-endnote"><p>R.-C. Chen et al., “Automatic license plate recognition via sliding-window darknet-yolo deep learning,” Image and Vision Computing, vol. 87, pp. 47–56, 2019.<a href="#fnref29" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn30" role="doc-endnote"><p>C. Dewi, R.-C. Chen, X. Jiang, and H. Y u, “Deep convolutional neural network for enhancing traffic sign recognition developed on yolo v4,” Multimedia Tools and Applications, vol. 81, no. 26, pp. 37821–37845, 2022.<a href="#fnref30" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn31" role="doc-endnote"><p>A. M. Roy, J. Bhaduri, T. Kumar, and K. Raj, “Wildect-yolo: An efficient and robust computer vision-based accurate object localization model for automated endangered wildlife detection,” Ecological Informatics, vol. 75, p. 101919, 2023.<a href="#fnref31" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn32" role="doc-endnote"><p>S. Kulik and A. Shtanko, “Experiments with neural net object detection system yolo on small training datasets for intelligent robotics,” in Advanced Technologies in Robotics and Intelligent Systems: Proceedings of ITR 2019, pp. 157–162, Springer, 2020.<a href="#fnref32" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn33" role="doc-endnote"><p>D. H. Dos Reis, D. Welfer, M. A. De Souza Leite Cuadros, and D. F. T. Gamarra, “Mobile robot navigation using an object recognition software with rgbd images and the yolo algorithm,” Applied Artificial Intelligence, vol. 33, no. 14, pp. 1290–1305, 2019.<a href="#fnref33" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn34" role="doc-endnote"><p>O. Sahin and S. Ozer, “Y olodrone: Improved yolo architecture for object detection in drone images,” in 2021 44th International Conference on Telecommunications and Signal Processing (TSP), pp. 361–365, IEEE, 2021.<a href="#fnref34" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn35" role="doc-endnote"><p>C. Chen, Z. Zheng, T. Xu, S. Guo, S. Feng, W. Yao, and Y . Lan, “Y olo-based uav technology: A review of the research and its applications,” Drones, vol. 7, no. 3, p. 190, 2023.<a href="#fnref35" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn36" role="doc-endnote"><p>M. Everingham, L. V an Gool, C. K. Williams, J. Winn, and A. Zisserman, “The pascal visual object classes (voc)challenge,” International journal of computer vision, vol. 88, no. 2, pp. 303–338, 2010.<a href="#fnref36" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn37" role="doc-endnote"><p>T.-Y . Lin, M. Maire, S. Belongie, J. Hays, P . Perona, D. Ramanan, P . Dollár, and C. L. Zitnick, “Microsoft coco: Common objects in context,” in European conference on computer vision, pp. 740–755, Springer, 2014.<a href="#fnref37" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn38" role="doc-endnote"><p>J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, “You only look once: Unified, real-time object detection,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 779–788, 2016.<a href="#fnref38" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn39" role="doc-endnote"><p>R. Girshick, “Fast r-cnn,” in Proceedings of the IEEE international conference on computer vision, pp. 1440–1448, 2015.<a href="#fnref39" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn40" role="doc-endnote"><p>A. L. Maas, A. Y . Hannun, A. Y . Ng, et al., “Rectifier nonlinearities improve neural network acoustic models,” in Proc. icml, vol. 30, p. 3, Atlanta, Georgia, USA, 2013.<a href="#fnref40" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn41" role="doc-endnote"><p>C. Szegedy, W. Liu, Y . Jia, P . Sermanet, S. Reed, D. Anguelov, D. Erhan, V . V anhoucke, and A. Rabinovich, “Going deeper with convolutions,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 1–9, 2015.<a href="#fnref41" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn42" role="doc-endnote"><p>M. Lin, Q. Chen, and S. Y an, “Network in network,” arXiv preprint arXiv:1312.4400, 2013.<a href="#fnref42" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn43" role="doc-endnote"><p>O. Russakovsky, J. Deng, H. Su, J. Krause, S. Satheesh, S. Ma, Z. Huang, A. Karpathy, A. Khosla, M. Bernstein, et al., “Imagenet large scale visual recognition challenge,” International journal of computer vision, vol. 115, no. 3, pp. 211–252, 2015.<a href="#fnref43" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn44" role="doc-endnote"><p>M. Everingham, L. V an Gool, C. K. Williams, J. Winn, and A. Zisserman, “The pascal visual object classes (voc)challenge,” International journal of computer vision, vol. 88, no. 2, pp. 303–338, 2010.<a href="#fnref44" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn45" role="doc-endnote"><p>R. Girshick, “Fast r-cnn,” in Proceedings of the IEEE international conference on computer vision, pp. 1440–1448, 2015.<a href="#fnref45" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn46" role="doc-endnote"><p>J. Redmon and A. Farhadi, “Y olo9000: better, faster, stronger,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 7263–7271, 2017.<a href="#fnref46" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn47" role="doc-endnote"><p>M. Lin, Q. Chen, and S. Y an, “Network in network,” arXiv preprint arXiv:1312.4400, 2013.<a href="#fnref47" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn48" role="doc-endnote"><p>T.-Y . Lin, M. Maire, S. Belongie, J. Hays, P . Perona, D. Ramanan, P . Dollár, and C. L. Zitnick, “Microsoft coco: Common objects in context,” in European conference on computer vision, pp. 740–755, Springer, 2014.<a href="#fnref48" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn49" role="doc-endnote"><p>J. Redmon and A. Farhadi, “Y olov3: An incremental improvement,” arXiv preprint arXiv:1804.02767, 2018.<a href="#fnref49" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn50" role="doc-endnote"><p>I. Krasin, T. Duerig, N. Alldrin, V . Ferrari, S. Abu-El-Haija, A. Kuznetsova, H. Rom, J. Uijlings, S. Popov, A. V eit, et al., “Openimages: A public dataset for large-scale multi-label and multi-class image classification,” Dataset available from https://github. com/openimages, vol. 2, no. 3, p. 18, 2017.<a href="#fnref50" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn51" role="doc-endnote"><p>K. He, X. Zhang, S. Ren, and J. Sun, “Spatial pyramid pooling in deep convolutional networks for visual recognition,” IEEE transactions on pattern analysis and machine intelligence, vol. 37, no. 9, pp. 1904–1916, 2015.<a href="#fnref51" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn52" role="doc-endnote"><p>T.-Y . Lin, P . Dollár, R. Girshick, K. He, B. Hariharan, and S. Belongie, “Feature pyramid networks for object detection,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 2117–2125, 2017.<a href="#fnref52" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn53" role="doc-endnote"><p>T.-Y . Lin, M. Maire, S. Belongie, J. Hays, P . Perona, D. Ramanan, P . Dollár, and C. L. Zitnick, “Microsoft coco: Common objects in context,” in European conference on computer vision, pp. 740–755, Springer, 2014.<a href="#fnref53" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn54" role="doc-endnote"><p>T.-Y . Lin, P . Dollár, R. Girshick, K. He, B. Hariharan, and S. Belongie, “Feature pyramid networks for object detection,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 2117–2125, 2017.<a href="#fnref54" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn55" role="doc-endnote"><p>A. Bochkovskiy, C.-Y . Wang, and H.-Y . M. Liao, “Y olov4: Optimal speed and accuracy of object detection,” arXiv preprint arXiv:2004.10934, 2020.<a href="#fnref55" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn56" role="doc-endnote"><p>K. He, X. Zhang, S. Ren, and J. Sun, “Spatial pyramid pooling in deep convolutional networks for visual recognition,” IEEE transactions on pattern analysis and machine intelligence, vol. 37, no. 9, pp. 1904–1916, 2015.<a href="#fnref56" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn57" role="doc-endnote"><p>L.-C. Chen, G. Papandreou, I. Kokkinos, K. Murphy, and A. L. Y uille, “Deeplab: Semantic image segmentation with deep convolutional nets, atrous convolution, and fully connected crfs,” IEEE transactions on pattern analysis and machine intelligence, vol. 40, no. 4, pp. 834–848, 2017.<a href="#fnref57" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn58" role="doc-endnote"><p>S. Liu, D. Huang, et al., “Receptive field block net for accurate and fast object detection,” in Proceedings of the European conference on computer vision (ECCV), pp. 385–400, 2018.<a href="#fnref58" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn59" role="doc-endnote"><p>T.-Y . Lin, P . Dollár, R. Girshick, K. He, B. Hariharan, and S. Belongie, “Feature pyramid networks for object detection,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 2117–2125, 2017.<a href="#fnref59" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn60" role="doc-endnote"><p>K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for image recognition,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 770–778, 2016.<a href="#fnref60" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn61" role="doc-endnote"><p>B. Hariharan, P . Arbeláez, R. Girshick, and J. Malik, “Hypercolumns for object segmentation and fine-grained localization,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 447–456, 2015.<a href="#fnref61" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn62" role="doc-endnote"><p>Q. Zhao, T. Sheng, Y . Wang, Z. Tang, Y . Chen, L. Cai, and H. Ling, “M2det: A single-shot object detector based on multi-level feature pyramid network,” in Proceedings of the AAAI conference on artificial intelligence, vol. 33, pp. 9259–9266, 2019.<a href="#fnref62" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn63" role="doc-endnote"><p>A. L. Maas, A. Y . Hannun, A. Y . Ng, et al., “Rectifier nonlinearities improve neural network acoustic models,” in Proc. icml, vol. 30, p. 3, Atlanta, Georgia, USA, 2013.<a href="#fnref63" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn64" role="doc-endnote"><p>K. He, X. Zhang, S. Ren, and J. Sun, “Delving deep into rectifiers: Surpassing human-level performance on imagenet classification,” in Proceedings of the IEEE international conference on computer vision, pp. 1026–1034, 2015.<a href="#fnref64" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn65" role="doc-endnote"><p>D. Misra, “Mish: A self regularized non-monotonic neural activation function,” arXiv preprint arXiv:1908.08681, vol. 4, no. 2, pp. 10–48550, 2019.<a href="#fnref65" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn66" role="doc-endnote"><p>N. Bodla, B. Singh, R. Chellappa, and L. S. Davis, “Soft-nms–improving object detection with one line of code,” in Proceedings of the IEEE international conference on computer vision, pp. 5561–5569, 2017.<a href="#fnref66" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn67" role="doc-endnote"><p>S. Xie, R. Girshick, P . Dollár, Z. Tu, and K. He, “Aggregated residual transformations for deep neural networks,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 1492–1500, 2017.<a href="#fnref67" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn68" role="doc-endnote"><p>M. Tan and Q. Le, “Efficientnet: Rethinking model scaling for convolutional neural networks,” in International conference on machine learning, pp. 6105–6114, PMLR, 2019.<a href="#fnref68" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn69" role="doc-endnote"><p>D. Misra, “Mish: A self regularized non-monotonic neural activation function,” arXiv preprint arXiv:1908.08681, vol. 4, no. 2, pp. 10–48550, 2019.<a href="#fnref69" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn70" role="doc-endnote"><p>K. He, X. Zhang, S. Ren, and J. Sun, “Spatial pyramid pooling in deep convolutional networks for visual recognition,” IEEE transactions on pattern analysis and machine intelligence, vol. 37, no. 9, pp. 1904–1916, 2015.<a href="#fnref70" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn71" role="doc-endnote"><p>S. Liu, L. Qi, H. Qin, J. Shi, and J. Jia, “Path aggregation network for instance segmentation,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 8759–8768, 2018.<a href="#fnref71" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn72" role="doc-endnote"><p>S. Woo, J. Park, J.-Y . Lee, and I. S. Kweon, “Cbam: Convolutional block attention module,” in Proceedings of the European conference on computer vision (ECCV), pp. 3–19, 2018.<a href="#fnref72" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn73" role="doc-endnote"><p>G. Ghiasi, T.-Y . Lin, and Q. V . Le, “Dropblock: A regularization method for convolutional networks,” Advances in neural information processing systems, vol. 31, 2018.<a href="#fnref73" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn74" role="doc-endnote"><p>N. Srivastava, G. Hinton, A. Krizhevsky, I. Sutskever, and R. Salakhutdinov, “Dropout: a simple way to prevent neural networks from overfitting,” The journal of machine learning research, vol. 15, no. 1, pp. 1929–1958, 2014.<a href="#fnref74" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn75" role="doc-endnote"><p>C. Szegedy, V . V anhoucke, S. Ioffe, J. Shlens, and Z. Wojna, “Rethinking the inception architecture for computer vision,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 2818–2826, 2016.<a href="#fnref75" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn76" role="doc-endnote"><p>M. A. Islam, S. Naha, M. Rochan, N. Bruce, and Y . Wang, “Label refinement network for coarse-to-fine semantic segmentation,” arXiv preprint arXiv:1703.00551, 2017.<a href="#fnref76" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn77" role="doc-endnote"><p>Z. Zheng, P . Wang, W. Liu, J. Li, R. Y e, and D. Ren, “Distance-iou loss: Faster and better learning for bounding box regression,” in Proceedings of the AAAI conference on artificial intelligence, vol. 34, pp. 12993–13000, 2020.<a href="#fnref77" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn78" role="doc-endnote"><p>S. Ioffe and C. Szegedy, “Batch normalization: Accelerating deep network training by reducing internal covariate shift,” in International conference on machine learning, pp. 448–456, PMLR, 2015.<a href="#fnref78" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn79" role="doc-endnote"><p>I. Loshchilov and F. Hutter, “Sgdr: Stochastic gradient descent with warm restarts,” arXiv preprint arXiv:1608.03983, 2016.<a href="#fnref79" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn80" role="doc-endnote"><p>G. Jocher, “YOLOv5 by Ultralytics.” https://github.com/ultralytics/yolov5, 2020. Accessed: February 30, 2023.<a href="#fnref80" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn81" role="doc-endnote"><p>C.-Y . Wang, A. Bochkovskiy, and H.-Y . M. Liao, “Scaled-yolov4: Scaling cross stage partial network,” in Proceedings of the IEEE/cvf conference on computer vision and pattern recognition, pp. 13029–13038, 2021.<a href="#fnref81" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn82" role="doc-endnote"><p>M. Tan, R. Pang, and Q. V . Le, “Efficientdet: Scalable and efficient object detection,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pp. 10781–10790, 2020.<a href="#fnref82" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn83" role="doc-endnote"><p>T.-Y . Lin, P . Goyal, R. Girshick, K. He, and P . Dollár, “Focal loss for dense object detection,” in Proceedings of the IEEE international conference on computer vision, pp. 2980–2988, 2017.<a href="#fnref83" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn84" role="doc-endnote"><p>X. Long, K. Deng, G. Wang, Y . Zhang, Q. Dang, Y . Gao, H. Shen, J. Ren, S. Han, E. Ding, et al., “Pp-yolo: An effective and efficient implementation of object detector,” arXiv preprint arXiv:2007.12099, 2020.<a href="#fnref84" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn85" role="doc-endnote"><p>C.-Y . Wang, I.-H. Yeh, and H.-Y . M. Liao, “Y ou only learn one representation: Unified network for multiple tasks,” arXiv preprint arXiv:2105.04206, 2021.<a href="#fnref85" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn86" role="doc-endnote"><p>Z. Ge, S. Liu, F. Wang, Z. Li, and J. Sun, “Y olox: Exceeding yolo series in 2021,” arXiv preprint arXiv:2107.08430, 2021.<a href="#fnref86" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn87" role="doc-endnote"><p>H. Law and J. Deng, “Cornernet: Detecting objects as paired keypoints,” in Proceedings of the European conference on computer vision (ECCV), pp. 734–750, 2018.<a href="#fnref87" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn88" role="doc-endnote"><p>K. Duan, S. Bai, L. Xie, H. Qi, Q. Huang, and Q. Tian, “Centernet: Keypoint triplets for object detection,” in Proceedings of the IEEE/CVF international conference on computer vision, pp. 6569–6578, 2019.<a href="#fnref88" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn89" role="doc-endnote"><p>Z. Tian, C. Shen, H. Chen, and T. He, “Fcos: Fully convolutional one-stage object detection,” in Proceedings of the IEEE/CVF international conference on computer vision, pp. 9627–9636, 2019.<a href="#fnref89" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn90" role="doc-endnote"><p>Z. Tian, C. Shen, H. Chen, and T. He, “Fcos: Fully convolutional one-stage object detection,” in Proceedings of the IEEE/CVF international conference on computer vision, pp. 9627–9636, 2019.<a href="#fnref90" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn91" role="doc-endnote"><p>G. Song, Y . Liu, and X. Wang, “Revisiting the sibling head in object detector,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 11563–11572, 2020.<a href="#fnref91" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn92" role="doc-endnote"><p>Y . Wu, Y . Chen, L. Y uan, Z. Liu, L. Wang, H. Li, and Y . Fu, “Rethinking classification and localization for object detection,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pp. 10186–10195, 2020.<a href="#fnref92" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn93" role="doc-endnote"><p>Z. Ge, S. Liu, Z. Li, O. Y oshie, and J. Sun, “Ota: Optimal transport assignment for object detection,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 303–312, 2021.<a href="#fnref93" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn94" role="doc-endnote"><p>H. Zhang, M. Cisse, Y . N. Dauphin, and D. Lopez-Paz, “mixup: Beyond empirical risk minimization,” arXiv preprint arXiv:1710.09412, 2017.<a href="#fnref94" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn95" role="doc-endnote"><p>C. Li, L. Li, H. Jiang, K. Weng, Y . Geng, L. Li, Z. Ke, Q. Li, M. Cheng, W. Nie, et al., “Y olov6: A single-stage object detection framework for industrial applications,” arXiv preprint arXiv:2209.02976, 2022.<a href="#fnref95" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn96" role="doc-endnote"><p>Z. Ge, S. Liu, F. Wang, Z. Li, and J. Sun, “Y olox: Exceeding yolo series in 2021,” arXiv preprint arXiv:2107.08430, 2021.<a href="#fnref96" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn97" role="doc-endnote"><p>Z. Tian, C. Shen, H. Chen, and T. He, “Fcos: Fully convolutional one-stage object detection,” in Proceedings of the IEEE/CVF international conference on computer vision, pp. 9627–9636, 2019.<a href="#fnref97" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn98" role="doc-endnote"><p>X. Ding, X. Zhang, N. Ma, J. Han, G. Ding, and J. Sun, “Repvgg: Making vgg-style convnets great again,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pp. 13733–13742, 2021.<a href="#fnref98" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn99" role="doc-endnote"><p>S. Liu, L. Qi, H. Qin, J. Shi, and J. Jia, “Path aggregation network for instance segmentation,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 8759–8768, 2018.<a href="#fnref99" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn100" role="doc-endnote"><p>X. Ding, X. Zhang, N. Ma, J. Han, G. Ding, and J. Sun, “Repvgg: Making vgg-style convnets great again,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pp. 13733–13742, 2021.<a href="#fnref100" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn101" role="doc-endnote"><p>C.-Y . Wang, H.-Y . M. Liao, Y .-H. Wu, P .-Y . Chen, J.-W. Hsieh, and I.-H. Y eh, “Cspnet: A new backbone that can enhance learning capability of cnn,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition workshops, pp. 390–391, 2020.<a href="#fnref101" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn102" role="doc-endnote"><p>C. Feng, Y . Zhong, Y . Gao, M. R. Scott, and W. Huang, “Tood: Task-aligned one-stage object detection,” in 2021 IEEE/CVF International Conference on Computer Vision (ICCV), pp. 3490–3499, IEEE Computer Society, 2021.<a href="#fnref102" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn103" role="doc-endnote"><p>H. Zhang, Y . Wang, F. Dayoub, and N. Sunderhauf, “V arifocalnet: An iou-aware dense object detector,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 8514–8523, 2021.<a href="#fnref103" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn104" role="doc-endnote"><p>Z. Gevorgyan, “Siou loss: More powerful learning for bounding box regression,” arXiv preprint arXiv:2205.12740, 2022.<a href="#fnref104" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn105" role="doc-endnote"><p>H. Rezatofighi, N. Tsoi, J. Gwak, A. Sadeghian, I. Reid, and S. Savarese, “Generalized intersection over union: A metric and a loss for bounding box regression,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pp. 658–666, 2019.<a href="#fnref105" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn106" role="doc-endnote"><p>X. Ding, H. Chen, X. Zhang, K. Huang, J. Han, and G. Ding, “Re-parameterizing your optimizers rather than architectures,” arXiv preprint arXiv:2205.15242, 2022.<a href="#fnref106" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn107" role="doc-endnote"><p>C. Shu, Y . Liu, J. Gao, Z. Yan, and C. Shen, “Channel-wise knowledge distillation for dense prediction,” in Proceedings of the IEEE/CVF International Conference on Computer Vision, pp. 5311–5320, 2021.<a href="#fnref107" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn108" role="doc-endnote"><p>C.-Y . Wang, A. Bochkovskiy, and H.-Y . M. Liao, “Y olov7: Trainable bag-of-freebies sets new state-of-the-art for real-time object detectors,” arXiv preprint arXiv:2207.02696, 2022.<a href="#fnref108" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn109" role="doc-endnote"><p>C.-Y . Wang, H.-Y . M. Liao, and I.-H. Y eh, “Designing network design strategies through gradient path analysis,” arXiv preprint arXiv:2211.04800, 2022.<a href="#fnref109" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn110" role="doc-endnote"><p>X. Ding, X. Zhang, N. Ma, J. Han, G. Ding, and J. Sun, “Repvgg: Making vgg-style convnets great again,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pp. 13733–13742, 2021.<a href="#fnref110" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn111" role="doc-endnote"><p>K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for image recognition,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 770–778, 2016.<a href="#fnref111" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn112" role="doc-endnote"><p>G. Huang, Z. Liu, L. V an Der Maaten, and K. Q. Weinberger, “Densely connected convolutional networks,” in Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 4700–4708, 2017.<a href="#fnref112" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn113" role="doc-endnote"><p>C.-Y . Wang, I.-H. Yeh, and H.-Y . M. Liao, “Y ou only learn one representation: Unified network for multiple tasks,” arXiv preprint arXiv:2105.04206, 2021.<a href="#fnref113" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn114" role="doc-endnote"><p>X. Xu, Y . Jiang, W. Chen, Y . Huang, Y . Zhang, and X. Sun, “Damo-yolo: A report on real-time object detection design,” arXiv preprint arXiv:2211.15444, 2022.<a href="#fnref114" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn115" role="doc-endnote"><p>Alibaba, “TinyNAS.” https://github.com/alibaba/lightweight-neural-architecture-search,2023. Accessed: March 18, 2023.<a href="#fnref115" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn116" role="doc-endnote"><p>Z. Tan, J. Wang, X. Sun, M. Lin, H. Li, et al., “Giraffedet: A heavy-neck paradigm for object detection,” in International Conference on Learning Representations, 2021.<a href="#fnref116" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn117" role="doc-endnote"><p>C.-Y . Wang, H.-Y . M. Liao, Y .-H. Wu, P .-Y . Chen, J.-W. Hsieh, and I.-H. Y eh, “Cspnet: A new backbone that can enhance learning capability of cnn,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition workshops, pp. 390–391, 2020.<a href="#fnref117" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn118" role="doc-endnote"><p>C.-Y . Wang, H.-Y . M. Liao, and I.-H. Y eh, “Designing network design strategies through gradient path analysis,” arXiv preprint arXiv:2211.04800, 2022.<a href="#fnref118" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn119" role="doc-endnote"><p>Z. Ge, S. Liu, Z. Li, O. Y oshie, and J. Sun, “Ota: Optimal transport assignment for object detection,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 303–312, 2021.<a href="#fnref119" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn120" role="doc-endnote"><p>C. Feng, Y . Zhong, Y . Gao, M. R. Scott, and W. Huang, “Tood: Task-aligned one-stage object detection,” in 2021 IEEE/CVF International Conference on Computer Vision (ICCV), pp. 3490–3499, IEEE Computer Society, 2021.<a href="#fnref120" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn121" role="doc-endnote"><p>T.-Y . Lin, P . Goyal, R. Girshick, K. He, and P . Dollár, “Focal loss for dense object detection,” in Proceedings of the IEEE international conference on computer vision, pp. 2980–2988, 2017.<a href="#fnref121" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn122" role="doc-endnote"><p>G. Jocher, A. Chaurasia, and J. Qiu, “YOLO by Ultralytics.” https://github.com/ultralytics/ultralytics, 2023. Accessed: February 30, 2023.<a href="#fnref122" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn123" role="doc-endnote"><p>X. Long, K. Deng, G. Wang, Y . Zhang, Q. Dang, Y . Gao, H. Shen, J. Ren, S. Han, E. Ding, et al., “Pp-yolo: An effective and efficient implementation of object detector,” arXiv preprint arXiv:2007.12099, 2020.<a href="#fnref123" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn124" role="doc-endnote"><p>Y . Ma, D. Y u, T. Wu, and H. Wang, “Paddlepaddle: An open-source deep learning platform from industrial practice,” Frontiers of Data and Domputing, vol. 1, no. 1, pp. 105–115, 2019.<a href="#fnref124" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn125" role="doc-endnote"><p>J. Dai, H. Qi, Y . Xiong, Y . Li, G. Zhang, H. Hu, and Y . Wei, “Deformable convolutional networks,” in Proceedings of the IEEE international conference on computer vision, pp. 764–773, 2017.<a href="#fnref125" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn126" role="doc-endnote"><p>W. Xinlong, Z. Rufeng, K. Tao, L. Lei, and S. Chunhua, “Solov2: Dynamic, faster and stronger,” in Proc. NIPS, 2020.<a href="#fnref126" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn127" role="doc-endnote"><p>R. Liu, J. Lehman, P . Molino, F. Petroski Such, E. Frank, A. Sergeev, and J. Y osinski, “An intriguing failing of convolutional neural networks and the coordconv solution,” Advances in neural information processing systems, vol. 31, 2018.<a href="#fnref127" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn128" role="doc-endnote"><p>H. Zhang, M. Cisse, Y . N. Dauphin, and D. Lopez-Paz, “mixup: Beyond empirical risk minimization,” arXiv preprint arXiv:1710.09412, 2017.<a href="#fnref128" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn129" role="doc-endnote"><p>X. Huang, X. Wang, W. Lv, X. Bai, X. Long, K. Deng, Q. Dang, S. Han, Q. Liu, X. Hu, et al., “Pp-yolov2: A practical object detector,” arXiv preprint arXiv:2104.10419, 2021.<a href="#fnref129" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn130" role="doc-endnote"><p>S. Xu, X. Wang, W. Lv, Q. Chang, C. Cui, K. Deng, G. Wang, Q. Dang, S. Wei, Y . Du, et al., “Pp-yoloe: An evolved version of yolo,” arXiv preprint arXiv:2203.16250, 2022.<a href="#fnref130" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn131" role="doc-endnote"><p>Z. Tian, C. Shen, H. Chen, and T. He, “Fcos: Fully convolutional one-stage object detection,” in Proceedings of the IEEE/CVF international conference on computer vision, pp. 9627–9636, 2019.<a href="#fnref131" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn132" role="doc-endnote"><p>K. Duan, S. Bai, L. Xie, H. Qi, Q. Huang, and Q. Tian, “Centernet: Keypoint triplets for object detection,” in Proceedings of the IEEE/CVF international conference on computer vision, pp. 6569–6578, 2019.<a href="#fnref132" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn133" role="doc-endnote"><p>H. Law and J. Deng, “Cornernet: Detecting objects as paired keypoints,” in Proceedings of the European conference on computer vision (ECCV), pp. 734–750, 2018.<a href="#fnref133" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn134" role="doc-endnote"><p>Z. Ge, S. Liu, F. Wang, Z. Li, and J. Sun, “Y olox: Exceeding yolo series in 2021,” arXiv preprint arXiv:2107.08430, 2021.<a href="#fnref134" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn135" role="doc-endnote"><p>L. Rao, “Treenet: A lightweight one-shot aggregation convolutional network,” arXiv preprint arXiv:2109.12342, 2021.<a href="#fnref135" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn136" role="doc-endnote"><p>C. Feng, Y . Zhong, Y . Gao, M. R. Scott, and W. Huang, “Tood: Task-aligned one-stage object detection,” in 2021 IEEE/CVF International Conference on Computer Vision (ICCV), pp. 3490–3499, IEEE Computer Society, 2021.<a href="#fnref136" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn137" role="doc-endnote"><p>H. Zhang, Y . Wang, F. Dayoub, and N. Sunderhauf, “V arifocalnet: An iou-aware dense object detector,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 8514–8523, 2021.<a href="#fnref137" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn138" role="doc-endnote"><p>X. Li, W. Wang, L. Wu, S. Chen, X. Hu, J. Li, J. Tang, and J. Y ang, “Generalized focal loss: Learning qualified and distributed bounding boxes for dense object detection,” Advances in Neural Information Processing Systems, vol. 33, pp. 21002–21012, 2020.<a href="#fnref138" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">yolo</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">summary</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/6a09e8f8.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
+    <article id="post-强化学习1-无状态问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h2 itemprop="name">
+      <a class="article-title_code_ant" href="/post/800a73d6.html">强化学习1-无状态问题</a>
+    </h2>
+  
+
+        
+		
+		  <a href="/post/800a73d6.html" class="archive-article-date">
+  	<time datetime="2023-06-16T02:48:01.000Z" itemprop="datePublished">
+	<!-- <i class="icon-calendar icon"></i> -->
+
+	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+	&nbsp;
+	2023-06-16</time>
+	
+	<!-- busuanzi阅读量统计
+	
+	-->
+	
+    <!-- waline阅读量统计 -->
+	
+
+</a>
+
+
+        
+		
+		
+		  <!-- 添加标题栏文字统计效果 -->
+<div class="word-count">
+	
+      
+        <span class="article-type" style="
+          color: white;
+          font-size: 14px;
+          background: #0088CC;
+          padding: 0 5px 1px 5px;
+          margin-right: 5px;
+          border-radius: 2px;">原创</span>
+		  &nbsp; 
+      
+    
+	
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
+        <span class="post-meta-item-text">字数统计: </span>
+        <span class="post-count">987字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+	    <i class="fa fa-pagelines" aria-hidden="true"></i>
+        <span class="post-meta-item-text">阅读时长: </span>
+        <span class="post-count">4min</span>
+      </span>
+    </span>
+	
+
+</div>
+<!-- 添加标题栏文字统计效果结束 -->
+		
+      </header>
+    
+	
+    <div class="article-entry" itemprop="articleBody">
+	  <!-- 添加分类与标签 -->
+	  
+		  
+		  <h2 id="问题描述">问题描述</h2>
+<p>探索 + 利用</p>
+<ul>
+<li>构建中奖概率，以及中奖的期望</li>
+</ul>
+<figure class="highlight plaintext"><figcaption><span>notebook</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">#每个老虎机的中奖概率,0-1之间的均匀分布</span><br><span class="line">probs = np.random.uniform(size=10)</span><br><span class="line"></span><br><span class="line">min_num = np.argmin(probs)</span><br><span class="line">temp = probs[0]</span><br><span class="line">probs[0] = probs[min_num]</span><br><span class="line">probs[min_num]=temp</span><br><span class="line"></span><br><span class="line">#记录每个老虎机的返回值，reward期望</span><br><span class="line">rewards = [[1] for _ in range(10)]</span><br><span class="line"></span><br><span class="line">probs, rewards</span><br></pre></td></tr></table></figure>
+<ul>
+<li>尝试一次</li>
+</ul>
+<figure class="highlight plaintext"><figcaption><span>notebook</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def try_and_play():</span><br><span class="line">    i = choose_one()</span><br><span class="line"></span><br><span class="line">    #玩老虎机,得到结果</span><br><span class="line">    reward = 0</span><br><span class="line">    if random.random() &lt; probs[i]:</span><br><span class="line">        reward = 1</span><br><span class="line"></span><br><span class="line">    #记录玩的结果</span><br><span class="line">    rewards[i].append(reward)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">try_and_play()</span><br><span class="line"></span><br><span class="line">rewards</span><br></pre></td></tr></table></figure>
+<ul>
+<li>尝试5000次，统计结果：</li>
+</ul>
+<figure class="highlight plaintext"><figcaption><span>notebook</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#记录每个老虎机的返回值，reward期望</span><br><span class="line">rewards = [[1] for _ in range(10)]</span><br><span class="line">ef get_result():</span><br><span class="line">    #玩N次</span><br><span class="line">    for _ in range(5000):</span><br><span class="line">        try_and_play()</span><br><span class="line"></span><br><span class="line">    #期望的最好结果</span><br><span class="line">    target = probs.max() * 5000</span><br><span class="line"></span><br><span class="line">    #实际玩出的结果</span><br><span class="line">    result = sum([sum(i) for i in rewards])</span><br><span class="line"></span><br><span class="line">    return target, result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">get_result()</span><br></pre></td></tr></table></figure>
+<h2 id="算法描述">算法描述</h2>
+<h3 id="贪婪算法">1 贪婪算法</h3>
+<ul>
+<li>大概率选择目前中奖率最高的，小概率随机探索</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment">#贪婪算法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">choose_one</span>():</span><br><span class="line">    <span class="comment">#有小概率随机选择一根拉杆</span></span><br><span class="line">    <span class="keyword">if</span> random.random() &lt; <span class="number">0.01</span>:</span><br><span class="line">        <span class="keyword">return</span> random.randint(<span class="number">0</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#计算每个老虎机的奖励平均</span></span><br><span class="line">    rewards_mean = [np.mean(i) <span class="keyword">for</span> i <span class="keyword">in</span> rewards]</span><br><span class="line"></span><br><span class="line">    <span class="comment">#选择期望奖励估值最大的拉杆</span></span><br><span class="line">    <span class="keyword">return</span> np.argmax(rewards_mean)</span><br></pre></td></tr></table></figure>
+<h3 id="递减的贪婪算法">2 递减的贪婪算法</h3>
+<ul>
+<li>随着次数的增多，随机选择的概率逐渐下降</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment">#随机选择的概率递减的贪婪算法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">choose_one</span>():</span><br><span class="line">    <span class="comment">#求出现在已经玩了多少次了</span></span><br><span class="line">    played_count = <span class="built_in">sum</span>([<span class="built_in">len</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> rewards])</span><br><span class="line"></span><br><span class="line">    <span class="comment">#随机选择的概率逐渐下降</span></span><br><span class="line">    <span class="keyword">if</span> random.random() &lt; <span class="number">1</span> / played_count:</span><br><span class="line">        <span class="keyword">return</span> random.randint(<span class="number">0</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#计算每个老虎机的奖励平均</span></span><br><span class="line">    rewards_mean = [np.mean(i) <span class="keyword">for</span> i <span class="keyword">in</span> rewards]</span><br><span class="line"></span><br><span class="line">    <span class="comment">#选择期望奖励估值最大的拉杆</span></span><br><span class="line">    <span class="keyword">return</span> np.argmax(rewards_mean)</span><br></pre></td></tr></table></figure>
+<h3 id="上界置信函数">3 上界置信函数</h3>
+<p><span class="math display">\[
+UCB = \frac{\sqrt{\sum\text{played\_count}}}{2*\text{played\_count}}
+\]</span></p>
+<p>其中<span class="math inline">\(\text{play\_count}\)</span>是一个矩阵，表示每个老虎机玩的次数</p>
+<ul>
+<li>能够衡量每个老虎机玩的次数，玩的次数多会越接近0</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment">#随机选择的概率递减的贪婪算法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">choose_one</span>():</span><br><span class="line">    <span class="comment">#求出每个老虎机各玩了多少次</span></span><br><span class="line">    played_count = [<span class="built_in">len</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> rewards]</span><br><span class="line">    played_count = np.array(played_count)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#求出上置信界</span></span><br><span class="line">    <span class="comment">#分子是总共玩了多少次,取根号后让他的增长速度变慢</span></span><br><span class="line">    <span class="comment">#分母是每台老虎机玩的次数,乘以2让他的增长速度变快</span></span><br><span class="line">    <span class="comment">#随着玩的次数增加,分母会很快超过分子的增长速度,导致分数越来越小</span></span><br><span class="line">    <span class="comment">#具体到每一台老虎机,则是玩的次数越多,分数就越小,也就是ucb的加权越小</span></span><br><span class="line">    <span class="comment">#所以ucb衡量了每一台老虎机的不确定性,不确定性越大,探索的价值越大</span></span><br><span class="line">    fenzi = played_count.<span class="built_in">sum</span>()**<span class="number">0.5</span></span><br><span class="line">    fenmu = played_count * <span class="number">2</span></span><br><span class="line">    ucb = fenzi / fenmu</span><br><span class="line"></span><br><span class="line">    <span class="comment">#ucb本身取根号</span></span><br><span class="line">    <span class="comment">#大于1的数会被缩小,小于1的数会被放大,这样保持ucb恒定在一定的数值范围内</span></span><br><span class="line">    ucb = ucb**<span class="number">0.5</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#计算每个老虎机的奖励平均</span></span><br><span class="line">    rewards_mean = [np.mean(i) <span class="keyword">for</span> i <span class="keyword">in</span> rewards]</span><br><span class="line">    rewards_mean = np.array(rewards_mean)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#ucb和期望求和</span></span><br><span class="line">    ucb += rewards_mean</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ucb.argmax()</span><br></pre></td></tr></table></figure>
+<h3 id="汤普森采样函数">4 汤普森采样函数</h3>
+<ul>
+<li>介绍一下beta分布：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#beta分布测试</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;当数字小的时候,beta分布的概率有很大的随机性&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    <span class="built_in">print</span>(np.random.beta(<span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;当数字大时,beta分布逐渐稳定&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    <span class="built_in">print</span>(np.random.beta(<span class="number">1e5</span>, <span class="number">1e5</span>))</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当rewards总和小的时候：表示实验的次数少，则分布有很大的随机性，表示大量探索；</li>
+<li>当rewards总和变大的时候，表示实验次数大幅增加，则分布变得稳定，选择概率最大的那一个进行实验</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">choose_one</span>():</span><br><span class="line">    <span class="comment">#求出每个老虎机出1的次数+1</span></span><br><span class="line">    count_1 = [<span class="built_in">sum</span>(i) + <span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> rewards]</span><br><span class="line"></span><br><span class="line">    <span class="comment">#求出每个老虎机出0的次数+1</span></span><br><span class="line">    count_0 = [<span class="built_in">sum</span>(<span class="number">1</span> - np.array(i)) + <span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> rewards]</span><br><span class="line"></span><br><span class="line">    <span class="comment">#按照beta分布计算奖励分布,这可以认为是每一台老虎机中奖的概率</span></span><br><span class="line">    beta = np.random.beta(count_1, count_0)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> beta.argmax()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+				  
+	  
+      
+	  <!-- 添加打赏 -->
+	  
+	
+	  <!-- 添加版权声明 -->
+      
+	  
+	</div>
+	
+	<!-- 添加置顶 -->
+    <div class="article-info article-info-index">
+      
+	  
+	  <!-- 分类页 -->
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">强化学习</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">基础</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+	  
+	  <!-- 添加展开全文 -->
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/post/800a73d6.html">展开全文 >></a>
+        </p>
+      
+	  
+	  <!-- 添加分享 -->
+      
+	  
+      <div class="clearfix"></div>
+	  
+    </div>
+  </div>
+</article>
+
+
+
+<!-- 添加回到顶部和文章目录 -->
+<aside class="wrap-side-operation">
+  <div class="mod-side-operation">
+    
+      <div class="jump-container" id="js-jump-container" style="display:none;">
+        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+          <i class="icon-font icon-back"></i>
+        </a>
+      </div>
+    
+    
+  </div>
+</aside>
+
+<!-- 添加评论 -->
+
+
+<!-- 文章页添加mathjax公式 -->
+
+  
+
+<!-- 文章页添加mathjax公式 -->
+  
     <article id="post-优雅的使用rss打破信息茧房" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2192,500 +2971,6 @@ L_{\mathrm{simple}}(\theta):=\mathbb{E}_{t,\mathbf{x}_{0},\epsilon}\Big[\left\|\
 
 <!-- 文章页添加mathjax公式 -->
   
-    <article id="post-pytorch基础入门13-损失函数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/24351970.html">pytorch基础入门24-损失函数</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/24351970.html" class="archive-article-date">
-  	<time datetime="2023-04-27T09:28:25.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-27</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-        <span class="article-type" style="
-          color: white;
-          font-size: 14px;
-          background: #0088CC;
-          padding: 0 5px 1px 5px;
-          margin-right: 5px;
-          border-radius: 2px;">原创</span>
-		  &nbsp; 
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">597字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">3min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="comment"># logits shape: [BS,NC]</span></span><br><span class="line">batchsize = <span class="number">2</span></span><br><span class="line">num_class = <span class="number">4</span></span><br><span class="line"></span><br><span class="line">logits = torch.randn(batchsize,num_class)</span><br><span class="line">target = torch.randint(num_class,size=(batchsize,)) <span class="comment"># delta目标分布</span></span><br><span class="line">target_logits = torch.randn(batchsize,num_class) <span class="comment"># 非delta目标分布</span></span><br></pre></td></tr></table></figure>
-<h1 id="crossentropyloss">CROSSENTROPYLOSS</h1>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304271739035.png" alt="image-20230427173911712" /><figcaption aria-hidden="true">image-20230427173911712</figcaption>
-</figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304271743417.png" alt="image-20230427174342229" /><figcaption aria-hidden="true">image-20230427174342229</figcaption>
-</figure>
-<p>https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html#torch.nn.CrossEntropyLoss</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.调用 cross entropy loss (CE loss)</span></span><br><span class="line"><span class="comment"># 第一种方法调用CEloss</span></span><br><span class="line">ce_loss_fn = nn.CrossEntropyLoss()</span><br><span class="line">ce_loss = ce_loss_fn(logits,target)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;cross entropy loss: <span class="subst">&#123;ce_loss&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment"># 第二种方法</span></span><br><span class="line">ce_loss_fn = nn.CrossEntropyLoss()</span><br><span class="line">ce_loss = ce_loss_fn(logits,target_logits)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;cross entropy loss: <span class="subst">&#123;ce_loss&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h1 id="nllloss">NLLLOSS</h1>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304271754467.png" alt="image-20230427175450218" /><figcaption aria-hidden="true">image-20230427175450218</figcaption>
-</figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 2.调用Negative Log Likelihood Loss (NLL loss)</span></span><br><span class="line">nll_fn = nn.NLLLoss()</span><br><span class="line">nll_loss = nll_fn(torch.log(torch.softmax(logits,-<span class="number">1</span>)),target_indices)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;neagative log-likelihood loss: <span class="subst">&#123;nll_loss&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>如果得到的logits是没有归一化的值，那么使用CEloss</li>
-<li>如果得到的logits是已经softmax后的log概率值值，则使用NLLloss</li>
-<li>总之，两个损失函数都是用来计算分类问题的</li>
-</ul>
-<p>In classification problems we want to estimate the probability of different outcomes. Let the estimated probability of outcome<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/add78d8608ad86e54951b8c8bd6c8d8416533d20" alt="i" /> be <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/187f4094cdfe699a627b3166c870d4e80a3ddbc9" alt="{q_{}(X=i)}" /> with to-be-optimized parameters <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/6e5ab2664b422d53eb0c7df3b87e1360d75ad9af" alt="" /> and let the frequency (empirical probability) of outcome in the training set be <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e4adae4de2fee09ec86818003df233cee809e070" alt="{p(X=i)}" />. Given N <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Conditionally_independent">conditionally independent</a> samples in the training set, then the <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Likelihood">likelihood</a> of the parameters <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/6e5ab2664b422d53eb0c7df3b87e1360d75ad9af" alt="" /> of the model <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/4ab8eaa7d05b1279a2c3bb4c4451a2305b5de380" alt="{q_{}(X=x)}" /> on the training set is</p>
-<figure>
-<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/d452937ed5a5bdfdac361ad273d0c55868f0cdd3" alt="1" /><figcaption aria-hidden="true">1</figcaption>
-</figure>
-<p>where the last expression is due to the definition of the multinomial PMF. Therefore, the log-likelihood, divided by <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f5e3890c981ae85503089652feb48b191b57aae3" alt="N" /> is</p>
-<figure>
-<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/9601b9fef9a3e4c9bb43553b1b3a1d523c0f3dfa" alt="1" /><figcaption aria-hidden="true">1</figcaption>
-</figure>
-<p>so that <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation">maximizing the likelihood</a> with respect to the parameters <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/6e5ab2664b422d53eb0c7df3b87e1360d75ad9af" alt="" /> is the same as minimizing the cross-entropy.</p>
-<h1 id="kullback-leibler-divergence-loss">Kullback-Leibler divergence loss</h1>
-<p>https://pytorch.org/docs/stable/generated/torch.nn.KLDivLoss.html#torch.nn.KLDivLoss</p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304301259064.png" alt="image-20230430125950441" /><figcaption aria-hidden="true">image-20230430125950441</figcaption>
-</figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 3. 调用 KL divergence loss(KL loss)</span></span><br><span class="line">KL_loss_fn = nn.KLDivLoss()</span><br><span class="line">kld_loss = KL_loss_fn(torch.log(torch.softmax(logits,-<span class="number">1</span>)),torch.softmax(target_logits,dim=-<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;KL divergence loss: <span class="subst">&#123;kld_loss&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 4. CE = IE(信息熵) + KLD </span><br><span class="line">ce_loss_fn_smaple = nn.CrossEntropyLoss(reduction=&quot;none&quot;)</span><br><span class="line">ce_loss_sample = ce_loss_fn_smaple(logits,torch.softmax(target_logits,dim=-1))</span><br><span class="line">print(f&quot;cross entropy loss sample:&#123;ce_loss_sample&#125;&quot;)</span><br><span class="line"></span><br><span class="line">kld_loss_fn_sample = nn.KLDivLoss(reduction=&quot;none&quot;)</span><br><span class="line">kld_loss_sample = kld_loss_fn_sample(torch.log(torch.softmax(logits,-1)),torch.softmax(target_logits,dim=-1)).sum(-1)</span><br><span class="line">print(f&quot;KL divergence loss sample:&#123;kld_loss_sample&#125;&quot;)</span><br><span class="line"></span><br><span class="line">target_information_entropy = torch.distributions.Categorical(probs=torch.softmax(target_logits,dim=-1)).entropy()</span><br><span class="line">print(f&quot;information entropy sample:&#123;target_information_entropy&#125;&quot;)</span><br><span class="line"></span><br><span class="line">torch.allclose(ce_loss_sample,kld_loss_sample+target_information_entropy)</span><br></pre></td></tr></table></figure>
-<h1 id="bceloss">BCELOSS</h1>
-<p>https://pytorch.org/docs/stable/generated/torch.nn.BCELoss.html#torch.nn.BCELoss</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 5. 调用Binary Cross Entropy loss （BCE loss）</span></span><br><span class="line">bce_loss_fn = nn.BCELoss()</span><br><span class="line">logits = torch.randn(batchsize)</span><br><span class="line">prob_1 = torch.sigmoid(logits)</span><br><span class="line">target = torch.randint(<span class="number">2</span>,size=(batchsize,))</span><br><span class="line">bce_loss = bce_loss_fn(prob_1,target.<span class="built_in">float</span>())</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;binary cross entropy loss: <span class="subst">&#123;bce_loss&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment"># 用 NLL loss 代替 BCE loss</span></span><br><span class="line">prob_0 = <span class="number">1</span> - prob_1.unsqueeze(-<span class="number">1</span>)</span><br><span class="line">prob = torch.cat([prob_0,prob_1.unsqueeze(-<span class="number">1</span>)],dim=-<span class="number">1</span>)</span><br><span class="line">nll_loss_binary = nll_fn(torch.log(prob),target)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;negative likelihood loss binary:<span class="subst">&#123;nll_loss_binary&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h1 id="cosineembeddingloss">COSINEEMBEDDINGLOSS</h1>
-<p>https://pytorch.org/docs/stable/generated/torch.nn.CosineEmbeddingLoss.html#torch.nn.CosineEmbeddingLoss</p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304301347056.png" alt="image-20230430134714165" /><figcaption aria-hidden="true">image-20230430134714165</figcaption>
-</figure>
-<ul>
-<li>计算相似度匹配（图片检索任务：找出相似度最相似的）</li>
-<li>对比学习，自监督学习</li>
-</ul>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/24351970.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
-    <article id="post-用pytorch实现基础网络3-transformer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h2 itemprop="name">
-      <a class="article-title_code_ant" href="/post/2fee727b.html">用pytorch实现基础网络3-transformer</a>
-    </h2>
-  
-
-        
-		
-		  <a href="/post/2fee727b.html" class="archive-article-date">
-  	<time datetime="2023-04-27T09:28:25.000Z" itemprop="datePublished">
-	<!-- <i class="icon-calendar icon"></i> -->
-
-	<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-	&nbsp;
-	2023-04-27</time>
-	
-	<!-- busuanzi阅读量统计
-	
-	-->
-	
-    <!-- waline阅读量统计 -->
-	
-
-</a>
-
-
-        
-		
-		
-		  <!-- 添加标题栏文字统计效果 -->
-<div class="word-count">
-	
-      
-        <span class="article-type" style="
-          color: white;
-          font-size: 14px;
-          background: #0088CC;
-          padding: 0 5px 1px 5px;
-          margin-right: 5px;
-          border-radius: 2px;">原创</span>
-		  &nbsp; 
-      
-    
-	
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-bar-chart" aria-hidden="true"></i>
-        <!-- <i class="fa fa-keyboard-o" aria-hidden="true"></i> -->
-        <span class="post-meta-item-text">字数统计: </span>
-        <span class="post-count">3.6k字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-	    <i class="fa fa-pagelines" aria-hidden="true"></i>
-        <span class="post-meta-item-text">阅读时长: </span>
-        <span class="post-count">21min</span>
-      </span>
-    </span>
-	
-
-</div>
-<!-- 添加标题栏文字统计效果结束 -->
-		
-      </header>
-    
-	
-    <div class="article-entry" itemprop="articleBody">
-	  <!-- 添加分类与标签 -->
-	  
-		  
-		  <p>https://arxiv.org/pdf/1706.03762.pdf</p>
-<p>https://nlp.seas.harvard.edu/2018/04/03/attention.html</p>
-<h3 id="attention-is-all-you-need-----transformer">attention is all you need ---&gt; transformer</h3>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304101725197.png" alt="image-20230408205122663" style="zoom: 80%;" /></p>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304101725367.png" alt="image-20230408205258220" style="zoom:50%;" /></p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304082110329.jpg" alt="1" /><figcaption aria-hidden="true">1</figcaption>
-</figure>
-<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304082209301.png" alt="image-20230408220929314" style="zoom:80%;" /></p>
-<h3 id="pytorch-源码">1 pytorch 源码</h3>
-<p>https://pytorch.org/docs/stable/_modules/torch/nn/modules/transformer.html#Transformer</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Examples::</span><br><span class="line">        &gt;&gt;&gt; transformer_model = nn.Transformer(nhead=16, num_encoder_layers=12)</span><br><span class="line">        &gt;&gt;&gt; src = torch.rand((<span class="number">10</span>, <span class="number">32</span>, <span class="number">512</span>))</span><br><span class="line">        &gt;&gt;&gt; tgt = torch.rand((<span class="number">20</span>, <span class="number">32</span>, <span class="number">512</span>))</span><br><span class="line">        &gt;&gt;&gt; out = transformer_model(src, tgt)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model: <span class="built_in">int</span> = <span class="number">512</span>, nhead: <span class="built_in">int</span> = <span class="number">8</span>, num_encoder_layers: <span class="built_in">int</span> = <span class="number">6</span>,</span></span><br><span class="line"><span class="params">             num_decoder_layers: <span class="built_in">int</span> = <span class="number">6</span>, dim_feedforward: <span class="built_in">int</span> = <span class="number">2048</span>, dropout: <span class="built_in">float</span> = <span class="number">0.1</span>,</span></span><br><span class="line"><span class="params">             activation: <span class="type">Union</span>[<span class="built_in">str</span>, <span class="type">Callable</span>[[Tensor], Tensor]] = F.relu,</span></span><br><span class="line"><span class="params">             custom_encoder: <span class="type">Optional</span>[<span class="type">Any</span>] = <span class="literal">None</span>, custom_decoder: <span class="type">Optional</span>[<span class="type">Any</span>] = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">             layer_norm_eps: <span class="built_in">float</span> = <span class="number">1e-5</span>, batch_first: <span class="built_in">bool</span> = <span class="literal">False</span>, norm_first: <span class="built_in">bool</span> = <span class="literal">False</span>,</span></span><br><span class="line"><span class="params">             device=<span class="literal">None</span>, dtype=<span class="literal">None</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    factory_kwargs = &#123;<span class="string">&#x27;device&#x27;</span>: device, <span class="string">&#x27;dtype&#x27;</span>: dtype&#125;</span><br><span class="line">    <span class="built_in">super</span>(Transformer, self).__init__()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> custom_encoder <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        self.encoder = custom_encoder</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        encoder_layer = TransformerEncoderLayer(d_model, nhead, dim_feedforward, dropout,</span><br><span class="line">                                                activation, layer_norm_eps, batch_first, norm_first,</span><br><span class="line">                                                **factory_kwargs)</span><br><span class="line">        encoder_norm = LayerNorm(d_model, eps=layer_norm_eps, **factory_kwargs)</span><br><span class="line">        self.encoder = TransformerEncoder(encoder_layer, num_encoder_layers, encoder_norm)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> custom_decoder <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        self.decoder = custom_decoder</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        decoder_layer = TransformerDecoderLayer(d_model, nhead, dim_feedforward, dropout,</span><br><span class="line">                                                activation, layer_norm_eps, batch_first, norm_first,</span><br><span class="line">                                                **factory_kwargs)</span><br><span class="line">        decoder_norm = LayerNorm(d_model, eps=layer_norm_eps, **factory_kwargs)</span><br><span class="line">        self.decoder = TransformerDecoder(decoder_layer, num_decoder_layers, decoder_norm)</span><br><span class="line"></span><br><span class="line">    self._reset_parameters()</span><br><span class="line"></span><br><span class="line">    self.d_model = d_model</span><br><span class="line">    self.nhead = nhead</span><br><span class="line"></span><br><span class="line">    self.batch_first = batch_first</span><br></pre></td></tr></table></figure>
-<p>其中初始化部分最为重要的四部分：TransformerEncoderLayer（通过encoder_layer连接），TransformerDecoderLayer（通过decoder_layer连接）</p>
-<h4 id="transformerencoderlayer">1.1 TransformerEncoderLayer</h4>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Args:</span><br><span class="line">    d_model: the number of expected features <span class="keyword">in</span> the input (required).</span><br><span class="line">    nhead: the number of heads <span class="keyword">in</span> the multiheadattention models (required).</span><br><span class="line">    dim_feedforward: the dimension of the feedforward network model (default=2048).</span><br><span class="line">    dropout: the dropout value (default=0.1).</span><br><span class="line">    activation: the activation <span class="keyword">function</span> of the intermediate layer, can be a string</span><br><span class="line">        (<span class="string">&quot;relu&quot;</span> or <span class="string">&quot;gelu&quot;</span>) or a unary callable. Default: relu</span><br><span class="line">    layer_norm_eps: the eps value <span class="keyword">in</span> layer normalization components (default=1e-5).</span><br><span class="line">    batch_first: If ``True``, <span class="keyword">then</span> the input and output tensors are provided</span><br><span class="line">        as (batch, <span class="built_in">seq</span>, feature). Default: ``False`` (<span class="built_in">seq</span>, batch, feature).</span><br><span class="line">    norm_first: <span class="keyword">if</span> ``True``, layer norm is <span class="keyword">done</span> prior to attention and feedforward</span><br><span class="line">        operations, respectively. Otherwise it<span class="string">&#x27;s done after. Default: ``False`` (after).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Examples::</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; encoder_layer = nn.TransformerEncoderLayer(d_model=512, nhead=8)</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; src = torch.rand(10, 32, 512)</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; out = encoder_layer(src)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Alternatively, when ``batch_first`` is ``True``:</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; encoder_layer = nn.TransformerEncoderLayer(d_model=512, nhead=8, batch_first=True)</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; src = torch.rand(32, 10, 512)</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; out = encoder_layer(src)</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model: <span class="built_in">int</span>, nhead: <span class="built_in">int</span>, dim_feedforward: <span class="built_in">int</span> = <span class="number">2048</span>, dropout: <span class="built_in">float</span> = <span class="number">0.1</span>,</span></span><br><span class="line"><span class="params">              activation: <span class="type">Union</span>[<span class="built_in">str</span>, <span class="type">Callable</span>[[Tensor], Tensor]] = F.relu,</span></span><br><span class="line"><span class="params">              layer_norm_eps: <span class="built_in">float</span> = <span class="number">1e-5</span>, batch_first: <span class="built_in">bool</span> = <span class="literal">False</span>, norm_first: <span class="built_in">bool</span> = <span class="literal">False</span>,</span></span><br><span class="line"><span class="params">              device=<span class="literal">None</span>, dtype=<span class="literal">None</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">     factory_kwargs = &#123;<span class="string">&#x27;device&#x27;</span>: device, <span class="string">&#x27;dtype&#x27;</span>: dtype&#125;</span><br><span class="line">     <span class="built_in">super</span>(TransformerEncoderLayer, self).__init__()</span><br><span class="line">     self.self_attn = MultiheadAttention(d_model, nhead, dropout=dropout, batch_first=batch_first,</span><br><span class="line">                                         **factory_kwargs)</span><br><span class="line">     <span class="comment"># Implementation of Feedforward model</span></span><br><span class="line">     self.linear1 = Linear(d_model, dim_feedforward, **factory_kwargs)</span><br><span class="line">     self.dropout = Dropout(dropout)</span><br><span class="line">     self.linear2 = Linear(dim_feedforward, d_model, **factory_kwargs)</span><br><span class="line"></span><br><span class="line">     self.norm_first = norm_first</span><br><span class="line">     self.norm1 = LayerNorm(d_model, eps=layer_norm_eps, **factory_kwargs)</span><br><span class="line">     self.norm2 = LayerNorm(d_model, eps=layer_norm_eps, **factory_kwargs)</span><br><span class="line">     self.dropout1 = Dropout(dropout)</span><br><span class="line">     self.dropout2 = Dropout(dropout)</span><br><span class="line"></span><br><span class="line">     <span class="comment"># Legacy string support for activation function.</span></span><br><span class="line">     <span class="keyword">if</span> <span class="built_in">isinstance</span>(activation, <span class="built_in">str</span>):</span><br><span class="line">         activation = _get_activation_fn(activation)</span><br><span class="line"></span><br><span class="line">     <span class="comment"># We can&#x27;t test self.activation in forward() in TorchScript,</span></span><br><span class="line">     <span class="comment"># so stash some information about it instead.</span></span><br><span class="line">     <span class="keyword">if</span> activation <span class="keyword">is</span> F.relu <span class="keyword">or</span> <span class="built_in">isinstance</span>(activation, torch.nn.ReLU):</span><br><span class="line">         self.activation_relu_or_gelu = <span class="number">1</span></span><br><span class="line">     <span class="keyword">elif</span> activation <span class="keyword">is</span> F.gelu <span class="keyword">or</span> <span class="built_in">isinstance</span>(activation, torch.nn.GELU):</span><br><span class="line">         self.activation_relu_or_gelu = <span class="number">2</span></span><br><span class="line">     <span class="keyword">else</span>:</span><br><span class="line">         self.activation_relu_or_gelu = <span class="number">0</span></span><br><span class="line">     self.activation = activation</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, src: Tensor, src_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>,src_key_padding_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span></span>) -&gt; Tensor:</span><br><span class="line">x = src</span><br><span class="line">     <span class="keyword">if</span> self.norm_first:</span><br><span class="line">         x = x + self._sa_block(self.norm1(x), src_mask, src_key_padding_mask)</span><br><span class="line">         x = x + self._ff_block(self.norm2(x))</span><br><span class="line">     <span class="keyword">else</span>:</span><br><span class="line">         x = self.norm1(x + self._sa_block(x, src_mask, src_key_padding_mask))</span><br><span class="line">         x = self.norm2(x + self._ff_block(x))</span><br><span class="line"></span><br><span class="line">     <span class="keyword">return</span> x</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-<h4 id="transformerencoder">1.2 TransformerEncoder</h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">r&quot;&quot;&quot;TransformerEncoder is a stack of N encoder layers. Users can build the</span></span><br><span class="line"><span class="string">    BERT(https://arxiv.org/abs/1810.04805) model with corresponding parameters.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        encoder_layer: an instance of the TransformerEncoderLayer() class (required).</span></span><br><span class="line"><span class="string">        num_layers: the number of sub-encoder-layers in the encoder (required).</span></span><br><span class="line"><span class="string">        norm: the layer normalization component (optional).</span></span><br><span class="line"><span class="string">        enable_nested_tensor: if True, input will automatically convert to nested tensor</span></span><br><span class="line"><span class="string">            (and convert back on output). This will improve the overall performance of</span></span><br><span class="line"><span class="string">            TransformerEncoder when padding rate is high. Default: ``True`` (enabled).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Examples::</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; encoder_layer = nn.TransformerEncoderLayer(d_model=512, nhead=8)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=6)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; src = torch.rand(10, 32, 512)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; out = transformer_encoder(src)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">    __constants__ = [<span class="string">&#x27;norm&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, encoder_layer, num_layers, norm=<span class="literal">None</span>, enable_nested_tensor=<span class="literal">True</span>, mask_check=<span class="literal">True</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(TransformerEncoder, self).__init__()</span><br><span class="line">        self.layers = _get_clones(encoder_layer, num_layers)</span><br><span class="line">        self.num_layers = num_layers</span><br><span class="line">        self.norm = norm</span><br><span class="line">        self.enable_nested_tensor = enable_nested_tensor</span><br><span class="line">        self.mask_check = mask_check</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, src: Tensor, mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>, src_key_padding_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span></span>) -&gt; Tensor:</span><br><span class="line">        <span class="string">r&quot;&quot;&quot;Pass the input through the encoder layers in turn.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            src: the sequence to the encoder (required).</span></span><br><span class="line"><span class="string">            mask: the mask for the src sequence (optional).</span></span><br><span class="line"><span class="string">            src_key_padding_mask: the mask for the src keys per batch (optional).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Shape:</span></span><br><span class="line"><span class="string">            see the docs in Transformer class.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-<h4 id="transformerdecoderlayer">1.3 TransformerDecoderLayer</h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">r&quot;&quot;&quot;TransformerDecoderLayer is made up of self-attn, multi-head-attn and feedforward network.</span></span><br><span class="line"><span class="string">    This standard decoder layer is based on the paper &quot;Attention Is All You Need&quot;.</span></span><br><span class="line"><span class="string">    Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez,</span></span><br><span class="line"><span class="string">    Lukasz Kaiser, and Illia Polosukhin. 2017. Attention is all you need. In Advances in</span></span><br><span class="line"><span class="string">    Neural Information Processing Systems, pages 6000-6010. Users may modify or implement</span></span><br><span class="line"><span class="string">    in a different way during application.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        d_model: the number of expected features in the input (required).</span></span><br><span class="line"><span class="string">        nhead: the number of heads in the multiheadattention models (required).</span></span><br><span class="line"><span class="string">        dim_feedforward: the dimension of the feedforward network model (default=2048).</span></span><br><span class="line"><span class="string">        dropout: the dropout value (default=0.1).</span></span><br><span class="line"><span class="string">        activation: the activation function of the intermediate layer, can be a string</span></span><br><span class="line"><span class="string">            (&quot;relu&quot; or &quot;gelu&quot;) or a unary callable. Default: relu</span></span><br><span class="line"><span class="string">        layer_norm_eps: the eps value in layer normalization components (default=1e-5).</span></span><br><span class="line"><span class="string">        batch_first: If ``True``, then the input and output tensors are provided</span></span><br><span class="line"><span class="string">            as (batch, seq, feature). Default: ``False`` (seq, batch, feature).</span></span><br><span class="line"><span class="string">        norm_first: if ``True``, layer norm is done prior to self attention, multihead</span></span><br><span class="line"><span class="string">            attention and feedforward operations, respectively. Otherwise it&#x27;s done after.</span></span><br><span class="line"><span class="string">            Default: ``False`` (after).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Examples::</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; decoder_layer = nn.TransformerDecoderLayer(d_model=512, nhead=8)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; memory = torch.rand(10, 32, 512)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; tgt = torch.rand(20, 32, 512)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; out = decoder_layer(tgt, memory)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Alternatively, when ``batch_first`` is ``True``:</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; decoder_layer = nn.TransformerDecoderLayer(d_model=512, nhead=8, batch_first=True)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; memory = torch.rand(32, 10, 512)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; tgt = torch.rand(32, 20, 512)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; out = decoder_layer(tgt, memory)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model: <span class="built_in">int</span>, nhead: <span class="built_in">int</span>, dim_feedforward: <span class="built_in">int</span> = <span class="number">2048</span>, dropout: <span class="built_in">float</span> = <span class="number">0.1</span>,</span></span><br><span class="line"><span class="params">                 activation: <span class="type">Union</span>[<span class="built_in">str</span>, <span class="type">Callable</span>[[Tensor], Tensor]] = F.relu,</span></span><br><span class="line"><span class="params">                 layer_norm_eps: <span class="built_in">float</span> = <span class="number">1e-5</span>, batch_first: <span class="built_in">bool</span> = <span class="literal">False</span>, norm_first: <span class="built_in">bool</span> = <span class="literal">False</span>,</span></span><br><span class="line"><span class="params">                 device=<span class="literal">None</span>, dtype=<span class="literal">None</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        factory_kwargs = &#123;<span class="string">&#x27;device&#x27;</span>: device, <span class="string">&#x27;dtype&#x27;</span>: dtype&#125;</span><br><span class="line">        <span class="built_in">super</span>(TransformerDecoderLayer, self).__init__()</span><br><span class="line">        self.self_attn = MultiheadAttention(d_model, nhead, dropout=dropout, batch_first=batch_first,</span><br><span class="line">                                            **factory_kwargs)</span><br><span class="line">        self.multihead_attn = MultiheadAttention(d_model, nhead, dropout=dropout, batch_first=batch_first,</span><br><span class="line">                                                 **factory_kwargs)</span><br><span class="line">        <span class="comment"># Implementation of Feedforward model</span></span><br><span class="line">        self.linear1 = Linear(d_model, dim_feedforward, **factory_kwargs)</span><br><span class="line">        self.dropout = Dropout(dropout)</span><br><span class="line">        self.linear2 = Linear(dim_feedforward, d_model, **factory_kwargs)</span><br><span class="line"></span><br><span class="line">        self.norm_first = norm_first</span><br><span class="line">        self.norm1 = LayerNorm(d_model, eps=layer_norm_eps, **factory_kwargs)</span><br><span class="line">        self.norm2 = LayerNorm(d_model, eps=layer_norm_eps, **factory_kwargs)</span><br><span class="line">        self.norm3 = LayerNorm(d_model, eps=layer_norm_eps, **factory_kwargs)</span><br><span class="line">        self.dropout1 = Dropout(dropout)</span><br><span class="line">        self.dropout2 = Dropout(dropout)</span><br><span class="line">        self.dropout3 = Dropout(dropout)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Legacy string support for activation function.</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(activation, <span class="built_in">str</span>):</span><br><span class="line">            self.activation = _get_activation_fn(activation)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.activation = activation</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, tgt: Tensor, memory: Tensor, tgt_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>, memory_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">            tgt_key_padding_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>, memory_key_padding_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span></span>) -&gt; Tensor:</span><br><span class="line">    <span class="string">r&quot;&quot;&quot;Pass the inputs (and mask) through the decoder layer.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        tgt: the sequence to the decoder layer (required).</span></span><br><span class="line"><span class="string">        memory: the sequence from the last layer of the encoder (required).</span></span><br><span class="line"><span class="string">        tgt_mask: the mask for the tgt sequence (optional).</span></span><br><span class="line"><span class="string">        memory_mask: the mask for the memory sequence (optional).</span></span><br><span class="line"><span class="string">        tgt_key_padding_mask: the mask for the tgt keys per batch (optional).</span></span><br><span class="line"><span class="string">        memory_key_padding_mask: the mask for the memory keys per batch (optional).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Shape:</span></span><br><span class="line"><span class="string">        see the docs in Transformer class.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># see Fig. 1 of https://arxiv.org/pdf/2002.04745v1.pdf</span></span><br><span class="line"></span><br><span class="line">    x = tgt</span><br><span class="line">    <span class="keyword">if</span> self.norm_first:</span><br><span class="line">        x = x + self._sa_block(self.norm1(x), tgt_mask, tgt_key_padding_mask)</span><br><span class="line">        x = x + self._mha_block(self.norm2(x), memory, memory_mask, memory_key_padding_mask)</span><br><span class="line">        x = x + self._ff_block(self.norm3(x))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        x = self.norm1(x + self._sa_block(x, tgt_mask, tgt_key_padding_mask))</span><br><span class="line">        x = self.norm2(x + self._mha_block(x, memory, memory_mask, memory_key_padding_mask))</span><br><span class="line">        x = self.norm3(x + self._ff_block(x))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
-<h4 id="transformerdecoder">1.4 TransformerDecoder</h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">r&quot;&quot;&quot;TransformerDecoder is a stack of N decoder layers</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        decoder_layer: an instance of the TransformerDecoderLayer() class (required).</span></span><br><span class="line"><span class="string">        num_layers: the number of sub-decoder-layers in the decoder (required).</span></span><br><span class="line"><span class="string">        norm: the layer normalization component (optional).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Examples::</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; decoder_layer = nn.TransformerDecoderLayer(d_model=512, nhead=8)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; transformer_decoder = nn.TransformerDecoder(decoder_layer, num_layers=6)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; memory = torch.rand(10, 32, 512)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; tgt = torch.rand(20, 32, 512)</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; out = transformer_decoder(tgt, memory)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    __constants__ = [<span class="string">&#x27;norm&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, decoder_layer, num_layers, norm=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(TransformerDecoder, self).__init__()</span><br><span class="line">        self.layers = _get_clones(decoder_layer, num_layers)</span><br><span class="line">        self.num_layers = num_layers</span><br><span class="line">        self.norm = norm</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, tgt: Tensor, memory: Tensor, tgt_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">                memory_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>, tgt_key_padding_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">                memory_key_padding_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span></span>) -&gt; Tensor:</span><br><span class="line">        <span class="string">r&quot;&quot;&quot;Pass the inputs (and mask) through the decoder layer in turn.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            tgt: the sequence to the decoder (required).</span></span><br><span class="line"><span class="string">            memory: the sequence from the last layer of the encoder (required).</span></span><br><span class="line"><span class="string">            tgt_mask: the mask for the tgt sequence (optional).</span></span><br><span class="line"><span class="string">            memory_mask: the mask for the memory sequence (optional).</span></span><br><span class="line"><span class="string">            tgt_key_padding_mask: the mask for the tgt keys per batch (optional).</span></span><br><span class="line"><span class="string">            memory_key_padding_mask: the mask for the memory keys per batch (optional).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Shape:</span></span><br><span class="line"><span class="string">            see the docs in Transformer class.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        output = tgt</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> mod <span class="keyword">in</span> self.layers:</span><br><span class="line">            output = mod(output, memory, tgt_mask=tgt_mask,</span><br><span class="line">                         memory_mask=memory_mask,</span><br><span class="line">                         tgt_key_padding_mask=tgt_key_padding_mask,</span><br><span class="line">                         memory_key_padding_mask=memory_key_padding_mask)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.norm <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            output = self.norm(output)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
-<p><em>Below the attention mask shows the position each tgt word (row) is allowed to look at (column). Words are blocked for attending to future words during training.</em></p>
-<figure>
-<img src="https://nlp.seas.harvard.edu/images/the-annotated-transformer_31_0.png" alt="png" /><figcaption aria-hidden="true">png</figcaption>
-</figure>
-<p>在进行解码过程中，第一个词的预测只与第一个词有关，因此最后的的attention机制是个上三角的形式，如上图所示。</p>
-<h4 id="attention">1.5 Attention</h4>
-<figure>
-<img src="https://nlp.seas.harvard.edu/images/the-annotated-transformer_33_0.png" alt="png" /><figcaption aria-hidden="true">png</figcaption>
-</figure>
-<p>An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key.</p>
-<p>We call our particular attention “Scaled Dot-Product Attention”. The input consists of queries and keys of dimension <span class="math inline">\(d_k\)</span>, and values of dimension <span class="math inline">\(d_v\)</span>. We compute the dot products of the query with all keys, divide each by <span class="math inline">\(\sqrt{d_k}\)</span>, and apply a softmax function to obtain the weights on the values.</p>
-<p>In practice, we compute the attention function on a set of queries simultaneously, packed together into a matrix <span class="math inline">\(Q\)</span>. The keys and values are also packed together into matrices <span class="math inline">\(K\)</span> and <span class="math inline">\(V\)</span>. We compute the matrix of outputs as: <span class="math display">\[
-\mathrm{Attention}(Q, K, V) = \mathrm{softmax}(\frac{QK^T}{\sqrt{d_k}})V
-\]</span></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">attention</span>(<span class="params">query, key, value, mask=<span class="literal">None</span>, dropout=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;Compute &#x27;Scaled Dot Product Attention&#x27;&quot;</span></span><br><span class="line">    d_k = query.size(-<span class="number">1</span>)</span><br><span class="line">    scores = torch.matmul(query, key.transpose(-<span class="number">2</span>, -<span class="number">1</span>)) \</span><br><span class="line">             / math.sqrt(d_k)</span><br><span class="line">    <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        scores = scores.masked_fill(mask == <span class="number">0</span>, -<span class="number">1e9</span>)</span><br><span class="line">    p_attn = F.softmax(scores, dim = -<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> dropout <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        p_attn = dropout(p_attn)</span><br><span class="line">    <span class="keyword">return</span> torch.matmul(p_attn, value), p_attn</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304100940797.png" alt="img" /><figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3 id="encoder-细节">2 Encoder 细节</h3>
-<h4 id="word-embedding">2.1 word embedding</h4>
-<p>考虑 source sentence 和 target sentence 构建序列，序列的字符以其词表中的索引的形式表示</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># source sentence 和 target sentence 的初始长度</span></span><br><span class="line">batch_size = <span class="number">2</span></span><br><span class="line"><span class="comment"># 单词表大小</span></span><br><span class="line">max_num_src_words = <span class="number">8</span></span><br><span class="line">max_num_tgt_words = <span class="number">8</span></span><br><span class="line">model_dim = <span class="number">8</span> <span class="comment"># 特征大小，原文是512</span></span><br><span class="line"><span class="comment"># 序列最大长度</span></span><br><span class="line">max_src_seq_len = <span class="number">5</span></span><br><span class="line">max_tgt_seq_len = <span class="number">5</span></span><br><span class="line">max_position_len = <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># src_len = torch.randint(2,5,(batch_size,))</span></span><br><span class="line"><span class="comment"># tgt_len = torch.randint(2,5,(batch_size,)) </span></span><br><span class="line">src_len = torch.Tensor([<span class="number">2</span>,<span class="number">4</span>]).to(torch.int32)  <span class="comment"># 句子长度（2个句子）</span></span><br><span class="line">tgt_len = torch.Tensor([<span class="number">4</span>,<span class="number">3</span>]).to(torch.int32)</span><br><span class="line"><span class="built_in">print</span>(src_len,tgt_len)</span><br><span class="line"></span><br><span class="line"><span class="comment"># step1 单词索引构成的源句子和目标句子,pad为最大序列长度,unsqueeze 变为2维张量，然后使用cat拼接起来,padding 默认值为0,构建batch</span></span><br><span class="line">src_seq = torch.cat([torch.unsqueeze(F.pad(torch.randint(<span class="number">1</span>,max_num_src_words,(L,)),(<span class="number">0</span>,max_src_seq_len - L)),<span class="number">0</span>) <span class="keyword">for</span> L <span class="keyword">in</span> src_len]) </span><br><span class="line">tgt_seq = torch.cat([torch.unsqueeze(F.pad(torch.randint(<span class="number">1</span>,max_num_tgt_words,(L,)),(<span class="number">0</span>,max_tgt_seq_len - L)),<span class="number">0</span>) <span class="keyword">for</span> L <span class="keyword">in</span> tgt_len])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(src_seq,<span class="string">&quot;\n&quot;</span>,tgt_seq,end=<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># step2 构造 word embedding</span></span><br><span class="line"><span class="comment"># 第0行是默认padding的0，第1-9行是每个单词的embedding结果</span></span><br><span class="line">src_embedding_table = nn.Embedding(max_num_src_words + <span class="number">1</span>, model_dim)</span><br><span class="line">tgt_embedding_table = nn.Embedding(max_num_tgt_words + <span class="number">1</span>, model_dim)</span><br><span class="line">src_embedding = src_embedding_table(src_seq) <span class="comment"># embedding 的 forward 方法</span></span><br><span class="line">stgt_embedding = tgt_embedding_table(tgt_seq) </span><br><span class="line"><span class="built_in">print</span>(src_embedding_table.weight)</span><br><span class="line"><span class="built_in">print</span>(src_seq)</span><br><span class="line"><span class="built_in">print</span>(src_embedding)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="position-embedding">2.2 position embedding</h4>
-<p><span class="math display">\[
-\begin{aligned}
-P E_{(p o s, 2 i)} &amp; =\sin \left(p o s / 10000^{2 i / d_{\mathrm{model}}}\right) \\
-P E_{(p o s, 2 i+1)} &amp; =\cos \left(p o s / 10000^{2 i / d_{\mathrm{model}}}\right)
-\end{aligned}
-\]</span></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step3 构建 position embedding</span></span><br><span class="line">pos_mat = torch.arange(max_position_len).reshape((-<span class="number">1</span>,<span class="number">1</span>))</span><br><span class="line">i_mat = torch.<span class="built_in">pow</span>(<span class="number">10000</span>,torch.arange(<span class="number">0</span>,model_dim,<span class="number">2</span>).reshape(<span class="number">1</span>,-<span class="number">1</span>)/model_dim)</span><br><span class="line">pe_embedding_table = torch.zeros(max_position_len,model_dim)</span><br><span class="line"><span class="comment"># element point</span></span><br><span class="line">pe_embedding_table[:,<span class="number">0</span>::<span class="number">2</span>] = torch.sin(pos_mat/i_mat)  <span class="comment"># 偶数行</span></span><br><span class="line">pe_embedding_table[:,<span class="number">1</span>::<span class="number">2</span>] = torch.cos(pos_mat/i_mat)  <span class="comment"># 奇数行</span></span><br><span class="line"><span class="built_in">print</span>(pos_mat,<span class="string">&#x27;\n&#x27;</span>,i_mat,<span class="string">&#x27;\n&#x27;</span>,pe_embedding_table)</span><br><span class="line"></span><br><span class="line">src_pos = torch.cat([torch.unsqueeze(torch.arange(<span class="built_in">max</span>(src_len)),<span class="number">0</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> src_len]).to(torch.int32)</span><br><span class="line">tgt_pos = torch.cat([torch.unsqueeze(torch.arange(<span class="built_in">max</span>(tgt_len)),<span class="number">0</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> tgt_len]).to(torch.int32)</span><br><span class="line"></span><br><span class="line">src_pe_embedding = pe_embedding(src_pos)</span><br><span class="line">tgt_pe_embedding = pe_embedding(tgt_pos)</span><br><span class="line"><span class="built_in">print</span>(src_pe_embedding)</span><br><span class="line"><span class="built_in">print</span>(tgt_pe_embedding)</span><br></pre></td></tr></table></figure>
-<p><span class="math inline">\(10000^{2 i / d_{\mathrm{model}}}\)</span> 表示为<span class="math inline">\(\omega_k\)</span>，pos表示为<span class="math inline">\(t\)</span></p>
-<p>解决 out of demain: 如果是超出序列长度，可以通过之前序列长度的线性组合来表示</p>
-<p>For every sine-cosine pair corresponding to frequency <span class="math inline">\(\omega_k\)</span>, there is a linear transformation $ M ^{2 } $(independent of t) where the following equation holds:</p>
-$$ M 
-<span class="math display">\[\begin{bmatrix}  
-  sin(\omega _k \cdot t)  \\  
-  cos(\omega _k \cdot t)  \\  
-   
-\end{bmatrix}\]</span>
-=
-<span class="math display">\[\begin{bmatrix} sin(\omega _k \cdot (t+\phi))\\cos(\omega _k \cdot (t+\phi)) \end{bmatrix}\]</span>
-<p>$$ proof:</p>
-Let <span class="math inline">\(M\)</span> be a <span class="math inline">\(2\times2\)</span> matrix, we want to find <span class="math inline">\(u_1,v_1,u_2\)</span> and <span class="math inline">\(v_2\)</span> so that: $$
-<span class="math display">\[\begin{bmatrix} u_1 &amp;v_1 \\ u_2 &amp; v_2\end{bmatrix}\]</span>
-
-<span class="math display">\[\begin{bmatrix}  
-  sin(\omega _k \cdot t)  \\  
-  cos(\omega _k \cdot t)  \\  
-   
-\end{bmatrix}\]</span>
-=
-<span class="math display">\[\begin{bmatrix} sin(\omega _k \cdot (t+\phi))\\cos(\omega _k \cdot (t+\phi)) \end{bmatrix}\]</span>
-<span class="math display">\[
-By applying the addition theorem, we can expand the right hand side as follows:
-\]</span>
-<span class="math display">\[\begin{bmatrix} u_1 &amp;v_1 \\ u_2 &amp; v_2\end{bmatrix}\]</span>
-
-<span class="math display">\[\begin{bmatrix}  
-  sin(\omega _k \cdot t)  \\  
-  cos(\omega _k \cdot t)  \\  
-   
-\end{bmatrix}\]</span>
-=
-<span class="math display">\[\begin{bmatrix} sin(\omega_k \cdot t)cos(\omega_k \cdot \phi) + cos(\omega_k \cdot t)sin(\omega_k \cdot \phi)         \\cos(\omega_k \cdot t)cos(\omega_k \cdot \phi)  - sin(\omega_k \cdot t)sin(\omega_k \cdot \phi)\end{bmatrix}\]</span>
-<span class="math display">\[
-Which result in the following two equations:
-\]</span>
-<span class="math display">\[\begin{array}{l}
-u_{1} \sin \left(\omega_{k} \cdot t\right)+v_{1} \cos \left(\omega_{k} \cdot t\right)=\cos \left(\omega_{k} \cdot \phi\right) \sin \left(\omega_{k} \cdot t\right)+\sin \left(\omega_{k} \cdot \phi\right) \cos \left(\omega_{k} \cdot t\right) \\
-u_{2} \sin \left(\omega_{k} \cdot t\right)+v_{2} \cos \left(\omega_{k} \cdot t\right)=-\sin \left(\omega_{k} \cdot \phi\right) \sin \left(\omega_{k} \cdot t\right)+\cos \left(\omega_{k} \cdot \phi\right) \cos \left(\omega_{k} \cdot t\right)
-\end{array}\]</span>
-<span class="math display">\[
-By solving above equations, we get:
-\]</span>
-<span class="math display">\[\begin{aligned}
-u_{1}=\cos \left(\omega_{k} \cdot \phi\right) ， v_{1}=\sin \left(\omega_{k} \cdot \phi\right) \\
-u_{2}=-\sin \left(\omega_{k} \cdot \phi\right) ， v_{2}=\cos \left(\omega_{k} \cdot \phi\right)
-\end{aligned}\]</span>
-<span class="math display">\[
-So the final transformation matrix M is:
-\]</span> M_{,k}=
-<span class="math display">\[\begin{bmatrix} cos(\omega_k,\phi) &amp; sin(\omega_k,\phi) \\- sin(\omega_k,\phi) &amp; cos(\omega_k,\phi)\end{bmatrix}\]</span>
-<p>$$</p>
-<h4 id="构建encoder的self-attention-mask">2.3 构建encoder的self-attention mask</h4>
-<p>mask的shape：[batch_size,max_src_len,max_tgt_len] 值为1或-inf</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step4 构建encoder的self-attention mask</span></span><br><span class="line">valid_encoder_pos = torch.unsqueeze(torch.cat([torch.unsqueeze(F.pad(torch.ones(L),(<span class="number">0</span>,<span class="built_in">max</span>(src_len) - L)),<span class="number">0</span>) <span class="keyword">for</span> L <span class="keyword">in</span> src_len]),<span class="number">2</span>) <span class="comment"># 有效长度</span></span><br><span class="line">valid_encoder_pos_matrix = torch.bmm(valid_encoder_pos,valid_encoder_pos.transpose(<span class="number">1</span>,<span class="number">2</span>)) <span class="comment"># 有效矩阵</span></span><br><span class="line">invalid_encoder_pos_matrix = <span class="number">1</span> - valid_encoder_pos_matrix</span><br><span class="line">mask_encoder_self_attention = invalid_encoder_pos_matrix.to(torch.<span class="built_in">bool</span>) <span class="comment"># 变为bool</span></span><br><span class="line"><span class="built_in">print</span>(valid_encoder_pos_matrix,<span class="string">&#x27;\n&#x27;</span>,invalid_encoder_pos_matrix,<span class="string">&#x27;\n&#x27;</span>,mask_encoder_self_attention) <span class="comment">#(batchsize,maxlen after padding,_)</span></span><br><span class="line"><span class="comment"># true 需要 mask</span></span><br><span class="line"></span><br><span class="line">score = torch.randn(batch_size,<span class="built_in">max</span>(src_len),<span class="built_in">max</span>(src_len))</span><br><span class="line"><span class="comment"># print(score.shape,mask_encoder_self_attention.shape)</span></span><br><span class="line"><span class="comment"># masked </span></span><br><span class="line">masked_score = score.masked_fill(mask_encoder_self_attention,-<span class="number">1e9</span>)</span><br><span class="line">prob = F.softmax(masked_score,-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(src_len)</span><br><span class="line"><span class="built_in">print</span>(score)</span><br><span class="line"><span class="built_in">print</span>(masked_score)</span><br><span class="line"><span class="built_in">print</span>(prob)</span><br><span class="line"><span class="comment"># 无需因果的遮掩</span></span><br></pre></td></tr></table></figure>
-<h4 id="scaled-的重要性">2.4 scaled 的重要性</h4>
-<p><span class="math display">\[
-\operatorname{Attention}(Q, K, V)=\operatorname{softmax}\left(\frac{Q K^{T}}{\sqrt{d_{k}}}\right) V
-\]</span></p>
-<p>这里的softmax中为什么要除以<span class="math inline">\(\sqrt{d_k}\)</span>?</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># when the varience of prob is too big</span></span><br><span class="line">alpha1 = <span class="number">0.1</span></span><br><span class="line">alpha2 = <span class="number">10</span></span><br><span class="line">score = torch.randn(<span class="number">5</span>)</span><br><span class="line">prob1 = F.softmax(score*alpha1,-<span class="number">1</span>)</span><br><span class="line">prob2 = F.softmax(score*alpha2,-<span class="number">1</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">softmax_func</span>(<span class="params">score</span>):</span><br><span class="line">    <span class="keyword">return</span> F.softmax(score)</span><br><span class="line">jaco_mat1 = torch.autograd.functional.jacobian(softmax_func,score*alpha1)</span><br><span class="line">jaco_mat2 = torch.autograd.functional.jacobian(softmax_func,score*alpha2)</span><br><span class="line"><span class="comment"># jaco matrix is close to zero when the varience is too big</span></span><br><span class="line"><span class="comment"># print(score,prob1,prob2)</span></span><br><span class="line"><span class="built_in">print</span>(jaco_mat1,<span class="string">&#x27;\n&#x27;</span>,jaco_mat2)</span><br></pre></td></tr></table></figure>
-<h3 id="decoder-细节">3 decoder 细节</h3>
-<h4 id="intra-attention-的-mask">3.1 intra-attention 的 mask</h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step5 构造intra-attention的mask</span></span><br><span class="line"><span class="comment"># Q @ k^T shape:(batch_size,tgt_seq_len,src_seq_len)</span></span><br><span class="line">valid_decoder_pos = torch.unsqueeze(torch.cat([torch.unsqueeze(F.pad(torch.ones(L),(<span class="number">0</span>,<span class="built_in">max</span>(tgt_len) - L)),<span class="number">0</span>) <span class="keyword">for</span> L <span class="keyword">in</span> tgt_len]),<span class="number">2</span>)</span><br><span class="line">valid_cross_pos_matrix = torch.bmm(valid_decoder_pos,valid_encoder_pos.transpose(<span class="number">1</span>,<span class="number">2</span>)) <span class="comment"># 有效位置</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;源序列有效位置张量：&quot;</span>,valid_encoder_pos,<span class="string">&quot;\n 目标序列有效位置张量：&quot;</span>,valid_decoder_pos,<span class="string">&quot;\n 目标序列对源头序列有效位置张量：&quot;</span>,valid_cross_pos)</span><br><span class="line"></span><br><span class="line">invalid_cross_pos_matrix = <span class="number">1</span> - valid_cross_pos_matrix</span><br><span class="line">mask_cross_attention = invalid_cross_pos_matrix.to(torch.<span class="built_in">bool</span>)</span><br><span class="line"><span class="built_in">print</span>(mask_cross_attention)</span><br><span class="line"><span class="comment"># print(valid_cross_pos)</span></span><br><span class="line">score = torch.randn(batch_size,<span class="built_in">max</span>(tgt_len),<span class="built_in">max</span>(tgt_len))</span><br><span class="line"><span class="comment"># print(score.shape,mask_encoder_self_attention.shape)</span></span><br><span class="line"><span class="comment"># masked </span></span><br><span class="line">masked_cross_score = score.masked_fill(mask_cross_attention,-<span class="number">1e9</span>)</span><br><span class="line">prob_cross = F.softmax(masked_cross_score,-<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(prob_cross)</span><br></pre></td></tr></table></figure>
-<h4 id="decoder-self-attention">3.2 decoder self-attention</h4>
-<p>下三角形的mask：防止因果</p>
-<p>要把答案遮住，如果预测第四个位置，就要把第四个位置以后的所有内容都遮住。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># step6 构造 decoder self-attention 的 mask</span></span><br><span class="line">valid_decoder_tri_matrix = torch.cat([torch.unsqueeze(F.pad(torch.tril(torch.ones((L,L))),(<span class="number">0</span>,<span class="built_in">max</span>(tgt_len) - L,<span class="number">0</span>,<span class="built_in">max</span>(tgt_len) - L)),<span class="number">0</span>) <span class="keyword">for</span> L <span class="keyword">in</span> tgt_len])</span><br><span class="line"></span><br><span class="line">invalid_decoder_tri_matrix = <span class="number">1</span> - valid_decoder_tri_matrix</span><br><span class="line">invalid_decoder_tri_matrix = invalid_decoder_tri_matrix.to(torch.<span class="built_in">bool</span>)</span><br><span class="line"><span class="built_in">print</span>(valid_decoder_tri_matrix,invalid_decoder_tri_matrix)</span><br><span class="line"></span><br><span class="line">score = torch.randn(batch_size,<span class="built_in">max</span>(tgt_len),<span class="built_in">max</span>(tgt_len))</span><br><span class="line">masked_score = score.masked_fill(invalid_decoder_tri_matrix,-<span class="number">1e9</span>)</span><br><span class="line">prob = F.softmax(masked_score,-<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(tgt_len)</span><br><span class="line"><span class="built_in">print</span>(prob)</span><br></pre></td></tr></table></figure>
-<p>流式预测的时候，特别需要这个掩码。</p>
-<h4 id="scaled-self-attention">3.3 scaled self-attention</h4>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304101603265.png" alt="image-20230410160332412" /><figcaption aria-hidden="true">image-20230410160332412</figcaption>
-</figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">scaled_dot_product_attention</span>(<span class="params">Q,K,V,attn_mask</span>):</span><br><span class="line">    <span class="comment"># shape pf Q,k,V: (batch_size * num_head,seq_len,model_dim/num_head)</span></span><br><span class="line">    score = torch.bmn(Q,K.transpose(-<span class="number">2</span>,-<span class="number">1</span>))/torch.sqrt(model_dim)</span><br><span class="line">    masked_score = score.masked_fill(attn_mask,-<span class="number">1e9</span>)</span><br><span class="line">    prob = F.softmax(masked_score,-<span class="number">1</span>)</span><br><span class="line">    context = torch.bmn(prov,V)</span><br><span class="line">    <span class="keyword">return</span> context</span><br></pre></td></tr></table></figure>
-<p>源码：D:\0_python-packages.py</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">multi_head_attention_forward</span>(<span class="params"></span></span><br><span class="line"><span class="params">    query: Tensor,</span></span><br><span class="line"><span class="params">    key: Tensor,</span></span><br><span class="line"><span class="params">    value: Tensor,</span></span><br><span class="line"><span class="params">    embed_dim_to_check: <span class="built_in">int</span>,</span></span><br><span class="line"><span class="params">    num_heads: <span class="built_in">int</span>,</span></span><br><span class="line"><span class="params">    in_proj_weight: <span class="type">Optional</span>[Tensor],</span></span><br><span class="line"><span class="params">    in_proj_bias: <span class="type">Optional</span>[Tensor],</span></span><br><span class="line"><span class="params">    bias_k: <span class="type">Optional</span>[Tensor],</span></span><br><span class="line"><span class="params">    bias_v: <span class="type">Optional</span>[Tensor],</span></span><br><span class="line"><span class="params">    add_zero_attn: <span class="built_in">bool</span>,</span></span><br><span class="line"><span class="params">    dropout_p: <span class="built_in">float</span>,</span></span><br><span class="line"><span class="params">    out_proj_weight: Tensor,</span></span><br><span class="line"><span class="params">    out_proj_bias: <span class="type">Optional</span>[Tensor],</span></span><br><span class="line"><span class="params">    training: <span class="built_in">bool</span> = <span class="literal">True</span>,</span></span><br><span class="line"><span class="params">    key_padding_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    need_weights: <span class="built_in">bool</span> = <span class="literal">True</span>,</span></span><br><span class="line"><span class="params">    attn_mask: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    use_separate_proj_weight: <span class="built_in">bool</span> = <span class="literal">False</span>,</span></span><br><span class="line"><span class="params">    q_proj_weight: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    k_proj_weight: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    v_proj_weight: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    static_k: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    static_v: <span class="type">Optional</span>[Tensor] = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    average_attn_weights: <span class="built_in">bool</span> = <span class="literal">True</span>,</span></span><br><span class="line"><span class="params"></span>) -&gt; <span class="type">Tuple</span>[Tensor, <span class="type">Optional</span>[Tensor]]:</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304101653337.png" alt="image-20230410165300158" /><figcaption aria-hidden="true">image-20230410165300158</figcaption>
-</figure>
-<h3 id="loss-function">4 Loss function</h3>
-<p>https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html#torch.nn.CrossEntropyLoss</p>
-<figure>
-<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202304101703643.png" alt="image-20230410170322549" /><figcaption aria-hidden="true">image-20230410170322549</figcaption>
-</figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">bath_size = <span class="number">2</span></span><br><span class="line">seq_len = <span class="number">3</span></span><br><span class="line">vocab_size = <span class="number">4</span></span><br><span class="line">logits = torch.randn(bath_size,seq_len,vocab_size)      <span class="comment"># bath_size = 2, seq_len = 3, vocab_size = 4</span></span><br><span class="line">label = torch.randint(<span class="number">0</span>,vocab_size,(bath_size,seq_len))</span><br><span class="line">logits = logits.transpose(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">F.cross_entropy(logits,label) <span class="comment"># 六个单词的平均交叉熵</span></span><br><span class="line">F.cross_entropy(logits,label,reduction=<span class="string">&quot;none&quot;</span>) <span class="comment"># 返回所有单词的交叉熵</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># mask</span></span><br><span class="line">tgt_len =torch.Tensor([<span class="number">2</span>,<span class="number">3</span>]).to(torch.int32)</span><br><span class="line">mask = torch.cat([torch.unsqueeze(F.pad(torch.ones(L),(<span class="number">0</span>,<span class="built_in">max</span>(tgt_len)-L)),<span class="number">0</span>) <span class="keyword">for</span> L <span class="keyword">in</span> tgt_len])</span><br><span class="line"></span><br><span class="line">cross_entropy = F.cross_entropy(logits,label,reduction=<span class="string">&quot;none&quot;</span>) * mask </span><br><span class="line"><span class="built_in">print</span>(cross_entropy)</span><br></pre></td></tr></table></figure>
-
-				  
-	  
-      
-	  <!-- 添加打赏 -->
-	  
-	
-	  <!-- 添加版权声明 -->
-      
-	  
-	</div>
-	
-	<!-- 添加置顶 -->
-    <div class="article-info article-info-index">
-      
-	  
-	  <!-- 分类页 -->
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">pytorch</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">network</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-	  
-	  <!-- 添加展开全文 -->
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/post/2fee727b.html">展开全文 >></a>
-        </p>
-      
-	  
-	  <!-- 添加分享 -->
-      
-	  
-      <div class="clearfix"></div>
-	  
-    </div>
-  </div>
-</article>
-
-
-
-<!-- 添加回到顶部和文章目录 -->
-<aside class="wrap-side-operation">
-  <div class="mod-side-operation">
-    
-      <div class="jump-container" id="js-jump-container" style="display:none;">
-        <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-          <i class="icon-font icon-back"></i>
-        </a>
-      </div>
-    
-    
-  </div>
-</aside>
-
-<!-- 添加评论 -->
-
-
-<!-- 文章页添加mathjax公式 -->
-
-  
-
-<!-- 文章页添加mathjax公式 -->
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">下一页 &gt;&gt;</a>
@@ -2841,6 +3126,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">强化学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">yolo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">summary</a>
               </li>
             
             <div class="clearfix"></div>
