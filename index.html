@@ -358,7 +358,7 @@ var _hmt = _hmt || [];
 	  
 		  
 		  <h1 id="a-comprehensive-review-of-yolo-from-yolov1-to-yolov8-and-beyond">A COMPREHENSIVE REVIEW OF YOLO: FROM YOLOV1 TO YOLOV8 AND BEYOND</h1>
-<p>https://arxiv.org/pdf/2304.00501v1.pdf</p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2304.00501v1.pdf">https://arxiv.org/pdf/2304.00501v1.pdf</a></p>
 <h2 id="abstract">abstract</h2>
 <p>YOLO 已成为机器人、无人驾驶汽车和视频监控应用的核心实时目标检测系统。我们对 YOLO 的发展进行了全面的分析，研究了从最初的 YOLO 到 YOLOv8 的每次迭代中的创新和贡献。我们首先描述标准指标和后处理;然后，我们讨论了网络架构的主要变化和每个模型的训练技巧。最后，我们总结了 YOLO 发展的重要经验教训，并对其未来发展进行了展望，强调了增强实时目标检测系统的潜在研究方向。</p>
 <h2 id="introduction">1 Introduction</h2>
@@ -366,7 +366,7 @@ var _hmt = _hmt || [];
 <p>本文首先探讨了原始 YOLO 模型的基本概念和体系结构，为 YOLO 家族的后续发展奠定了基础。接下来，我们将深入研究从 YOLOv2 到 YOLOv8 的每个版本中引入的改进和增强。这些改进包括网络设计、损失函数修改、anchor 修改和输入分辨率缩放等各个方面。通过研究这些发展，我们的目标是全面了解 YOLO 框架的发展及其对目标检测的影响。</p>
 <p>除了讨论每个 YOLO 版本的具体进步之外，本文还强调了在整个框架开发过程中出现的速度和准确性之间的权衡。这强调了在选择最合适的 YOLO 模型时考虑特定应用程序的上下文和需求的重要性。</p>
 <p>最后，我们展望了 YOLO 框架的未来方向，触及了进一步研究和开发的潜在途径，这将影响实时目标检测系统的持续进展。</p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231213175522050.png" alt="image-20231213175522050" style="zoom:50%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142203145.png" alt="image-20231213175522050" style="zoom:50%;" /></p>
 <h2 id="yolo-在不同领域的应用">2 YOLO 在不同领域的应用</h2>
 <p>YOLO 的实时目标检测能力在自动驾驶车辆系统中非常宝贵，可以快速识别和跟踪各种物体，如车辆、行人<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>、自行车和其他障碍物<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>。</p>
 <p>这些能力已经应用于许多领域，包括用于监控的视频序列中的动作识别<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>、运动分析<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>和人机交互<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>。</p>
@@ -385,14 +385,14 @@ F = \frac{(\alpha^2+1)P*R}{\alpha^2(P+R)}
 <p>例如，增加检测到的对象的数量(更高的召回率)可能导致更多的误报(更低的精度)。为了考虑这种权衡，AP 指标结合了精确率-召回率曲线，该曲线绘制了不同置信度阈值下的精确率和召回率。该指标通过考虑准确度-召回曲线下的面积，提供了对精度和召回率的平衡评估</p>
 <p><strong>处理多个目标类别</strong>:目标检测模型必须识别和定位图像中的多个目标类别。AP 度量通过分别计算每个类别的平均精度(AP)，然后在所有类别中取这些 AP 的平均值来解决这个问题(这就是为什么它也称为平均平均精度)。这种方法确保对每个类别单独评估模型的性能，为模型的整体性能提供更全面的评估。</p>
 <p><strong>交并比</strong>：目标检测的目的是通过预测边界框来准确定位图像中的目标。AP 度量结合了(IoU)交叉度量来评估预测边界框的质量。IoU 是预测边界框与地面真值边界框的交集面积与并集面积之比(见图 2)。IoU 衡量的是地面真值边界框与预测边界框的重叠程度。COCO 基准考虑多个 IoU 阈值来评估模型在不同定位精度水平下的性能。</p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214090616347.png" alt="image-20231214090616347" style="zoom:50%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142203498.png" alt="image-20231214090616347" style="zoom:50%;" /></p>
 <h3 id="计算-ap">3.2 计算 AP</h3>
 <h4 id="voc-dataset">VOC Dataset</h4>
 <p>该数据集包括<strong>20</strong>个对象类别。为了计算 VOC 中的 AP，我们遵循以下步骤:</p>
-<pre><code>1. 对于每个类别，通过改变模型预测的置信阈值来计算精确召回曲线。</code></pre>
-<ol start="2" type="1">
-<li><p>使用在精度-召回率曲线的 11 点插值抽样计算每个类别的平均精度(AP)。</p></li>
-<li><p>通过取所有 20 个类别中 AP 的平均值来计算最终的平均精度(AP)。</p></li>
+<ol type="1">
+<li>对于每个类别，通过改变模型预测的置信阈值来计算精确召回曲线。</li>
+<li>使用在精度-召回率曲线的 11 点插值抽样计算每个类别的平均精度(AP)。</li>
+<li>通过取所有 20 个类别中 AP 的平均值来计算最终的平均精度(AP)。</li>
 </ol>
 <h4 id="microsoft-coco-dataset">Microsoft COCO Dataset</h4>
 <p>该数据集包括 80 个对象类别，并使用更复杂的方法来计算 AP。它不使用 11 点插值，而是使用 101 点插值，也就是说，它计算 101 个召回阈值的精度，从 0 到 1，增量为 0.01。此外，AP 是通过对多个 IoU 值(而不仅仅是一个)进行平均来获得的，除了一个称为 AP50 的通用 AP 度量，它是单个 IoU 阈值 0.5 的 AP。在 COCO 中计算 AP 的步骤如下:</p>
@@ -405,25 +405,25 @@ F = \frac{(\alpha^2+1)P*R}{\alpha^2(P+R)}
 </ol>
 <h3 id="非极大值抑制nms">3.3 非极大值抑制(NMS)</h3>
 <p>非最大抑制(NMS)是一种用于目标检测算法的后处理技术，目的是减少重叠边界框的数量，提高整体检测质量。目标检测算法通常会在同一目标周围生成多个具有不同置信度分数的边界框。NMS 过滤掉冗余和不相关的边界框，只保留最准确的边界框。算法 1 描述了这个过程。图 3 显示了包含多个重叠边界框的对象检测模型的典型输出和 NMS 后的输出。</p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214095103611.png" alt="image-20231214095103611" style="zoom:50%;" /></p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214095200651.png" alt="image-20231214095200651" style="zoom:50%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204835.png" alt="image-20231214095103611" style="zoom:50%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204915.png" alt="image-20231214095200651" style="zoom:50%;" /></p>
 <h2 id="yolo-you-only-look-once">4 YOLO: You Only Look Once</h2>
 <p>Joseph Redmon 等人的 YOLO 发表于 CVPR 2016<a href="#fn38" class="footnote-ref" id="fnref38" role="doc-noteref"><sup>38</sup></a>。它首次提出了一种实时的端到端目标检测方法。YOLO 这个名字代表“你只看一次”，这是指它是一个能够通过网络的单次传递完成检测任务，而不是以前的方法，要么使用滑动窗口，然后使用分类器，需要在每张图像上运行数百或数千次，要么使用更高级的方法，将任务分为两步，其中第一步检测具有对象或区域建议的可能区域，第二步在建议上运行分类器。此外，YOLO 使用更直接的基于回归的输出来预测检测输出，而 Fast R-CNN<a href="#fn39" class="footnote-ref" id="fnref39" role="doc-noteref"><sup>39</sup></a>$使用两个单独的输出，概率分类和框坐标回归。</p>
 <h3 id="yolov1-简介">4.1 YOLOv1 简介</h3>
 <p>YOLOv1 统一了目标检测步骤，同时检测所有的边界框。为了实现这一点，YOLO 将输入图像划分为 S × S 网格，并预测同一类的 B 个边界框，以及每个网格元素对 C 个不同类的置信度。每个边界框预测由五个值组成:Pc, bx, by, bh, bw，其中 Pc 是框的置信度得分，反映模型对框中包含对象的置信度以及框的准确性。bx 和 by 坐标是相对于网格单元格的框的中心，bh 和 bw 是相对于完整图像的框的高度和宽度。YOLO 的输出是 S × S × (B × 5 + C)张量，可选地跟随非最大抑制(NMS)来去除重复检测。</p>
 <p>在最初的 YOLO 论文中，作者使用了包含 20 个类(C = 20)的 PASCAL VOC 数据集[36];一个 7 × 7 的网格(S = 7)，每个网格元素最多 2 个类(B = 2)，给出 7 × 7 × 30 的输出预测。</p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214095504303.png" alt="image-20231214095504303" style="zoom:50%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204516.png" alt="image-20231214095504303" style="zoom:50%;" /></p>
 <p>图 4 显示了一个简化的输出向量，考虑了一个 3 乘 3 的网格、3 个类，每个网格一个类代表 8 个值。在这个简化的情况下，YOLO 的输出将是 3 × 3 × 8。</p>
 <p>YOLOv1 在 PASCAL VOC2007 数据集上的平均精度(AP)为 63.4。</p>
 <h3 id="yolov1-框架">4.2 YOLOv1 框架</h3>
 <p>YOLOv1 架构包括 24 个卷积层，然后是两个完全连接的层，用于预测边界框坐标和概率。除最后一层使用线性激活函数外，所有层都使用漏整流线性单元激活<a href="#fn40" class="footnote-ref" id="fnref40" role="doc-noteref"><sup>40</sup></a>。受 GoogLeNet<a href="#fn41" class="footnote-ref" id="fnref41" role="doc-noteref"><sup>41</sup></a>和 Network in Network<a href="#fn42" class="footnote-ref" id="fnref42" role="doc-noteref"><sup>42</sup></a>的启发，YOLO 使用 1 × 1 卷积层来减少特征映射的数量，并保持相对较低的参数数量。作为激活层，表 1 描述了 YOLOv1 体系结构。作者还介绍了一个更轻的模型，称为 Fast YOLO，由 9 个卷积层组成。</p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214095738606.png" alt="image-20231214095738606" style="zoom:50%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204092.png" alt="image-20231214095738606" style="zoom:50%;" /></p>
 <h3 id="yolov1-训练">4.3 YOLOv1 训练</h3>
 <p>作者使用 ImageNet 数据集以 224 × 224 的分辨率预训练了 YOLO 的前 20 层<a href="#fn43" class="footnote-ref" id="fnref43" role="doc-noteref"><sup>43</sup></a>。然后，他们添加了随机初始化权重的最后四层，并使用 PASCAL VOC 2007 和 VOC 2012 数据集<a href="#fn44" class="footnote-ref" id="fnref44" role="doc-noteref"><sup>44</sup></a>以 448 × 448 的分辨率对模型进行了精细调整，以增加细节，从而更准确地检测目标。</p>
 <p>对于增强，作者使用最多 20%输入图像大小的随机缩放和平移，以及随机曝光和饱和度，在 HSV 色彩空间中，上限因子为 1.5。</p>
 <p>YOLOv1 使用了一个由多个和平方误差组成的损失函数，如图 5 所示。在损失函数中，<span class="math inline">\(\lambda_{\text{coord}} = 5\)</span>是给予边界框预测更多重要性的比例因子，<span class="math inline">\(λ_{\text{noobj}} = 0.5\)</span>是降低不包含对象的框的重要性的比例因子。</p>
 <p>损失的前两项表示局部化损失;它计算预测的边界框位置<span class="math inline">\((x, y)\)</span>和大小<span class="math inline">\((w, h)\)</span>中的误差。请注意，这些误差仅在包含对象的框中计算(由<span class="math inline">\(\mathbb 1^{\text{obj}}_\text{ij}\)</span>表示)，只有在该网格单元中存在对象时才会受到惩罚。第三和第四个损失项表示信心损失;第三项测量在盒子中检测到对象时的置信误差(<span class="math inline">\(\mathbb 1^{\text{obj}}_\text{ij}\)</span>)，第四项测量在盒子中未检测到对象时的置信误差(<span class="math inline">\(\mathbb 1^{\text{noobj}}_\text{ij}\)</span>)。由于大多数盒子是空的，这个损失被<span class="math inline">\(\lambda_{\text{noobj}}\)</span>项加权。最后一个损失分量是分类损失，它仅在对象出现在单元格(<span class="math inline">\(\mathbb 1^{\text{obj}}_\text{ij}\)</span>)中时测量每个类别的类别条件概率的平方误差。</p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214100445282.png" alt="image-20231214100445282" style="zoom: 80%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204820.png" alt="image-20231214100445282" style="zoom: 80%;" /></p>
 <h3 id="yolov1-优点和不足">4.4 YOLOv1 优点和不足</h3>
 <p>YOLO 的简单架构，以及其新颖的全图像单次回归，使其比现有的目标检测器更快，从而实现实时性能。</p>
 <p>然而，尽管 YOLO 的执行速度比任何目标检测器都快，但与 Fast R-CNN 等最先进的方法相比，定位误差更大<a href="#fn45" class="footnote-ref" id="fnref45" role="doc-noteref"><sup>45</sup></a>。造成这种限制的主要原因有三个:</p>
@@ -440,12 +440,12 @@ F = \frac{(\alpha^2+1)P*R}{\alpha^2(P+R)}
 <li><p><strong>完全卷积</strong>。他们去掉了密集的层，使用了一个完全卷积的架构。</p></li>
 <li><p><strong>使用 anchor boxes 来预测边界框</strong>。它们使用一组先验框或锚框，锚框是具有预定义形状的框，用于匹配对象的原型形状，如图 6 所示。为每个网格单元定义多个锚框，系统预测每个锚框的坐标和类。网络输出的大小与每个网格单元的锚盒数量成正比。</p></li>
 </ol>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214104432020.png" alt="image-20231214104432020" style="zoom:50%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204478.png" alt="image-20231214104432020" style="zoom:50%;" /></p>
 <ol start="5" type="1">
 <li><p><strong>聚类中心</strong>。选择好的先验框有助于网络学习预测更准确的边界框。作者在训练边界盒上运行 k-means 聚类来找到好的先验。他们选择了五个先前的盒子，在召回率和模型复杂性之间进行了很好的权衡。</p></li>
 <li><p><strong>直接位置预测</strong>。与其他预测偏移量的方法<a href="#fn47" class="footnote-ref" id="fnref47" role="doc-noteref"><sup>47</sup></a>不同，YOLOv2 遵循相同的原理，预测相对于网格单元的位置坐标。网络为每个单元格预测 5 个边界框，每个边界框有 5 个值 tx、ty、tw、th 和 to，其中 to 相当于 YOLOv1 中的 P c，最终得到边界框坐标，如图 7 所示。</p></li>
 </ol>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214104903836.png" alt="image-20231214104903836" style="zoom:50%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204957.png" alt="image-20231214104903836" style="zoom:50%;" /></p>
 <ol start="7" type="1">
 <li><strong>细粒度特性</strong>。与 YOLOv1 相比，YOLOv2 去掉一个池化层，得到 416 × 416 输入图像的 13 × 13 输出特征图或网格。YOLOv2 还使用了一个直通层，该层采用 26 × 26 × 512 的特征映射，并通过将相邻的特征堆叠到不同的通道中来重新组织而不是通过空间子采样丢失它们。这将生成 13 × 13 × 2048 个通道维度的特征图，并与低分辨率的 13 × 13 × 1024 个特征图进行连接，得到 13 × 13 × 3072 个特征图。</li>
 <li><strong>多尺度的训练</strong>。由于 YOLOv2 不使用全连接层，因此输入可以是不同的大小。为了使 YOLOv2 对不同的输入大小具有鲁棒性，作者随机训练模型，每 10 批次改变输入大小——从 320 × 320 到 608 × 608。</li>
@@ -454,7 +454,7 @@ F = \frac{(\alpha^2+1)P*R}{\alpha^2(P+R)}
 <h3 id="yolov2-框架">5.1 YOLOv2 框架</h3>
 <p>YOLOv2 使用的骨干架构称为 Darknet-19，包含 19 个卷积层和 5 个 maxpooling 层。与 YOLOv1 的架构类似，它的灵感来自于 Network in Network<a href="#fn48" class="footnote-ref" id="fnref48" role="doc-noteref"><sup>48</sup></a>，在 3 × 3 之间使用 1 × 1 的卷积来减少参数的数量。此外，如上所述，他们使用批归一化来正则化和帮助收敛。</p>
 <p>表 2 显示了带有目标检测头的整个 Darknet-19 主干。使用 PASCAL VOC 数据集时，YOLOv2 预测 5 个边界框，每个边界框有 5 个值和 20 个类。</p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214105332256.png" alt="image-20231214105332256" style="zoom:80%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204761.png" alt="image-20231214105332256" style="zoom:80%;" /></p>
 <p>分类头将最后四个卷积层替换为一个包含 1000 个过滤器的单个卷积层，然后是一个全局平均池化层和一个 Softmax。</p>
 <h3 id="yolo9000-is-a-stronger-yolov2">5.2 YOLO9000 is a stronger YOLOv2</h3>
 <p>作者在同一篇文章中介绍了一种训练联合分类和检测的方法。它使用 COCO<a href="#fn49" class="footnote-ref" id="fnref49" role="doc-noteref"><sup>49</sup></a>中的检测标记数据学习边界框坐标和 ImageNet 中的分类数据，以增加可检测的类别数量。在训练过程中，他们将两个数据集结合起来，这样当使用检测训练图像时，它会反向传播检测网络，当使用分类训练图像时，它会反向传播体系结构的分类部分。结果是一个能够检测超过 9000 个类别的 YOLO 模型，因此名称为 YOLO9000。</p>
@@ -471,12 +471,12 @@ F = \frac{(\alpha^2+1)P*R}{\alpha^2(P+R)}
 <h3 id="yolov3-架构">6.1 YOLOv3 架构</h3>
 <p>YOLOv3 中呈现的架构主干称为 Darknet-53。它用跨行卷积替换了所有的最大池化层，并添加了残差连接。总的来说，它包含 53 个卷积层。图 8 显示了体系结构的细节。</p>
 <p>Darknet-53 骨干网获得与 ResNet-152 相当的 Top-1 和 Top-5 精度，但几乎快了 2 倍。</p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214110812922.png" alt="image-20231214110812922" style="zoom:80%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204318.png" alt="image-20231214110812922" style="zoom:80%;" /></p>
 <h3 id="yolov3-多尺度预测">6.2 YOLOv3 多尺度预测</h3>
 <p>除了更大的架构外，YOLOv3 的一个基本特征是多尺度预测，即在多个网格大小下进行预测。这有助于获得更精细的细节框，并显着提高了对小物体的预测，这是以前版本的 YOLO 的主要弱点之一。</p>
 <p>图 9 所示的多尺度检测架构的工作原理如下:标记为 y1 的第一个输出相当于 YOLOv2 的输出，其中一个 13 × 13 的网格定义了输出。第二个输出 y2 是将 Darknet-53 的(Res × 4)之后的输出与(Res × 8)之后的输出拼接而成。feature map 的大小不同，分别是 13 × 13 和 26 × 26，所以在拼接之前需要进行上采样操作。最后，使用上采样操作，第三个输出 y3 将 26 × 26 特征映射与 52 × 52 特征映射连接起来。</p>
 <p>对于具有 80 个类别的 COCO 数据集，每个尺度提供一个形状为 N × N ×[3x(4+1+80)]的输出张量，其中 N ×N 为特征图(或网格单元)的大小，3 表示每个单元的框数，4+1 包括四个坐标和对象得分。</p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214112806628.png" alt="image-20231214112806628" style="zoom:80%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204614.png" alt="image-20231214112806628" style="zoom:80%;" /></p>
 <h3 id="yolov3-结果">6.3 YOLOv3 结果</h3>
 <p>当 YOLOv3 发布时，目标检测的基准已经从 PASCAL VOC 改为 Microsoft COCO<a href="#fn55" class="footnote-ref" id="fnref55" role="doc-noteref"><sup>55</sup></a>。因此，从这里开始，所有的 yolo 都在 MS COCO 数据集中进行评估。在 20 FPS 下，YOLOv3-spp 的平均精度 AP 为 36.2%，AP50 为 60.6%，达到了当时最先进的水平，速度提高了 2 倍。</p>
 <h2 id="backbone-neck-and-head">7 Backbone Neck and Head</h2>
@@ -486,12 +486,12 @@ F = \frac{(\alpha^2+1)P*R}{\alpha^2(P+R)}
 <p>颈部可能包括额外的卷积层、特征金字塔网络(FPN)<a href="#fn56" class="footnote-ref" id="fnref56" role="doc-noteref"><sup>56</sup></a>或其他机制来改善特征的表示。</p>
 <p>头部是物体检测器的最终组成部分;它负责根据脊柱和颈部提供的特征做出预测。它通常由一个或多个特定于任务的子网组成，这些子网执行分类、定位以及最近的实例分割和姿态估计。头部处理颈部提供的特征，为每个候选对象生成预测。最后，一个后处理步骤，如非最大抑制(NMS)，过滤掉重叠的预测，只保留最可靠的检测。</p>
 <p>在 YOLO 模型的其余部分中，我们将使用 Backbone、Neck 和 Head 来描述架构。</p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214113148856.png" alt="image-20231214113148856" style="zoom:50%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204439.png" alt="image-20231214113148856" style="zoom:50%;" /></p>
 <h2 id="yolov4">8 YOLOv4</h2>
 <p>两年过去了，并没有新的 YOLO 版本。直到 2020 年 4 月，Alexey Bochkovskiy, Chien-Y ao Wang, Hong-Y yuan Mark Liao 在 ArXiv 发表了 YOLOv4 的论文<a href="#fn57" class="footnote-ref" id="fnref57" role="doc-noteref"><sup>57</sup></a>。起初，不同的作者提出了一个新的“官方”版本的 YOLO，这让人感到奇怪;然而，yolo4 保持了相同的 YOLO 理念——实时、开源、单镜头和 DarkNet 框架——并且改进是如此令人满意，社区迅速接受了这个版本作为官方的 yolo4。</p>
 <p>YOLOv4 试图找到最佳的平衡，尝试了许多被归类为 bag-of-freebies 和 bag-of-specials 的变化。Bag-of-freebies 是指只改变训练策略，增加训练成本，但不增加推理时间的方法，最常见的是数据增强。另一方面，bag-of-specials 是稍微增加推理成本但显著提高准确率的方法。这些方法的例子包括扩大感受野<a href="#fn58" class="footnote-ref" id="fnref58" role="doc-noteref"><sup>58</sup></a><a href="#fn59" class="footnote-ref" id="fnref59" role="doc-noteref"><sup>59</sup></a><a href="#fn60" class="footnote-ref" id="fnref60" role="doc-noteref"><sup>60</sup></a>，结合特征<a href="#fn61" class="footnote-ref" id="fnref61" role="doc-noteref"><sup>61</sup></a><a href="#fn62" class="footnote-ref" id="fnref62" role="doc-noteref"><sup>62</sup></a><a href="#fn63" class="footnote-ref" id="fnref63" role="doc-noteref"><sup>63</sup></a><a href="#fn64" class="footnote-ref" id="fnref64" role="doc-noteref"><sup>64</sup></a>和后处理<a href="#fn65" class="footnote-ref" id="fnref65" role="doc-noteref"><sup>65</sup></a><a href="#fn66" class="footnote-ref" id="fnref66" role="doc-noteref"><sup>66</sup></a><a href="#fn67" class="footnote-ref" id="fnref67" role="doc-noteref"><sup>67</sup></a><a href="#fn68" class="footnote-ref" id="fnref68" role="doc-noteref"><sup>68</sup></a>等。</p>
 <p>我们将 YOLOv4 的主要变化总结为以下几点:<a href="#fn69" class="footnote-ref" id="fnref69" role="doc-noteref"><sup>69</sup></a></p>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214113550393.png" alt="image-20231214113550393" style="zoom:80%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204143.png" alt="image-20231214113550393" style="zoom:80%;" /></p>
 <ol type="1">
 <li><p>具有(BoS)集成的增强架构。作者尝试了多种骨干网架构，如 ResNeXt50<a href="#fn70" class="footnote-ref" id="fnref70" role="doc-noteref"><sup>70</sup></a>、EfficientNet-B3<a href="#fn71" class="footnote-ref" id="fnref71" role="doc-noteref"><sup>71</sup></a>和 Darknet-53。性能最好的架构是对 Darknet-53 的修改，采用跨级部分连接(CSPNet)<span class="math inline">\(^{[61]}\)</span>，以 Mish 激活函数<a href="#fn72" class="footnote-ref" id="fnref72" role="doc-noteref"><sup>72</sup></a>作为主干(见图 11)。对于颈部，他们使用了来自 YOLOv3- SPP 的修改版本的空间金字塔池(SPP)<a href="#fn73" class="footnote-ref" id="fnref73" role="doc-noteref"><sup>73</sup></a>和与 YOLOv3 一样的多尺度预测，但使用了修改版本的路径聚合网络(PANet)<a href="#fn74" class="footnote-ref" id="fnref74" role="doc-noteref"><sup>74</sup></a>$而不是 FPN 以及修改的空间注意模块(SAM)<a href="#fn75" class="footnote-ref" id="fnref75" role="doc-noteref"><sup>75</sup></a>。最后，对于探测头，他们使用 YOLOv3 中的 anchor。因此，将模型命名为 CSPDarknet53-PANet-SPP。添加到 Darknet-53 中的跨级部分连接(CSP)有助于减少模型的计算量，同时保持相同的精度。在 YOLOv3-spp 中，SPP 块在不影响推理速度的情况下增加了接受野。PANet 的修改版本将这些特性连接起来，而不是像在 PANet 的原始文件中那样添加它们。</p></li>
 <li><p>整合(BoF)的高级培训方法。除了常规的增强，如随机亮度、对比度、缩放、裁剪、翻转和旋转，作者还实现了马赛克增强，将四张图像合并为一张图像，允许检测其通常上下文之外的对象，并减少了批量规范化对大型 mini-batch 大小的需求。对于正则化，他们使用 DropBlock<a href="#fn76" class="footnote-ref" id="fnref76" role="doc-noteref"><sup>76</sup></a>作为 Dropout<a href="#fn77" class="footnote-ref" id="fnref77" role="doc-noteref"><sup>77</sup></a>的替代品，但用于卷积神经网络以及类标签平滑<a href="#fn78" class="footnote-ref" id="fnref78" role="doc-noteref"><sup>78</sup></a><a href="#fn79" class="footnote-ref" id="fnref79" role="doc-noteref"><sup>79</sup></a>。对于检测器，他们增加了 CIoU 损耗<a href="#fn80" class="footnote-ref" id="fnref80" role="doc-noteref"><sup>80</sup></a>和 Cross mini-bath normalization (CmBN)，以便从整个批次收集统计数据，而不是像常规批次归一化那样从单个小批次收集统计数据<a href="#fn81" class="footnote-ref" id="fnref81" role="doc-noteref"><sup>81</sup></a>。</p></li>
@@ -499,7 +499,7 @@ F = \frac{(\alpha^2+1)P*R}{\alpha^2(P+R)}
 <li><p>遗传算法的超参数优化。为了找到用于训练的最优超参数，他们在前 10%的周期中使用遗传算法，并使用余弦退火调度器<a href="#fn82" class="footnote-ref" id="fnref82" role="doc-noteref"><sup>82</sup></a>来改变训练期间的学习率。它开始缓慢地降低学习率，然后在训练过程中快速降低，最后略有降低。</p></li>
 </ol>
 <figure>
-<img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214160738192.png" alt="image-20231214160738192" /><figcaption aria-hidden="true">image-20231214160738192</figcaption>
+<img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204714.png" alt="image-20231214160738192" /><figcaption aria-hidden="true">image-20231214160738192</figcaption>
 </figure>
 <p>在 MS COCO 数据集测试开发 2017 上进行评估，YOLOv4 在 NVIDIA V100 上以超过 50 FPS 的速度实现了 43.5%的 AP 和 65.7%的 AP50。</p>
 <h2 id="yolov5">9 YOLOv5</h2>
@@ -525,7 +525,7 @@ F = \frac{(\alpha^2+1)P*R}{\alpha^2(P+R)}
 <li><p>高级标签分配。文献<a href="#fn96" class="footnote-ref" id="fnref96" role="doc-noteref"><sup>96</sup></a>表明，当多个物体的盒子重叠时，ground truth 标签分配可能存在歧义，并将分配过程表述为最优传输(Optimal Transport, OT)问题。YOLOX 受到这项工作的启发，提出了一个简化的版本，叫做 simOTA。这个改动使 AP 增加了 2.3 点。</p></li>
 <li><p>强大的扩增。YOLOX 使用 MixUP<a href="#fn97" class="footnote-ref" id="fnref97" role="doc-noteref"><sup>97</sup></a>和 Mosaic 增强。作者发现，使用这些增强后，ImageNet 预训练不再有益。强大的增强使 AP 增加 2.4 点。</p></li>
 </ol>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214205859709.png" alt="image-20231214205859709" style="zoom:80%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204871.png" alt="image-20231214205859709" style="zoom:80%;" /></p>
 <h2 id="yolov6">13 YOLOv6</h2>
 <p>YOLOv6<a href="#fn98" class="footnote-ref" id="fnref98" role="doc-noteref"><sup>98</sup></a>由美团视觉 AI 部门于 2022 年 9 月在 ArXiv 上发表。与 YOLOv4 和 YOLOv5 类似，它为工业应用提供了不同尺寸的各种型号。遵循 achor-free 的方法<a href="#fn99" class="footnote-ref" id="fnref99" role="doc-noteref"><sup>99</sup></a><a href="#fn100" class="footnote-ref" id="fnref100" role="doc-noteref"><sup>100</sup></a>的趋势，YOLOv6 采用了无锚点检测器。该模型的主要新颖之处总结如下:</p>
 <ol type="1">
@@ -625,7 +625,7 @@ F = \frac{(\alpha^2+1)P*R}{\alpha^2(P+R)}
 <li><p>骨干:随着时间的推移，YOLO 模型的骨干架构发生了重大变化。从包含简单卷积层和最大池化层的 Darknet 架构开始，后来的模型在 YOLOv4 中加入了跨阶段部分连接(CSP)，在 YOLOv6 和 YOLOv7 中加入了重新参数化，在 DAMO-YOLO 中加入了神经结构搜索。</p></li>
 <li><p>性能:虽然 YOLO 模型的性能随着时间的推移有所提高，但值得注意的是，它们通常优先考虑速度和准确性的平衡，而不是仅仅关注准确性。这种权衡是 YOLO 框架的一个重要方面，它允许跨各种应用程序进行实时对象检测。</p></li>
 </ul>
-<p><img src="C:\Users\jyh\AppData\Roaming\Typora\typora-user-images\image-20231214214908034.png" alt="image-20231214214908034" style="zoom:80%;" /></p>
+<p><img src="https://picgo-1259245122.cos.ap-shanghai.myqcloud.com/img/blog/202312142204800.png" alt="image-20231214214908034" style="zoom:80%;" /></p>
 <h3 id="在速度和准确性之间进行权衡">18.1 在速度和准确性之间进行权衡</h3>
 <p>YOLO 系列目标检测模型一直专注于平衡速度和准确性，旨在提供实时性能而不牺牲检测结果的质量。随着 YOLO 框架在各种迭代中不断发展，这种权衡一直是一个反复出现的主题，每个版本都以不同的方式寻求优化这些相互竞争的目标。在最初的 YOLO 模型中，主要关注的是实现高速目标检测。该模型利用单个卷积神经网络(CNN)直接从输入图像中预测物体的位置和类别，从而实现实时处理。然而，这种对速度的强调导致了准确性的妥协，主要是在处理小对象或具有重叠边界框的对象时。</p>
 <p>随后的 YOLO 版本引入了改进和增强，以解决这些限制，同时保持框架的实时功能。例如，YOLOv2 (YOLO9000)引入锚盒和穿透层来改善物体的定位，从而提高精度。此外，YOLOv3 通过采用多尺度特征提取架构增强了模型的性能，从而可以在各种尺度上更好地检测目标。</p>
